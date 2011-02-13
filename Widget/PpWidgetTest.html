@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>PpWidget</title>
+<script language="javascript">
+function getFlashContent(name) {
+    if (navigator.appName.indexOf("Microsoft") != -1) {
+        return window[name];
+    } else {
+        return document[name];
+    }
+}
+
+function reloadDataInWidget() {
+    getFlashContent("PpWidget").reloadData(1, 25);
+}
+</script>
+</head>
+<body bgcolor="#ffffff">
+	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="300" height="400" id="PpWidget" align="middle">
+	<param name="allowScriptAccess" value="always" />
+	<param name="allowFullScreen" value="false" />
+	<param name="movie" value="PpWidget.swf?aid=4" /><param name="loop" value="false" /><param name="quality" value="high" /><param name="wmode" value="transparent" /><param name="bgcolor" value="#ffffff" />	<embed src="PpWidget.swf?aid=4" loop="false" quality="high" wmode="transparent" bgcolor="#ffffff" width="300" height="400" name="PpWidget" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+	</object>
+	<br><br><br>
+	<input type="button" name="cmon" onClick="reloadDataInWidget();" value="Load a Colin Hartin song">
+</body>
+</html>

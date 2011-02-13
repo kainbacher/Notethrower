@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cross-domain-policy>
+	<allow-access-from domain="notethrower.com"/>
+	<allow-access-from domain="www.notethrower.com"/>
+	<allow-access-from domain="*.notethrower.com"/>
+	<allow-access-from domain="podperfect.com"/>
+	<allow-access-from domain="www.podperfect.com"/>
+
+	<allow-http-request-headers-from domain="notethrower.com" headers="*"/>
+	<allow-http-request-headers-from domain="www.notethrower.com" headers="*"/>
+	<allow-http-request-headers-from domain="*.notethrower.com" headers="*"/>
+	<allow-http-request-headers-from domain="podperfect.com" headers="*"/>
+	<allow-http-request-headers-from domain="www.podperfect.com" headers="*"/>
+</cross-domain-policy>

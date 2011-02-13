@@ -1,0 +1,1603 @@
+/* !colorScheme */
+/* ---------------------------------------------------------------------- */
+/*
+
+yellow  #ffd321
+orange  #ff8000
+
+orange  #ff8000
+
+*/
+
+/* !generalStyles */
+/* ---------------------------------------------------------------------- */
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-image: url(../Images/background_body.png);
+	/* background: #FFFFFF url(../Images/background_03.jpg) no-repeat; */
+	background-repeat: repeat;
+	font-family: Verdana, "Lucida Grande", Arial, Sans-Serif;
+	font-size: 13px;
+    color: #444444;
+	line-height: 18px;
+	text-align: left;
+	vertical-align: top;
+}
+
+p {
+    font-family: Verdana, Arial, sans;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+}
+
+h1 {
+    color: #444444;
+    font-size: 21px;
+    font-weight: normal;
+    line-height: 28px;
+}
+
+h2 {
+    color: #444444;
+    font-size: 15px;
+    font-weight: normal;
+    line-height: 36px;
+}
+
+h3 {
+    color: #444444;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 18px;
+    text-transform: uppercase;
+}
+
+/*
+hr {
+    border: 0;
+    width: 100%;
+    height: 1px;
+}*/
+
+a {
+    color: #4BA8E0;
+}
+
+a:link,
+a:visited {
+	/* color: #ffd321; */
+	color: #4BA8E0;
+	text-decoration:none;
+	outline: none;
+}
+
+a:active  {
+	color: #666666;
+	text-decoration:none;
+	outline: none;
+}
+
+a:hover   {
+	color: #ff8000;
+	text-decoration:none;
+	outline: none;
+}
+
+a :active {
+  outline: none;
+}
+
+img {
+    border: 0px;
+}
+
+textarea {
+    font-family: Verdana, Arial, sans-seriv;
+    font-size: 11px;
+}
+
+.clear {
+    clear: both;
+}
+
+.prealoader {
+    display: none;
+}
+
+.fertigo {
+}
+
+.weblink {
+    width: 200px;
+    overflow-x: hidden;
+}
+
+.weblink a {
+    display: block;
+}
+
+.weblink img {
+    margin-right: 5px;
+}
+
+.weblinkText {
+    margin-top: -5px;
+}
+
+.blue {
+    color: #4BA8E0;
+}
+
+.miniFont {
+    color: #999999;
+    font-size: 9px;
+    line-height: 11px;
+}
+
+/* !Buttons */
+/* ---------------------------------------------------------------------- */
+
+.button {
+    -webkit-box-shadow: rgba(0, 0, 0, 0.496094) 0px 1px 3px;
+    -moz-border-radius: 5px;
+    background-color: #444444;
+    border: 0px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.246094);
+    border-bottom-left-radius: 5px 5px;
+    border-bottom-right-radius: 5px 5px;
+    border-top-left-radius: 5px 5px;
+    border-top-right-radius: 5px 5px;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    padding-bottom: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 2px;
+    position: relative;
+    text-decoration: none;
+    text-shadow: rgba(0, 0, 0, 0.246094) 0px -1px 1px;
+}
+
+.button:hover {
+    background-color: #222222;
+    color: #cccccc;
+    font-size: 11px;
+    font-weight: bold;
+    text-shadow: rgba(0, 0, 0, 0.246094) 0px -1px 1px;
+}
+
+.buttonsmall {
+    -webkit-box-shadow: rgba(0, 0, 0, 0.496094) 0px 1px 3px;
+    background-color: #444444;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.246094);
+    border-bottom-left-radius: 5px 5px;
+    border-bottom-right-radius: 5px 5px;
+    border-top-left-radius: 5px 5px;
+    border-top-right-radius: 5px 5px;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    margin: 2px;
+    padding-bottom: 1px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 1px;
+    position: relative;
+    text-decoration: none;
+    text-shadow: rgba(0, 0, 0, 0.246094) 0px -1px 1px;
+}
+
+.buttonsmall:hover {
+    background-color: #222222;
+    color: #cccccc;
+    font-size: 11px;
+    font-weight: bold;
+    text-shadow: rgba(0, 0, 0, 0.246094) 0px -1px 1px;
+}
+
+.buttonbig {
+    -webkit-box-shadow: rgba(0, 0, 0, 0.496094) 0px 1px 3px;
+    -moz-border-radius: 5px;
+    background-color: #ffd700;
+    border: 0px;
+    border-bottom-left-radius: 5px 5px;
+    border-bottom-right-radius: 5px 5px;
+    border-top-left-radius: 5px 5px;
+    border-top-right-radius: 5px 5px;
+    border: 3px solid #ffffff;
+    color: #444444 !important;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 18px;
+    font-weight: normal;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    position: relative;
+    text-decoration: none;
+    text-shadow: rgba(0, 0, 0, 0.246094) 0px -1px 1px;
+}
+
+.buttonbig:hover {
+    background-color: #ffd700;
+    border: 3px solid #cccccc;
+    color: #ffffff !important;
+    text-shadow: rgba(0, 0, 0, 0.246094) 0px -1px 1px;
+}
+
+
+
+/* !tooltip */
+/* ---------------------------------------------------------------------- */
+
+.toolTipWrapper {
+    position: relative;
+}
+
+.toolTip {
+    height: 16px;
+    width: 20px;
+}
+
+.toolTipContent {
+    background-color: #f2f2f2;
+    position: absolute;
+    top: 0;
+    left: 20px;
+    z-index: 3;
+    display: none;
+    width: 200px;
+    height: auto;
+    padding: 5px;
+    border: 1px solid #dddddd;
+    font-size: 11px;
+    line-height: 13px;
+}
+
+
+/* !bodyWrapper */
+/* ---------------------------------------------------------------------- */
+
+#bodyWrapperStart {
+	background-image: url(../Images/background_start.png);
+	background-repeat: repeat-x;
+	width: 100%;
+	height: 100%;
+}
+
+#bodyWrapper {
+	background-image: url(../Images/background.png);
+	background-repeat: repeat-x;
+	width: 100%;
+	height: 100%;
+}
+
+
+/* ! */
+/* ---------------------------------------------------------------------- */
+
+a.nohighlight:hover {
+    color: #444444;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.standardRow1 td {
+    border-bottom: 1px dotted #cccccc;
+}
+
+.standardRow2 td {
+    border-bottom: 1px dotted #cccccc;
+}
+
+.highlightedRow td {
+    border-bottom: 1px dotted #cccccc;
+}
+
+.highlightedRow {
+    background-color: #eeeeee;
+}
+
+.smallText {
+    font-size: 10px;
+}
+
+.headline {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.subheadline {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.subsubheadline {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.loginFormTable {
+    border-collapse: separate;
+    border-spacing: 1px;
+    margin: 0px;
+}
+
+.artistFormTable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0px;
+    margin: 0px;
+}
+
+.artistFormTable td {
+    padding: 5px;
+}
+
+.trackFormTable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0px;
+    margin: 0px;
+}
+
+.trackFormTable td {
+    padding: 5px;
+}
+
+.trackGridElt {
+    width: 100px;
+    height: 100px;
+    vertical-align: top;
+    background-color: #6C6C6E;
+    padding: 2px;
+    position: relative;
+}
+
+.emptyTrackGridElt {
+    width: 100px;
+    height: 100px;
+    vertical-align: top;
+    text-align: center;
+    padding: 7px;
+    position: relative;
+    background-color: transparent;
+}
+
+.cursorHand {
+    cursor: pointer;
+    cursor: hand;
+}
+
+.trackGridElt .tlContainer {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.trackGridElt .tlArtistImg {
+    z-index: 0;
+    position: absolute;
+    text-align: center;
+    width: 100px;
+    height: 100px;
+}
+
+.trackGridElt .tlOverlayText {
+    width: 100px;
+    background: url(../Images/gray_bg_transp_1px.png) repeat;
+    z-index: 10;
+    position: absolute;
+    bottom: 0px;
+    font-size: 10px;
+    color: #FFFFFF;
+    padding: 0px;
+}
+
+.trackGridElt .tlOverlayText .tlotArtist {
+    text-align: center;
+    font-size: 10px;
+    width: 100px;
+}
+
+.trackGridElt .tlOverlayText .tlotTrack {
+    text-align: center;
+    font-weight: bold;
+    font-size: 10px;
+    width: 100px;
+}
+
+.trackGridTable {
+    /* width: 500px; */
+    border-collapse: separate;
+    border-spacing: 4px;
+    /* margin: 5px; */
+    table-layout: fixed;
+}
+
+.trackDetailsTable {
+    width: 480px;
+    border-collapse: separate;
+    border-spacing: 0px;
+    margin-left: 20px;
+}
+
+.trackDetailsTable td {
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.trackListTable {
+    width: 600px;
+    border-collapse: separate;
+    border-spacing: 0px;
+}
+
+.trackListTable td {
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.trackFilesTable {
+    width: 600px;
+    border-collapse: separate;
+    border-spacing: 0px;
+}
+
+.trackFilesTable td {
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.tableHeading {
+    border-bottom: 1px dotted #cccccc;
+}
+
+.formLeftCol {
+    text-align: left;
+    width: 160px;
+}
+
+.formMiddleCol {
+    text-align: left;
+}
+
+.mandatoryFormField {
+    /*border: 1px solid #663333;*/
+}
+
+.optionalFormField {
+    /*border: 1px solid #337733;*/
+}
+
+.inputTextField {
+    /*padding: 2px;*/
+}
+
+.inputTextFieldWithProblem {
+    /*padding: 2px;*/
+    background-color: #FFAA88;
+}
+
+.inputFileField {
+    /*padding: 2px;*/
+}
+
+.inputFileFieldWithProblem {
+    /*padding: 2px;
+    background-color: #FFAA88;*/
+}
+
+.formFieldWithProblem {
+    font-weight: bold;
+    color: #ff8000
+}
+
+.noticeMessage {
+    font-weight: bold;
+    color: #222222;
+}
+
+.problemMessage {
+    font-weight: bold;
+    color: #ff8000
+}
+
+.submitButton {
+    color: #666666;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: normal;
+}
+
+.submitButtonSmall {
+    background-image: url(../Images/login_button.png);
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: 0px;
+    padding: 0px;
+    color: #666666;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: normal;
+    line-height: normal;
+    height: 18px;
+    width: 80px;
+}
+
+.smallWhite {
+    font-size: 9px;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+#paginationWrapper {
+	height: 42px;
+	width: 310px;
+	padding-top: 10px;
+}
+
+#pagination {
+}
+
+#spacer {
+    height: 154px;
+}
+
+#podperfect_headline {
+    height: 60px;
+    width: 260px;
+    text-align: center;
+}
+
+#selection {
+    background: #90979E url(../Images/header_bg.jpg) repeat-x;
+    border: 2px #222222 solid;
+    width: 260px;
+    height: 160px;
+    text-align: center;
+    margin: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+}
+
+#selection_list {
+    font-weight: bold;
+    text-align: left;
+    width: 250px;
+}
+
+/* !start */
+/* ---------------------------------------------------------------------- */
+
+#pageHeader {
+    width: 950px;
+    height: 108px;
+    margin: 0px auto;
+    position: relative;
+}
+
+#logo {
+    background: url(../Images/logo_01.png);	
+    float: left;
+    width: 365px;
+    height: 62px;
+    margin-top: 16px;
+    cursor: pointer;
+}
+
+/* !loginbox */
+/* ---------------------------------------------------------------------- */
+
+#loginWrapper {
+	float: left;
+    /* margin-top: 6px; */
+	width: 585px;
+}
+
+#signUpTeaser {
+    display: none;
+    position: absolute;
+    top: 19px;
+    left: 450px;
+}
+
+#loginStatusDiv {
+	color: #cccccc;
+	float: right;
+	height: 36px;  
+    position: relative;
+	text-align: center;
+}
+
+.topMenuItem {
+	background-color: #434345;
+	float: left;
+	height: 36px;
+	margin-left: 1px;
+}
+
+.topMenuItemSearch {
+	background-color: #434345;
+	float: left;
+	width: 150px;
+	height: 36px;
+	margin-left: 1px;
+}
+
+.topMenuItem a {
+    color: #cccccc;
+	display: block;
+	padding-top: 10px;
+	padding-left: 15px;
+	padding-right: 15px;
+	height: 26px;
+	text-shadow: rgba(0, 0, 0, 0.246094) 0px -1px 1px;
+}
+
+.topMenuSub {
+	background-color: #434345;
+	display: none;
+	padding-bottom: 3px;
+	padding-top: 14px;
+	position: absolute;
+	text-align: left;
+	width: 140px;
+}
+
+.topMenuSubLogin {
+    padding-bottom: 12px;
+    padding-left: 10px;
+    width: 150px;
+}
+
+.topMenuSubItem {
+    border-top: 1px dotted #cccccc;
+    margin-left: 10px;
+    margin-right: 10px; 
+}
+
+.topMenuSubItem a {
+    height: 20px;
+    padding-top: 3px; 
+}
+
+
+#loginStatusDiv a {
+    color: #cccccc;
+}
+
+#loginStatusDiv a:hover {
+    color: #ff8000
+}
+
+#loginFormDiv {
+	background-color: #b1b3b4;
+	height: 107px;
+}
+
+#loginErrorMsgDiv {
+    position: absolute;
+    top: 100px;
+}
+
+.topMenuSub input {
+    width: 80px;
+    color: #444444;
+}
+
+.loginFormLabel {
+    color: #cccccc;
+    font-size: 9px;
+}
+
+#loginUsername {
+    background-color: #ffffff;
+    border: 0px;
+    margin-bottom: 2px;
+    padding: 2px;
+}
+
+#loginPassword {
+    background-color: #ffffff;
+    border: 0px;
+    margin-bottom: 4px;
+    padding: 2px;
+}
+
+
+/* !mainMenu */
+/* ---------------------------------------------------------------------- */
+
+#mainMenuWrapper {
+	height: 36px;
+}
+
+#mainMenu {
+	width: 950px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#mainMenu ul {
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+#mainMenu li {
+	float: left;
+}
+
+#mainMenu a {
+	background-image: url(../Images/main_menu_background.png);
+	background-repeat: repeat-x;
+	display: block;
+	color: #444444;
+	font-size: 15px;
+	height: 26px;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 10px;
+	margin-right: 10px;
+}
+
+#mainMenu a:hover {
+	background-image: url(../Images/main_menu_background_act.png);
+	background-repeat: repeat-x;
+}
+
+/* !contentTop */
+/* ---------------------------------------------------------------------- */
+
+#contentTop {
+    height: 522px;
+	width: 950px;
+	margin-left: auto;
+	margin-right: auto;
+	overflow: hidden;
+}
+
+.contentTopInner {}
+
+.contentTopEntry {
+    float: left;
+    margin-right: 500px;
+    width: 950px;
+}
+
+#trackGridWrapper {
+	background-image: url(../Images/arrow.png);
+	background-position: right;
+	float: left;
+	width: 630px;
+	height: 522px;
+}
+
+#chosenTrackDetailsContainer {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #cccccc;
+    border-top: 1px solid #cccccc;
+    width: 490px;
+    height: 425px;
+    float: left;
+}
+
+#chosenTrackDetails {
+    padding: 10px;
+}
+
+#trackGrid {
+    width: 436px;
+    height: 436px;
+}
+
+#trackGridHeadlineContainer {
+    width: 497px;
+    height: 42px;
+}
+
+#trackGridHeadline {
+    float: left;
+    height: 22px;
+    margin-right: 16px;
+    margin-top: 11px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 3px;
+}
+
+#trackGridHeadlineControls {
+    float: left;
+    height: 22px;
+    margin-right: 16px;
+    margin-top: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 3px;
+}
+
+#trackGridHeadlineControls a {
+    background: #444444;
+    display: inline-block;
+    padding: 5px 10px 6px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 1;
+    font-size: 11px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-box-shadow: 0 1px 3px #999;
+    -webkit-box-shadow: 0 1px 3px #999;
+    text-shadow: 0 -1px 1px #222;
+    border-bottom: 1px solid #222;
+    position: relative;
+    
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+    border-bottom: 1px solid rgba(0,0,0,0.25);
+}
+
+#trackGridHeadlineControls a:hover {
+    background: #222222;
+    color: #cccccc;
+}
+
+#chosenTrackHeadlineContainer {
+    width: 497px;
+    float: left;
+    margin-bottom: 5px;
+}
+
+#chosenTrackHeadline {
+    font-size: 20px;
+    font-weight: normal;   
+    float: left;
+    margin-top: 30px;
+    padding-left: 10px;
+    width: 250px;
+}
+
+#widget {
+    float: left;
+    margin-left: 10px;
+    margin-top: 54px;
+    padding: 5px;
+    width: 290px;
+    height: 400px;
+}
+
+#widget #inner {
+}
+
+#artistInfoWidget {
+    margin-bottom: 10px;
+}
+
+/* !contentTop Startpage */
+/* ---------------------------------------------------------------------- */
+
+#contentTopStart {
+    height: 522px;
+    left: 0px;
+    overflow: hidden;
+}
+
+.contentTopStartOuter {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    width: 950px;
+}
+
+.contentTopStartInner {
+    left: 0px;
+    position: absolute;
+    width: 8000px;
+}
+
+#startpagePaginatorWrapper {
+    margin-top: 35px;
+}
+
+#startpagePaginatorWrapper ul {
+    list-style: none;
+}
+
+#startpagePaginatorWrapper li {
+    float: left;
+}
+
+#startpagePaginatorWrapper a {
+    display: block;
+    height: 70px;
+    margin-right: 20px;
+    width: 70px;
+}
+
+
+#startpagePaginatorBack a {
+    background-image: url(../Images/paginator/paginator_back.png);
+}
+
+#startpagePaginatorBack a:hover {
+    background-image: url(../Images/paginator/paginator_back_hover.png);
+}
+
+#startpagePaginatorBackAct a {
+    background-image: url(../Images/paginator/paginator_back_hover.png);
+}
+
+#startpagePaginator1 a {
+    background-image: url(../Images/paginator/paginator_01.png);
+}
+
+#startpagePaginator1 a:hover {
+    background-image: url(../Images/paginator/paginator_01_hover.png);
+}
+
+#startpagePaginator1Act a {
+    background-image: url(../Images/paginator/paginator_01_hover.png);
+}
+
+#startpagePaginator2 a {
+    background-image: url(../Images/paginator/paginator_02.png);
+}
+
+#startpagePaginator2 a:hover {
+    background-image: url(../Images/paginator/paginator_02_hover.png);
+}
+
+#startpagePaginator2Act a {
+    background-image: url(../Images/paginator/paginator_02_hover.png);
+}
+
+#startpagePaginator3 a {
+    background-image: url(../Images/paginator/paginator_03.png);
+}
+
+#startpagePaginator3 a:hover {
+    background-image: url(../Images/paginator/paginator_03_hover.png);
+}
+
+#startpagePaginator3Act a {
+    background-image: url(../Images/paginator/paginator_03_hover.png);
+}
+
+
+/* !artistProfil Form */
+/* ---------------------------------------------------------------------- */
+
+
+#artistFormDiv {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #cccccc;
+    border-top: 1px solid #cccccc;
+    width: 950px;
+    min-height: 500px;
+}
+
+#artistFormDiv #container {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* ! */
+/* ---------------------------------------------------------------------- */
+
+#trackFormDiv {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #cccccc;
+    border-top: 1px solid #cccccc;
+    min-height: 500px;
+}
+
+
+#trackFormDiv #container {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* ! */
+/* ---------------------------------------------------------------------- */
+
+#pageMainContentWrapper {
+	background-color: #ffffff;
+	width: 100%;
+}
+
+#pageMainContent {
+    width: 950px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 72px;
+    padding-bottom: 36px;
+    text-align: left;
+    /* font-size: 11px; */
+}
+
+#mainColumnLeft {
+	float: left;
+	width: 630px;
+}
+
+#mainColumnRight {
+	float: left;
+	margin-left: 10px;
+	width: 310px;
+}
+
+
+/* !footer */
+/* ---------------------------------------------------------------------- */
+
+#footerWrapper {
+	background-image: url(../Images/footer_background.jpg);
+	background-repeat: repeat-x;
+	background-color: #7A7B7D;
+}
+
+#footer {
+	width: 950px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#footer h3 {
+    color: #cccccc;
+}
+
+#footerOne {
+    float: left;
+    width: 230px;
+}
+
+#footerTwo {
+    float: left;
+    margin-left: 10px;
+    width: 230px;
+}
+
+#footerThree {
+    float: left;
+    margin-left: 10px;
+    width: 230px;
+}
+
+#footerFour {
+    float: left;
+    margin-left: 10px;
+    width: 230px;
+}
+
+.footerItem {
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+.footerMenu {
+    list-style-image: url(../Images/footer_arrow.png);
+    margin-top: 18px;
+    margin-left: 10px;
+}
+
+.footerMenu li {
+    padding-right: 20px;
+    border-bottom: 1px dotted #666666;
+}
+
+.footerMenu a {
+    color: #cccccc;
+    display: block;
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.footerMenu a:hover {
+    color: #FF8000;
+}
+
+.coyright {
+	background-image: url(../Images/footer_spacer.png);
+	background-repeat: no-repeat;
+    font-size: 11px;
+    font-weight: normal;
+    float: right;
+	list-style: none;
+	height: 36px;
+}
+
+.coyright li {
+	background-image: url(../Images/footer_spacer.png);
+	background-repeat: no-repeat;
+	background-position: right;
+	float: left;
+	padding-left: 20px;
+	padding-right: 20px;
+	height: 36px;
+}
+
+.coyright p {
+	color: #cccccc;
+	display: block;
+	padding-top: 12px;
+}
+
+/* !news */
+/* ---------------------------------------------------------------------- */
+
+#news {
+}
+
+#newsDiv {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #cccccc;
+    border-top: 1px solid #cccccc;
+    width: 630px;
+    min-height: 50px;
+}
+
+#newsDiv #container {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.newsEntry {
+	padding: 18px;
+}
+
+.newsSpacer {
+	background-color: #ffffff;
+	height: 18px;
+}
+
+
+/* !sidebar */
+/* ---------------------------------------------------------------------- */
+
+#icons {
+}
+
+#iconsDiv {
+    background-color: #FFFAE6;
+    border-bottom: 1px solid #ffd321;
+    border-top: 1px solid #ffd321;
+    width: 310px;
+    min-height: 50px;
+}
+
+#iconsDiv #container {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#artistInfoContainer {
+	float: left;
+	width: 950px;
+}
+
+.sidebarIcons {
+    margin-left: 50px;
+    padding: 10px;
+}
+
+/* ! */
+/* ---------------------------------------------------------------------- */
+
+#artistInfoDiv {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #cccccc;
+    border-top: 1px solid #cccccc;
+    width: 950px;
+    min-height: 400px;
+}
+
+#artistInfoDiv #container {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#aiTrackInfo {
+    width: 950px;
+}
+
+/* !tracklist */
+/* ---------------------------------------------------------------------- */
+
+#trackListDiv {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #cccccc;
+    border-top: 1px solid #cccccc;
+    min-height: 500px;
+}
+
+/* ! */
+/* ---------------------------------------------------------------------- */
+
+#trackListDiv #container {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#standardInfoDiv {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #cccccc;
+    border-top: 1px solid #cccccc;
+    min-height: 500px;
+}
+
+#standardInfoDiv #container {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#artistFormPlusImage {
+    position: relative;
+}
+
+#trackFormPlusImage {
+    position: relative;
+}
+
+#trackFormTrackImage {
+    clear: both;
+    position: absolute;
+    top: 0px;
+    left: 680px;
+}
+
+
+/* !artistInfo.php */
+/* ---------------------------------------------------------------------- */
+
+#trackInfoWrapper {
+	margin-top: 18px;
+}
+
+.trackInfoColumn {
+	background-color: #ffffff;
+	border-bottom: 1px solid #cccccc;
+	border-top: 1px solid #cccccc;
+	float: left;
+	width: 278px;
+	margin-right: 10px;
+	padding: 16px;
+}
+
+.last {
+	margin-right: 0px;
+}
+
+.trackInfoTitle {
+	border-bottom: 1px solid #cccccc;
+	margin-bottom: 16px;	
+}
+
+/* !horizontalMenu */
+/* ---------------------------------------------------------------------- */
+
+.horizontalMenu {
+    background-color: #ffffff;
+	border-bottom: 1px solid #cccccc;
+	border-top: 1px solid #cccccc;
+    height: 36px;
+    margin-bottom: 18px;
+}
+
+.horizontalMenu ul {
+    list-style: none;
+    margin-left: 8px;
+}
+
+.horizontalMenu li {
+    background-image: url(../Images/breadcrumb_arrow.png);
+    background-position: right;
+    background-repeat: no-repeat;
+    float: left;
+    height: 36px;
+    padding-right: 18px;
+}
+
+.horizontalMenu a {
+    color: #444444;
+    font-size: 13px;
+    display: block;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.horizontalMenu a:hover {
+    color: #ffd321;
+}
+
+/* !startpage */
+/* ---------------------------------------------------------------------- */
+
+#startpageLeftColumn {
+    float: left;
+    width: 514px;
+}
+
+#startpageRightColumn {
+    float: left;
+    margin-left: 36px;
+    width: 400px;
+}
+
+#startpageContent {
+    margin-top: 60px;
+}
+
+#startpageContent h1 {
+    font-size: 40px;
+    line-height: 26px;
+    color: #ffffff;
+    text-shadow: rgba(0, 0, 0, 0.246094) 0px -1px 1px;
+}
+
+#startpageContent h2 {
+    font-size: 18px;
+    line-height: 26px;
+    color: #444444;
+    text-shadow: rgba(0, 0, 0, 0.246094) 0px -1px 1px;
+}
+
+#startpageContent p {
+    font-size: 14px;
+}
+
+.startpageContentStepText {
+    height: 300px;
+}
+
+#startpageButtonsWrapper {
+    margin-top: 35px;
+}
+
+#startpageButtonTour {
+    float: left;
+    margin-left: 10px;
+}
+
+/*
+#startpageButtonTour a {
+    background-image: url(../Images/button_tour.png);
+    background-repeat: no-repeat;
+    display: block;
+    height: 55px;
+    width: 230px;
+}
+
+#startpageButtonTour a:hover {
+    background-image: url(../Images/button_tour_hover.png);
+    background-repeat: no-repeat;
+}
+*/
+
+#startpageButtonStart {
+    float: left;   
+}
+
+/*
+#startpageButtonStart a {
+    background-image: url(../Images/button_start.png);
+    background-repeat: no-repeat;
+    display: block;
+    height: 55px;
+    width: 230px;
+}
+
+#startpageButtonStart a:hover {
+    background-image: url(../Images/button_start_hover.png);
+    background-repeat: no-repeat;
+}
+*/
+
+#startpageImage {
+    margin-top: 61px;
+}
+
+.startpageMainContentWrapper p {
+    font-size: 13px;
+    line-height: 18px;
+}
+
+
+#startColumnLeft {
+	float: left;
+	width: 310px;
+}
+
+#startColumnMiddle {
+	float: left;
+    margin-left: 10px;
+	width: 310px;
+}
+
+#startColumnRight {
+	float: left;
+	margin-left: 10px;
+	width: 310px;
+}
+
+
+/* !search */
+/* ---------------------------------------------------------------------- */
+
+#searchWrapper {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #cccccc;
+    border-top: 1px solid #cccccc;
+    margin-bottom: 18px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
+
+.searchDetails {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* !search top */
+
+.topSearch {
+    background-color: #ffffff;
+    height: 16px;
+    margin: 5px;
+    margin-top: 6px;
+    padding: 4px;
+}
+
+#topSearchInput {
+    border: 0px;
+    color: #666666;
+    float: left;
+    padding: 2px;
+    width: 110px;
+}
+
+#topSearchSubmit {
+    background-color: #ffffff;
+    background-image: url(../Images/search.png);
+    background-repeat: no-repeat;
+    float: right;
+    border: 0px;
+    height: 16px;
+    width: 16px;
+}
+
+.searchAttributes {
+    width: 100%;
+}
+
+.searchAttributes td {
+    width: 143px;
+}
+
+/* !buttons */
+/* ---------------------------------------------------------------------- */
+
+.buttonSave {
+    background-image: url(../Images/button_save.png);
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: 0px;
+    cursor: pointer;
+    height: 55px;
+    width: 115px;
+}
+
+.buttonSearch {
+    background-image: url(../Images/button_search.png);
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: 0px;
+    cursor: pointer;
+    height: 55px;
+    width: 115px;
+}
+
+/* !artistInfo Page */
+/* ---------------------------------------------------------------------- */
+
+#artistInfoLeft {
+    float: left;
+    margin-top: 10px;
+    width: 200px;
+}
+
+#artistInfoMiddle {
+    float: left;
+    margin-left: 10px;
+    margin-top: 10px;
+    width: 410px;
+}
+
+#artistInfoRight {
+    float: left;
+    margin-left: 10px;
+    margin-top: 10px;
+    width: 300px;
+}
+
+/* !sendMessage */
+#sendMessageOverlay {
+    background-image: url(../Images/bg_overlay.png);
+    background-repeat: repeat;
+    display: none;
+    height: 5000px;
+    left: 0px;
+    position: fixed;
+    top: 0px;
+    width: 5000px;
+    z-index: 100;
+}
+
+#sendMessageWrapper {
+    background-color: #ffffff;
+    border: 5px solid #cccccc;
+    height: 300px;
+    position: absolute;
+    width: 500px;
+}
+
+
+/* !uploadMusicButton */
+/* ---------------------------------------------------------------------- */
+
+#uploadMusicButton {
+    background-image: url(../Images/btn_upload_music.png);
+    background-repeat: no-repeat;
+    display: block;
+    font-size: 15px;
+    height: 30px;
+    padding-top: 5px;
+    text-align: center;
+    width: 180px;
+}
+
+
+
+
+/* !makeAnOffer */
+/* ---------------------------------------------------------------------- */
+
+.makeAnOfferWrapper {
+    border-top: 1px dotted #cccccc;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.makeAnOfferLeft {
+    float: left;
+    margin-left: 20px;
+    width: 500px;
+}
+
+.makeAnOfferRight {
+    float: left;
+    width: 320px;
+}
+
+.makeAnOfferInfo {
+    float: left;
+    width: 16px;
+}
+
+
+

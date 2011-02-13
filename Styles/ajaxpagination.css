@@ -1,0 +1,71 @@
+.pagination {
+	margin:0;
+	clear:both;
+}
+
+.pagination ul {
+	margin:0;
+	padding:0;
+	text-align:left;
+	font-size:100%;
+}
+
+.pagination li {
+	list-style-type:none;
+	display:inline;
+	padding-bottom:1px;
+}
+
+:first-child+html .pagination li a {
+/*IE7 only CSS hack*/
+	margin-right:4px;
+/*IE bug causes default spacing between links to disappear, so added it explicitly in IE7 */
+}
+
+* html .pagination li a {
+/*IE6 and below CSS hack*/
+	margin-right:4px;	
+/*IE bug causes default spacing between links to disappear, so added it explicitly in IE6 and below browsers*/
+}
+
+.pagination a,.pagination a:visited,.pagination a:active {
+	padding:0 5px;
+	/* border:1px solid #FFD700; */
+	border:1px solid #444444;
+	text-decoration:none;
+	color:#444444;
+}
+
+.pagination a:hover {
+	border:1px solid #444444;
+	color:#ffffff;
+	background-color:#444444;
+}
+
+.pagination a.currentpage {
+
+	
+/*Style for currently selected page link*/
+	background-color:#444444;
+	color:#ffffff!important;
+	border-color:#444444;
+	font-weight:bold;
+	cursor:default;
+}
+
+.pagination a.disabled,.pagination a.disabled:hover {
+
+	
+/*Style for "disabled" previous or next link*/
+	background-color:white;
+	cursor:default;
+	color:#444444;
+	border-color:transparent;
+}
+
+.pagination a.prevnext {
+
+	
+/*Style for previous and next link*/
+	font-weight:bold;
+}

@@ -8,6 +8,8 @@
 
 #settings_local.py
 
+/Includes/Config_local.php
+
 .DS_Store
 *.bak
 *.swp

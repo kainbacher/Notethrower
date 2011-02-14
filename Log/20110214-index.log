@@ -16,3 +16,19 @@
 2011-02-14 08:44:15 - 14493844 - INFO: $userIsLoggedIn var is false, so we have to find out if the user is not defined yet or ifhe's really not logged in.
 2011-02-14 08:44:15 - 14493844 - INFO: user is not logged in, $userIsLoggedIn var is still false
 2011-02-14 08:44:15 - 14493844 - DEBUG: select t.*, a.name as artist_name, a.image_filename as artist_img_filename from pp_audio_track t, pp_artist a where t.status = "active" and t.visibility = "public" and t.artist_id = a.id order by t.entry_date desc limit 0, 2
+2011-02-14 09:06:07 - 92612793 - INFO: --------
+2011-02-14 09:06:07 - 92612793 - INFO: user is NOT logged in
+2011-02-14 09:06:07 - 92612793 - DEBUG: select count(*) as cnt from pp_audio_track t where 1=1 and t.visibility = "public" and t.status = "active"
+2011-02-14 09:06:07 - 92612793 - INFO: track count: 193
+2011-02-14 09:06:07 - 92612793 - DEBUG: select count(*) as cnt from pp_news 
+2011-02-14 09:06:07 - 92612793 - INFO: $userIsLoggedIn var is false, so we have to find out if the user is not defined yet or ifhe's really not logged in.
+2011-02-14 09:06:07 - 92612793 - INFO: user is not logged in, $userIsLoggedIn var is still false
+2011-02-14 09:06:07 - 92612793 - DEBUG: select t.*, a.name as artist_name, a.image_filename as artist_img_filename from pp_audio_track t, pp_artist a where t.status = "active" and t.visibility = "public" and t.artist_id = a.id order by t.entry_date desc limit 0, 2
+2011-02-14 09:08:44 - 19142518 - INFO: --------
+2011-02-14 09:08:44 - 19142518 - INFO: user is NOT logged in
+2011-02-14 09:08:44 - 19142518 - DEBUG: select count(*) as cnt from pp_audio_track t where 1=1 and t.visibility = "public" and t.status = "active"
+2011-02-14 09:08:44 - 19142518 - INFO: track count: 193
+2011-02-14 09:08:44 - 19142518 - DEBUG: select count(*) as cnt from pp_news 
+2011-02-14 09:08:44 - 19142518 - INFO: $userIsLoggedIn var is false, so we have to find out if the user is not defined yet or ifhe's really not logged in.
+2011-02-14 09:08:44 - 19142518 - INFO: user is not logged in, $userIsLoggedIn var is still false
+2011-02-14 09:08:44 - 19142518 - DEBUG: select t.*, a.name as artist_name, a.image_filename as artist_img_filename from pp_audio_track t, pp_artist a where t.status = "active" and t.visibility = "public" and t.artist_id = a.id order by t.entry_date desc limit 0, 2

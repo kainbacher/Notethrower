@@ -1,0 +1,6 @@
+2011-02-14 08:35:44 - 78342503 - INFO: --------
+2011-02-14 08:35:44 - 78342503 - FATAL: Cannot establish database connection! Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+2011-02-14 09:06:42 - 29380635 - INFO: --------
+2011-02-14 09:06:42 - 29380635 - FATAL: Cannot establish database connection! Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+2011-02-14 09:11:03 - 13325066 - INFO: --------
+2011-02-14 09:11:03 - 13325066 - FATAL: Cannot establish database connection! Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)

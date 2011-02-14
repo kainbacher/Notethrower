@@ -8,8 +8,8 @@
 
 #settings_local.py
 
-/Includes/Config_local.php
-/Log/
+Includes/Config_local.php
+Log/
 
 .DS_Store
 *.bak

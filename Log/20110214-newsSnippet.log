@@ -1,0 +1,9 @@
+2011-02-14 08:44:16 - 10892034 - INFO: --------
+2011-02-14 08:44:16 - 10892034 - INFO: GET params : Array
+(
+    [page] => 1
+    [1297673056435] => 
+)
+
+2011-02-14 08:44:16 - 10892034 - DEBUG: select count(*) as cnt from pp_news 
+2011-02-14 08:44:16 - 10892034 - DEBUG: select * from pp_news order by entry_date desc limit 0, 2

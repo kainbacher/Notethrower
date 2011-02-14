@@ -1,0 +1,18 @@
+2011-02-14 08:36:34 - 38969997 - INFO: --------
+2011-02-14 08:36:34 - 38969997 - FATAL: Cannot establish database connection! Access denied for user 'root'@'localhost' (using password: NO)
+2011-02-14 08:42:22 - 78159686 - INFO: --------
+2011-02-14 08:42:22 - 78159686 - FATAL: Cannot establish database connection! Access denied for user 'root'@'localhost' (using password: NO)
+2011-02-14 08:42:25 - 35342750 - INFO: --------
+2011-02-14 08:42:25 - 35342750 - FATAL: Cannot establish database connection! Access denied for user 'root'@'localhost' (using password: NO)
+2011-02-14 08:42:26 - 62785746 - INFO: --------
+2011-02-14 08:42:26 - 62785746 - FATAL: Cannot establish database connection! Access denied for user 'root'@'localhost' (using password: NO)
+2011-02-14 08:42:28 - 58926492 - INFO: --------
+2011-02-14 08:42:28 - 58926492 - FATAL: Cannot establish database connection! Access denied for user 'root'@'localhost' (using password: NO)
+2011-02-14 08:44:15 - 14493844 - INFO: --------
+2011-02-14 08:44:15 - 14493844 - INFO: user is NOT logged in
+2011-02-14 08:44:15 - 14493844 - DEBUG: select count(*) as cnt from pp_audio_track t where 1=1 and t.visibility = "public" and t.status = "active"
+2011-02-14 08:44:15 - 14493844 - INFO: track count: 193
+2011-02-14 08:44:15 - 14493844 - DEBUG: select count(*) as cnt from pp_news 
+2011-02-14 08:44:15 - 14493844 - INFO: $userIsLoggedIn var is false, so we have to find out if the user is not defined yet or ifhe's really not logged in.
+2011-02-14 08:44:15 - 14493844 - INFO: user is not logged in, $userIsLoggedIn var is still false
+2011-02-14 08:44:15 - 14493844 - DEBUG: select t.*, a.name as artist_name, a.image_filename as artist_img_filename from pp_audio_track t, pp_artist a where t.status = "active" and t.visibility = "public" and t.artist_id = a.id order by t.entry_date desc limit 0, 2

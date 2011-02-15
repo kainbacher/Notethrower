@@ -16,12 +16,15 @@ $errorFields = Array();
 
 $trackId = get_numeric_param('tid');
 
-$track = AudioTrack::fetch_for_id($trackId);
+$track  = AudioTrack::fetch_for_id($trackId);
+$artist = Artist::fetch_for_id($track->artist_id);
 
 $offer->email = '';
 $offer->usage = '';
 $offer->price = '';
 $offer->accepted = false;
+$offer->emailArtistOffer = '';
+$offer->usageArtistOffer = '';
 
 $offerSent = false;
 
@@ -30,14 +33,39 @@ if (get_param('action') == 'send') {
         $problemOccured = true; 
     } else {
         // send offer as email
-        $artist = Artist::fetch_for_id($track->artist_id);
         $text = $offer->email . ' made an offer for your song "' . $track->title . '" on Notethrower.' . "\n" .
-                'Usage for your song: ' . $offer->usage . "\n" .
+                'Usage for your song: ' . $offer->usage . "\n" . 
+                'Category: ' . $offer->usageCategory . "\n" .
                 'Offer in $: ' . $offer->price . "\n" . "\n" .
                 'Your Notethrower Team';
         send_email($artist->email_address, 'New offer for song on Notethrower', $text);
         send_email($GLOBALS['SELLER_EMAIL'], 'New offer for song on Notethrower', $text);
         $offerSent = true;
+    }
+} else if (get_param('action') == 'checkout') {
+    
+    if (!inputDataOkForArtistOffer($errorFields, $offer)) {
+        $problemOccured = true;
+    } else {
+        // send an email with the checkout info
+        $text = 'Someone (email: ' . $offer->emailArtistOffer . ') has accepted your offer for track "' . $track->title . '" on Notethrower.' . "\n" .
+                'Usage for your song: ' . $offer->usageArtistOffer . "\n" . 
+                'Category: ' . $offer->usageCategoryArtistOffer . "\n" .
+                'Once the user finishes the paypal transaction, you should receive from paypal a message about the purchase' . "\n\n" . 
+                'Your Notethrower Team';
+        send_email($artist->email_address, 'Song checkout on Notethrower', $text);
+        send_email($GLOBALS['SELLER_EMAIL'], 'Song checkout on Notethrower', $text);
+        //email sent, redirect to paypal
+        $paypalUrl = $GLOBALS['PAYPAL_BASE_URL'] . '&business=' . $GLOBALS['SELLER_EMAIL'];
+        $paypalUrl .= '&item_name=' . urlencode($artist->name . ' - ' . $track->title);
+        $paypalUrl .= '&cbt=' . urlencode(substr('Download: ' . $artist->name . ' - ' . $track->title, 0, 60));
+        $paypalUrl .= '&item_number=PPI' . $track->id;
+        $paypalUrl .= '&amount=' . $track->price;
+        $paypalUrl .= '&currency_code=' . $track->currency;
+        $paypalUrl .= '&return=' . urlencode($GLOBALS['RETURN_URL'] . '?tid=' . $track->id . '&mode=purchase');
+        $paypalUrl .= '&cancel_return=' . urlencode($GLOBALS['BASE_URL']);
+        $paypalUrl .= $GLOBALS['PAYPAL_FIX_PARAMS'];
+        header( 'Location: ' . $paypalUrl ) ;
     }
 }
 
@@ -75,10 +103,23 @@ writePageDoctype();
             </ul>
         </div>
 
+<?php 
 
+// display the form only if the offer is not sent yet:
+if (!$offerSent) {
+    
+    if ($track->price > 0) {
+        
+
+        
+?>
+           
             <div id="trackFormDiv">
                 <div id="container">
-                    <form>
+
+                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
+                   <input type="hidden" name="action" value="checkout">
+                   <input type="hidden" name="tid" value="<?php echo $track->id; ?>">
                     
                     <br/>
                     <h1>Artists Offer:</h1>
@@ -91,7 +132,7 @@ writePageDoctype();
                             <p>Artist Name</p>
                         </div>
                         <div class="makeAnOfferRight">
-                            <p>Joe Benso</p>
+                            <p><?php echo $artist->name ?></p>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -101,7 +142,7 @@ writePageDoctype();
                             <p>Track Name</p>
                         </div>
                         <div class="makeAnOfferRight">
-                            <p>HULA HULA Blue Banana</p>
+                            <p><?php echo $track->title ?></p>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -111,50 +152,71 @@ writePageDoctype();
                             <p>Price</p>
                         </div>
                         <div class="makeAnOfferRight">
-                            <p>500&euro;</p>
+                            <p><?php echo '$' . $track->price ?></p>
                         </div>
                         <div class="clear"></div>
                     </div>
 
-                    <div class="makeAnOfferWrapper">
+                   <div class="makeAnOfferWrapper">
                         <div class="makeAnOfferLeft">
-                            <p>You can use this Track for</p>
+                            <p>Your Email</p>
                         </div>
                         <div class="makeAnOfferRight">
-                            <select name="TackUsage" size="1">
-                                <option>-- Please Select --</option>
-                                <option>Featured Film</option>
-                                <option>Web</option>
-                                <option>Video Game</option>
-                                <option>Video Clips</option>
-                                <option>Live Events</option>
-                            </select>
-                        </div>
-                        <div class="clear"></div>
-                    </div>
 
-                    <div class="makeAnOfferWrapper">
-                        
-                        <div class="makeAnOfferLeft">
-                            <p>Different Usage</p>
+<?php
+        echo '<input class="' . (isset($errorFields['emailArtistOffer']) ? 'inputTextFieldWithProblem' : 'inputTextField') . '" type="text" name="emailArtistOffer" maxlength="255" size="40"';
+        echo ' value="';
+        $value = $offer->emailArtistOffer;
+        echo ($preconfiguredValue && !$value ? escape($preconfiguredValue) : escape($value));
+        echo '">' . "\n";
+        
+?>
+
                         </div>
-                        
-                        <div class="makeAnOfferRight">
-                            <input type="text" class="inputTextField" name="differentUsage" maxlength="255" size="40" />
-                        </div>
-                        
                         <div class="makeAnOfferInfo">
-                            
-                            <div class="toolTipWrapper">
-                                <div class="toolTip">
-                                    <img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" />
-                                </div>
-                                <div class="toolTipContent">Fill in this Field if you like to use this Track for an other Usage.</div>
-                            </div> <!-- toolTipWrapper -->                        
-                        
+                            <p>Please specify your email address, so that we can contact you.</p>                        
                         </div>
                         <div class="clear"></div>
                     </div>
+    
+    
+    
+                    <div class="makeAnOfferWrapper">
+                        <div class="makeAnOfferLeft">
+                            <p>Song usage</p>
+                        </div>
+                        <div class="makeAnOfferRight">
+
+<?php
+        echo '<select class="' . (isset($errorFields['usageArtistOffer']) ? 'inputTextFieldWithProblem' : 'inputTextField') . '" name="usageCategoryArtistOffer" style="width: 255px">';
+        $selectedValue = $offer->usageCategoryArtistOffer;
+        $selectOptions = array(-1 => '- Please choose -') + $GLOBALS['OFFER_CATEGORIES'];
+        foreach (array_values($selectOptions) as $optVal) {
+            $selected = ((string) $selectedValue === (string) $optVal) ? ' selected' : '';
+            echo '<option value="' . $optVal . '"' . $selected . '>' . escape($optVal) . '</option>' . "\n";
+        }
+        echo '</select>' . "\n";
+        
+        echo '<textarea class="' . (isset($errorFields['usageArtistOffer']) ? 'inputTextFieldWithProblem' : 'inputTextField') . '" name="usageArtistOffer" rows="6" cols="40">';
+        $value = $offer->usageArtistOffer;
+        echo escape($value);
+        echo '</textarea>' . "\n";
+?>
+
+                        </div>
+                        <div class="makeAnOfferInfo">
+                            <p>Please describe the use (the "Use") you wish to make of the song. 
+                                Please choose one of the following options and then type a brief description of your plans, 
+                                including a description of the work (the "Work"). 
+                                Please note that your choice and description of your Use and Work are important because we 
+                                only license the song to you for a single Use in a particular Work. 
+                                Additional Works require new licenses.
+                            </p>                        
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    
+ 
                     
                     <div class="makeAnOfferWrapper">
                         <div class="makeAnOfferLeft">
@@ -173,7 +235,7 @@ writePageDoctype();
                         </div>
                         <div class="makeAnOfferRight">
                             <br/>
-                            <a href="/" class="button">Accept this Offer and pay now</a>
+                            <input type="submit" class="button" value="Accept this Offer and pay now">
                         </div>
                         <div class="clear"></div>
                     </div>                      
@@ -189,45 +251,134 @@ writePageDoctype();
 
         <br/>
         
+        <?php
+        
+    } // if ($track->price > 0) 
+    
+    ?>
+    
+    
         <div id="trackFormDiv">
             <div id="container">
 
-            <br/>
-            <h1>Make a different Offer:</h1>
-            <br/>
-
-<?php 
-
-// display the form only if the offer is not sent yet:
-if (!$offerSent) {
+                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
+                   <input type="hidden" name="action" value="send">
+                   <input type="hidden" name="tid" value="<?php echo $track->id; ?>">
+                    
+                    <br/>
+                    <h1>Make <?php if ($track->price > 0) { echo 'a different ';} else { echo 'an '; } ?>Offer:</h1>
+                    
+                    <br/>
+                    <br/>
+                    
+                    <div class="makeAnOfferWrapper">
+                        <div class="makeAnOfferBroad">
+                            <p>Thank you for your interest in licensing the song <b><?php echo $track->title; ?></b>.
+                    To license the song, you must complete this form and agree to the terms of our standard license agreement.</p>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
     
+                    <div class="makeAnOfferWrapper">
+                        <div class="makeAnOfferLeft">
+                            <p>Your Email</p>
+                        </div>
+                        <div class="makeAnOfferRight">
+
+<?php
+        echo '<input class="' . (isset($errorFields['email']) ? 'inputTextFieldWithProblem' : 'inputTextField') . '" type="text" name="email" maxlength="255" size="40"';
+        echo ' value="';
+        $value = $offer->email;
+        echo ($preconfiguredValue && !$value ? escape($preconfiguredValue) : escape($value));
+        echo '">' . "\n";
+        
 ?>
 
-          <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="action" value="send">
-            <input type="hidden" name="tid" value="<?php echo $track->id; ?>">
-            <table class="trackFormTable">
-              <tr>
-                <td colspan="3">Thank you for your interest in licensing the song <b><?php echo $track->title; ?></b>.<br/>
-                    To license the song, you must complete this form and agree to the terms of our standard license agreement.
-                </td>
-              </tr>
-              <?php
-              showFormField('Your Email', 'text', 'email', '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">Please specify your email address, so that we can contact you.</div></div>', true,  255, $offer, $problemOccured, $errorFields);
-              showFormField('Song Usage', 'usageSelectAndText', 'usage', '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">Please describe the use (the "Use") you wish to make of the song. Please choose one of the following options and then type a brief description of your plans, including a description of the work (the "Work").  Please note that your choice and description of your Use and Work are important because we only license the song to you for a single Use in a particular Work.  Additional Works require new licenses.</div></div>', true,  255, $offer, $problemOccured, $errorFields);
-              showFormField('Your offer', 'text', 'price', '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">What price are you offering $</div></div>', true,  255, $offer, $problemOccured, $errorFields);
-              ?>
-              <tr class="standardRow1" onmouseover="this.className='highlightedRow';" onmouseout="this.className='standardRow1';">
-                <td colspan="3">
-                    These are the terms pursuant to which Notethrower ("Notethower" or "we") licenses the Song to you.
-                    You must pay the required fees and comply with all terms, conditions, notices and disclaimers set out on the following screens ("Terms"). 
-                    If you agree with what you read, check the "I have read and understand the license agreement" checkbox below. If you do not agree with what you read below, 
-                    then click the "I DO NOT ACCEPT" link and do not proceed any further.
-                </td>
-              </tr>
-              <tr class="standardRow1" onmouseover="this.className='highlightedRow';" onmouseout="this.className='standardRow1';">
-                <td colspan="3">
-                  <textarea readonly="true" rows="10" cols="110">
+                        </div>
+                        <div class="makeAnOfferInfo">
+                            <p>Please specify your email address, so that we can contact you.</p>                        
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+    
+    
+    
+                    <div class="makeAnOfferWrapper">
+                        <div class="makeAnOfferLeft">
+                            <p>Song usage</p>
+                        </div>
+                        <div class="makeAnOfferRight">
+
+<?php
+        echo '<select class="' . (isset($errorFields['usage']) ? 'inputTextFieldWithProblem' : 'inputTextField') . '" name="usageCategory" style="width: 255px">';
+        $selectedValue = $offer->usageCategory;
+        $selectOptions = array(-1 => '- Please choose -') + $GLOBALS['OFFER_CATEGORIES'];
+        foreach (array_values($selectOptions) as $optVal) {
+            $selected = ((string) $selectedValue === (string) $optVal) ? ' selected' : '';
+            echo '<option value="' . $optVal . '"' . $selected . '>' . escape($optVal) . '</option>' . "\n";
+        }
+        echo '</select>' . "\n";
+        
+        echo '<textarea class="' . (isset($errorFields['usage']) ? 'inputTextFieldWithProblem' : 'inputTextField') . '" name="usage" rows="6" cols="40">';
+        $value = $offer->usage;
+        echo escape($value);
+        echo '</textarea>' . "\n";
+?>
+
+                        </div>
+                        <div class="makeAnOfferInfo">
+                            <p>Please describe the use (the "Use") you wish to make of the song. 
+                                Please choose one of the following options and then type a brief description of your plans, 
+                                including a description of the work (the "Work"). 
+                                Please note that your choice and description of your Use and Work are important because we 
+                                only license the song to you for a single Use in a particular Work. 
+                                Additional Works require new licenses.
+                            </p>                        
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    
+                    
+                    
+                    <div class="makeAnOfferWrapper">
+                        <div class="makeAnOfferLeft">
+                            <p>Your Offer</p>
+                        </div>
+                        <div class="makeAnOfferRight">
+
+<?php
+        echo '<input class="' . (isset($errorFields['price']) ? 'inputTextFieldWithProblem' : 'inputTextField') . '" type="text" name="price" maxlength="255" size="40"';
+        echo ' value="';
+        $value = $offer->price;
+        echo (escape($value));
+        echo '">' . "\n";
+        
+?>
+
+                        </div>
+                        <div class="makeAnOfferInfo">
+                            <p>What price are you offering $</p>                        
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+    
+ 
+ 
+                     <div class="makeAnOfferWrapper">
+                        <div class="makeAnOfferBroad">
+                            <p>These are the terms pursuant to which Notethrower ("Notethower" or "we") licenses the Song to you.
+                               You must pay the required fees and comply with all terms, conditions, notices and disclaimers set out on the following screens ("Terms"). 
+                               If you agree with what you read, check the "I have read and understand the license agreement" checkbox below. If you do not agree with what you read below, 
+                               then click the "I DO NOT ACCEPT" link and do not proceed any further.
+                             </p>
+                        </div>
+                        <div class="clear"></div>
+                    </div>   
+             
+                    <div class="makeAnOfferWrapper">
+                        <div class="makeAnOfferBroad">
+             <p>
+                  <textarea readonly="true" rows="10" cols="140">
 Notethrower Commercial Licensee Terms
 
 This agreement ("Agreement") sets forth the terms under which Notethrower grants you ("Licensee") a license to make commercial use of a song posted on the Notethrower service. For good and valuable consideration, the receipt of which is acknowledged, the parties agree as follows.
@@ -298,26 +449,47 @@ Any controversy or claim arising out of or relating to this contract, or the bre
 
 This Agreement will be governed by and interpreted in accordance with the laws of Tennessee, excluding its conflict of law principles. The parties hereby submit to the jurisdiction of the state or federal courts located in Nashville, Tennessee, waiving any objection to forum non conveniens. This Agreement constitutes the complete and entire statement of all terms, conditions and representations of the agreement between Artist and Notethrower with respect to its subject matter and supersedes all prior writings or understanding. Except as otherwise provided above, any waiver, amendment or other modification of this Agreement will not be effective unless in writing and signed by the party against whom enforcement is sought. If any provision of this Agreement is held to be unenforceable, in whole or in part, such holding will not affect the validity of the other provisions of this Agreement. Sections 4 through 11 of this Agreement will survive any expiration or termination of this Agreement. No provision of this Agreement, nor any ambiguities that may be contained herein, shall be construed against any party on the ground that such party or its counsel drafted the provision at issue or that the provision at issue contains a covenant, representation or warranty of such party. All rights and remedies of the parties set forth in this Agreement shall be cumulative, and none shall exclude any other right or remedy allowed by applicable law.
 
- </textarea>
-                </td>
-              </tr>
-              <?php
-              showFormField('I have read and understand the license agreement', 'checkbox', 'accepted', '', '', true,  255, $offer, $problemOccured, $errorFields);              
-              ?>
-              <tr>
-                <td colspan="2">
-                  <input class="button" type="submit" value="send my offer">
-                </td>
-                <td>
-                  <a href="startPage.php" class="button">I DO NOT ACCEPT</a></td>
-                </td>
-              </tr>
-            </table>
-          </form>
-        <br/>
-        <br/>
+                </textarea></p>
+                 </div>
+               <div class="clear"></div>
+            </div>
+            
+            <div class="makeAnOfferWrapper">
+                <div class="makeAnOfferLeft">
+                  I have read and understand the license agreement
+                </div>
+                <div class="makeAnOfferRight">
+                    
+<?php       echo '<input class="' . (isset($errorFields['accepted']) ? 'inputTextFieldWithProblem' : 'inputTextField') . '" type="checkbox" name="accepted" value="yes">'; 
+           
+            if (isset($errorFields['accepted'])) {
+                echo '<p class="problemMessage">' .$errorFields['accepted'] . '</p>';
+            }
 
-      </div></div>
+?>
+
+   
+        </div>
+            <div class="clear"></div>
+            </div>
+            
+            <div class="makeAnOfferWrapper">
+                  <div class="makeAnOfferLeft">
+                     <input class="button" type="submit" value="send my offer">
+                  </div>
+                  <div class="makeAnOfferRight"> 
+                    <a href="startPage.php" class="button">I DO NOT ACCEPT</a>
+                  </div>
+                  <div class="clear"></div>
+            </div>
+
+
+               </div>
+              
+               </form>
+             </div> <!-- container -->
+         </div> <!-- trackFormDiv -->
+
       <div id="trackFormDivEnd"></div>
 
 <?php
@@ -340,95 +512,6 @@ else {
   </body>
 </html>
 <?php
-
-function showFormField($label, $inputType, $propName, $suffix, $helpTextHtml, $mandatory, $maxlength, &$offer, $problemOccured, &$errorFields, $selectOptions = null, $preconfiguredValue = null) {
-    static $i = 0;
-
-    $class_addon = isset($errorFields[$propName]) ? ' formFieldWithProblem' : '';
-
-    echo '<tr class="standardRow1"' .
-         ' onmouseover="this.className=\'highlightedRow\';" onmouseout="this.className=\'standardRow1\';"' .
-         '>' . "\n";
-
-    echo '<td class="formLeftCol' . $class_addon . '" style="vertical-align:top">' . ($mandatory ? '<b>' : '') . ($label ? $label . ':' : '&nbsp;') . ($mandatory ? '</b>' : '') . '</td>' . "\n";
-
-    echo '<td class="formMiddleCol ' . ($mandatory ? 'mandatoryFormField' : 'optionalFormField') . '" style="vertical-align:top">';
-
-    $normalClass  = 'inputTextField';
-    $problemClass = 'inputTextFieldWithProblem';
-    $size = 40;
-    if ($inputType == 'file') {
-        $normalClass  = 'inputFileField';
-        $problemClass = 'inputFileFieldWithProblem';
-        $size = 16;
-    }
-
-    if ($inputType == 'usageSelectAndText') {
-        echo '<select class="' . (isset($errorFields[$propName]) ? $problemClass : $normalClass) . '" name="usageCategory" style="width: 255px">';
-        $selectedValue = $offer->usageCategory;
-        $selectOptions = array(-1 => '- Please choose -') + $GLOBALS['OFFER_CATEGORIES'];
-        foreach (array_values($selectOptions) as $optVal) {
-            $selected = ((string) $selectedValue === (string) $optVal) ? ' selected' : '';
-            echo '<option value="' . $optVal . '"' . $selected . '>' . escape($optVal) . '</option>' . "\n";
-        }
-        echo '</select>' . "\n";
-        
-        echo '<textarea class="' . (isset($errorFields[$propName]) ? $problemClass : $normalClass) . '" name="' . $propName . '" rows="6" cols="40">';
-        $value = null;
-        eval('$value = $offer->' . $propName . ';');
-        echo escape($value);
-        echo '</textarea>' . "\n";
-
-    } else if ($inputType == 'recaptcha') {
-        $publickey = '6LcNIgoAAAAAAP0BgB5wNty92PiCewdRq7y5L6qw';
-        echo recaptcha_get_html($publickey);
-
-    } else {
-        echo '<input class="' . (isset($errorFields[$propName]) ? $problemClass : $normalClass) . '" type="' . $inputType . '" name="' . $propName . '" maxlength="' . $maxlength . '" size="' . $size . '"';
-
-        if ($inputType != 'password' && $inputType != 'file' && $inputType != 'checkbox') {
-            echo ' value="';
-            $value = null;
-            eval('$value = $offer->' . $propName . ';');
-            echo ($preconfiguredValue && !$value ? escape($preconfiguredValue) : escape($value));
-            echo '"';
-
-        } else if ($inputType == 'checkbox') {
-            echo ' value="yes"';
-        }
-
-        echo '>' . "\n";
-    }
-
-    if ($suffix) {
-        echo '&nbsp;' . $suffix;
-    }
-
-    echo '</td>' . "\n";
-
-    echo '<td style="vertical-align:top">';
-//    if (isset($errorFields[$propName])) {
-//        echo '&nbsp;' . $errorFields[$propName];
-//    } else {
-        if ($helpTextHtml) {
-            echo '<span style="font-size:11px">' . $helpTextHtml . '</span>';
-        } else {
-            echo '&nbsp;';
-        }
-//    }
-    echo '</td>';
-
-    if (isset($errorFields[$propName])) {
-        echo '<tr class="formFieldWithProblem"><td colspan="3">';
-        echo $errorFields[$propName];
-        echo '<br><br></td></tr>';
-    }
-
-    echo '</tr>' . "\n";
-
-    $i++;
-}
-
 
 function inputDataOk(&$errorFields, &$offer) {
     global $logger;
@@ -455,6 +538,27 @@ function inputDataOk(&$errorFields, &$offer) {
     if (!$offer->accepted) {
         $result = false;
         $errorFields['accepted'] = 'Please accept the terms!';
+    }
+    
+    return $result;
+        
+}
+
+function inputDataOkForArtistOffer(&$errorFields, &$offer) {
+    global $logger;
+    $result = true;
+    
+    $offer->usageArtistOffer = get_param('usageArtistOffer');
+    $offer->emailArtistOffer = get_param('emailArtistOffer');
+    $offer->usageCategoryArtistOffer = get_param('usageCategoryArtistOffer');
+    
+    if (!$offer->emailArtistOffer) {
+        $result = false;
+        $errorFields['emailArtistOffer'] = 'Please specify your email address!';
+    }
+    if (!$offer->usageArtistOffer || $offer->usageCategoryArtistOffer === '- Please choose -') {
+        $result = false;
+        $errorFields['usageArtistOffer'] = 'Please describe the use you wish to make of the song and select an usage from the list!';
     }
     
     return $result;

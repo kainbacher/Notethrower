@@ -1409,7 +1409,7 @@ a.nohighlight:hover {
 */
 
 #startpageImage {
-    margin-top: 61px;
+    margin-top: 26px;
 }
 
 .startpageMainContentWrapper p {
@@ -1586,7 +1586,7 @@ a.nohighlight:hover {
 .makeAnOfferLeft {
     float: left;
     margin-left: 20px;
-    width: 500px;
+    width: 250px;
 }
 
 .makeAnOfferRight {
@@ -1596,7 +1596,13 @@ a.nohighlight:hover {
 
 .makeAnOfferInfo {
     float: left;
-    width: 16px;
+    width: 250px;
+}
+
+.makeAnOfferBroad {
+    float: left;
+    width: 820px;
+    margin-left: 20px;
 }
 
 

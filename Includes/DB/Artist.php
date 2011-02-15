@@ -180,14 +180,32 @@ class Artist {
             mysql_free_result($result);
             return null;
         }
-    }    
-    
-    
+    }
+
     function fetch_for_email_address($email) {
         $result = _mysql_query(
             'select * ' .
             'from pp_artist ' .
             'where email_address = ' . qq($email)
+        );
+
+        if ($row = mysql_fetch_array($result)) {
+            $a = new Artist();
+            $a = Artist::_read_row($a, $row);
+            mysql_free_result($result);
+            return $a;
+
+        } else {
+            mysql_free_result($result);
+            return null;
+        }
+    }
+
+    function fetch_for_name($name) {
+        $result = _mysql_query(
+            'select * ' .
+            'from pp_artist ' .
+            'where name = ' . qq($name)
         );
 
         if ($row = mysql_fetch_array($result)) {

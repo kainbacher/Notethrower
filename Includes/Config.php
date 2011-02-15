@@ -24,14 +24,8 @@ $EMAIL_DELIVERY_MODE          = null;
 $EMAIL_DELIVERY_OVERRIDE_ADDR = null;
 $MAIL_FROM                    = null;
 
-
-
-
 /* include local Settings */
-include "Config_local.php"; 
-
-
-
+include 'Config_local.php'; 
 
 $TMP_UPLOAD_PATH = $BASE_PATH . 'Uploader' . $PATH_SEPARATOR . 'uploads' . $PATH_SEPARATOR;
 
@@ -56,6 +50,5 @@ $NEWS_PER_PAGE = 5;
 
 $GENRES = array('Pop' => 'Pop', 'Rock' => 'Rock', 'Punk' => 'Punk', 'Country' => 'Country', 'Electronic' => 'Electronic', 'Blues' => 'Blues', 'Hip-Hop' => 'Hip-Hop', 'Jazz' => 'Jazz', 'Alternative' => 'Alternative', 'Singer/Songwriter' => 'Singer/Songwriter', 'Instrumental' => 'Instrumental', 'Beats' => 'Beats', 'Experimental' => 'Experimental', 'Samples or libraries' => 'Samples or libraries');
 $OFFER_CATEGORIES = array('Documentary/Indie/Student Film', 'Feature Film', 'Corporate CD/DVD', 'TV and Radio Advertising', 'Web', 'Live Events', 'Sample and Remix', 'Audio Projects', 'Video Game', 'TV Show', 'Music Compilation', 'Telephony/Music on Hold', 'Video Clip/Webisode');
-
 
 ?>

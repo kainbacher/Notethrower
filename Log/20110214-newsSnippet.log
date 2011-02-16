@@ -25,3 +25,66 @@
 
 2011-02-14 09:08:45 - 57200844 - DEBUG: select count(*) as cnt from pp_news 
 2011-02-14 09:08:45 - 57200844 - DEBUG: select * from pp_news order by entry_date desc limit 0, 2
+2011-02-14 11:12:42 - 14964155 - INFO: --------
+2011-02-14 11:12:42 - 14964155 - INFO: GET params : Array
+(
+    [page] => 1
+    [1297681962871] => 
+)
+
+2011-02-14 11:12:42 - 14964155 - DEBUG: select count(*) as cnt from pp_news 
+2011-02-14 11:12:42 - 14964155 - DEBUG: select * from pp_news order by entry_date desc limit 0, 2
+2011-02-14 11:27:08 - 87167392 - INFO: --------
+2011-02-14 11:27:08 - 87167392 - INFO: GET params : Array
+(
+    [page] => 1
+    [1297682828169] => 
+)
+
+2011-02-14 11:27:08 - 87167392 - DEBUG: select count(*) as cnt from pp_news 
+2011-02-14 11:27:08 - 87167392 - DEBUG: select * from pp_news order by entry_date desc limit 0, 2
+2011-02-14 11:27:40 - 43736524 - INFO: --------
+2011-02-14 11:27:40 - 43736524 - INFO: GET params : Array
+(
+    [page] => 1
+    [1297682860465] => 
+)
+
+2011-02-14 11:27:40 - 43736524 - DEBUG: select count(*) as cnt from pp_news 
+2011-02-14 11:27:40 - 43736524 - DEBUG: select * from pp_news order by entry_date desc limit 0, 2
+2011-02-14 12:18:47 - 23800693 - INFO: --------
+2011-02-14 12:18:47 - 23800693 - INFO: GET params : Array
+(
+    [page] => 1
+    [1297685927048] => 
+)
+
+2011-02-14 12:18:47 - 23800693 - DEBUG: select count(*) as cnt from pp_news 
+2011-02-14 12:18:47 - 23800693 - DEBUG: select * from pp_news order by entry_date desc limit 0, 2
+2011-02-14 12:37:26 - 85537856 - INFO: --------
+2011-02-14 12:37:26 - 85537856 - INFO: GET params : Array
+(
+    [page] => 1
+    [1297687046107] => 
+)
+
+2011-02-14 12:37:26 - 85537856 - DEBUG: select count(*) as cnt from pp_news 
+2011-02-14 12:37:26 - 85537856 - DEBUG: select * from pp_news order by entry_date desc limit 0, 2
+2011-02-14 12:43:46 - 76334912 - INFO: --------
+2011-02-14 12:43:46 - 76334912 - INFO: GET params : Array
+(
+    [page] => 1
+    [1297687426661] => 
+)
+
+2011-02-14 12:43:46 - 76334912 - DEBUG: select count(*) as cnt from pp_news 
+2011-02-14 12:43:46 - 76334912 - DEBUG: select * from pp_news order by entry_date desc limit 0, 2
+2011-02-14 12:47:39 - 33423646 - INFO: --------
+2011-02-14 12:47:39 - 33423646 - INFO: GET params : Array
+(
+    [page] => 1
+    [1297687659395] => 
+)
+
+2011-02-14 12:47:39 - 33423646 - DEBUG: select count(*) as cnt from pp_news 
+2011-02-14 12:47:39 - 33423646 - DEBUG: select * from pp_news order by entry_date desc limit 0, 2

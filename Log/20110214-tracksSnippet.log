@@ -64,3 +64,157 @@
 2011-02-14 09:08:45 - 79035621 - DEBUG: select count(*) as cnt from pp_audio_track t where 1=1 and t.visibility = "public" and t.status = "active"
 2011-02-14 09:08:45 - 79035621 - INFO: track count: 193
 2011-02-14 09:08:45 - 79035621 - DEBUG: select t.*, a.name as artist_name, a.image_filename as artist_img_filename from pp_audio_track t, pp_artist a where t.status = "active" and t.visibility = "public" and t.artist_id = a.id order by t.entry_date desc limit 0, 16
+2011-02-14 11:12:42 - 14085412 - INFO: --------
+2011-02-14 11:12:42 - 91829715 - INFO: --------
+2011-02-14 11:12:42 - 14085412 - INFO: GET params : Array
+(
+    [page] => 1
+    [mode] => mostRecent
+    [1297681962130] => 
+)
+
+2011-02-14 11:12:42 - 91829715 - INFO: GET params : Array
+(
+    [page] => 1
+    [mode] => mostRecent
+    [1297681962132] => 
+)
+
+2011-02-14 11:12:43 - 14085412 - DEBUG: select count(*) as cnt from pp_audio_track t where 1=1 and t.visibility = "public" and t.status = "active"
+2011-02-14 11:12:43 - 91829715 - DEBUG: select count(*) as cnt from pp_audio_track t where 1=1 and t.visibility = "public" and t.status = "active"
+2011-02-14 11:12:43 - 14085412 - INFO: track count: 193
+2011-02-14 11:12:43 - 14085412 - DEBUG: select t.*, a.name as artist_name, a.image_filename as artist_img_filename from pp_audio_track t, pp_artist a where t.status = "active" and t.visibility = "public" and t.artist_id = a.id order by t.entry_date desc limit 0, 16
+2011-02-14 11:12:43 - 91829715 - INFO: track count: 193
+2011-02-14 11:12:43 - 91829715 - DEBUG: select t.*, a.name as artist_name, a.image_filename as artist_img_filename from pp_audio_track t, pp_artist a where t.status = "active" and t.visibility = "public" and t.artist_id = a.id order by t.entry_date desc limit 0, 16
+2011-02-14 11:27:08 - 14848293 - INFO: --------
+2011-02-14 11:27:08 - 14848293 - INFO: GET params : Array
+(
+    [page] => 1
+    [mode] => mostRecent
+    [1297682828166] => 
+)
+
+2011-02-14 11:27:08 - 14848293 - DEBUG: select count(*) as cnt from pp_audio_track t where 1=1 and t.visibility = "public" and t.status = "active"
+2011-02-14 11:27:08 - 14848293 - INFO: track count: 193
+2011-02-14 11:27:08 - 14848293 - DEBUG: select t.*, a.name as artist_name, a.image_filename as artist_img_filename from pp_audio_track t, pp_artist a where t.status = "active" and t.visibility = "public" and t.artist_id = a.id order by t.entry_date desc limit 0, 16
+2011-02-14 11:27:08 - 61306291 - INFO: --------
+2011-02-14 11:27:08 - 61306291 - INFO: GET params : Array
+(
+    [page] => 1
+    [mode] => mostRecent
+    [1297682828164] => 
+)
+
+2011-02-14 11:27:08 - 61306291 - DEBUG: select count(*) as cnt from pp_audio_track t where 1=1 and t.visibility = "public" and t.status = "active"
+2011-02-14 11:27:08 - 61306291 - INFO: track count: 193
+2011-02-14 11:27:08 - 61306291 - DEBUG: select t.*, a.name as artist_name, a.image_filename as artist_img_filename from pp_audio_track t, pp_artist a where t.status = "active" and t.visibility = "public" and t.artist_id = a.id order by t.entry_date desc limit 0, 16
+2011-02-14 11:27:40 - 36759417 - INFO: --------
+2011-02-14 11:27:40 - 36759417 - INFO: GET params : Array
+(
+    [page] => 1
+    [mode] => mostRecent
+    [1297682860462] => 
+)
+
+2011-02-14 11:27:40 - 32619969 - INFO: --------
+2011-02-14 11:27:40 - 32619969 - INFO: GET params : Array
+(
+    [page] => 1
+    [mode] => mostRecent
+    [1297682860460] => 
+)
+
+2011-02-14 11:27:40 - 32619969 - DEBUG: select count(*) as cnt from pp_audio_track t where 1=1 and t.visibility = "public" and t.status = "active"
+2011-02-14 11:27:40 - 36759417 - DEBUG: select count(*) as cnt from pp_audio_track t where 1=1 and t.visibility = "public" and t.status = "active"
+2011-02-14 11:27:40 - 36759417 - INFO: track count: 193
+2011-02-14 11:27:40 - 32619969 - INFO: track count: 193
+2011-02-14 11:27:40 - 32619969 - DEBUG: select t.*, a.name as artist_name, a.image_filename as artist_img_filename from pp_audio_track t, pp_artist a where t.status = "active" and t.visibility = "public" and t.artist_id = a.id order by t.entry_date desc limit 0, 16
+2011-02-14 11:27:40 - 36759417 - DEBUG: select t.*, a.name as artist_name, a.image_filename as artist_img_filename from pp_audio_track t, pp_artist a where t.status = "active" and t.visibility = "public" and t.artist_id = a.id order by t.entry_date desc limit 0, 16
+2011-02-14 12:18:47 - 38004053 - INFO: --------
+2011-02-14 12:18:47 - 38004053 - INFO: GET params : Array
+(
+    [page] => 1
+    [mode] => mostRecent
+    [1297685926126] => 
+)
+
+2011-02-14 12:18:47 - 38004053 - DEBUG: select count(*) as cnt from pp_audio_track t where 1=1 and t.visibility = "public" and t.status = "active"
+2011-02-14 12:18:47 - 35353601 - INFO: --------
+2011-02-14 12:18:47 - 35353601 - INFO: GET params : Array
+(
+    [page] => 1
+    [mode] => mostRecent
+    [1297685926127] => 
+)
+
+2011-02-14 12:18:47 - 38004053 - INFO: track count: 193
+2011-02-14 12:18:47 - 38004053 - DEBUG: select t.*, a.name as artist_name, a.image_filename as artist_img_filename from pp_audio_track t, pp_artist a where t.status = "active" and t.visibility = "public" and t.artist_id = a.id order by t.entry_date desc limit 0, 16
+2011-02-14 12:18:47 - 35353601 - DEBUG: select count(*) as cnt from pp_audio_track t where 1=1 and t.visibility = "public" and t.status = "active"
+2011-02-14 12:18:47 - 35353601 - INFO: track count: 193
+2011-02-14 12:18:47 - 35353601 - DEBUG: select t.*, a.name as artist_name, a.image_filename as artist_img_filename from pp_audio_track t, pp_artist a where t.status = "active" and t.visibility = "public" and t.artist_id = a.id order by t.entry_date desc limit 0, 16
+2011-02-14 12:37:26 - 35336164 - INFO: --------
+2011-02-14 12:37:26 - 35336164 - INFO: GET params : Array
+(
+    [page] => 1
+    [mode] => mostRecent
+    [1297687046104] => 
+)
+
+2011-02-14 12:37:26 - 61413131 - INFO: --------
+2011-02-14 12:37:26 - 61413131 - INFO: GET params : Array
+(
+    [page] => 1
+    [mode] => mostRecent
+    [1297687046102] => 
+)
+
+2011-02-14 12:37:26 - 35336164 - DEBUG: select count(*) as cnt from pp_audio_track t where 1=1 and t.visibility = "public" and t.status = "active"
+2011-02-14 12:37:26 - 35336164 - INFO: track count: 193
+2011-02-14 12:37:26 - 35336164 - DEBUG: select t.*, a.name as artist_name, a.image_filename as artist_img_filename from pp_audio_track t, pp_artist a where t.status = "active" and t.visibility = "public" and t.artist_id = a.id order by t.entry_date desc limit 0, 16
+2011-02-14 12:37:26 - 61413131 - DEBUG: select count(*) as cnt from pp_audio_track t where 1=1 and t.visibility = "public" and t.status = "active"
+2011-02-14 12:37:26 - 61413131 - INFO: track count: 193
+2011-02-14 12:37:26 - 61413131 - DEBUG: select t.*, a.name as artist_name, a.image_filename as artist_img_filename from pp_audio_track t, pp_artist a where t.status = "active" and t.visibility = "public" and t.artist_id = a.id order by t.entry_date desc limit 0, 16
+2011-02-14 12:43:46 - 66516077 - INFO: --------
+2011-02-14 12:43:46 - 66516077 - INFO: GET params : Array
+(
+    [page] => 1
+    [mode] => mostRecent
+    [1297687426658] => 
+)
+
+2011-02-14 12:43:46 - 67904047 - INFO: --------
+2011-02-14 12:43:46 - 67904047 - INFO: GET params : Array
+(
+    [page] => 1
+    [mode] => mostRecent
+    [1297687426656] => 
+)
+
+2011-02-14 12:43:46 - 66516077 - DEBUG: select count(*) as cnt from pp_audio_track t where 1=1 and t.visibility = "public" and t.status = "active"
+2011-02-14 12:43:46 - 66516077 - INFO: track count: 193
+2011-02-14 12:43:46 - 66516077 - DEBUG: select t.*, a.name as artist_name, a.image_filename as artist_img_filename from pp_audio_track t, pp_artist a where t.status = "active" and t.visibility = "public" and t.artist_id = a.id order by t.entry_date desc limit 0, 16
+2011-02-14 12:43:46 - 67904047 - DEBUG: select count(*) as cnt from pp_audio_track t where 1=1 and t.visibility = "public" and t.status = "active"
+2011-02-14 12:43:46 - 67904047 - INFO: track count: 193
+2011-02-14 12:43:46 - 67904047 - DEBUG: select t.*, a.name as artist_name, a.image_filename as artist_img_filename from pp_audio_track t, pp_artist a where t.status = "active" and t.visibility = "public" and t.artist_id = a.id order by t.entry_date desc limit 0, 16
+2011-02-14 12:47:39 - 73911915 - INFO: --------
+2011-02-14 12:47:39 - 73911915 - INFO: GET params : Array
+(
+    [page] => 1
+    [mode] => mostRecent
+    [1297687658648] => 
+)
+
+2011-02-14 12:47:39 - 96443072 - INFO: --------
+2011-02-14 12:47:39 - 96443072 - INFO: GET params : Array
+(
+    [page] => 1
+    [mode] => mostRecent
+    [1297687658646] => 
+)
+
+2011-02-14 12:47:39 - 73911915 - DEBUG: select count(*) as cnt from pp_audio_track t where 1=1 and t.visibility = "public" and t.status = "active"
+2011-02-14 12:47:39 - 73911915 - INFO: track count: 193
+2011-02-14 12:47:39 - 73911915 - DEBUG: select t.*, a.name as artist_name, a.image_filename as artist_img_filename from pp_audio_track t, pp_artist a where t.status = "active" and t.visibility = "public" and t.artist_id = a.id order by t.entry_date desc limit 0, 16
+2011-02-14 12:47:39 - 96443072 - DEBUG: select count(*) as cnt from pp_audio_track t where 1=1 and t.visibility = "public" and t.status = "active"
+2011-02-14 12:47:39 - 96443072 - INFO: track count: 193
+2011-02-14 12:47:39 - 96443072 - DEBUG: select t.*, a.name as artist_name, a.image_filename as artist_img_filename from pp_audio_track t, pp_artist a where t.status = "active" and t.visibility = "public" and t.artist_id = a.id order by t.entry_date desc limit 0, 16

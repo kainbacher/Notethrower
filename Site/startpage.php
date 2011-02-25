@@ -3,19 +3,19 @@
 include_once('../Includes/Init.php');
 include_once('../Includes/Paginator.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/Artist.php');
+include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/News.php');
 
 $loginErrorMsg = '';
 
-$visitorArtistId = -1;
+$visitorUserId = -1;
 
 $userIsLoggedIn = false;
-$artist = Artist::new_from_cookie();
-if ($artist) {
-    $visitorArtistId = $artist->id;
-    $logger->info('visitor artist id: ' . $visitorArtistId);
+$user = User::new_from_cookie();
+if ($user) {
+    $visitorUserId = $user->id;
+    $logger->info('visitor user id: ' . $visitorUserId);
 
     $userIsLoggedIn = true;
     $logger->info('user is logged in');
@@ -26,9 +26,9 @@ if ($artist) {
     if (get_param('action') == 'login') {
         $logger->info('login request received');
         if (get_param('username') && get_param('password')) {
-            $artist = Artist::fetch_for_username_password(get_param('username'), get_param('password'));
-            if ($artist && $artist->status == 'active') {
-                $artist->doLogin();
+            $user = User::fetch_for_username_password(get_param('username'), get_param('password'));
+            if ($user && $user->status == 'active') {
+                $user->doLogin();
                 $logger->info('login successful, reloading page to set cookie');
                 header('Location: ' . $_SERVER['PHP_SELF']);
                 exit;
@@ -45,7 +45,7 @@ if ($artist) {
     }
 }
 
-$trackCount = AudioTrack::count_all(false, false, $visitorArtistId);
+$trackCount = AudioTrack::count_all(false, false, $visitorUserId);
 $logger->info('track count: ' . $trackCount);
 
 $newsCount = News::count_all();
@@ -264,12 +264,12 @@ $(document).ready(function(){
                  
           	     <div id="startpageRightColumn">
           	          <div id="startpageImage">
-          	          <a href="http://www.notethrower.com/NT/Site/artistInfo.php?aid=120">      
+          	          <a href="http://www.notethrower.com/NT/Site/userInfo.php?aid=120">      
     	               <img src="../Images/The_Artistry.png" alt="The_Artistry" width="350" height="350" /></a>
     	                <br/>
                         <h3 style="color:#444444;text-align:left;">Remix Our Featured Artists!</h3>
       		            <br/>
-      		            <a href="http://www.notethrower.com/NT/Site/artistInfo.php?aid=120" class="button">Collaborate with "The Artistry"</a>
+      		            <a href="http://www.notethrower.com/NT/Site/userInfo.php?aid=120" class="button">Collaborate with "The Artistry"</a>
       		        
       		          </div>
       		     </div> <!-- startpageRightColumn -->

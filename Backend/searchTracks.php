@@ -12,9 +12,9 @@ $jsonService = new Services_JSON();
 $from = get_numeric_param('iDisplayStart');
 $length = get_numeric_param('iDisplayLength');
 
-$visitorArtistId = get_numeric_param('vaid');
+$visitorUserId = get_numeric_param('vaid');
 
-$artistOrTitle = get_param('artistOrTitle');
+$userOrTitle = get_param('artistOrTitle');
 $needsAttributIds = get_param('needsAttributIds');
 $containsAttributIds = get_param('containsAttributIds');
 $containsOthers = get_param('containsOthers');
@@ -23,8 +23,8 @@ $genres = get_param('genres') ? explode(',', get_param('genres')) : array();
 
 $logger->info(print_r($genres, true));
 
-$tracks = AudioTrack::fetchForSearch($from, $length, $artistOrTitle, $needsAttributIds, $containsAttributIds, $needsOthers, $containsOthers, $genres, false, false, $visitorArtistId);
-$filteredTracksCount = AudioTrack::fetchCountForSearch($artistOrTitle, $needsAttributIds, $containsAttributIds, $needsOthers, $containsOthers, $genres, false, false, $visitorArtistId);
+$tracks = AudioTrack::fetchForSearch($from, $length, $userOrTitle, $needsAttributIds, $containsAttributIds, $needsOthers, $containsOthers, $genres, false, false, $visitorUserId);
+$filteredTracksCount = AudioTrack::fetchCountForSearch($userOrTitle, $needsAttributIds, $containsAttributIds, $needsOthers, $containsOthers, $genres, false, false, $visitorUserId);
 
 $logger->info('finished db search');
 
@@ -35,21 +35,21 @@ $trackData->aaData = array();
 
 $i=0;
 foreach ($tracks as $track) {
-    if ($track->artist_img_filename) {
-        $filename = str_replace('.jpg', '_thumb.jpg', $track->artist_img_filename);
-        $artistImg    = $GLOBALS['ARTIST_IMAGE_BASE_PATH'] . $filename;
-        $artistImgUrl = $GLOBALS['ARTIST_IMAGE_BASE_URL']  . $filename;
+    if ($track->user_img_filename) {
+        $filename = str_replace('.jpg', '_thumb.jpg', $track->user_img_filename);
+        $userImg    = $GLOBALS['USER_IMAGE_BASE_PATH'] . $filename;
+        $userImgUrl = $GLOBALS['USER_IMAGE_BASE_URL']  . $filename;
     
-        if (file_exists($artistImg)) {
-            $track->artist_img_filename =  $artistImgUrl;
+        if (file_exists($userImg)) {
+            $track->user_img_filename =  $userImgUrl;
         } else {
-            $track->artist_img_filename = '../Images/no_artist_image.png';
+            $track->user_img_filename = '../Images/no_artist_image.png';
         }
     } else {
-        $track->artist_img_filename = '../Images/no_artist_image.png';
+        $track->user_img_filename = '../Images/no_artist_image.png';
     }
     
-    $trackData->aaData[$i] = array($track->artist_img_filename, $track->artist_name, $track->title, $track->id, $track->artist_id);
+    $trackData->aaData[$i] = array($track->user_img_filename, $track->user_name, $track->title, $track->id, $track->user_id);
     $i = $i + 1;   
 }
 

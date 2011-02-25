@@ -2,40 +2,40 @@
 
 <?php
 
-include_once('../Includes/DB/Artist.php');
+include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/Message.php');
 
 $msgCount = 0;
-$loggedInArtistId = 0;
+$loggedInUserId = 0;
 
 if (!$userIsLoggedIn) { // this can either mean that the user is not logged in or the login check was not yet done on the surrounding page. so we have to check it (again).
     $logger->info('$userIsLoggedIn var is false, so we have to find out if the user is not defined yet or ifhe\'s really not logged in.');
-    $pageHeaderArtist = Artist::new_from_cookie(); // don't use $artist as variable name here because it may influence the behaviour of the surrounding php page
-    if ($pageHeaderArtist) {
+    $pageHeaderUser = User::new_from_cookie(); // don't use $user as variable name here because it may influence the behaviour of the surrounding php page
+    if ($pageHeaderUser) {
         $logger->info('user is logged in, $userIsLoggedIn var is now true');
         $userIsLoggedIn = true;
-        $loggedInArtistId = $pageHeaderArtist->id;
-        $msgCount = Message::count_all_unread_msgs_for_recipient_artist_id($pageHeaderArtist->id);
+        $loggedInUserId = $pageHeaderUser->id;
+        $msgCount = Message::count_all_unread_msgs_for_recipient_user_id($pageHeaderUser->id);
 
     } else {
         $logger->info('user is not logged in, $userIsLoggedIn var is still false');
     }
 
 } else {
-    if ($artist) {
-        $loggedInArtistId = $artist->id;
+    if ($user) {
+        $loggedInUserId = $user->id;
         $logger->info('user is logged in.');
-        $msgCount = Message::count_all_unread_msgs_for_recipient_artist_id($artist->id);
+        $msgCount = Message::count_all_unread_msgs_for_recipient_user_id($user->id);
 
     } else {
-        $logger->error('$userIsLoggedIn is true but we have no $artist var, WTF?!');
+        $logger->error('$userIsLoggedIn is true but we have no $user var, WTF?!');
     }
 }
 
 show_header_logo();
 
 if (!$userIsLoggedIn) {
-    echo '<div id="signUpTeaser"><a href="createArtist.php">...</a></div>' . "\n";
+    echo '<div id="signUpTeaser"><a href="createUser.php">...</a></div>' . "\n";
 }
 
 ?>
@@ -58,7 +58,7 @@ if ($userIsLoggedIn) {
 	echo '<div class="topMenuSub">' . "\n";
 
 	echo '<div class="topMenuSubItem">' . "\n";
-	echo '<a href="artistInfo.php?aid=' . $loggedInArtistId . '">Artistpage</a>' . "\n";
+	echo '<a href="userInfo.php?aid=' . $loggedInUserId . '">Artistpage</a>' . "\n";
 	echo '</div>' . "\n";
 
 	echo '<div class="topMenuSubItem">' . "\n";
@@ -74,10 +74,10 @@ if ($userIsLoggedIn) {
 
 
 	echo '<div class="topMenuItem">' . "\n";
-	echo '<a href="createArtist.php">Profile</a>' . "\n";
+	echo '<a href="createUser.php">Profile</a>' . "\n";
 	echo '<div class="topMenuSub">' . "\n";
 	echo '<div class="topMenuSubItem">' . "\n";
-	echo '<a href="createArtist.php">Edit Profile</a>' . "\n";
+	echo '<a href="createUser.php">Edit Profile</a>' . "\n";
 	echo '</div>' . "\n";
 	echo '</div>' . "\n";
 	echo '</div>' . "\n";
@@ -101,7 +101,7 @@ echo '</div>' . "\n";
 
 
     echo '<div class="topMenuItem">' . "\n";
-    echo '<a href="createArtist.php">Sign up for free</a>' . "\n";
+    echo '<a href="createUser.php">Sign up for free</a>' . "\n";
     echo '</div>' . "\n";
     echo '<div class="topMenuItem">' . "\n";
     echo '<a href="javascript:showLogin();">Log in</a>' . "\n";

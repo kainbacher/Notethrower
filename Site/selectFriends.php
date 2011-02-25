@@ -3,10 +3,10 @@
 include_once('../Includes/Init.php');
 include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/Artist.php');
+include_once('../Includes/DB/User.php');
 
-$artist = Artist::new_from_cookie();
-if ($artist) {
+$user = User::new_from_cookie();
+if ($user) {
     $logger->info('user is logged in');
 } else {
     show_fatal_error_and_exit('access denied for not-logged-in user');
@@ -17,7 +17,7 @@ if (!$trackId) {
     show_fatal_error_and_exit('tid param is missing');
 }
 
-ensureTrackIdBelongsToArtistId($trackId, $artist->id);
+ensureTrackIdBelongsToUserId($trackId, $user->id);
 
 writePageDoctype();
 
@@ -34,7 +34,7 @@ body {
     background: #FFFFFF url(../Images/background_04.jpg) no-repeat;
 }
 
-#artistList {
+#userList {
   	margin: 0px;
   	width: 222px;
   	border: 1px solid #A5ACB2;
@@ -66,18 +66,18 @@ function getXmlHttpObject() {
     return null;
 }
 
-// called when the artist name field changed (onkeyup) to enable/disable the addButton
-function artistFieldChanged(newArtistName) {
-    if (document.getElementById('selectedArtistNameField').value != document.getElementById('artistNameField').value) {
+// called when the user name field changed (onkeyup) to enable/disable the addButton
+function userFieldChanged(newUserName) {
+    if (document.getElementById('selectedUserNameField').value != document.getElementById('userNameField').value) {
         document.getElementById('addButton').disabled = true;
     } else {
  	    document.getElementById('addButton').disabled = false;
     }
 }
 
-// called when the artist name field changed (onkeyup) to enable/disable the addButton
-function artistListSelectionChanged() {
-    var saList = document.getElementById('selectedArtistList');
+// called when the user name field changed (onkeyup) to enable/disable the addButton
+function userListSelectionChanged() {
+    var saList = document.getElementById('selectedUserList');
     var atLeastOneSelected = false;
     for (i = 0; i < saList.length; i++) {
         if (saList.options[i].selected) {
@@ -92,51 +92,51 @@ function artistListSelectionChanged() {
     }
 }
 
-// called when the user selects an artist from the drop down list
-// and stores the artist id and the artist name in the hidden fields
-function selectArtist(artistId, artistName) {
-    document.getElementById('selectedArtistNameField').value = artistName;
-    document.getElementById('selectedArtistIdField').value = artistId;
-    document.getElementById('artistNameField').value = artistName;
-    document.getElementById('artistList').innerHTML = '';
+// called when the user selects an user from the drop down list
+// and stores the user id and the user name in the hidden fields
+function selectUser(userId, userName) {
+    document.getElementById('selectedUserNameField').value = userName;
+    document.getElementById('selectedUserIdField').value = userId;
+    document.getElementById('userNameField').value = userName;
+    document.getElementById('userList').innerHTML = '';
     document.getElementById('addButton').disabled = false;
 }
 
-// called after the search artist call to the backend happened to build the drop down list of artists
-function updateArtistList() {
+// called after the search user call to the backend happened to build the drop down list of users
+function updateUserList() {
     if (xmlhttp.readyState == 4) {
-        var artists = eval('(' + xmlhttp.responseText + ')');
+        var users = eval('(' + xmlhttp.responseText + ')');
         var html = '';
 
-        for (i = 0; i < artists.length; i++) {
-            nameAsHtml = artists[i].name.substring(0, artists[i].name.toUpperCase().indexOf(oldQueryString.toUpperCase())) +
-                         '<b>' + artists[i].name.substring(artists[i].name.toUpperCase().indexOf(oldQueryString.toUpperCase()), artists[i].name.toUpperCase().indexOf(oldQueryString.toUpperCase()) + oldQueryString.length) + '</b>' +
-                         artists[i].name.substring(artists[i].name.toUpperCase().indexOf(oldQueryString.toUpperCase()) + oldQueryString.length);
+        for (i = 0; i < users.length; i++) {
+            nameAsHtml = users[i].name.substring(0, users[i].name.toUpperCase().indexOf(oldQueryString.toUpperCase())) +
+                         '<b>' + users[i].name.substring(users[i].name.toUpperCase().indexOf(oldQueryString.toUpperCase()), users[i].name.toUpperCase().indexOf(oldQueryString.toUpperCase()) + oldQueryString.length) + '</b>' +
+                         users[i].name.substring(users[i].name.toUpperCase().indexOf(oldQueryString.toUpperCase()) + oldQueryString.length);
 
             html = html + '<div style="cursor: pointer; cursor: hand;" onmouseover="this.style.backgroundColor=\'#aaaaaa\'" ' +
                    'onmouseout="this.style.backgroundColor=\'white\'" ' +
-                   'onclick="selectArtist(' + artists[i].id + ', \'' + artists[i].name + '\')">' +
-                   '<table style="border-collapse: collapse; table-layout: fixed;"><tr><td style="width: 45px;"><img style="display: block;" border="0" src="' + artists[i].imagePath + '" height="30"></td><td style="text-align: center; vertical-align: middle;"> ' + nameAsHtml + '</td></tr></table></div>';
+                   'onclick="selectUser(' + users[i].id + ', \'' + users[i].name + '\')">' +
+                   '<table style="border-collapse: collapse; table-layout: fixed;"><tr><td style="width: 45px;"><img style="display: block;" border="0" src="' + users[i].imagePath + '" height="30"></td><td style="text-align: center; vertical-align: middle;"> ' + nameAsHtml + '</td></tr></table></div>';
         }
         //alert(html);
-        if (artists.length > 0) {
-            document.getElementById("artistList").innerHTML = html;
+        if (users.length > 0) {
+            document.getElementById("userList").innerHTML = html;
         } else {
-            document.getElementById("artistList").innerHTML = "Artist not found";
+            document.getElementById("userList").innerHTML = "Artist not found";
         }
     }
 }
 
 // called by the timeout function to check if input changed, if so
 // the backend search is executed
-function searchForArtist() {
-    var queryString = document.getElementById('artistNameField').value;
+function searchForUser() {
+    var queryString = document.getElementById('userNameField').value;
     if (queryString != oldQueryString) {
         if (queryString.length == 0) {
-            document.getElementById("artistList").innerHTML = "Start typing a name";
+            document.getElementById("userList").innerHTML = "Start typing a name";
 
         } else if (queryString.length < 3) {
- 	        document.getElementById("artistList").innerHTML = "Please type at least 3 letters";
+ 	        document.getElementById("userList").innerHTML = "Please type at least 3 letters";
 
         } else {
             xmlhttp = getXmlHttpObject();
@@ -145,92 +145,92 @@ function searchForArtist() {
                 return;
             }
             oldQueryString = queryString;
-            var url = '../Backend/searchArtist.php';
+            var url = '../Backend/searchUser.php';
             url = url + '?q=' + queryString;
             // for not being cached somewhere
             url = url + '&sid=' + Math.random();
-            xmlhttp.onreadystatechange = updateArtistList;
+            xmlhttp.onreadystatechange = updateUserList;
             xmlhttp.open('GET', url, true);
             xmlhttp.send(null);
         }
     }
-    setTimeout('searchForArtist();', THROTTLE_PERIOD);
+    setTimeout('searchForUser();', THROTTLE_PERIOD);
 }
 
-// called after the backend call to retrieve the selected artists happened.
-// will update the selection box for the selected artists
-function updateSelectedArtistList() {
-    var saList = document.getElementById('selectedArtistList');
+// called after the backend call to retrieve the selected users happened.
+// will update the selection box for the selected users
+function updateSelectedUserList() {
+    var saList = document.getElementById('selectedUserList');
     if (xmlhttp.readyState == 4) {
-        var artists = eval('(' + xmlhttp.responseText + ')');
+        var users = eval('(' + xmlhttp.responseText + ')');
         // remove all options from the list
         saList.length = 0;
-        for (i = 0; i < artists.length; i++) {
-            if (artists[i].artist_id != <?php echo $artist->id; ?>) {
-                saList.options[saList.length] = new Option(artists[i].artist_name, artists[i].artist_id);
+        for (i = 0; i < users.length; i++) {
+            if (users[i].user_id != <?php echo $user->id; ?>) {
+                saList.options[saList.length] = new Option(users[i].user_name, users[i].user_id);
             }
         }
 
-        artistListSelectionChanged();
+        userListSelectionChanged();
     }
 }
 
-// will update the list of selected artists by calling the backend
-function getSelectedArtistList() {
+// will update the list of selected users by calling the backend
+function getSelectedUserList() {
     xmlhttp = getXmlHttpObject();
     if (xmlhttp == null) {
         // ajax not supported
         return;
     }
     var url = '../Backend/getFriendsList.php';
-    url = url + '?aid=<?php echo $artist->id; ?>';
+    url = url + '?aid=<?php echo $user->id; ?>';
     url = url + '&tid=<?php echo $trackId; ?>';
     // for not being cached somewhere
     url = url + '&sid=' + Math.random();
-    xmlhttp.onreadystatechange = updateSelectedArtistList;
+    xmlhttp.onreadystatechange = updateSelectedUserList;
     xmlhttp.open('GET',url,true);
     xmlhttp.send(null);
 }
 
 // called when the user clicks on the "Add" button
-// We could be sure, that the artist exists, because the
-// button is only active when the user selected the artist from the list
+// We could be sure, that the user exists, because the
+// button is only active when the user selected the user from the list
 //
-// The backend gets called, with the artistId to be added
-// the "postAddArtist()" method is called afterwards.
-function addArtist() {
-    var artistId = document.getElementById('selectedArtistIdField').value;
+// The backend gets called, with the userId to be added
+// the "postAddUser()" method is called afterwards.
+function addUser() {
+    var usertId = document.getElementById('selectedUserIdField').value;
     xmlhttp = getXmlHttpObject();
     if (xmlhttp == null) {
         // ajax not supported
         return;
     }
-    var url = '../Backend/addArtistAsFriend.php';
-    url = url + '?aid=' + artistId;
+    var url = '../Backend/addUserAsFriend.php';
+    url = url + '?aid=' + userId;
     url = url + '&tid=<?php echo $trackId; ?>';
     // for not being cached somewhere
     url = url + '&sid=' + Math.random();
-    xmlhttp.onreadystatechange = postAddArtist;
+    xmlhttp.onreadystatechange = postAddUser;
     xmlhttp.open('GET', url, true);
     xmlhttp.send(null);
 }
 
-// called after the addArtist call has been made
-// reads the response and calls the getSelectedArtistList to
-// update the list of selected artists
-function postAddArtist() {
+// called after the addUser call has been made
+// reads the response and calls the getSelectedUserList to
+// update the list of selected users
+function postAddUser() {
     if (xmlhttp.readyState == 4) {
         if (xmlhttp.responseText == "Success") {
-            getSelectedArtistList();
+            getSelectedUserList();
         }
     }
 }
 
 // called if the user clicks on the "remove" button
-// will call the backend to actually remove the selected artists from the list
-function removeArtists() {
+// will call the backend to actually remove the selected users from the list
+function removeUsers() {
     var ids = '';
-    var saList = document.getElementById('selectedArtistList');
+    var saList = document.getElementById('selectedUserList');
     for (i = 0; i < saList.length; i++) {
         if (saList.options[i].selected) {
  	        if (ids.length > 0) {
@@ -250,42 +250,42 @@ function removeArtists() {
         // ajax not supported
         return;
     }
-    var url = '../Backend/removeArtistsAsFriends.php';
+    var url = '../Backend/removeUsersAsFriends.php';
     url = url + '?aids=' + ids;
     url = url + '&tid=<?php echo $trackId; ?>';
     // for not being cached somewhere
     url = url + '&sid=' + Math.random();
-    xmlhttp.onreadystatechange = postRemoveArtists;
+    xmlhttp.onreadystatechange = postRemoveUsers;
     xmlhttp.open('GET', url, true);
     xmlhttp.send(null);
 }
 
-// called after the remove artists call to the backend happened.
-// does call the getSelectedArtistList to update the selection box
-function postRemoveArtists() {
+// called after the remove users call to the backend happened.
+// does call the getSelectedUserList to update the selection box
+function postRemoveUsers() {
     if (xmlhttp.readyState == 4) {
         if (xmlhttp.responseText == "Success") {
-            getSelectedArtistList();
+            getSelectedUserList();
         }
     }
 }
 
     </script>
   </head>
-  <body onload="getSelectedArtistList(); searchForArtist();">
+  <body onload="getSelectedUserList(); searchForUser();">
 
     <div id="friendSelection">
-      <input id="selectedArtistIdField" type="hidden">
-      <input id="selectedArtistNameField" type="hidden">
+      <input id="selectedUserIdField" type="hidden">
+      <input id="selectedUserNameField" type="hidden">
 
       <b>Search:</b><br>
-      <input style="width:220px;" id="artistNameField" type="text" onkeyup="artistFieldChanged(this.value)" onfocus="searchForArtist()"><input id="addButton" type="submit" value="Add" onclick="addArtist()" disabled="true"><br>
-      <div id="artistList"></div><br>
-      <b>Currently assigned artists:</b><br>
-      <select style="width:222px;" id="selectedArtistList" multiple="true" onchange="artistListSelectionChanged()"></select><br>
+      <input style="width:220px;" id="userNameField" type="text" onkeyup="userFieldChanged(this.value)" onfocus="searchForUser()"><input id="addButton" type="submit" value="Add" onclick="addUser()" disabled="true"><br>
+      <div id="userList"></div><br>
+      <b>Currently assigned users:</b><br>
+      <select style="width:222px;" id="selectedUserList" multiple="true" onchange="userListSelectionChanged()"></select><br>
       <small>Hold CTRL key to select multiple artists</small><br>
       <br>
-      <input id="removeButton" type="submit" value="Remove selected artists" onclick="removeArtists()" disabled="true">
+      <input id="removeButton" type="submit" value="Remove selected artists" onclick="removeUsers()" disabled="true">
     </div>
 
     <?php writeGoogleAnalyticsStuff(); ?>

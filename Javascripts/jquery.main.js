@@ -92,7 +92,7 @@ $(document).ready(function(){
     }); 
 
 
-    /* !artistInfo semdMessage */
+    /* !userInfo semdMessage */
     /* ---------------------------------------------------------------------- */
 /*
     $('.sendMessageLink a').bind('click', function(){

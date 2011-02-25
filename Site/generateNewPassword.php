@@ -4,18 +4,18 @@ include_once('../Includes/Config.php');
 include_once('../Includes/Init.php');
 include_once('../Includes/recaptchalib.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/Artist.php');
+include_once('../Includes/DB/User.php');
 
-$artist = null;
-$unpersistedArtist = null;
+$user = null;
+$unpersistedUser = null;
 $problemOccured = false;
 $errorMsg = '';
 
 // FIXME - rename the script - it's also used for updates
 
 $userIsLoggedIn = false;
-$artist = Artist::new_from_cookie();
-if ($artist) {
+$user = User::new_from_cookie();
+if ($user) {
     $userIsLoggedIn = true;
     $logger->info('user is logged in');
 
@@ -31,13 +31,13 @@ if ($action == 'generatePwd') {
     $username = get_param('username');
     $email = get_param('email');    
     if ($username != '') {
-        $user = Artist::fetch_for_username($username);
+        $user = User::fetch_for_username($username);
         if (!$user) {
             $problemOccured = true;
             $errorMsg = 'No user not found for username: ' . $username;
         }
     } else if ($email != '') {
-        $user = Artist::fetch_for_email_address($email); 
+        $user = User::fetch_for_email_address($email); 
         if (!$user) {
             $problemOccured = true;
             $errorMsg = 'No user not found for email address: ' . $email;
@@ -126,8 +126,8 @@ writePageDoctype();
                 </ul>
             </div> 
       		
-      		<div id="artistFormDivStart"></div>
-      		<div id="artistFormDiv"><div id="container">
+      		<div id="userFormDivStart"></div>
+      		<div id="userFormDiv"><div id="container">
 
 <?php
 
@@ -144,11 +144,11 @@ if ($passwordSent) {
 ?>
         <br><br>
 
-        <div id="artistFormPlusImage">
+        <div id="userFormPlusImage">
 
           <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="action" value="generatePwd">
-            <table class="artistFormTable">
+            <table class="userFormTable">
               <tr>
                 <td colspan="2">
 <?php
@@ -208,7 +208,7 @@ if ($problemOccured) {
         
 
       </div></div>
-      <div id="artistFormDivEnd"></div>
+      <div id="userFormDivEnd"></div>
 
 
     </div>
@@ -223,7 +223,7 @@ if ($problemOccured) {
 
 <?php
 
-function showFormField($label, $inputType, $propName, $suffix, $helpTextHtml, $mandatory, $maxlength, &$artist, &$unpersistedArtist, $problemOccured, &$errorFields, $preconfiguredValue = null) {
+function showFormField($label, $inputType, $propName, $suffix, $helpTextHtml, $mandatory, $maxlength, &$user, &$unpersistedUser, $problemOccured, &$errorFields, $preconfiguredValue = null) {
     static $i = 0;
 
     $class_addon = isset($errorFields[$propName]) ? ' formFieldWithProblem' : '';
@@ -247,11 +247,11 @@ function showFormField($label, $inputType, $propName, $suffix, $helpTextHtml, $m
 
     if ($inputType == 'textarea') {
         echo '<textarea class="' . (isset($errorFields[$propName]) ? $problemClass : $normalClass) . '" name="' . $propName . '" rows="6" cols="40">';
-        $artistVal            = null;
-        $unpersistedArtistVal = null;
-        eval('if ($artist) $artistVal = $artist->' . $propName . ';');
-        eval('if ($unpersistedArtist) $unpersistedArtistVal = $unpersistedArtist->' . $propName . ';');
-        echo !$problemOccured ? escape($artistVal) : ($unpersistedArtist ? escape($unpersistedArtistVal) : '');
+        $userVal            = null;
+        $unpersistedUserVal = null;
+        eval('if ($user) $userVal = $user->' . $propName . ';');
+        eval('if ($unpersistedUser) $unpersistedUserVal = $unpersistedUser->' . $propName . ';');
+        echo !$problemOccured ? escape($userVal) : ($unpersistedUser ? escape($unpersistedUserVal) : '');
         echo '</textarea>' . "\n";
 
     } else if ($inputType == 'recaptcha') {
@@ -263,11 +263,11 @@ function showFormField($label, $inputType, $propName, $suffix, $helpTextHtml, $m
 
         if ($inputType != 'password' && $inputType != 'file' && $inputType != 'checkbox') {
             echo ' value="';
-            $artistVal            = null;
-            $unpersistedArtistVal = null;
-            eval('if ($artist) $artistVal = $artist->' . $propName . ';');
-            eval('if ($unpersistedArtist) $unpersistedArtistVal = $unpersistedArtist->' . $propName . ';');
-            echo !$problemOccured ? ($preconfiguredValue && !$artistVal ? escape($preconfiguredValue) : escape($artistVal)) : ($unpersistedArtist ? escape($unpersistedArtistVal) : '');
+            $userVal            = null;
+            $unpersistedUserVal = null;
+            eval('if ($user) $userVal = $user->' . $propName . ';');
+            eval('if ($unpersistedUser) $unpersistedUserVal = $unpersistedUser->' . $propName . ';');
+            echo !$problemOccured ? ($preconfiguredValue && !$userVal ? escape($preconfiguredValue) : escape($userVal)) : ($unpersistedUser ? escape($unpersistedUserVal) : '');
             echo '"';
 
         } else if ($inputType == 'checkbox') {

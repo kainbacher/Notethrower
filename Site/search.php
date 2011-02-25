@@ -3,20 +3,20 @@
 include_once('../Includes/Init.php');
 include_once('../Includes/Paginator.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/Artist.php');
+include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/News.php');
 include_once('../Includes/DB/AudioTrackAttribute.php');
 
 $loginErrorMsg = '';
 
-$visitorArtistId = -1;
+$visitorUserId = -1;
 
 $userIsLoggedIn = false;
-$artist = Artist::new_from_cookie();
-if ($artist) {
-    $visitorArtistId = $artist->id;
-    $logger->info('visitor artist id: ' . $visitorArtistId);
+$user = User::new_from_cookie();
+if ($user) {
+    $visitorUserId = $user->id;
+    $logger->info('visitor user id: ' . $visitorUserId);
 
     $userIsLoggedIn = true;
     $logger->info('user is logged in');
@@ -27,9 +27,9 @@ if ($artist) {
     if (get_param('action') == 'login') {
         $logger->info('login request received');
         if (get_param('username') && get_param('password')) {
-            $artist = Artist::fetch_for_username_password(get_param('username'), get_param('password'));
-            if ($artist && $artist->status == 'active') {
-                $artist->doLogin();
+            $user = User::fetch_for_username_password(get_param('username'), get_param('password'));
+            if ($user && $user->status == 'active') {
+                $user->doLogin();
                 $logger->info('login successful, reloading page to set cookie');
                 header('Location: ' . $_SERVER['PHP_SELF']);
                 exit;
@@ -118,11 +118,11 @@ function showGenreList() {
 $aidForWidget = null;
 
 if ($userIsLoggedIn) {
-    $aidForWidget = $artist->id;
+    $aidForWidget = $user->id;
 
 } else {
     if (count($tracks) > 0) {
-        $aidForWidget = $tracks[0]->artist_id;
+        $aidForWidget = $tracks[0]->user_id;
     }
 }
 
@@ -149,8 +149,8 @@ writePageDoctype();
 var genres = [];
 var searchNeedsAttributIds = [];
 var searchContainsAttributIds = [];
-var artistOrTitle = <?php echo '"' . get_param('s') . '"' ?>;
-var visitorArtistId = -1;
+var userOrTitle = <?php echo '"' . get_param('s') . '"' ?>;
+var visitorUserId = -1;
 var containsOthers = '';
 var needsOthers = '';
 
@@ -160,9 +160,9 @@ var dataTable;
 
 $(document).ready(function() {
     
-    // set the value of the search field to the value of artistOrTitle
+    // set the value of the search field to the value of userOrTitle
     // because it might be passed in as query string
-    $('#artistOrTitleField').val(artistOrTitle);
+    $('#userOrTitleField').val(userOrTitle);
     
 	dataTable = $('#resultTable').dataTable({
 	    "bFilter": false,
@@ -178,13 +178,13 @@ $(document).ready(function() {
         ],
 		"sAjaxSource": "../Backend/searchTracks.php",
 		"fnServerData": function ( sSource, aoData, fnCallback ) {
-			aoData.push( { "name": "artistOrTitle", "value": artistOrTitle },
+			aoData.push( { "name": "userOrTitle", "value": userOrTitle },
 			             { "name": "needsAttributIds", "value": searchNeedsAttributIds },
 			             { "name": "containsAttributIds", "value": searchContainsAttributIds },
 			             { "name": "needsOthers", "value": needsOthers },
 			             { "name": "containsOthers", "value": containsOthers },
 			             { "name": "genres", "value": genres },
-			             { "name": "vaid", "value": visitorArtistId }
+			             { "name": "vaid", "value": visitorUserId }
 			              );
 			$.getJSON( sSource, aoData, function (json) {
 				fnCallback(json)
@@ -214,8 +214,8 @@ function doSearch() {
     $('#genres:checked').each(function() {
         genres.push($(this).val());
     });
-    artistOrTitle = $('#artistOrTitleField').val();
-    visitorArtistId = $('#visitorArtistId').val();
+    userOrTitle = $('#userOrTitleField').val();
+    visitorUserId = $('#visitorUserId').val();
     containsOthers = $('#containsOthers').val();
     needsOthers = $('#needsOthers').val();
     dataTable.fnPageChange('first');
@@ -306,8 +306,8 @@ function showLogin() {
             <table width="600">
                 <tr>
                     <td>Artist name or track title contains:</td>
-                    <td><input type="text" name="artistOrTitleField" id="artistOrTitleField">
-                        <input type="hidden" name="visitorArtistId" id="visitorArtistId" value="<?php echo $visitorArtistId ?>">
+                    <td><input type="text" name="userOrTitleField" id="userOrTitleField">
+                        <input type="hidden" name="visitorUserId" id="visitorUserId" value="<?php echo $visitorUserId ?>">
                     </td>
                 </tr>
                 
@@ -415,11 +415,11 @@ function showLogin() {
 $aidForWidget = null;
 
 if ($userIsLoggedIn) {
-    $aidForWidget = $artist->id;
+    $aidForWidget = $user->id;
 
 } else {
     if (count($tracks) > 0) {
-        $aidForWidget = $tracks[0]->artist_id;
+        $aidForWidget = $tracks[0]->user_id;
     }
 }
 

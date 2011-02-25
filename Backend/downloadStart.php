@@ -5,7 +5,7 @@ include_once('../Includes/Init.php');
 include_once('../Includes/Config.php');
 include_once('../Includes/Logger.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/Artist.php');
+include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/AudioTrackFile.php');
 include_once('../Includes/DB/PayPalTx.php');
@@ -168,9 +168,9 @@ function show_format_selection($isFreeDownload) {
 
     $logger->info('showing format selection ...');
 
-    $artist = Artist::fetch_for_id($track->artist_id);
-    if (!$artist || !$artist->id) {
-        $logger->warn('artist not found for id: ' . $track->artist_id);
+    $user = User::fetch_for_id($track->user_id);
+    if (!$user || !$user->id) {
+        $logger->warn('user not found for id: ' . $track->user_id);
         echo 'INVALID REQUEST (11)';
         exit;
     }
@@ -207,7 +207,7 @@ var formatSelected = false;
     echo '<br><br>';
     echo '<span class="subheadline">' . $track->title . '</span>';
     echo '<br>';
-    echo '<span class="subsubheadline">' . $artist->name . '</span>';
+    echo '<span class="subsubheadline">' . $user->name . '</span>';
     echo '<br><br>';
 
 ?>

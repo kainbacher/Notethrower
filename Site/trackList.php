@@ -3,22 +3,22 @@
 include_once('../Includes/Init.php');
 include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/Artist.php');
+include_once('../Includes/DB/USer.php');
 include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/AudioTrackFile.php');
 
-$artist = Artist::new_from_cookie();
-ensureArtistIsLoggedIn($artist);
+$user = User::new_from_cookie();
+ensureUserIsLoggedIn($user);
 
 $msg = get_param('msg');
 
-$newbordTrackIdList = AudioTrack::fetchAllNewbornTrackIdsForArtistId($artist->id);
+$newbordTrackIdList = AudioTrack::fetchAllNewbornTrackIdsForUserId($user->id);
 foreach ($newbordTrackIdList as $nbtid) {
     AudioTrack::delete_with_id($nbtid);
 }
 
-$originalTracks = AudioTrack::fetch_all_originals_of_artist_id_from_to($artist->id, 0, 999999999, true, true, -1);
-$remixedTracks  = AudioTrack::fetch_all_remixes_of_artist_id_from_to($artist->id, 0, 999999999, true, true, -1);
+$originalTracks = AudioTrack::fetch_all_originals_of_user_id_from_to($user->id, 0, 999999999, true, true, -1);
+$remixedTracks  = AudioTrack::fetch_all_remixes_of_user_id_from_to($user->id, 0, 999999999, true, true, -1);
 
 writePageDoctype();
 
@@ -107,7 +107,7 @@ foreach ($originalTracks as $t) {
     echo '<td style="width:15%"><a href="javascript:askForConfirmationAndRedirect(\'Do you really want to delete this track?\', \'' .
             escape_and_rewrite_single_quotes($t->title) . '\', \'track.php?action=delete&tid=' . $t->id . '\');">Delete track</a></td>';
     if ($t->visibility == 'public') {
-        echo '<td style="vertical-align:middle"><a href="javascript:share(' . $t->id . ',' . $t->artist_id .');"><img border="0" src="../Images/fb_share.png"></a></td>';
+        echo '<td style="vertical-align:middle"><a href="javascript:share(' . $t->id . ',' . $t->user_id .');"><img border="0" src="../Images/fb_share.png"></a></td>';
     } else {
         echo '<td>&nbsp;</td>';
     }

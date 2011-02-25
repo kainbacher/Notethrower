@@ -3,8 +3,6 @@
 include_once('../Includes/Init.php');
 include_once('../Includes/Paginator.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/Artist.php');
-include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/News.php');
 
 $pageNum = get_numeric_param('page');

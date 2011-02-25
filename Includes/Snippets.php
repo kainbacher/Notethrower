@@ -46,21 +46,21 @@ function writeGoogleAnalyticsStuff() {
     }
 }
 
-function getArtistImageHtml($artistImageFilename, $artistName, $size) {
+function getUserImageHtml($userImageFilename, $userName, $size) {
     global $logger;
 
-    if ($artistImageFilename) {
-        if ($size == 'thumb' || $size == 'tiny') $artistImageFilename = str_replace('.jpg', '_thumb.jpg', $artistImageFilename);
+    if ($userImageFilename) {
+        if ($size == 'thumb' || $size == 'tiny') $userImageFilename = str_replace('.jpg', '_thumb.jpg', $userImageFilename);
 
-        $artistImg    = $GLOBALS['ARTIST_IMAGE_BASE_PATH'] . $artistImageFilename;
-        $artistImgUrl = $GLOBALS['ARTIST_IMAGE_BASE_URL']  . $artistImageFilename;
+        $userImg    = $GLOBALS['USER_IMAGE_BASE_PATH'] . $userImageFilename;
+        $userImgUrl = $GLOBALS['USER_IMAGE_BASE_URL']  . $userImageFilename;
 
-        $logger->debug('artist img: ' . $artistImg);
+        $logger->debug('user img: ' . $userImg);
 
-        return '<img title="' . escape($artistName) . '" src="' . $artistImgUrl . '"' . ($size == 'tiny' ? ' height="30"' : '') . '>';
+        return '<img title="' . escape($userName) . '" src="' . $userImgUrl . '"' . ($size == 'tiny' ? ' height="30"' : '') . '>';
 
     } else {
-        return '<img title="' . escape($artistName) . '" src="' . $GLOBALS['BASE_URL'] . 'Images/no_artist_image.png"' . ($size == 'tiny' ? ' height="30"' : '') . '>';
+        return '<img title="' . escape($userName) . '" src="' . $GLOBALS['BASE_URL'] . 'Images/no_artist_image.png"' . ($size == 'tiny' ? ' height="30"' : '') . '>';
     }
 }
 

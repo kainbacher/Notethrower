@@ -2,19 +2,19 @@
 
 include_once('../Includes/Init.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/Artist.php');
+include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/News.php');
 
 $loginErrorMsg = '';
 
-$visitorArtistId = -1;
+$visitorUserId = -1;
 
 $userIsLoggedIn = false;
-$artist = Artist::new_from_cookie();
-if ($artist) {
-    $visitorArtistId = $artist->id;
-    $logger->info('visitor artist id: ' . $visitorArtistId);
+$user = User::new_from_cookie();
+if ($user) {
+    $visitorUserId = $user->id;
+    $logger->info('visitor user id: ' . $visitorUserId);
 
     $userIsLoggedIn = true;
     $logger->info('user is logged in');
@@ -25,9 +25,9 @@ if ($artist) {
     if (get_param('action') == 'login') {
         $logger->info('login request received');
         if (get_param('username') && get_param('password')) {
-            $artist = Artist::fetch_for_username_password(get_param('username'), get_param('password'));
-            if ($artist && $artist->status == 'active') {
-                $artist->doLogin();
+            $user = User::fetch_for_username_password(get_param('username'), get_param('password'));
+            if ($user && $user->status == 'active') {
+                $user->doLogin();
                 $logger->info('login successful, reloading page to set cookie');
                 header('Location: ' . $_SERVER['PHP_SELF']);
                 exit;
@@ -44,7 +44,7 @@ if ($artist) {
     }
 }
 
-$trackCount = AudioTrack::count_all(false, false, $visitorArtistId);
+$trackCount = AudioTrack::count_all(false, false, $visitorUserId);
 $logger->info('track count: ' . $trackCount);
 
 $newsCount = News::count_all();
@@ -62,7 +62,7 @@ writePageDoctype();
         
 // the track id, if it a tid is specified as query parameter
 // (deep link to load a song in the widget)
-// we need the track id and the artist id to load the widget
+// we need the track id and the user id to load the widget
 // so one have to use ?tid=<trackid>&taid=<arstistIdOfTheTrack> 
 // to load the specific track in the widget
 var tid  = -1;
@@ -171,8 +171,8 @@ function showSendMessagePopup(raid) {
     window.open('sendMessage.php?raid=' + raid, 'NT_SEND_MESSAGE', 'scrollbars=yes,resizable=yes,status=0,width=600,height=400');
 }
 
-function showCollaborationArtistsPopup() {
-    window.open('showCollaborationArtists.php?aid=<?php echo $artist->id; ?>', 'NT_COLLABORATORS', 'scrollbars=yes,resizable=yes,status=0,width=400,height=600');
+function showCollaborationUsersPopup() {
+    window.open('showCollaborationUsers.php?aid=<?php echo $user->id; ?>', 'NT_COLLABORATORS', 'scrollbars=yes,resizable=yes,status=0,width=400,height=600');
 }
 
 function showLogin() {
@@ -252,12 +252,12 @@ $(document).ready(function(){
 $aidForWidget = null;
 
 if ($userIsLoggedIn) {
-    $aidForWidget = $artist->id;
+    $aidForWidget = $user->id;
 
 } else {
-    $newestTrack = AudioTrack::fetch_newest_from_to(0, 1, false, false, $visitorArtistId);
+    $newestTrack = AudioTrack::fetch_newest_from_to(0, 1, false, false, $visitorUserId);
     if (count($newestTrack) > 0) {
-        $aidForWidget = $newestTrack[0]->artist_id;
+        $aidForWidget = $newestTrack[0]->user_id;
     }
 }
 

@@ -6,8 +6,8 @@ include_once('../Includes/Snippets.php');
 // dao for pp_message table
 class Message {
     var $id;
-    var $sender_artist_id;
-    var $recipient_artist_id;
+    var $sender_user_id;
+    var $recipient_user_id;
     var $subject;
     var $text;
     var $deleted;
@@ -15,22 +15,22 @@ class Message {
     var $entry_date;
 
     // non-table fields
-    var $sender_artist_name;
+    var $sender_user_name;
 
     // constructors
     // ------------
     function Message() {
     }
 
-    function fetch_all_for_recipient_artist_id($raid) {
+    function fetch_all_for_recipient_user_id($raid) {
         $objs = array();
 
         $result = _mysql_query(
-            'select m.*, a.name as sender_artist_name ' .
-            'from pp_message m, pp_artist a ' .
-            'where m.recipient_artist_id = ' . n($raid) . ' ' .
+            'select m.*, a.name as sender_user_name ' .
+            'from pp_message m, pp_user a ' .
+            'where m.recipient_user_id = ' . n($raid) . ' ' .
             'and m.deleted = 0 ' .
-            'and m.sender_artist_id = a.id ' .
+            'and m.sender_user_id = a.id ' .
             'order by m.entry_date desc '
         );
 
@@ -51,10 +51,10 @@ class Message {
 
     function fetch_for_id($id) {
         $result = _mysql_query(
-            'select m.*, a.name as sender_artist_name ' .
-            'from pp_message m, pp_artist a ' .
+            'select m.*, a.name as sender_user_name ' .
+            'from pp_message m, pp_user a ' .
             'where m.id = ' . n($id) . ' ' .
-            'and m.sender_artist_id = a.id'
+            'and m.sender_user_id = a.id'
         );
 
         if ($row = mysql_fetch_array($result)) {
@@ -71,8 +71,8 @@ class Message {
 
     function _read_row($m, $row) {
         $m->id                  = $row['id'];
-        $m->sender_artist_id    = $row['sender_artist_id'];
-        $m->recipient_artist_id = $row['recipient_artist_id'];
+        $m->sender_user_id    = $row['sender_user_id'];
+        $m->recipient_user_id = $row['recipient_user_id'];
         $m->subject             = $row['subject'];
         $m->text                = $row['text'];
         $m->deleted             = $row['deleted'];
@@ -80,7 +80,7 @@ class Message {
         $m->entry_date          = reformat_sql_date($row['entry_date']);
 
         // non-table fields
-        $m->sender_artist_name  = $row['sender_artist_name'];
+        $m->sender_user_name  = $row['sender_user_name'];
 
         return $m;
     }
@@ -92,26 +92,26 @@ class Message {
             'create table if not exists pp_message ' .
             '(' .
             'id                  int(10)      not null auto_increment, ' .
-            'sender_artist_id    int(10)      not null, ' .
-            'recipient_artist_id int(10)      not null, ' .
+            'sender_user_id    int(10)      not null, ' .
+            'recipient_user_id int(10)      not null, ' .
             'subject             varchar(255), ' .
             'text                text         not null, ' .
             'deleted             tinyint(1)   not null, ' .
             'marked_as_read      tinyint(1)   not null, ' .
             'entry_date          datetime     not null default "1970-01-01 00:00:00", ' .
             'primary key (id), ' .
-            'key aid_del (recipient_artist_id, deleted) ' .
+            'key aid_del (recipient_user_id, deleted) ' .
             ')'
         );
 
         return $ok;
     }
 
-    function count_all_unread_msgs_for_recipient_artist_id($raid) {
+    function count_all_unread_msgs_for_recipient_user_id($raid) {
         $result = _mysql_query(
             'select count(*) as cnt ' .
             'from pp_message ' .
-            'where recipient_artist_id = ' . n($raid) . ' ' .
+            'where recipient_user_id = ' . n($raid) . ' ' .
             'and marked_as_read = 0'
         );
 
@@ -134,13 +134,13 @@ class Message {
         );
     }
 
-    function mark_all_as_read_for_recipient_artist_id($raid) {
+    function mark_all_as_read_for_recipient_user_id($raid) {
         if (!$raid) return;
 
         return _mysql_query(
             'update pp_message ' .
             'set marked_as_read = 1 ' .
-            'where recipient_artist_id = ' . n($raid)
+            'where recipient_user_id = ' . n($raid)
         );
     }
 
@@ -157,10 +157,10 @@ class Message {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_message ' .
-            '(sender_artist_id, recipient_artist_id, subject, text, deleted, marked_as_read, entry_date) ' .
+            '(sender_user_id, recipient_user_id, subject, text, deleted, marked_as_read, entry_date) ' .
             'values (' .
-            n($this->sender_artist_id)     . ', ' .
-            n($this->recipient_artist_id)  . ', ' .
+            n($this->sender_user_id)     . ', ' .
+            n($this->recipient_user_id)  . ', ' .
             qq($this->subject)             . ', ' .
             qq($this->text)                . ', ' .
             b($this->deleted)              . ', ' .
@@ -181,8 +181,8 @@ class Message {
     function update() {
         $ok = _mysql_query(
             'update pp_message ' .
-            'set sender_artist_id = ' . n($this->sender_artist_id)    . ', ' .
-            'recipient_artist_id = '  . n($this->recipient_artist_id) . ', ' .
+            'set sender_user_id = ' . n($this->sender_user_id)    . ', ' .
+            'recipient_user_id = '  . n($this->recipient_user_id) . ', ' .
             'subject = '              . qq($this->subject)            . ', ' .
             'text = '                 . qq($this->text)               . ', ' .
             'deleted = '              . b($this->deleted)             . ', ' .

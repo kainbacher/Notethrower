@@ -31,9 +31,9 @@ $TMP_UPLOAD_PATH = $BASE_PATH . 'Uploader' . $PATH_SEPARATOR . 'uploads' . $PATH
 
 $CONTENT_BASE_PATH      = $BASE_PATH . 'Content' . $PATH_SEPARATOR . 'Tracks' . $PATH_SEPARATOR;
 $LOGFILE_BASE_PATH      = $BASE_PATH . 'Log' . $PATH_SEPARATOR;
-$USER_IMAGE_BASE_PATH = $BASE_PATH . 'Content' . $PATH_SEPARATOR . 'ArtistImages' . $PATH_SEPARATOR;
+$USER_IMAGE_BASE_PATH = $BASE_PATH . 'Content' . $PATH_SEPARATOR . 'UserImages' . $PATH_SEPARATOR;
 
-$USER_IMAGE_BASE_URL  = $BASE_URL . 'Content/ArtistImages/';
+$USER_IMAGE_BASE_URL  = $BASE_URL . 'Content/UserImages/';
 
 $RETURN_URL = $BASE_URL . 'Backend/downloadStart.php';
 

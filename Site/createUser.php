@@ -12,6 +12,8 @@ $message = get_param('msg');
 $problemOccured = false;
 $errorFields = Array();
 
+$signupMode = get_param('signupAs');
+
 // FIXME - rename the script - it's also used for updates
 
 $userIsLoggedIn = false;
@@ -26,14 +28,14 @@ if ($user) {
 
 if (get_param('action') == 'save') {
     $logger->info('attempting to save user account data ...');
-    if (inputDataOk($errorFields, $user, $userIsLoggedIn)) {
+    if (inputDataOk($errorFields, $user, $userIsLoggedIn, $signupMode)) {
         if (!$userIsLoggedIn) {
             $user = new User();
         }
 
         $oldPasswordMd5 = $user->password_md5;
 
-        processParams($user, true);
+        processParams($user, true, $userIsLoggedIn, $signupMode);
 
         // check if a url was entered or if there's still only the predefined value
         if ($user->webpage_url == 'http://') $user->webpage_url = '';
@@ -77,16 +79,18 @@ if (get_param('action') == 'save') {
         }
 
     } else {
-        $logger->info('input data was invalid');
+        $logger->info('input data was invalid: ' . join(', ', $errorFields));
         $unpersistedUser = new User();
-        processParams($unpersistedUser, false);
+        processParams($unpersistedUser, false, $userIsLoggedIn, $signupMode);
         $message = 'Please correct the highlighted problems!';
         $problemOccured = true;
     }
 }
 
-function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
+function inputDataOk(&$errorFields, &$user, $userIsLoggedIn, $signupMode) {
     global $logger;
+
+    $pageMode = getPageMode($signupMode, $userIsLoggedIn, $user);
 
     $result = true;
 
@@ -142,21 +146,42 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
         }
     }
 
-    if (strlen(get_param('name')) < 1) {
-        $errorFields['name'] = 'Name is missing!';
-        $result = false;
-
-    } else {
-        $checkUser = User::fetch_for_name(get_param('name'));
-        if ($checkUser) {
-            if (!$userIsLoggedIn) { // if user is created from scratch
-                $errorFields['name'] = 'User name already in use! Please choose a different one.';
-                $result = false;
-
-            } else { // user data update
-                if ($user->name != get_param('name')) { // display an error only if the name was changed in the update process
+    // check (artist) name
+    if ($pageMode == 'artist') {
+        if (strlen(get_param('name')) < 1) {
+            $errorFields['name'] = 'Name is missing!';
+            $result = false;
+    
+        } else {
+            $checkUser = User::fetch_for_name(get_param('name'));
+            if ($checkUser) {
+                if (!$userIsLoggedIn) { // if user is created from scratch
                     $errorFields['name'] = 'Name already in use! Please choose a different one.';
                     $result = false;
+    
+                } else { // user data update
+                    if ($user->name != get_param('name')) { // display an error only if the name was changed in the update process
+                        $errorFields['name'] = 'Name already in use! Please choose a different one.';
+                        $result = false;
+                    }
+                }
+            }
+        }
+        
+    } else { // fan mode
+        // if the user signs up as a fan only, the username is used as the (artist) name, too.
+        if (strlen(get_param('username')) > 0) {
+            $checkUser = User::fetch_for_name(get_param('username'));
+            if ($checkUser) {
+                if (!$userIsLoggedIn) { // if user is created from scratch
+                    $errorFields['username'] = 'Name already in use! Please choose a different one.';
+                    $result = false;
+    
+                } else { // user data update
+                    if ($user->name != get_param('username')) { // display an error only if the name was changed in the update process
+                        $errorFields['username'] = 'Name already in use! Please choose a different one.';
+                        $result = false;
+                    }
                 }
             }
         }
@@ -170,12 +195,12 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
     $checkUser = User::fetch_for_username(get_param('username'));
     if ($checkUser) {
         if (!$userIsLoggedIn) { // if user is created from scratch
-            $errorFields['username'] = 'Username already in use! Please choose a different one.';
+            $errorFields['username'] = 'Name already in use! Please choose a different one.';
             $result = false;
 
         } else { // user data update
             if ($user->username != get_param('username')) { // display an error only if the name was changed in the update process
-                $errorFields['username'] = 'Username already in use! Please choose a different one.';
+                $errorFields['username'] = 'Name already in use! Please choose a different one.';
                 $result = false;
             }
         }
@@ -197,9 +222,11 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
         $result = false;
     }
 
-    if (!$userIsLoggedIn && get_param('terms_accepted') != 'yes') {
-        $errorFields['terms_accepted'] = 'You need to agree to Notethrower\'s Artist Agreement in order to sign up.';
-        $result = false;
+    if ($pageMode == 'artist') {
+        if (!$userIsLoggedIn && get_param('terms_accepted') != 'yes') {
+            $errorFields['terms_accepted'] = 'You need to agree to Notethrower\'s Artist Agreement in order to sign up.';
+            $result = false;
+        }
     }
 
     // check captcha input
@@ -220,16 +247,26 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
     return $result;
 }
 
-function processParams(&$user, $uploadAllowed) {
+function processParams(&$user, $uploadAllowed, $userIsLoggedIn, $signupMode) {
     global $logger;
+
+    $pageMode = getPageMode($signupMode, $userIsLoggedIn, $user);
 
     $user->username        = get_param('username');
     $user->email_address   = get_param('email_address');
-    $user->name            = get_param('name');
-    $user->artist_info     = get_param('artist_info');
-    $user->additional_info = get_param('additional_info');
-    $user->webpage_url     = get_param('webpage_url');
-    $user->paypal_account  = get_param('paypal_account');
+    
+    if ($pageMode == 'artist') {
+        $user->is_artist       = true;
+        $user->webpage_url     = get_param('webpage_url');
+        $user->name            = get_param('name');
+        $user->artist_info     = get_param('artist_info');
+        $user->additional_info = get_param('additional_info');
+        $user->paypal_account  = get_param('paypal_account');
+        
+    } else {
+        $user->is_artist       = false;
+        $user->name            = get_param('username'); // use the username as (artist) name as long as the user is just a fan
+    }
 
     if (get_param('password')) { // this can be empty when an account is updated without a password change. we musst not save an empty password then.
         $user->password_md5 = md5(get_param('password'));
@@ -271,6 +308,14 @@ function processParams(&$user, $uploadAllowed) {
     }
 }
 
+function getPageMode($signupMode, $userIsLoggedIn, &$user) {
+    $mode = 'fan';
+    if ($signupMode && $signupMode == 'artist') $mode = 'artist';
+    if ($userIsLoggedIn && $user->is_artist) $mode = 'artist';
+    
+    return $mode;
+}
+
 writePageDoctype();
 
 ?>
@@ -299,23 +344,31 @@ writePageDoctype();
 
 <?php
 
+$pageMode = getPageMode($signupMode, $userIsLoggedIn, $user);
+
 if ($userIsLoggedIn) {
-    echo '<br/><h1>Update user account:</h1>';
+    echo '<br><h1>Update user account:</h1>';
+    
 } else {
-    echo '<br/><h1>Share Your Frequency! Music Collaboration and Licensing...made easy.</h1><br>' .
-         'We are a team of music lovers that believe that musicians deserve to get paid for their work. We created Notethrower to help them find other artists to share in the music making and music selling process.  When artists from different backgrounds collaborate together, the potential for great creative works increases significantly. Plus, it is just fun to hear how another artist transforms or works your guitar riff or vocal track into a completely new song!<br>' .
-         '<br>' .
-         'There are many remix contests and sites on the web, but they all seem to ask the artist to be happy with giving away their music for free.<br>' .
-         'Notethrower recognizes the hard work and talent of it\'s community and wants to reward musicians by providing an innovative platform to collaborate and share in the ownership of new work, and of course, get paid.<br>' .
-         '<br>' .
-         'Think of us as a Co-Writers community.  We provide the legal framework regarding the copyrights and ownership of work so artists can spend their time creating music instead of dealing with the complicated paperwork of music licensing, especially with another artist.  With Notethrower, artists agree to work together and co-write new pieces of music that are then made available to the global marketplace of music licensing.<br>' .
-         'Artists upload their music and easily create their own Notethrower music collaboration and licensing widget that can be embedded everywhere like Facebook, Myspace and countless other sites.  Just click the grab this button and follow the easy instructions.  Once an artists widget is visible online, anyone who sees it can listen to, purchase, and download a music track for commercial licensing.  The artist or bands who created the music get paid, and Notethrower only keeps 10% of the profit. That\'s 90% directly to the artists!<br>' .
-         '<br>' .
-         'Just fill in the details below.  You can update your information at any time.<br>' .
-         '<br>' .
-         'A verification email will be sent to you to log in. Once you have successfully done so, you can start your musical journey by uploading your first mp3 and artist info. Now let\'s make some music together!<br>';
-    echo '<br>';
-    echo '<h1>Create new artist account:</h1>';
+    if ($pageMode == 'artist') {
+        echo '<br><h1>Share Your Frequency! Music Collaboration and Licensing...made easy.</h1><br>' .
+             'We are a team of music lovers that believe that musicians deserve to get paid for their work. We created Notethrower to help them find other artists to share in the music making and music selling process.  When artists from different backgrounds collaborate together, the potential for great creative works increases significantly. Plus, it is just fun to hear how another artist transforms or works your guitar riff or vocal track into a completely new song!<br>' .
+             '<br>' .
+             'There are many remix contests and sites on the web, but they all seem to ask the artist to be happy with giving away their music for free.<br>' .
+             'Notethrower recognizes the hard work and talent of it\'s community and wants to reward musicians by providing an innovative platform to collaborate and share in the ownership of new work, and of course, get paid.<br>' .
+             '<br>' .
+             'Think of us as a Co-Writers community.  We provide the legal framework regarding the copyrights and ownership of work so artists can spend their time creating music instead of dealing with the complicated paperwork of music licensing, especially with another artist.  With Notethrower, artists agree to work together and co-write new pieces of music that are then made available to the global marketplace of music licensing.<br>' .
+             'Artists upload their music and easily create their own Notethrower music collaboration and licensing widget that can be embedded everywhere like Facebook, Myspace and countless other sites.  Just click the grab this button and follow the easy instructions.  Once an artists widget is visible online, anyone who sees it can listen to, purchase, and download a music track for commercial licensing.  The artist or bands who created the music get paid, and Notethrower only keeps 10% of the profit. That\'s 90% directly to the artists!<br>' .
+             '<br>' .
+             'Just fill in the details below.  You can update your information at any time.<br>' .
+             '<br>' .
+             'A verification email will be sent to you to log in. Once you have successfully done so, you can start your musical journey by uploading your first mp3 and artist info. Now let\'s make some music together!<br>';
+        echo '<br>';
+        echo '<h1>Create new artist account:</h1>';
+    
+    } else {
+        echo '<br><h1>Create new fan account:</h1>';
+    }
 }
 
 
@@ -326,6 +379,7 @@ if ($userIsLoggedIn) {
 
           <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="action" value="save">
+            <input type="hidden" name="signupAs" value="<?= get_param('signupAs') ?>">
             <table class="userFormTable">
               <tr>
                 <td colspan="3">
@@ -344,21 +398,27 @@ if ($message) {
               </tr>
 <?php
 
-showFormField('Artist/Band name',           'text',     'name',             '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">Please put your band or artist name in the field.</div></div>', true,  255, $user, $unpersistedUser, $problemOccured, $errorFields);
+if ($pageMode == 'artist') {
+    showFormField('Artist/Band name',       'text',     'name',             '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">Please put your band or artist name in the field.</div></div>', true,  255, $user, $unpersistedUser, $problemOccured, $errorFields);
+}
+
 showFormField('Username',                   'text',     'username',         '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">This is your username for logging in to Notethrower.<br>If you want to provide a different name than your artist profile, you may do so.</div></div>', true,  255, $user, $unpersistedUser, $problemOccured, $errorFields);
 showFormField('Email address',              'text',     'email_address',    '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">We will send you a verification link to this address to login.  If another user sends you a message, a notification will also be sent here.<br>We will never give out your email or spam you. Aren\'t we nice?</div></div>', true,  255, $user, $unpersistedUser, $problemOccured, $errorFields);
-showFormField('Webpage URL',                'text',     'webpage_url',      '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">If you have another place you would like your fans to find you, please enter the link here. For example, your MySpace or Facebook page.</div></div>', false, 255, $user, $unpersistedUser, $problemOccured, $errorFields, 'http://');
-showFormField('Paypal account',             'text',     'paypal_account',   '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">This is where your earnings will be sent. <a href="http://www.paypal.com" target="_blank">Get a PayPal account!</a><br>You can always add this later, but we need it in order to pay you.  We\'ve made it extremely easy for you to get paid for licensing your work. If someone has remixed your work and made it available in their widget, You get paid 50% of the earnings from the sale of that work. Now imagine if there are hundreds of remixed versions of your track all available for licensing. Many more opportunities to get paid for your initial work.</div></div>', false, 255, $user, $unpersistedUser, $problemOccured, $errorFields);
+
+if ($pageMode == 'artist') {
+    showFormField('Webpage URL',            'text',     'webpage_url',      '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">If you have another place you would like your fans to find you, please enter the link here. For example, your MySpace or Facebook page.</div></div>', false, 255, $user, $unpersistedUser, $problemOccured, $errorFields, 'http://');
+    showFormField('Paypal account',         'text',     'paypal_account',   '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">This is where your earnings will be sent. <a href="http://www.paypal.com" target="_blank">Get a PayPal account!</a><br>You can always add this later, but we need it in order to pay you.  We\'ve made it extremely easy for you to get paid for licensing your work. If someone has remixed your work and made it available in their widget, You get paid 50% of the earnings from the sale of that work. Now imagine if there are hundreds of remixed versions of your track all available for licensing. Many more opportunities to get paid for your initial work.</div></div>', false, 255, $user, $unpersistedUser, $problemOccured, $errorFields);
+}
 
 if ($userIsLoggedIn) { // it's an update
-    showFormField('Artist image',           'file',     'image_filename',   '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">You can add this later if you like. Photos may not contain nudity, violent or offensive material, or copyrighted images. If you violate these terms your account may be deleted.</div></div>', false, 255, $user, $unpersistedUser, $problemOccured, $errorFields);
+    showFormField('User image',             'file',     'image_filename',   '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">You can add this later if you like. Photos may not contain nudity, violent or offensive material, or copyrighted images. If you violate these terms your account may be deleted.</div></div>', false, 255, $user, $unpersistedUser, $problemOccured, $errorFields);
 
-    echo '<tr><td>Current artist image:</td>' . "\n";
+    echo '<tr><td>Current user image:</td>' . "\n";
     echo '<td>' . "\n";
     if ($user->image_filename) {
         echo '<img src="' . $USER_IMAGE_BASE_URL . $user->image_filename . '" alt="' . escape($user->name) . '">';
     } else {
-        echo 'No artist image uploaded yet.';
+        echo 'No user image uploaded yet.';
     }
     echo '</td><td>&nbsp;</td>' . "\n";
     echo '</tr>' . "\n";
@@ -372,14 +432,18 @@ if ($userIsLoggedIn) { // it's an update
     showFormField('Password verification',  'password', 'password2',        '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">This should be pretty easy. Do you remember the password you just created? Type it here.</div></div>', true,  255, $user, $unpersistedUser, $problemOccured, $errorFields);
 }
 
-showFormField('Artist/Band information',    'textarea', 'artist_info',      '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">Tell us a bit about yourself or your band. What other bands or music influenced you? Where are you from?</div></div>', false, 0,   $user, $unpersistedUser, $problemOccured, $errorFields);
-showFormField('Additional information',     'textarea', 'additional_info',  '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">Anything else we should know?</div></div>', false, 0,   $user, $unpersistedUser, $problemOccured, $errorFields);
+if ($pageMode == 'artist') {
+    showFormField('Artist/Band information', 'textarea', 'artist_info',     '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">Tell us a bit about yourself or your band. What other bands or music influenced you? Where are you from?</div></div>', false, 0,   $user, $unpersistedUser, $problemOccured, $errorFields);
+    showFormField('Additional information',  'textarea', 'additional_info', '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">Anything else we should know?</div></div>', false, 0,   $user, $unpersistedUser, $problemOccured, $errorFields);
+}
 
 if (!$userIsLoggedIn) {
-    showFormField('Artist Agreement', 'checkbox',  'terms_accepted', 'I\'ve read and agree to <a href="javascript:showTermsAndConditions();">Notethrower\'s Artist Agreement</a>.', '', true, 0, $user, $unpersistedUser, $problemOccured, $errorFields);
+    if ($pageMode == 'artist') {
+        showFormField('Artist Agreement', 'checkbox',  'terms_accepted', 'I\'ve read and agree to <a href="javascript:showTermsAndConditions();">Notethrower\'s Artist Agreement</a>.', '', true, 0, $user, $unpersistedUser, $problemOccured, $errorFields);
+    }
 
     // captcha
-    showFormField('Verification', 'recaptcha', 'captcha', '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">Show us that you are human. After you create your account, check your email for a verification link to sign in. Once you are logged in, you may then upload your first track in mp3 format, as well as your artist picture and bio. See you soon!</div></div>', true, 0, $user, $unpersistedUser, $problemOccured, $errorFields);
+    showFormField('Verification', 'recaptcha', 'captcha', '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">Show us that you are human. After you create your account, check your email for a verification link to sign in.</div></div>', true, 0, $user, $unpersistedUser, $problemOccured, $errorFields);
 }
 
 ?>

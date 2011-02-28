@@ -9,7 +9,7 @@
 #settings_local.py
 
 Includes/Config_local.php
-Log/
+Log/*.log
 
 .DS_Store
 *.bak

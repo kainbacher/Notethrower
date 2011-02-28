@@ -92,7 +92,7 @@ $(document).ready(function(){
     }); 
 
 
-    /* !userInfo semdMessage */
+    /* !userInfo sendMessage */
     /* ---------------------------------------------------------------------- */
 /*
     $('.sendMessageLink a').bind('click', function(){

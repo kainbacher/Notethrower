@@ -356,7 +356,7 @@ if ($userIsLoggedIn) { // it's an update
     echo '<tr><td>Current artist image:</td>' . "\n";
     echo '<td>' . "\n";
     if ($user->image_filename) {
-        echo '<img src="' . $user_IMAGE_BASE_URL . $user->image_filename . '" alt="' . escape($user->name) . '">';
+        echo '<img src="' . $USER_IMAGE_BASE_URL . $user->image_filename . '" alt="' . escape($user->name) . '">';
     } else {
         echo 'No artist image uploaded yet.';
     }

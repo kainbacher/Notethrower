@@ -15,6 +15,8 @@ class User {
     var $image_filename;
     var $webpage_url;
     var $paypal_account;
+    var $activity_points;
+    var $is_artist; // if true, the user is both a fan and an artist, if false the user is only a fan
     var $status; // active, inactive (account created but not confirmed), banned
     var $entry_date;
 
@@ -231,6 +233,8 @@ class User {
         $a->image_filename  = $row['image_filename'];
         $a->webpage_url     = $row['webpage_url'];
         $a->paypal_account  = $row['paypal_account'];
+        $a->activity_points = $row['activity_points'];
+        $a->is_artist       = $row['is_artist'];
         $a->status          = $row['status'];
         $a->entry_date      = reformat_sql_date($row['entry_date']);
 
@@ -253,6 +257,8 @@ class User {
             'image_filename  varchar(255), ' .
             'webpage_url     varchar(255), ' .
             'paypal_account  varchar(255), ' .
+            'activity_points int(10), ' .
+            'is_artist       tinyint(1)   not null, ' .
             'status          varchar(20)  not null, ' .
             'entry_date      datetime     not null default "1970-01-01 00:00:00", ' .
             'primary key (id), ' .
@@ -269,8 +275,8 @@ class User {
             if (!$test_record || !$test_record->id) {
                 $ok = _mysql_query(
                     'insert into pp_user (id, username, password_md5, email_address, name, artist_info, additional_info, ' .
-                    'image_filename, webpage_url, paypal_account, status, entry_date) ' .
-                    'values (-1, "_unknown_artist", "' . md5('dummyPwd') . '", "", "Unknown Artist", "", "", "", "", "", "active", now())'
+                    'image_filename, webpage_url, paypal_account, activity_points, is_artist, status, entry_date) ' .
+                    'values (-1, "_unknown_artist", "' . md5('dummyPwd') . '", "", "Unknown Artist", "", "", "", "", "", 0, 1, "active", now())'
                 );
             }
         }
@@ -334,7 +340,7 @@ class User {
         $ok = _mysql_query(
             'insert into pp_user ' .
             '(username, password_md5, email_address, name, artist_info, additional_info, image_filename, ' .
-            'webpage_url, paypal_account, status, entry_date) ' .
+            'webpage_url, paypal_account, activity_points, is_artist, status, entry_date) ' .
             'values (' .
             qq($this->username)        . ', ' .
             qq($this->password_md5)    . ', ' .
@@ -345,6 +351,8 @@ class User {
             qq($this->image_filename)  . ', ' .
             qq($this->webpage_url)     . ', ' .
             qq($this->paypal_account)  . ', ' .
+            n($this->activity_points)  . ', ' .
+            b($this->is_artist)        . ', ' .
             qq($this->status)          . ', ' .
             'now()'                    .
             ')'
@@ -371,6 +379,8 @@ class User {
             'image_filename = '    . qq($this->image_filename)  . ', ' .
             'webpage_url = '       . qq($this->webpage_url)     . ', ' .
             'paypal_account = '    . qq($this->paypal_account)  . ', ' .
+            'activity_points = '   . n($this->activity_points)  . ', ' .
+            'is_artist = '         . b($this->is_artist)        . ', ' .
             'status = '            . qq($this->status)          . ' ' .
             // entry_date intentionally not set here
             'where id = '          . n($this->id)

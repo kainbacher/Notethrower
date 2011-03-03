@@ -12,8 +12,6 @@ $message = get_param('msg');
 $problemOccured = false;
 $errorFields = Array();
 
-$signupMode = get_param('signupAs');
-
 // FIXME - rename the script - it's also used for updates
 
 $userIsLoggedIn = false;
@@ -28,14 +26,14 @@ if ($user) {
 
 if (get_param('action') == 'save') {
     $logger->info('attempting to save user account data ...');
-    if (inputDataOk($errorFields, $user, $userIsLoggedIn, $signupMode)) {
+    if (inputDataOk($errorFields, $user, $userIsLoggedIn)) {
         if (!$userIsLoggedIn) {
             $user = new User();
         }
 
         $oldPasswordMd5 = $user->password_md5;
 
-        processParams($user, true, $userIsLoggedIn, $signupMode);
+        processParams($user, true, $userIsLoggedIn);
 
         // check if a url was entered or if there's still only the predefined value
         if ($user->webpage_url == 'http://') $user->webpage_url = '';
@@ -81,16 +79,16 @@ if (get_param('action') == 'save') {
     } else {
         $logger->info('input data was invalid: ' . join(', ', $errorFields));
         $unpersistedUser = new User();
-        processParams($unpersistedUser, false, $userIsLoggedIn, $signupMode);
+        processParams($unpersistedUser, false, $userIsLoggedIn);
         $message = 'Please correct the highlighted problems!';
         $problemOccured = true;
     }
 }
 
-function inputDataOk(&$errorFields, &$user, $userIsLoggedIn, $signupMode) {
+function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
     global $logger;
 
-    $pageMode = getPageMode($signupMode, $userIsLoggedIn, $user);
+    $pageMode = getPageMode($userIsLoggedIn, $user);
 
     $result = true;
 
@@ -247,10 +245,10 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn, $signupMode) {
     return $result;
 }
 
-function processParams(&$user, $uploadAllowed, $userIsLoggedIn, $signupMode) {
+function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
     global $logger;
 
-    $pageMode = getPageMode($signupMode, $userIsLoggedIn, $user);
+    $pageMode = getPageMode($userIsLoggedIn, $user);
 
     $user->username        = get_param('username');
     $user->email_address   = get_param('email_address');
@@ -308,9 +306,9 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn, $signupMode) {
     }
 }
 
-function getPageMode($signupMode, $userIsLoggedIn, &$user) {
+function getPageMode($userIsLoggedIn, &$user) {
     $mode = 'fan';
-    if ($signupMode && $signupMode == 'artist') $mode = 'artist';
+    if (get_param('signupAs') && get_param('signupAs') == 'artist') $mode = 'artist';
     if ($userIsLoggedIn && $user->is_artist) $mode = 'artist';
     
     return $mode;
@@ -344,7 +342,7 @@ writePageDoctype();
 
 <?php
 
-$pageMode = getPageMode($signupMode, $userIsLoggedIn, $user);
+$pageMode = getPageMode($userIsLoggedIn, $user);
 
 if ($userIsLoggedIn) {
     echo '<br><h1>Update user account:</h1>';

@@ -566,6 +566,7 @@ function showSelectFriendsPopup() {
         <div id="trackFormPlusImage">
 
           <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="MAX_FILE_SIZE" value="524288001">
             <input type="hidden" name="action" value="save">
             <input type="hidden" name="tid" value="<?php echo $track->id; ?>">
             <table class="trackFormTable">

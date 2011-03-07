@@ -5,21 +5,21 @@ include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/AudioTrack.php');
 
-$leftTrack  = AudioTrack::fetchRandomTrack();
-$rightTrack = AudioTrack::fetchRandomTrack($leftTrack->id); // ensure that we have different tracks
+$leftTrack  = AudioTrack::fetchRandomPublicTrack();
+$rightTrack = AudioTrack::fetchRandomPublicTrack($leftTrack->id); // ensure that we have different tracks
 
 $pageHeader = processTpl('Common/pageHeader.html', array(
-    '${pageTitleSuffix}' => 'Start'
+    '${pageTitleSuffix}' => ' - Start'
 ));
 
 $leftPlayer = processTpl('Startpage/player.html', array(
     '${trackId}' => $leftTrack->id,
-    '${mp3Url}'  => $leftTrack->id,
+    '${mp3Url}'  => $leftTrack->getPreviewMp3Url(),
 ));
 
 $rightPlayer = processTpl('Startpage/player.html', array(
     '${trackId}' => $rightTrack->id,
-    '${mp3Url}'  => $rightTrack->id,
+    '${mp3Url}'  => $rightTrack->getPreviewMp3Url(),
 ));
 
 $pageFooter = processTpl('Common/pageFooter.html', array());

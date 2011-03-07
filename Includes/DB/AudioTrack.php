@@ -1,5 +1,6 @@
 <?php
 
+include_once('../Includes/Config.php');
 include_once('../Includes/DbConnect.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/AudioTrackFile.php');
@@ -10,8 +11,6 @@ include_once('../Includes/DB/AudioTrackAudioTrackAttribute.php');
 class AudioTrack {
     var $id;
     var $user_id;
-    var $user_name; // not a field in this table
-    var $user_img_filename; // not a field in this table
     var $title;
     var $preview_mp3_filename;
     var $orig_preview_mp3_filename;
@@ -19,7 +18,6 @@ class AudioTrack {
     var $type; // original or remix
     var $is_full_song;
     var $originating_user_id;
-    var $originating_user_name; // not a field in this table
     var $parent_track_id;
     var $price;
     var $currency;
@@ -36,6 +34,12 @@ class AudioTrack {
     var $containsOthers;
     var $needsOthers;
     var $additionalInfo;
+
+    // non-table fields
+    var $user_name;
+    var $user_img_filename;
+    var $originating_user_name;
+    var $mp3_filename;
 
     // constructors
     // ------------
@@ -511,16 +515,21 @@ class AudioTrack {
         return $idList;
     }
 
-    function fetchRandomTrack($excludeTrackId = null) {
-        $whereClause = '';
+    function fetchRandomPublicTrack($excludeTrackId = null) {
+        $whereClauseAddon = '';
         if (!is_null($excludeTrackId)) {
-            $whereClause = 'where id != ' . n($excludeTrackId) . ' ';
+            $whereClauseAddon = 'and t.id != ' . n($excludeTrackId) . ' ';
         }
 
         $result = _mysql_query(
-            'select * ' .
-            'from pp_audio_track ' .
-            $whereClause .
+            'select t.*, u.name as user_name, u.image_filename as user_img_filename, f.filename as mp3_filename ' .
+            'from pp_audio_track t, pp_audio_track_file f, pp_user u ' .
+            'where t.status = "active" ' .
+            'and t.visibility = "public" ' .
+            'and t.user_id = u.id ' .
+            'and t.id = f.track_id ' .
+            'and f.type = "HQMP3" ' .
+            $whereClauseAddon .
             'order by rand() ' .
             'limit 1'
         );
@@ -566,6 +575,7 @@ class AudioTrack {
         if (isset($row['user_name']))             $a->user_name             = $row['user_name'];
         if (isset($row['user_img_filename']))     $a->user_img_filename     = $row['user_img_filename'];
         if (isset($row['originating_user_name'])) $a->originating_user_name = $row['originating_user_name'];
+        if (isset($row['mp3_filename']))          $a->mp3_filename          = $row['mp3_filename'];
 
         return $a;
     }
@@ -577,7 +587,7 @@ class AudioTrack {
             'create table if not exists pp_audio_track ' .
             '(' .
             'id                        int(10)      not null auto_increment, ' .
-            'user_id                 int(10)      not null, ' .
+            'user_id                   int(10)      not null, ' .
             'title                     varchar(255) not null, ' .
             'preview_mp3_filename      varchar(255) not null, ' .
             'orig_preview_mp3_filename varchar(255) not null, ' .
@@ -695,6 +705,21 @@ class AudioTrack {
 
     // object methods
     // --------------
+    function getPreviewMp3Url() {
+        if (!$this->mp3_filename) {
+            show_fatal_error_and_exit('$this->mp3_filename is not set!');
+        }
+
+        $userSubdir = null;
+        if (ini_get('safe_mode')) {
+            $userSubdir = ''; // in safe mode we're not allowed to create directories
+        } else {
+            $userSubdir = md5('Wuizi' . $this->user_id);
+        }
+
+        return $GLOBALS['BASE_URL'] . 'Backend/preview.php?song=' . $this->mp3_filename;
+    }
+
     function save() {
         if (isset($this->id)) {
             return $this->update();

@@ -449,7 +449,17 @@ function handleNewFileUpload(&$track, &$user, $uploaderParams) {
         $newFileType = get_param('newfiletype');
 
         // upload to tmp file
-        $upload_filename = $track->id . '_' . $newFileType . '.mp3';
+        $upload_filename = $track->id . '_' . $newFileType;
+        if ($newFileType == 'WAV') {
+             $upload_filename .= '.wav';
+        } else if ($newFileType == 'ZIP') {
+             $upload_filename .= '.zip';
+        } else if ($newFileType == 'HQMP3') {
+             $upload_filename .= '.mp3';
+        } else {
+            show_fatal_error_and_exit('unrecognised file type: ' . $newFileType);
+        }
+
         //do_upload($upload_dir, 'newfilename', $upload_filename);
         do_solmetra_upload($GLOBALS['TMP_UPLOAD_PATH'] . $filename, $upload_dir, $upload_filename, true);
 

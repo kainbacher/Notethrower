@@ -25,6 +25,7 @@ class AudioTrack {
     var $currency;
     var $rating_count;
     var $rating_value;
+    var $competition_points; // when two songs are compared and one is chosen as the better song, its comp. points are incremented by 1
     var $genres;
     var $visibility;
     var $playback_count;
@@ -510,9 +511,34 @@ class AudioTrack {
         return $idList;
     }
 
+    function fetchRandomTrack($excludeTrackId = null) {
+        $whereClause = '';
+        if (!is_null($excludeTrackId)) {
+            $whereClause = 'where id != ' . n($excludeTrackId) . ' ';
+        }
+
+        $result = _mysql_query(
+            'select * ' .
+            'from pp_audio_track ' .
+            $whereClause .
+            'order by rand() ' .
+            'limit 1'
+        );
+
+        $a = new AudioTrack();
+
+        if ($row = mysql_fetch_array($result)) {
+            $a = AudioTrack::_read_row($a, $row);
+        }
+
+        mysql_free_result($result);
+
+        return $a;
+    }
+
     function _read_row($a, $row) {
         $a->id                        = $row['id'];
-        $a->user_id                 = $row['user_id'];
+        $a->user_id                   = $row['user_id'];
         $a->title                     = $row['title'];
         $a->preview_mp3_filename      = $row['preview_mp3_filename'];
         $a->orig_preview_mp3_filename = $row['orig_preview_mp3_filename'];
@@ -521,10 +547,11 @@ class AudioTrack {
         $a->sorting                   = $row['sorting'];
         $a->type                      = $row['type'];
         $a->is_full_song              = $row['is_full_song'];
-        $a->originating_user_id     = $row['originating_user_id'];
+        $a->originating_user_id       = $row['originating_user_id'];
         $a->parent_track_id           = $row['parent_track_id'];
         $a->rating_count              = $row['rating_count'];
         $a->rating_value              = $row['rating_value'];
+        $a->competition_points        = $row['competition_points'];
         $a->genres                    = $row['genres'];
         $a->visibility                = $row['visibility'];
         $a->playback_count            = $row['playback_count'];
@@ -563,6 +590,7 @@ class AudioTrack {
             'parent_track_id           int(10), ' .
             'rating_count              int(10)      not null, ' .
             'rating_value              float        not null, ' .
+            'competition_points        int(10)      not null, ' .
             'genres                    varchar(255), ' .
             'visibility                varchar(10)  not null, ' .
             'playback_count            int(10)      not null, ' .
@@ -680,10 +708,10 @@ class AudioTrack {
             'insert into pp_audio_track ' .
             '(user_id, title, preview_mp3_filename, orig_preview_mp3_filename, ' .
             'price, currency, sorting, type, is_full_song, originating_user_id, parent_track_id, rating_count, ' .
-            'rating_value, genres, visibility, playback_count, download_count, originator_notified, ' .
+            'rating_value, competition_points, genres, visibility, playback_count, download_count, originator_notified, ' .
             'status, contains_others, needs_others, additional_info, entry_date) ' .
             'values (' .
-            n($this->user_id)                  . ', ' .
+            n($this->user_id)                    . ', ' .
             qq($this->title)                     . ', ' .
             qq($this->preview_mp3_filename)      . ', ' .
             qq($this->orig_preview_mp3_filename) . ', ' .
@@ -692,10 +720,11 @@ class AudioTrack {
             n($this->sorting)                    . ', ' .
             qq($this->type)                      . ', ' .
             b($this->is_full_song)               . ', ' .
-            n($this->originating_user_id)      . ', ' .
+            n($this->originating_user_id)        . ', ' .
             n($this->parent_track_id)            . ', ' .
             n($this->rating_count)               . ', ' .
             n($this->rating_value)               . ', ' .
+            n($this->competition_points)         . ', ' .
             qq($this->genres)                    . ', ' .
             qq($this->visibility)                . ', ' .
             n($this->playback_count)             . ', ' .
@@ -721,7 +750,7 @@ class AudioTrack {
     function update() {
         $ok = _mysql_query(
             'update pp_audio_track ' .
-            'set user_id = '             . n($this->user_id)                  . ', ' .
+            'set user_id = '               . n($this->user_id)                    . ', ' .
             'title = '                     . qq($this->title)                     . ', ' .
             'preview_mp3_filename = '      . qq($this->preview_mp3_filename)      . ', ' .
             'orig_preview_mp3_filename = ' . qq($this->orig_preview_mp3_filename) . ', ' .
@@ -730,10 +759,11 @@ class AudioTrack {
             'sorting = '                   . n($this->sorting)                    . ', ' .
             'type = '                      . qq($this->type)                      . ', ' .
             'is_full_song = '              . b($this->is_full_song)               . ', ' .
-            'originating_user_id = '     . n($this->originating_user_id)      . ', ' .
+            'originating_user_id = '       . n($this->originating_user_id)        . ', ' .
             'parent_track_id = '           . n($this->parent_track_id)            . ', ' .
             'rating_count = '              . n($this->rating_count)               . ', ' .
             'rating_value = '              . n($this->rating_value)               . ', ' .
+            'competition_points = '        . n($this->competition_points)         . ', ' .
             'genres = '                    . qq($this->genres)                    . ', ' .
             'visibility = '                . qq($this->visibility)                . ', ' .
             'playback_count = '            . n($this->playback_count)             . ', ' .

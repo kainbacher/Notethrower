@@ -25,10 +25,10 @@ $rightPlayer = processTpl('Startpage/player.html', array(
 $pageFooter = processTpl('Common/pageFooter.html', array());
 
 processAndPrintTpl('Startpage/index.html', array(
-    '${Common/pageHeader}'     => $pageHeader,
-    '${Startpage/leftPlayer}'  => $leftPlayer,
-    '${Startpage/rightPlayer}' => $rightPlayer,
-    '${Common/pageFooter}'     => $pageFooter
+    '${Common/pageHeader}'      => $pageHeader,
+    '${Startpage/player_left}'  => $leftPlayer,
+    '${Startpage/player_right}' => $rightPlayer,
+    '${Common/pageFooter}'      => $pageFooter
 ));
 
 ?>

@@ -515,10 +515,13 @@ class AudioTrack {
         return $idList;
     }
 
-    function fetchRandomPublicTrack($excludeTrackId = null) {
+    function fetchRandomPublicTrack($genre = null, $excludeTrackId = null) {
         $whereClauseAddon = '';
         if (!is_null($excludeTrackId)) {
-            $whereClauseAddon = 'and t.id != ' . n($excludeTrackId) . ' ';
+            $whereClauseAddon .= 'and t.id != ' . n($excludeTrackId) . ' ';
+        }
+        if ($genre) {
+            $whereClauseAddon .= 'and t.genres like ' . qqLike($genre) . ' ';
         }
 
         $result = _mysql_query(
@@ -534,15 +537,15 @@ class AudioTrack {
             'limit 1'
         );
 
-        $a = new AudioTrack();
-
         if ($row = mysql_fetch_array($result)) {
+            $a = new AudioTrack();
             $a = AudioTrack::_read_row($a, $row);
+            mysql_free_result($result);
+            return $a;    
         }
 
         mysql_free_result($result);
-
-        return $a;
+        return null;       
     }
 
     function _read_row($a, $row) {

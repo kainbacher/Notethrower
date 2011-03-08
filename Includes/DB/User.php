@@ -1,5 +1,6 @@
 <?php
 
+include_once('../Includes/Config.php');
 include_once('../Includes/DbConnect.php');
 include_once('../Includes/Snippets.php');
 
@@ -30,8 +31,8 @@ class User {
     function new_from_cookie($refreshLastActivityTimestamp = true) {
         global $logger;
 
-        if (isset($_COOKIE['notethrower'])) {
-            $val = $_COOKIE['notethrower'];
+        if (isset($_COOKIE[$GLOBALS['COOKIE_NAME_AUTHENTICATION']])) {
+            $val = $_COOKIE[$GLOBALS['COOKIE_NAME_AUTHENTICATION']];
             //$separator_pos    = strpos($val, '#');
             //$password_md5     = substr($val, 0, $separator_pos);
             //$id               = substr($val, $separator_pos + 1);
@@ -319,13 +320,13 @@ class User {
     function doLogin() {
         global $logger;
         $logger->info('setting cookie with value: ' . $this->password_md5 . '#' . $this->id . '#' . time());
-        setcookie('notethrower', $this->password_md5 . '#' . $this->id . '#' . time(), null, '/' . $GLOBALS['WEBAPP_BASE']);
+        setcookie($GLOBALS['COOKIE_NAME_AUTHENTICATION'], $this->password_md5 . '#' . $this->id . '#' . time(), null, '/' . $GLOBALS['WEBAPP_BASE']);
     }
 
     function doLogout() {
         global $logger;
         $logger->info('setting cookie with no value and time: ' . (time() - 3600));
-        setcookie('notethrower', '', time() - 3600, '/' . $GLOBALS['WEBAPP_BASE']);
+        setcookie($GLOBALS['COOKIE_NAME_AUTHENTICATION'], '', time() - 3600, '/' . $GLOBALS['WEBAPP_BASE']);
     }
 
     function save() {

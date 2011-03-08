@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <script src="http://cdn.gigya.com/wildfire/js/wfapiv2.js"></script>
+  </head>
+  <body>
+    <div id="widget">
+      [WIDGET STUFF HERE]
+    </div>
+    
+    <textarea id="embedCode" style="display:none">
+      <div id="widget">
+        [WIDGET STUFF HERE]
+      </div>
+    </textarea>
+    
+    <div id="divWildfirePost"></div>
+    <script>
+
+var pconf = {
+    useFacebookMystuff: 'false', 
+    defaultContent: 'embedCode', 
+    UIConfig: '<config baseTheme="v2"><display showEmail="true" showBookmark="true"></display></config>'
+};
+Wildfire.initPost('1044652', 'divWildfirePost', 400, 300, pconf);
+
+    </script>
+  </body>  
+</html>

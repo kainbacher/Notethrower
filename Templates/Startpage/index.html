@@ -5,19 +5,23 @@ ${Common/pageHeader}
 <h1>OneLoudr.com</h1>
 <br>
 
-<center>
-  <div style="width:400px">
-    <div style="float:left">
+<div id="pageContent">
+  <div id="genreSelector" style="width:400px;text-align:center;background-color:#DDDDDD">
+    Genre: ${selectedGenre}
+  </div>
+  
+  <div id="songCompetition" style="width:400px;background-color:#EEEEEE">
+    <div id="leftPlayer" style="float:left;background-color:#FFFFFF;margin:5px;padding:5px;">
       ${Startpage/player_left}
     </div>
 
-    <div style="float:right">
+    <div id="rightPlayer" style="float:right;background-color:#FFFFFF;margin:5px;padding:5px;">
       ${Startpage/player_right}
     </div>
 
     <div style="clear:both">
   </div>
-</center>
+</div>
 
 </body>
 

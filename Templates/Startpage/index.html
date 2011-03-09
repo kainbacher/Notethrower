@@ -6,11 +6,13 @@ ${Common/pageHeader}
 <br>
 
 <div id="pageContent">
-  <div id="genreSelector" style="width:400px;text-align:center;background-color:#DDDDDD">
-    Genre: ${selectedGenre}
+  ${message}
+  <div id="genreSelector" style="width:800px;text-align:center;background-color:#DDDDDD">
+    Genre: ${selectedGenre}<br>
+    ${Startpage/genreSelection}
   </div>
-  
-  <div id="songCompetition" style="width:400px;background-color:#EEEEEE">
+
+  <div id="songCompetition" style="width:800px;background-color:#EEEEEE">
     <div id="leftPlayer" style="float:left;background-color:#FFFFFF;margin:5px;padding:5px;">
       ${Startpage/player_left}
     </div>
@@ -21,6 +23,17 @@ ${Common/pageHeader}
 
     <div style="clear:both">
   </div>
+
+  <div id="votingArea" style="width:800px;background-color:#DDDDDD;">
+    <table id="votingTable" style="margin:5px;width:790px">
+      <tr>
+        <td align="left"><a href="${voteForLeftSongUrl}">I like this song better</a></td>
+        <td align="center"><a href="${bothSongsAreAwfulUrl}">Both songs are awful</a></td>
+        <td align="right"><a href="${voteForRightSongUrl}">I like this song better</a></td>
+      </tr>
+    </table>
+  </div>
+
 </div>
 
 </body>

@@ -541,11 +541,11 @@ class AudioTrack {
             $a = new AudioTrack();
             $a = AudioTrack::_read_row($a, $row);
             mysql_free_result($result);
-            return $a;    
+            return $a;
         }
 
         mysql_free_result($result);
-        return null;       
+        return null;
     }
 
     function _read_row($a, $row) {

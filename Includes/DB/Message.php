@@ -71,8 +71,8 @@ class Message {
 
     function _read_row($m, $row) {
         $m->id                  = $row['id'];
-        $m->sender_user_id    = $row['sender_user_id'];
-        $m->recipient_user_id = $row['recipient_user_id'];
+        $m->sender_user_id      = $row['sender_user_id'];
+        $m->recipient_user_id   = $row['recipient_user_id'];
         $m->subject             = $row['subject'];
         $m->text                = $row['text'];
         $m->deleted             = $row['deleted'];

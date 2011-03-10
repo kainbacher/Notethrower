@@ -36,7 +36,7 @@ list($nonce, $timestamp) = getNonceAndTimestamp($user);
 
 processAndPrintTpl('Startpage/index.html', array(
     '${Common/pageHeader}'                      => buildPageHeader(),
-    '${facebookAppId}'                          => 'xxx', // FIXME ###############
+    '${facebookAppId}'                          => 'xxx', // FIXME ############### add appid here. after login, read user data via https://graph.facebook.com/me
     '${selectedGenre}'                          => $genre,
     '${Startpage/genreSelectionElement_list}'   => buildGenreSelectionList(),
     '${message}'                                => $message,

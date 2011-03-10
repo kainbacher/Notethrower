@@ -230,7 +230,7 @@ $(document).ready(function(){
 <!--
     		     	            <p>
     		     	            Sell your original work and remixes from other Notethrower artists for licensing
-    		     	             in Film/TV, Games, and many more. <b>Keep 90% of the profit!</b>
+    		     	             in Film/TV, Games, and many more. <b>Keep 90% of the fees charged!</b>
     		     	            </p>
 -->
                                 <h2>License and sell your music</h2>
@@ -264,12 +264,12 @@ $(document).ready(function(){
                  
           	     <div id="startpageRightColumn">
           	          <div id="startpageImage">
-    	               
-    	               <img src="../Images/sorrow__02.png" alt="sorrow__02" width="400" height="297" />
+          	          <a href="http://www.notethrower.com/NT/Site/artistInfo.php?aid=120">      
+    	               <img src="../Images/The_Artistry.png" alt="The_Artistry" width="350" height="350" /></a>
     	                <br/>
-                        <h3>Make Music and make money<br/>with our featured artists</h3>
+                        <h3 style="color:#444444;text-align:left;">Remix Our Featured Artists!</h3>
       		            <br/>
-      		            <a href="http://www.notethrower.com/NT/Site/artistInfo.php?aid=89" class="button">Collaborate with "The Sorrow"</a>
+      		            <a href="http://www.notethrower.com/NT/Site/artistInfo.php?aid=120" class="button">Collaborate with "The Artistry"</a>
       		        
       		          </div>
       		     </div> <!-- startpageRightColumn -->
@@ -333,7 +333,7 @@ allowscriptaccess="always" width="400" height="300"></embed></object><p></p>
     		     	    <div class="startpageContentStepText">
     		     	        <h1>Music Licensing</h1>
     		     	        <br/>
-    		     	        <p>You set the licensing price for your work.  We find business that need your music for commercial use. You keep 90% of the profit.  When a remix of your work sells, you split the profit 50/50 with the remixer. Each new version of your work is another way to get paid.  All you need is a free <a href="http://www.paypal.com" target="_blank">paypal</a> account to get paid.</p>
+    		     	        <p>You set the licensing price for your work.  We find business that need your music for commercial use. You keep 90% of the fees charged.  When a remix of your work sells, you split the profit 50/50 with the remixer. Each new version of your work is another way to get paid.  All you need is a free <a href="http://www.paypal.com" target="_blank">paypal</a> account to get paid.</p>
     		     	     </div>
     		     	     
     		     	     <div id="startpagePaginatorWrapper" class="startpagePaginatorWrapper">
@@ -427,7 +427,7 @@ We believe that by using free and powerful social tools available online, we can
                     
                     <h2>Music Licensing</h2>
                     
-                    <p>Notethrower finds music publishing and placement deals in Film and TV, Games, and many other areas for our members.  Notethrower gives musicians a unique legal environment to <b>co-write</b> with others, watch their work evolve and spread across the web, then collect profits from the sale of each track. <b>Artists set the price for licensing and keep 90%</b> profit from sale of their music.
+                    <p>Notethrower finds music publishing and placement deals in Film and TV, Games, and many other areas for our members.  Notethrower gives musicians a unique legal environment to <b>co-write</b> with others, watch their work evolve and spread across the web, then collect profits from the sale of each track. <b>Artists set the price for licensing and keep 90%</b> fees charged from sale of their music.
                     </p>
                     
                     <br/>

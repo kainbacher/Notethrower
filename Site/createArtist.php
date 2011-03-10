@@ -145,6 +145,21 @@ function inputDataOk(&$errorFields, &$artist, $userIsLoggedIn) {
     if (strlen(get_param('name')) < 1) {
         $errorFields['name'] = 'Name is missing!';
         $result = false;
+
+    } else {
+        $checkArtist = Artist::fetch_for_name(get_param('name'));
+        if ($checkArtist) {
+            if (!$userIsLoggedIn) { // if artist is created from scratch
+                $errorFields['name'] = 'Artist name already in use! Please choose a different one.';
+                $result = false;
+
+            } else { // artist data update
+                if ($artist->name != get_param('name')) { // display an error only if the name was changed in the update process
+                    $errorFields['name'] = 'Name already in use! Please choose a different one.';
+                    $result = false;
+                }
+            }
+        }
     }
 
     if (strlen(get_param('username')) < 1) {

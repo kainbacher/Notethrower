@@ -15,6 +15,6 @@ $logger->set_debug_level();
 if (count($_GET)  > 0) $logger->info('GET params : ' . print_r($_GET, true));
 if (count($_POST) > 0) $logger->info('POST params: ' . print_r($_POST, true));
 
-//header('Content-type: text/html; charset=UTF-8');
+header('Content-type: text/html; charset=UTF-8');
 
 ?>

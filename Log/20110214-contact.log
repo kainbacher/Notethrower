@@ -1,3 +1,0 @@
-2011-02-14 08:56:53 - 28840460 - INFO: --------
-2011-02-14 08:56:53 - 28840460 - INFO: $userIsLoggedIn var is false, so we have to find out if the user is not defined yet or ifhe's really not logged in.
-2011-02-14 08:56:53 - 28840460 - INFO: user is not logged in, $userIsLoggedIn var is still false

@@ -11,8 +11,8 @@ $BASE_PATH = 'C:\\xampp\\htdocs\\notethrower\\';
 $PATH_SEPARATOR = '\\'; // change to a forward slash if installed on a unix machine
 $DEBUG_LOG_FILE = 'D:\\projects\\_notethrower\\WebsitePlusWidget\\htdocs\\debug.log';
 $DATABASE_HOST = 'localhost';
-$DATABASE_USERNAME = 'root';
-$DATABASE_PASSWORD = '';
+$DATABASE_USERNAME = 'xxxxx';
+$DATABASE_PASSWORD = 'xxxxx';
 $DATABASE_NAME = 'podperfect';
 
 $EMAIL_DELIVERY_MODE = 'inactive'; // 'active', 'inactive' or 'override' (send all mails to override address)
@@ -48,7 +48,7 @@ if ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_ADDR'] == '127.0.
         $DEBUG_LOG_FILE    = 'E:\\projects\\_notethrower\\WebsitePlusWidget\\htdocs\\debug.log';
         $DATABASE_HOST     = 'localhost';
         $DATABASE_USERNAME = 'root';
-        $DATABASE_PASSWORD = '';
+        $DATABASE_PASSWORD = 'xxxxx';
         $DATABASE_NAME     = 'notethrower';
 
         $EMAIL_DELIVERY_MODE             = 'inactive'; // 'active', 'inactive' or 'override' (send all mails to override address)
@@ -71,9 +71,9 @@ if ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_ADDR'] == '127.0.
     $PATH_SEPARATOR    = '/'; // use \\ for a windows machine
     $DEBUG_LOG_FILE    = 'debug.log';
     $DATABASE_HOST     = 'localhost';
-    $DATABASE_USERNAME = 'usr_web1186_4';
-    $DATABASE_PASSWORD = 'RaDu86';
-    $DATABASE_NAME     = 'usr_web1186_4';
+    $DATABASE_USERNAME = 'xxxxx';
+    $DATABASE_PASSWORD = 'xxxxx';
+    $DATABASE_NAME     = 'xxxxx';
 
     $EMAIL_DELIVERY_MODE             = 'active'; // 'active', 'inactive' or 'override' (send all mails to override address)
     $EMAIL_DELIVERY_OVERRIDE_ADDR    = 'hanno@rastaduck.org';
@@ -95,8 +95,8 @@ if ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_ADDR'] == '127.0.
         $PATH_SEPARATOR    = '/'; // use \\ for a windows machine
         $DEBUG_LOG_FILE    = 'debug.log';
         $DATABASE_HOST     = 'mysql.podperfect.com';
-        $DATABASE_USERNAME = 'widget';
-        $DATABASE_PASSWORD = 'PpW1dg3t!';
+        $DATABASE_USERNAME = 'xxxxx';
+        $DATABASE_PASSWORD = 'xxxxx';
         $DATABASE_NAME     = 'podperfect_data_test';
 
         $EMAIL_DELIVERY_MODE             = 'active'; // 'active', 'inactive' or 'override' (send all mails to override address)
@@ -118,8 +118,8 @@ if ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_ADDR'] == '127.0.
         $PATH_SEPARATOR    = '/'; // use \\ for a windows machine
         $DEBUG_LOG_FILE    = 'debug.log';
         $DATABASE_HOST     = 'mysql.podperfect.com';
-        $DATABASE_USERNAME = 'widget';
-        $DATABASE_PASSWORD = 'PpW1dg3t!';
+        $DATABASE_USERNAME = 'xxxxx';
+        $DATABASE_PASSWORD = 'xxxxx';
         $DATABASE_NAME     = 'podperfect_data';
 
         $EMAIL_DELIVERY_MODE             = 'active'; // 'active', 'inactive' or 'override' (send all mails to override address)

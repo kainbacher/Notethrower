@@ -1,30 +1,29 @@
 <?php
 
+include_once('../Includes/Config.php');
 include_once('../Includes/DbConnect.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/AudioTrackFile.php');
-include_once('../Includes/DB/AudioTrackArtistVisibility.php');
+include_once('../Includes/DB/AudioTrackUserVisibility.php');
 include_once('../Includes/DB/AudioTrackAudioTrackAttribute.php');
 
 // dao for pp_audio_track table
 class AudioTrack {
     var $id;
-    var $artist_id;
-    var $artist_name; // not a field in this table
-    var $artist_img_filename; // not a field in this table
+    var $user_id;
     var $title;
     var $preview_mp3_filename;
     var $orig_preview_mp3_filename;
     var $sorting;
     var $type; // original or remix
     var $is_full_song;
-    var $originating_artist_id;
-    var $originating_artist_name; // not a field in this table
+    var $originating_user_id;
     var $parent_track_id;
     var $price;
     var $currency;
     var $rating_count;
     var $rating_value;
+    var $competition_points; // when two songs are compared and one is chosen as the better song, its comp. points are incremented by 1
     var $genres;
     var $visibility;
     var $playback_count;
@@ -36,23 +35,29 @@ class AudioTrack {
     var $needsOthers;
     var $additionalInfo;
 
+    // non-table fields
+    var $user_name;
+    var $user_img_filename;
+    var $originating_user_name;
+    var $mp3_filename;
+
     // constructors
     // ------------
     function AudioTrack() {
     }
 
-    function fetch_newest_from_to($from, $to, $show_inactive_items, $ignore_visibility, $visitorArtistId) {
+    function fetch_newest_from_to($from, $to, $show_inactive_items, $ignore_visibility, $visitorUserId) {
         $objs = array();
 
         $result = null;
 
-        if ($visitorArtistId >= 0) {
+        if ($visitorUserId >= 0) {
             $result = _mysql_query(
-                'select distinct t.*, a.name as artist_name, a.image_filename as artist_img_filename ' .
-                'from pp_audio_track t, pp_artist a, pp_audio_track_artist_visibility atav ' .
+                'select distinct t.*, a.name as user_name, a.image_filename as user_img_filename ' .
+                'from pp_audio_track t, pp_user a, pp_audio_track_user_visibility atav ' .
                 ($show_inactive_items ? 'where t.status in ("active", "inactive") ' : 'where t.status = "active" ') .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.artist_id = ' . n($visitorArtistId) . ') ') .
-                'and t.artist_id = a.id ' .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
+                'and t.user_id = a.id ' .
                 'and t.id = atav.track_id ' .
                 'order by t.entry_date desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
@@ -60,11 +65,11 @@ class AudioTrack {
 
         } else {
             $result = _mysql_query(
-                'select t.*, a.name as artist_name, a.image_filename as artist_img_filename ' .
-                'from pp_audio_track t, pp_artist a ' .
+                'select t.*, a.name as user_name, a.image_filename as user_img_filename ' .
+                'from pp_audio_track t, pp_user a ' .
                 ($show_inactive_items ? 'where t.status in ("active", "inactive") ' : 'where t.status = "active" ') .
                 ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
-                'and t.artist_id = a.id ' .
+                'and t.user_id = a.id ' .
                 'order by t.entry_date desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
             );
@@ -85,18 +90,18 @@ class AudioTrack {
         return $objs;
     }
 
-    function fetch_most_downloaded_from_to($from, $to, $show_inactive_items, $ignore_visibility, $visitorArtistId) {
+    function fetch_most_downloaded_from_to($from, $to, $show_inactive_items, $ignore_visibility, $visitorUserId) {
         $objs = array();
 
         $result = null;
 
-        if ($visitorArtistId >= 0) {
+        if ($visitorUserId >= 0) {
             $result = _mysql_query(
-                'select distinct t.*, a.name as artist_name, a.image_filename as artist_img_filename ' .
-                'from pp_audio_track t, pp_artist a, pp_audio_track_artist_visibility atav ' .
+                'select distinct t.*, a.name as user_name, a.image_filename as user_img_filename ' .
+                'from pp_audio_track t, pp_user a, pp_audio_track_user_visibility atav ' .
                 ($show_inactive_items ? 'where t.status in ("active", "inactive") ' : 'where t.status = "active" ') .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.artist_id = ' . n($visitorArtistId) . ') ') .
-                'and t.artist_id = a.id ' .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
+                'and t.user_id = a.id ' .
                 'and t.id = atav.track_id ' .
                 'order by t.download_count desc, t.entry_date desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
@@ -104,11 +109,11 @@ class AudioTrack {
 
         } else {
             $result = _mysql_query(
-                'select t.*, a.name as artist_name, a.image_filename as artist_img_filename ' .
-                'from pp_audio_track t, pp_artist a ' .
+                'select t.*, a.name as user_name, a.image_filename as user_img_filename ' .
+                'from pp_audio_track t, pp_user a ' .
                 ($show_inactive_items ? 'where t.status in ("active", "inactive") ' : 'where t.status = "active" ') .
                 ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
-                'and t.artist_id = a.id ' .
+                'and t.user_id = a.id ' .
                 'order by t.download_count desc, t.entry_date desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
             );
@@ -129,20 +134,20 @@ class AudioTrack {
         return $objs;
     }
 
-    function fetch_all_originals_of_artist_id_from_to($aid, $from, $to, $show_inactive_items, $ignore_visibility, $visitorArtistId) {
+    function fetch_all_originals_of_user_id_from_to($aid, $from, $to, $show_inactive_items, $ignore_visibility, $visitorUserId) {
         $objs = array();
 
         $result = null;
 
-        if ($visitorArtistId >= 0) {
+        if ($visitorUserId >= 0) {
             $result = _mysql_query(
-                'select distinct t.*, a.name as artist_name, a.image_filename as artist_img_filename ' .
-                'from pp_audio_track t, pp_artist a, pp_audio_track_artist_visibility atav ' .
-                'where t.artist_id = ' . n($aid) . ' ' .
+                'select distinct t.*, a.name as user_name, a.image_filename as user_img_filename ' .
+                'from pp_audio_track t, pp_user a, pp_audio_track_user_visibility atav ' .
+                'where t.user_id = ' . n($aid) . ' ' .
                 'and t.type = "original" ' .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.artist_id = ' . n($visitorArtistId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
                 ($show_inactive_items ? 'and t.status in ("active", "inactive") ' : 'and t.status = "active" ') .
-                'and t.artist_id = a.id ' .
+                'and t.user_id = a.id ' .
                 'and t.id = atav.track_id ' .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
@@ -150,13 +155,13 @@ class AudioTrack {
 
         } else {
             $result = _mysql_query(
-                'select t.*, a.name as artist_name, a.image_filename as artist_img_filename ' .
-                'from pp_audio_track t, pp_artist a ' .
-                'where t.artist_id = ' . n($aid) . ' ' .
+                'select t.*, a.name as user_name, a.image_filename as user_img_filename ' .
+                'from pp_audio_track t, pp_user a ' .
+                'where t.user_id = ' . n($aid) . ' ' .
                 'and t.type = "original" ' .
                 ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
                 ($show_inactive_items ? 'and t.status in ("active", "inactive") ' : 'and t.status = "active" ') .
-                'and t.artist_id = a.id ' .
+                'and t.user_id = a.id ' .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
             );
@@ -177,20 +182,20 @@ class AudioTrack {
         return $objs;
     }
 
-    function fetch_all_remixes_of_artist_id_from_to($aid, $from, $to, $show_inactive_items, $ignore_visibility, $visitorArtistId) {
+    function fetch_all_remixes_of_user_id_from_to($aid, $from, $to, $show_inactive_items, $ignore_visibility, $visitorUserId) {
         $objs = array();
 
         $result = null;
 
-        if ($visitorArtistId >= 0) {
+        if ($visitorUserId >= 0) {
             $result = _mysql_query(
-                'select distinct t.*, a.name as originating_artist_name ' .
-                'from pp_audio_track t, pp_artist a, pp_audio_track_artist_visibility atav ' .
-                'where t.artist_id = ' . n($aid) . ' ' .
+                'select distinct t.*, a.name as originating_user_name ' .
+                'from pp_audio_track t, pp_user a, pp_audio_track_user_visibility atav ' .
+                'where t.user_id = ' . n($aid) . ' ' .
                 'and t.type = "remix" ' .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.artist_id = ' . n($visitorArtistId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
                 ($show_inactive_items ? 'and t.status in ("active", "inactive") ' : 'and t.status = "active" ') .
-                'and t.originating_artist_id = a.id ' .
+                'and t.originating_user_id = a.id ' .
                 'and t.id = atav.track_id ' .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
@@ -198,13 +203,13 @@ class AudioTrack {
 
         } else {
             $result = _mysql_query(
-                'select t.*, a.name as originating_artist_name ' .
-                'from pp_audio_track t, pp_artist a ' .
-                'where t.artist_id = ' . n($aid) . ' ' .
+                'select t.*, a.name as originating_user_name ' .
+                'from pp_audio_track t, pp_user a ' .
+                'where t.user_id = ' . n($aid) . ' ' .
                 'and t.type = "remix" ' .
                 ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
                 ($show_inactive_items ? 'and t.status in ("active", "inactive") ' : 'and t.status = "active" ') .
-                'and t.originating_artist_id = a.id ' .
+                'and t.originating_user_id = a.id ' .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
             );
@@ -225,20 +230,20 @@ class AudioTrack {
         return $objs;
     }
 
-    function fetch_all_remixes_for_originating_artist_id_from_to($oaid, $from, $to, $show_inactive_items, $ignore_visibility, $visitorArtistId) {
+    function fetch_all_remixes_for_originating_user_id_from_to($oaid, $from, $to, $show_inactive_items, $ignore_visibility, $visitorUserId) {
         $objs = array();
 
         $result = null;
 
-        if ($visitorArtistId >= 0) {
+        if ($visitorUserId >= 0) {
             $result = _mysql_query(
-                'select distinct t.*, a.name as artist_name, a.image_filename as artist_img_filename ' .
-                'from pp_audio_track t, pp_artist a, pp_audio_track_artist_visibility atav ' .
-                'where t.originating_artist_id = ' . n($oaid) . ' ' .
+                'select distinct t.*, a.name as user_name, a.image_filename as user_img_filename ' .
+                'from pp_audio_track t, pp_user a, pp_audio_track_user_visibility atav ' .
+                'where t.originating_user_id = ' . n($oaid) . ' ' .
                 'and t.type = "remix" ' .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.artist_id = ' . n($visitorArtistId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
                 ($show_inactive_items ? 'and t.status in ("active", "inactive") ' : 'and t.status = "active" ') .
-                'and t.artist_id = a.id ' .
+                'and t.user_id = a.id ' .
                 'and t.id = atav.track_id ' .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
@@ -246,13 +251,13 @@ class AudioTrack {
 
         } else {
             $result = _mysql_query(
-                'select t.*, a.name as artist_name, a.image_filename as artist_img_filename ' .
-                'from pp_audio_track t, pp_artist a ' .
-                'where t.originating_artist_id = ' . n($oaid) . ' ' .
+                'select t.*, a.name as user_name, a.image_filename as user_img_filename ' .
+                'from pp_audio_track t, pp_user a ' .
+                'where t.originating_user_id = ' . n($oaid) . ' ' .
                 'and t.type = "remix" ' .
                 ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
                 ($show_inactive_items ? 'and t.status in ("active", "inactive") ' : 'and t.status = "active" ') .
-                'and t.artist_id = a.id ' .
+                'and t.user_id = a.id ' .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
             );
@@ -273,15 +278,15 @@ class AudioTrack {
         return $objs;
     }
 
-    function fetch_track_details($tid, $visitorArtistId) {
+    function fetch_track_details($tid, $visitorUserId) {
         $result = null;
 
-        if ($visitorArtistId >= 0) {
+        if ($visitorUserId >= 0) {
             $result = _mysql_query(
                 'select distinct t.* ' .
-                'from pp_audio_track t, pp_audio_track_artist_visibility atav ' .
+                'from pp_audio_track t, pp_audio_track_user_visibility atav ' .
                 'where t.id = ' . n($tid) . ' ' .
-                'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.artist_id = ' . n($visitorArtistId) . ') ' .
+                'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ' .
                 'and t.status = "active" ' .
                 'and t.id = atav.track_id'
             );
@@ -308,13 +313,13 @@ class AudioTrack {
         return $a;
     }
 
-    function fetchAllFullSongsOfArtist($aid) {
+    function fetchAllFullSongsOfUser($aid) {
         $objs = array();
 
         $result = _mysql_query(
             'select * ' .
             'from pp_audio_track ' .
-            'where artist_id = ' . n($aid) . ' ' .
+            'where user_id = ' . n($aid) . ' ' .
             'and is_full_song = 1 ' .
             'and status in ("active", "inactive") ' .
             'order by title asc'
@@ -335,16 +340,16 @@ class AudioTrack {
         return $objs;
     }
 
-    function fetchAllChildTracksOfFullSong($tid, $show_inactive_items, $ignore_visibility, $visitorArtistId) {
+    function fetchAllChildTracksOfFullSong($tid, $show_inactive_items, $ignore_visibility, $visitorUserId) {
         $objs = array();
 
-        if ($visitorArtistId >= 0) {
+        if ($visitorUserId >= 0) {
             $result = _mysql_query(
                 'select distinct t.* ' .
-                'from pp_audio_track t, pp_audio_track_artist_visibility atav ' .
+                'from pp_audio_track t, pp_audio_track_user_visibility atav ' .
                 'where t.parent_track_id = ' . n($tid) . ' ' .
                 'and t.is_full_song = 0 ' .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.artist_id = ' . n($visitorArtistId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
                 ($show_inactive_items ? 'and t.status in ("active", "inactive") ' : 'and t.status = "active" ') .
                 'and t.id = atav.track_id ' .
                 'order by t.title asc'
@@ -395,16 +400,16 @@ class AudioTrack {
         return $a;
     }
 
-    function fetchForSearch($from, $length, $artistOrTitle, $needsAttributeIds, $containsAttributeIds, $needsOthers, $containsOthers, $genres, $ignore_visibility, $show_inactive_items, $visitorArtistId) {
+    function fetchForSearch($from, $length, $userOrTitle, $needsAttributeIds, $containsAttributeIds, $needsOthers, $containsOthers, $genres, $ignore_visibility, $show_inactive_items, $visitorUserId) {
         $objs = array();
         $result = _mysql_query(
-                'select distinct t.*, a.name as artist_name, a.image_filename as artist_img_filename ' .
-                'from pp_audio_track t join pp_artist a on t.artist_id = a.id join pp_audio_track_artist_visibility atav on atav.track_id=t.id where 1=1 ' .
-                ($artistOrTitle == '' ? '' : 'and (a.name like ' . qqLike($artistOrTitle) . ' or t.title like ' . qqLike($artistOrTitle) . ') ') .
+                'select distinct t.*, a.name as user_name, a.image_filename as user_img_filename ' .
+                'from pp_audio_track t join pp_user a on t.user_id = a.id join pp_audio_track_user_visibility atav on atav.track_id=t.id where 1=1 ' .
+                ($userOrTitle == '' ? '' : 'and (a.name like ' . qqLike($userOrTitle) . ' or t.title like ' . qqLike($userOrTitle) . ') ') .
                 ($needsOthers == '' ? '' : 'and t.needs_others like ' . qqLike($needsOthers) . ' ') .
                 ($containsOthers == '' ? '' : 'and t.contains_others like ' . qqLike($containsOthers) . ' ') .
                 ($show_inactive_items ? 'and t.status in ("active", "inactive") ' : 'and t.status = "active" ') .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.artist_id = ' . n($visitorArtistId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
                 ($needsAttributeIds == '' ? '' : ' and t.id=(select max(attr.track_id) from pp_audio_track_audio_track_attribute attr where attr.track_id = t.id and attr.attribute_id in (' .
                 nList($needsAttributeIds) . ') and attr.status="needs") ') .
                 ($containsAttributeIds == '' ? '' : ' and t.id=(select max(attr.track_id) from pp_audio_track_audio_track_attribute attr where attr.track_id = t.id and attr.attribute_id in (' .
@@ -431,16 +436,16 @@ class AudioTrack {
         return $objs;
     }
 
-    function fetchCountForSearch($artistOrTitle, $needsAttributeIds, $containsAttributeIds, $needsOthers, $containsOthers, $genres, $ignore_visibility, $show_inactive_items, $visitorArtistId) {
+    function fetchCountForSearch($userOrTitle, $needsAttributeIds, $containsAttributeIds, $needsOthers, $containsOthers, $genres, $ignore_visibility, $show_inactive_items, $visitorUserId) {
         $objs = array();
         $result = _mysql_query(
                 'select count(distinct t.id) as cnt ' .
-                'from pp_audio_track t join pp_artist a on t.artist_id = a.id join pp_audio_track_artist_visibility atav on atav.track_id=t.id where 1=1 ' .
-                ($artistOrTitle == '' ? '' : 'and (a.name like ' . qqLike($artistOrTitle) . ' or t.title like ' . qqLike($artistOrTitle) . ') ') .
+                'from pp_audio_track t join pp_user a on t.user_id = a.id join pp_audio_track_user_visibility atav on atav.track_id=t.id where 1=1 ' .
+                ($userOrTitle == '' ? '' : 'and (a.name like ' . qqLike($userOrTitle) . ' or t.title like ' . qqLike($userOrTitle) . ') ') .
                 ($needsOthers == '' ? '' : 'and t.needs_others like ' . qqLike($needsOthers) . ' ') .
                 ($containsOthers == '' ? '' : 'and t.contains_others like ' . qqLike($containsOthers) . ' ') .
                 ($show_inactive_items ? 'and t.status in ("active", "inactive") ' : 'and t.status = "active" ') .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.artist_id = ' . n($visitorArtistId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
                 ($needsAttributeIds == '' ? '' : ' and t.id=(select max(attr.track_id) from pp_audio_track_audio_track_attribute attr where attr.track_id = t.id and attr.attribute_id in (' .
                 nList($needsAttributeIds) . ') and attr.status="needs") ') .
                 ($containsAttributeIds == '' ? '' : ' and t.id=(select max(attr.track_id) from pp_audio_track_audio_track_attribute attr where attr.track_id = t.id and attr.attribute_id in (' .
@@ -458,18 +463,18 @@ class AudioTrack {
         return $count;
     }
 
-    function fetch_all_private_tracks_the_artist_can_access($from, $to, $aid) {
+    function fetch_all_private_tracks_the_user_can_access($from, $to, $aid) {
         $objs = array();
 
         $result = _mysql_query(
-            'select t.*, a.name as artist_name, a.image_filename as artist_img_filename ' .
-            'from pp_audio_track t, pp_artist a, pp_audio_track_artist_visibility atav ' .
-            'where atav.artist_id = ' . n($aid) . ' ' .
+            'select t.*, a.name as user_name, a.image_filename as user_img_filename ' .
+            'from pp_audio_track t, pp_user a, pp_audio_track_user_visibility atav ' .
+            'where atav.user_id = ' . n($aid) . ' ' .
             'and atav.track_id = t.id ' .
             'and t.status = "active" ' .
             'and t.visibility = "private" ' .
-            'and t.artist_id != ' . n($aid) . ' ' .
-            'and t.artist_id = a.id ' .
+            'and t.user_id != ' . n($aid) . ' ' .
+            'and t.user_id = a.id ' .
             'order by t.entry_date desc ' .
             'limit ' . $from . ', ' . ($to - $from + 1)
         );
@@ -489,13 +494,13 @@ class AudioTrack {
         return $objs;
     }
 
-    function fetchAllNewbornTrackIdsForArtistId($aid) {
+    function fetchAllNewbornTrackIdsForUserId($aid) {
         if (!$aid) return array();
 
         $result = _mysql_query(
             'select id ' .
             'from pp_audio_track ' .
-            'where artist_id = ' . n($aid) . ' ' .
+            'where user_id = ' . n($aid) . ' ' .
             'and status = "newborn"'
         );
 
@@ -510,9 +515,42 @@ class AudioTrack {
         return $idList;
     }
 
+    function fetchRandomPublicTrack($genre = null, $excludeTrackId = null) {
+        $whereClauseAddon = '';
+        if (!is_null($excludeTrackId)) {
+            $whereClauseAddon .= 'and t.id != ' . n($excludeTrackId) . ' ';
+        }
+        if ($genre) {
+            $whereClauseAddon .= 'and t.genres like ' . qqLike($genre) . ' ';
+        }
+
+        $result = _mysql_query(
+            'select t.*, u.name as user_name, u.image_filename as user_img_filename, f.filename as mp3_filename ' .
+            'from pp_audio_track t, pp_audio_track_file f, pp_user u ' .
+            'where t.status = "active" ' .
+            'and t.visibility = "public" ' .
+            'and t.user_id = u.id ' .
+            'and t.id = f.track_id ' .
+            'and f.type = "HQMP3" ' .
+            $whereClauseAddon .
+            'order by rand() ' .
+            'limit 1'
+        );
+
+        if ($row = mysql_fetch_array($result)) {
+            $a = new AudioTrack();
+            $a = AudioTrack::_read_row($a, $row);
+            mysql_free_result($result);
+            return $a;
+        }
+
+        mysql_free_result($result);
+        return null;
+    }
+
     function _read_row($a, $row) {
         $a->id                        = $row['id'];
-        $a->artist_id                 = $row['artist_id'];
+        $a->user_id                   = $row['user_id'];
         $a->title                     = $row['title'];
         $a->preview_mp3_filename      = $row['preview_mp3_filename'];
         $a->orig_preview_mp3_filename = $row['orig_preview_mp3_filename'];
@@ -521,10 +559,11 @@ class AudioTrack {
         $a->sorting                   = $row['sorting'];
         $a->type                      = $row['type'];
         $a->is_full_song              = $row['is_full_song'];
-        $a->originating_artist_id     = $row['originating_artist_id'];
+        $a->originating_user_id       = $row['originating_user_id'];
         $a->parent_track_id           = $row['parent_track_id'];
         $a->rating_count              = $row['rating_count'];
         $a->rating_value              = $row['rating_value'];
+        $a->competition_points        = $row['competition_points'];
         $a->genres                    = $row['genres'];
         $a->visibility                = $row['visibility'];
         $a->playback_count            = $row['playback_count'];
@@ -536,9 +575,10 @@ class AudioTrack {
         $a->additionalInfo            = $row['additional_info'];
         $a->entry_date                = reformat_sql_date($row['entry_date']);
 
-        if (isset($row['artist_name']))             $a->artist_name             = $row['artist_name'];
-        if (isset($row['artist_img_filename']))     $a->artist_img_filename     = $row['artist_img_filename'];
-        if (isset($row['originating_artist_name'])) $a->originating_artist_name = $row['originating_artist_name'];
+        if (isset($row['user_name']))             $a->user_name             = $row['user_name'];
+        if (isset($row['user_img_filename']))     $a->user_img_filename     = $row['user_img_filename'];
+        if (isset($row['originating_user_name'])) $a->originating_user_name = $row['originating_user_name'];
+        if (isset($row['mp3_filename']))          $a->mp3_filename          = $row['mp3_filename'];
 
         return $a;
     }
@@ -550,7 +590,7 @@ class AudioTrack {
             'create table if not exists pp_audio_track ' .
             '(' .
             'id                        int(10)      not null auto_increment, ' .
-            'artist_id                 int(10)      not null, ' .
+            'user_id                   int(10)      not null, ' .
             'title                     varchar(255) not null, ' .
             'preview_mp3_filename      varchar(255) not null, ' .
             'orig_preview_mp3_filename varchar(255) not null, ' .
@@ -559,10 +599,11 @@ class AudioTrack {
             'sorting                   int(5), ' .
             'type                      varchar(10)  not null, ' .
             'is_full_song              tinyint(1)   not null, ' .
-            'originating_artist_id     int(10), ' .
+            'originating_user_id     int(10), ' .
             'parent_track_id           int(10), ' .
             'rating_count              int(10)      not null, ' .
             'rating_value              float        not null, ' .
+            'competition_points        int(10)      not null, ' .
             'genres                    varchar(255), ' .
             'visibility                varchar(10)  not null, ' .
             'playback_count            int(10)      not null, ' .
@@ -574,7 +615,7 @@ class AudioTrack {
             'additional_info           text, ' .
             'entry_date                datetime     not null default "1970-01-01 00:00:00", ' .
             'primary key (id), ' .
-            'key artist_id (artist_id), ' .
+            'key user_id (user_id), ' .
             'key type (type), ' .
             'key rating_value (rating_value), ' .
             'key entry_date (entry_date) ' .
@@ -584,23 +625,23 @@ class AudioTrack {
         return $ok;
     }
 
-    function count_all($count_inactive_items, $ignore_visibility, $visitorArtistId) {
+    function count_all($count_inactive_items, $ignore_visibility, $visitorUserId) {
         $result = null;
 
 //        $result = _mysql_query(
 //            'select count(*) as cnt ' .
-//            'from pp_audio_track t, pp_audio_track_artist_visibility atav ' .
+//            'from pp_audio_track t, pp_audio_track_user_visibility atav ' .
 //            'where t.id = atav.track_id ' .
-//            ($ignore_visibility ? '' : 'and (t.visibility = "public" or (t.visibility = "private" and t.id = atav.track_id and atav.artist_id = ' . n($visitorArtistId) . ')) ') .
+//            ($ignore_visibility ? '' : 'and (t.visibility = "public" or (t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ')) ') .
 //            ($count_inactive_items ? 'and t.status in ("active", "inactive")' : 'and t.status = "active"')
 //        );
 
-        if ($visitorArtistId >= 0) {
+        if ($visitorUserId >= 0) {
             $result = _mysql_query(
                 'select count(distinct t.id) as cnt ' .
-                'from pp_audio_track t, pp_audio_track_artist_visibility atav ' .
+                'from pp_audio_track t, pp_audio_track_user_visibility atav ' .
                 'where t.id = atav.track_id ' .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.artist_id = ' . n($visitorArtistId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
                 ($count_inactive_items ? 'and t.status in ("active", "inactive")' : 'and t.status = "active"')
             );
 
@@ -621,13 +662,13 @@ class AudioTrack {
         return $count;
     }
 
-    function count_all_private_tracks_the_artist_can_access($aid) {
+    function count_all_private_tracks_the_user_can_access($aid) {
         $result = _mysql_query(
             'select count(*) as cnt ' .
-            'from pp_audio_track t, pp_audio_track_artist_visibility atav ' .
-            'where atav.artist_id = ' . n($aid) . ' ' .
+            'from pp_audio_track t, pp_audio_track_user_visibility atav ' .
+            'where atav.user_id = ' . n($aid) . ' ' .
             'and atav.track_id = t.id ' .
-            'and t.artist_id != ' . n($aid) . ' ' .
+            'and t.user_id != ' . n($aid) . ' ' .
             'and t.status = "active" ' .
             'and t.visibility = "private"'
         );
@@ -654,7 +695,7 @@ class AudioTrack {
 
         AudioTrack::reset_song_associations_to_parent_track_id($id);
         AudioTrackFile::delete_all_with_track_id($id);
-        AudioTrackArtistVisibility::delete_all_with_track_id($id);
+        AudioTrackUserVisibility::delete_all_with_track_id($id);
         AudioTrackAudioTrackAttribute::deleteForTrackId($id);
 
         $logger->info('deleting track file record with id: ' . $id);
@@ -667,6 +708,21 @@ class AudioTrack {
 
     // object methods
     // --------------
+    function getPreviewMp3Url() {
+        if (!$this->mp3_filename) {
+            show_fatal_error_and_exit('$this->mp3_filename is not set!');
+        }
+
+        $userSubdir = null;
+        if (ini_get('safe_mode')) {
+            $userSubdir = ''; // in safe mode we're not allowed to create directories
+        } else {
+            $userSubdir = md5('Wuizi' . $this->user_id);
+        }
+
+        return $GLOBALS['BASE_URL'] . 'Backend/preview.php?song=' . $this->mp3_filename;
+    }
+
     function save() {
         if (isset($this->id)) {
             return $this->update();
@@ -678,12 +734,12 @@ class AudioTrack {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_audio_track ' .
-            '(artist_id, title, preview_mp3_filename, orig_preview_mp3_filename, ' .
-            'price, currency, sorting, type, is_full_song, originating_artist_id, parent_track_id, rating_count, ' .
-            'rating_value, genres, visibility, playback_count, download_count, originator_notified, ' .
+            '(user_id, title, preview_mp3_filename, orig_preview_mp3_filename, ' .
+            'price, currency, sorting, type, is_full_song, originating_user_id, parent_track_id, rating_count, ' .
+            'rating_value, competition_points, genres, visibility, playback_count, download_count, originator_notified, ' .
             'status, contains_others, needs_others, additional_info, entry_date) ' .
             'values (' .
-            n($this->artist_id)                  . ', ' .
+            n($this->user_id)                    . ', ' .
             qq($this->title)                     . ', ' .
             qq($this->preview_mp3_filename)      . ', ' .
             qq($this->orig_preview_mp3_filename) . ', ' .
@@ -692,10 +748,11 @@ class AudioTrack {
             n($this->sorting)                    . ', ' .
             qq($this->type)                      . ', ' .
             b($this->is_full_song)               . ', ' .
-            n($this->originating_artist_id)      . ', ' .
+            n($this->originating_user_id)        . ', ' .
             n($this->parent_track_id)            . ', ' .
             n($this->rating_count)               . ', ' .
             n($this->rating_value)               . ', ' .
+            n($this->competition_points)         . ', ' .
             qq($this->genres)                    . ', ' .
             qq($this->visibility)                . ', ' .
             n($this->playback_count)             . ', ' .
@@ -721,7 +778,7 @@ class AudioTrack {
     function update() {
         $ok = _mysql_query(
             'update pp_audio_track ' .
-            'set artist_id = '             . n($this->artist_id)                  . ', ' .
+            'set user_id = '               . n($this->user_id)                    . ', ' .
             'title = '                     . qq($this->title)                     . ', ' .
             'preview_mp3_filename = '      . qq($this->preview_mp3_filename)      . ', ' .
             'orig_preview_mp3_filename = ' . qq($this->orig_preview_mp3_filename) . ', ' .
@@ -730,10 +787,11 @@ class AudioTrack {
             'sorting = '                   . n($this->sorting)                    . ', ' .
             'type = '                      . qq($this->type)                      . ', ' .
             'is_full_song = '              . b($this->is_full_song)               . ', ' .
-            'originating_artist_id = '     . n($this->originating_artist_id)      . ', ' .
+            'originating_user_id = '       . n($this->originating_user_id)        . ', ' .
             'parent_track_id = '           . n($this->parent_track_id)            . ', ' .
             'rating_count = '              . n($this->rating_count)               . ', ' .
             'rating_value = '              . n($this->rating_value)               . ', ' .
+            'competition_points = '        . n($this->competition_points)         . ', ' .
             'genres = '                    . qq($this->genres)                    . ', ' .
             'visibility = '                . qq($this->visibility)                . ', ' .
             'playback_count = '            . n($this->playback_count)             . ', ' .

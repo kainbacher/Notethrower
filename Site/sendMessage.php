@@ -3,23 +3,23 @@
 include_once('../Includes/Init.php');
 include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/Artist.php');
+include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/Message.php');
 
-$senderArtist = Artist::new_from_cookie();
+$senderUser = User::new_from_cookie();
 
-if (!$senderArtist) {
-    show_fatal_error_and_exit('access denied, no artist cookie found.');
+if (!$senderUser) {
+    show_fatal_error_and_exit('access denied, no user cookie found.');
 }
 
-$recipientArtistId = get_numeric_param('raid');
-if (!$recipientArtistId) {
+$recipientUserId = get_numeric_param('raid');
+if (!$recipientUserId) {
     show_fatal_error_and_exit('raid param is missing');
 }
 
-$recipientArtist = Artist::fetch_for_id($recipientArtistId);
-if (!$recipientArtist || !$recipientArtist->id) {
-    show_fatal_error_and_exit('recipient artist not found for id: ' . $recipientArtistId);
+$recipientUser = User::fetch_for_id($recipientUserId);
+if (!$recipientUser || !$recipientUser->id) {
+    show_fatal_error_and_exit('recipient user not found for id: ' . $recipientUserId);
 }
 
 $statusMessage = '';
@@ -32,16 +32,16 @@ if ($action == 'send') {
 
     if ($subject || $text) {
         $msg = new Message();
-        $msg->sender_artist_id    = $senderArtist->id;
-        $msg->recipient_artist_id = $recipientArtist->id;
+        $msg->sender_user_id    = $senderUser->id;
+        $msg->recipient_user_id = $recipientUser->id;
         $msg->subject             = $subject;
         $msg->text                = $text;
         $msg->marked_as_read      = false;
         $msg->save();
         
-        $email_sent = send_email($recipientArtist->email_address, 'Message from ' . $senderArtist->name,
-                'Hey ' . $recipientArtist->name . "\n" . 
-                'A message from ' . $senderArtist->name . ' has been stored in your message inbox on ' . $GLOBALS['DOMAIN']);
+        $email_sent = send_email($recipientUser->email_address, 'Message from ' . $senderUser->name,
+                'Hey ' . $recipientUser->name . "\n" . 
+                'A message from ' . $senderUser->name . ' has been stored in your message inbox on ' . $GLOBALS['DOMAIN']);
 
         if (!$email_sent) {
             $logger->error('Failed to send "new message" notification email!');
@@ -59,10 +59,10 @@ $text    = '';
 $replyToMsgId = get_numeric_param('replyToMsgId');
 if ($replyToMsgId) {
     $replyToMsg = Message::fetch_for_id($replyToMsgId);
-    ensureMessageBelongsToArtist($replyToMsg, $senderArtist);
+    ensureMessageBelongsToUser($replyToMsg, $senderUser);
     $subject = 'Re: '   . $replyToMsg->subject;
     $text    = "\n\n\n---- Original message ----\n" .
-               'From: ' . $replyToMsg->sender_artist_name . "\n" .
+               'From: ' . $replyToMsg->sender_user_name . "\n" .
                'Subject: ' . $replyToMsg->subject . "\n\n" .
                $replyToMsg->text;
 }
@@ -89,7 +89,7 @@ if ($statusMessage && !$errorMessage) {
 if (!$statusMessage || $errorMessage) {
 
 ?>
-            <h1><img border="0" src="../Images/Mail_Icon_big.png">&nbsp;Message to <?php echo escape($recipientArtist->name); ?>:</h1>
+            <h1><img border="0" src="../Images/Mail_Icon_big.png">&nbsp;Message to <?php echo escape($recipientUser->name); ?>:</h1>
             <br/>
 <?php
 
@@ -98,7 +98,7 @@ if (!$statusMessage || $errorMessage) {
 ?>
             <form name="sendMessageForm" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
                 <input type="hidden" name="action" value="send">
-                <input type="hidden" name="raid" value="<?php echo $recipientArtist->id; ?>">
+                <input type="hidden" name="raid" value="<?php echo $recipientUser->id; ?>">
                 <table>
 <?php
 

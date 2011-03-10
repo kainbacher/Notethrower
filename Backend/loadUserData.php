@@ -4,54 +4,54 @@ include_once('../Includes/Init.php');
 
 include_once('../Includes/Config.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/Artist.php');
+include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/AudioTrackFile.php');
 include_once('../Includes/DB/Stats.php');
 
-// let's see if the visiting user is a logged in artist
-$visitorArtistId = -1;
-$visitorArtist = Artist::new_from_cookie();
-if ($visitorArtist) {
-    $visitorArtistId = $visitorArtist->id;
-    $logger->info('visitor artist id: ' . $visitorArtistId);
+// let's see if the visiting user is a logged in user
+$visitorUserId = -1;
+$visitorUser = User::new_from_cookie();
+if ($visitorUser) {
+    $visitorUserId = $visitorUser->id;
+    $logger->info('visitor user id: ' . $visitorUserId);
 }
 
-$aid = get_numeric_param('aid');
+$uid = get_numeric_param('aid');
 
-if (!$aid) {
-    show_fatal_error_and_exit('Artist ID missing!');
+if (!$uid) {
+    show_fatal_error_and_exit('User ID missing!');
 }
 
-$artist = Artist::fetch_for_id($aid);
+$user = User::fetch_for_id($uid);
 
-if (!$artist || !$artist->id) {
-    show_fatal_error_and_exit('Artist not found!');
+if (!$user || !$user->id) {
+    show_fatal_error_and_exit('User not found!');
 }
 
 $xml = '<?xml version="1.0" encoding="UTF-8" ?>';
 $xml .= '<ppArtistData>';
-$xml .= '<id>' . $artist->id . '</id>';
-$xml .= '<name>' . xmlentities($artist->name) . '</name>';
-$xml .= '<imageFile>' . xmlentities($artist->image_filename) . '</imageFile>';
-//$xml .= '<webpageUrl>' . xmlentities($artist->webpage_url) . '</webpageUrl>';
-$xml .= '<webpageUrl>' . xmlentities($GLOBALS['BASE_URL'] . 'Site/artistInfo.php?aid=' . $artist->id) . '</webpageUrl>';
+$xml .= '<id>' . $user->id . '</id>';
+$xml .= '<name>' . xmlentities($user->name) . '</name>';
+$xml .= '<imageFile>' . xmlentities($user->image_filename) . '</imageFile>';
+//$xml .= '<webpageUrl>' . xmlentities($user->webpage_url) . '</webpageUrl>';
+$xml .= '<webpageUrl>' . xmlentities($GLOBALS['BASE_URL'] . 'Site/userInfo.php?aid=' . $user->id) . '</webpageUrl>';
 $xml .= '<tracks>';
 
 // load originals
-$tracks = AudioTrack::fetch_all_originals_of_artist_id_from_to($aid, 0, 9999, false, false, $visitorArtistId); // FIXME - paging - use Paginator
+$tracks = AudioTrack::fetch_all_originals_of_user_id_from_to($uid, 0, 9999, false, false, $visitorUserId); // FIXME - paging - use Paginator
 foreach ($tracks as $track) {
     processTrack($xml, $track, false);
 }
 
 // load the remixes
-$tracks = AudioTrack::fetch_all_remixes_of_artist_id_from_to($aid, 0, 9999, false, false, $visitorArtistId); // FIXME - paging - use Paginator
+$tracks = AudioTrack::fetch_all_remixes_of_user_id_from_to($uid, 0, 9999, false, false, $visitorUserId); // FIXME - paging - use Paginator
 foreach ($tracks as $track) {
     processTrack($xml, $track, true);
 }
 
 // load the songs which were remixed by others
-$tracks = AudioTrack::fetch_all_remixes_for_originating_artist_id_from_to($aid, 0, 9999, false, false, $visitorArtistId); // FIXME - paging - use Paginator
+$tracks = AudioTrack::fetch_all_remixes_for_originating_user_id_from_to($uid, 0, 9999, false, false, $visitorUserId); // FIXME - paging - use Paginator
 foreach ($tracks as $track) {
     processTrack($xml, $track, true);
 }
@@ -64,9 +64,9 @@ header('Content-length: ' . strlen($xml));
 echo $xml;
 
 // record the access
-if ($artist->id && $_SERVER['REMOTE_ADDR']) {
+if ($user->id && $_SERVER['REMOTE_ADDR']) {
     $stats = new Stats();
-    $stats->artist_id = $artist->id;
+    $stats->user_id = $user->id;
     $stats->ip        = $_SERVER['REMOTE_ADDR'];
     $stats->insert();
 }
@@ -78,10 +78,10 @@ function processTrack(&$xml, &$track, $remixedByOthersMode) {
     $xml .= '<type>' . $track->type . '</type>';
 
     if ($track->type == 'remix') {
-        $xml .= '<remixerArtistId>' . $track->artist_id . '</remixerArtistId>';
-        $xml .= '<remixerArtistName>' . $track->artist_name . '</remixerArtistName>';
-        $xml .= '<originatingArtistId>' . $track->originating_artist_id . '</originatingArtistId>';
-        $xml .= '<originatingArtistName>' . $track->originating_artist_name . '</originatingArtistName>';
+        $xml .= '<remixerArtistId>' . $track->user_id . '</remixerArtistId>';
+        $xml .= '<remixerArtistName>' . $track->user_name . '</remixerArtistName>';
+        $xml .= '<originatingArtistId>' . $track->originating_user_id . '</originatingArtistId>';
+        $xml .= '<originatingArtistName>' . $track->originating_user_name . '</originatingArtistName>';
 
     } else {
         $xml .= '<remixerArtistId/>';

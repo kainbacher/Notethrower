@@ -335,14 +335,14 @@ a.nohighlight:hover {
     margin: 0px;
 }
 
-.artistFormTable {
+.userFormTable {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0px;
     margin: 0px;
 }
 
-.artistFormTable td {
+.userFormTable td {
     padding: 5px;
 }
 
@@ -387,7 +387,7 @@ a.nohighlight:hover {
     height: 100px;
 }
 
-.trackGridElt .tlArtistImg {
+.trackGridElt .tlUserImg {
     z-index: 0;
     position: absolute;
     text-align: center;
@@ -406,7 +406,7 @@ a.nohighlight:hover {
     padding: 0px;
 }
 
-.trackGridElt .tlOverlayText .tlotArtist {
+.trackGridElt .tlOverlayText .tlotUser {
     text-align: center;
     font-size: 10px;
     width: 100px;
@@ -885,7 +885,7 @@ a.nohighlight:hover {
 #widget #inner {
 }
 
-#artistInfoWidget {
+#userInfoWidget {
     margin-bottom: 10px;
 }
 
@@ -980,11 +980,11 @@ a.nohighlight:hover {
 }
 
 
-/* !artistProfil Form */
+/* !userProfil Form */
 /* ---------------------------------------------------------------------- */
 
 
-#artistFormDiv {
+#userFormDiv {
     background-color: #f9f9f9;
     border-bottom: 1px solid #cccccc;
     border-top: 1px solid #cccccc;
@@ -992,7 +992,7 @@ a.nohighlight:hover {
     min-height: 500px;
 }
 
-#artistFormDiv #container {
+#userFormDiv #container {
     padding-left: 10px;
     padding-right: 10px;
 }
@@ -1186,7 +1186,7 @@ a.nohighlight:hover {
     padding-right: 10px;
 }
 
-#artistInfoContainer {
+#userInfoContainer {
 	float: left;
 	width: 950px;
 }
@@ -1199,7 +1199,7 @@ a.nohighlight:hover {
 /* ! */
 /* ---------------------------------------------------------------------- */
 
-#artistInfoDiv {
+#userInfoDiv {
     background-color: #f9f9f9;
     border-bottom: 1px solid #cccccc;
     border-top: 1px solid #cccccc;
@@ -1207,7 +1207,7 @@ a.nohighlight:hover {
     min-height: 400px;
 }
 
-#artistInfoDiv #container {
+#userInfoDiv #container {
     padding-left: 10px;
     padding-right: 10px;
 }
@@ -1246,7 +1246,7 @@ a.nohighlight:hover {
     padding-right: 10px;
 }
 
-#artistFormPlusImage {
+#userFormPlusImage {
     position: relative;
 }
 
@@ -1262,7 +1262,7 @@ a.nohighlight:hover {
 }
 
 
-/* !artistInfo.php */
+/* !userInfo.php */
 /* ---------------------------------------------------------------------- */
 
 #trackInfoWrapper {
@@ -1512,23 +1512,23 @@ a.nohighlight:hover {
     width: 115px;
 }
 
-/* !artistInfo Page */
+/* !userInfo Page */
 /* ---------------------------------------------------------------------- */
 
-#artistInfoLeft {
+#userInfoLeft {
     float: left;
     margin-top: 10px;
     width: 200px;
 }
 
-#artistInfoMiddle {
+#userInfoMiddle {
     float: left;
     margin-left: 10px;
     margin-top: 10px;
     width: 410px;
 }
 
-#artistInfoRight {
+#userInfoRight {
     float: left;
     margin-left: 10px;
     margin-top: 10px;

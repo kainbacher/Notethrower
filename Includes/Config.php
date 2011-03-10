@@ -2,11 +2,11 @@
 
 $SESSION_LIFETIME_SECONDS = 180 * 60;
 
-$ARTIST_IMG_MAX_WIDTH  = 300;
-$ARTIST_IMG_MAX_HEIGHT = 300;
+$USER_IMG_MAX_WIDTH  = 300;
+$USER_IMG_MAX_HEIGHT = 300;
 
-$ARTIST_THUMB_MAX_WIDTH  = 100;
-$ARTIST_THUMB_MAX_HEIGHT = 100;
+$USER_THUMB_MAX_WIDTH  = 100;
+$USER_THUMB_MAX_HEIGHT = 100;
 
 $STAGING_ENV                  = '-';
 $SANDBOX_MODE                 = false;
@@ -27,13 +27,15 @@ $MAIL_FROM                    = null;
 /* include local Settings */
 include 'Config_local.php'; 
 
+$TEMPLATES_BASE_PATH = $BASE_PATH . 'Templates' . $PATH_SEPARATOR;
+
 $TMP_UPLOAD_PATH = $BASE_PATH . 'Uploader' . $PATH_SEPARATOR . 'uploads' . $PATH_SEPARATOR;
 
 $CONTENT_BASE_PATH      = $BASE_PATH . 'Content' . $PATH_SEPARATOR . 'Tracks' . $PATH_SEPARATOR;
 $LOGFILE_BASE_PATH      = $BASE_PATH . 'Log' . $PATH_SEPARATOR;
-$ARTIST_IMAGE_BASE_PATH = $BASE_PATH . 'Content' . $PATH_SEPARATOR . 'ArtistImages' . $PATH_SEPARATOR;
+$USER_IMAGE_BASE_PATH = $BASE_PATH . 'Content' . $PATH_SEPARATOR . 'UserImages' . $PATH_SEPARATOR;
 
-$ARTIST_IMAGE_BASE_URL  = $BASE_URL . 'Content/ArtistImages/';
+$USER_IMAGE_BASE_URL  = $BASE_URL . 'Content/UserImages/';
 
 $RETURN_URL = $BASE_URL . 'Backend/downloadStart.php';
 
@@ -50,5 +52,8 @@ $NEWS_PER_PAGE = 5;
 
 $GENRES = array('Pop' => 'Pop', 'Rock' => 'Rock', 'Punk' => 'Punk', 'Country' => 'Country', 'Electronic' => 'Electronic', 'Blues' => 'Blues', 'Hip-Hop' => 'Hip-Hop', 'Jazz' => 'Jazz', 'Alternative' => 'Alternative', 'Singer/Songwriter' => 'Singer/Songwriter', 'Instrumental' => 'Instrumental', 'Beats' => 'Beats', 'Experimental' => 'Experimental', 'Samples or libraries' => 'Samples or libraries');
 $OFFER_CATEGORIES = array('Documentary/Indie/Student Film', 'Feature Film', 'Corporate CD/DVD', 'TV and Radio Advertising', 'Web', 'Live Events', 'Sample and Remix', 'Audio Projects', 'Video Game', 'TV Show', 'Music Compilation', 'Telephony/Music on Hold', 'Video Clip/Webisode');
+
+$COOKIE_NAME_AUTHENTICATION = 'notethrower';
+$COOKIE_NAME_GENRE          = 'notethrower_genre';
 
 ?>

@@ -21,8 +21,9 @@ $MAIL_FROM = '"notethrower.com" <noreply@notethrower.com>';
 
 $SANDBOX_MODE = true;
 
-
-
+// Paypal config
+$PAYPAL_BASE_URL = 'https://www.sandbox.paypal.com/cgi-bin/webscr?';
+$PAYPAL_FIX_PARAMS = "&cmd=_xclick&no_shipping=1&no_note=1&rm=POST&bn=PP-BuyNowBF";
 
 /*
 

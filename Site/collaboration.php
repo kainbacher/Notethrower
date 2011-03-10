@@ -3,19 +3,19 @@
 include_once('../Includes/Init.php');
 include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/Artist.php');
+include_once('../Includes/DB/USer.php');
 include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/Message.php');
 
 $loginErrorMsg = '';
 
-$visitorArtistId = -1;
+$visitorUserId = -1;
 
 $userIsLoggedIn = false;
-$artist = Artist::new_from_cookie();
-if ($artist) {
-    $visitorArtistId = $artist->id;
-    $logger->info('visitor artist id: ' . $visitorArtistId);
+$user = User::new_from_cookie();
+if ($user) {
+    $visitorUserId = $user->id;
+    $logger->info('visitor user id: ' . $visitorUserId);
 
     $userIsLoggedIn = true;
     $logger->info('user is logged in');
@@ -26,9 +26,9 @@ if ($artist) {
     if (get_param('action') == 'login') {
         $logger->info('login request received');
         if (get_param('username') && get_param('password')) {
-            $artist = Artist::fetch_for_username_password(get_param('username'), get_param('password'));
-            if ($artist && $artist->status == 'active') {
-                $artist->doLogin();
+            $user = User::fetch_for_username_password(get_param('username'), get_param('password'));
+            if ($user && $user->status == 'active') {
+                $user->doLogin();
                 $logger->info('login successful, reloading page to set cookie');
                 header('Location: ' . $_SERVER['PHP_SELF']);
                 exit;
@@ -45,7 +45,7 @@ if ($artist) {
     }
 }
 
-ensureArtistIsLoggedIn($artist);
+ensureUserIsLoggedIn($user);
 
 $action = get_param('action');
 if ($action == 'delete') {
@@ -57,14 +57,14 @@ if ($action == 'delete') {
             show_fatal_error_and_exit('Message with ID ' . $mid . ' not found!');
         }
 
-        ensureMessageBelongsToArtist($msg, $artist);
+        ensureMessageBelongsToUser($msg, $user);
 
         $msg->deleted = true;
         $msg->save();
     }
 }
 
-$privTrackCount = AudioTrack::count_all_private_tracks_the_artist_can_access($artist->id);
+$privTrackCount = AudioTrack::count_all_private_tracks_the_user_can_access($user->id);
 $logger->info('private track count: ' . $privTrackCount);
 
 writePageDoctype();
@@ -233,7 +233,7 @@ function showSendMessagePopup(raid, replyToMsgId) {
 
 <?php
 
-$msgs = Message::fetch_all_for_recipient_artist_id($artist->id);
+$msgs = Message::fetch_all_for_recipient_user_id($user->id);
 if (count($msgs) > 0) {
     echo '<table class="messageInboxTable">' . "\n";
     echo '<tr>' .
@@ -248,12 +248,12 @@ if (count($msgs) > 0) {
         $b2 = $msg->marked_as_read ? '' : '</b>';
 
         echo '<tr>' . "\n";
-        echo '<td>' . $b1 . escape($msg->sender_artist_name) . $b2 . '</td>' . "\n";
+        echo '<td>' . $b1 . escape($msg->sender_user_name) . $b2 . '</td>' . "\n";
         echo '<td>' . $b1 . escape($msg->subject) . $b2 . '</td>' . "\n";
         echo '<td>' . escape($msg->text) . '</td>' . "\n";
         echo '<td>' .
              '<a class="buttonsmall" href="javascript:showSendMessagePopup(' .
-                 $msg->sender_artist_id . ',' .
+                 $msg->sender_user_id . ',' .
                  $msg->id .
              ');">Reply</a>' .
              '' .
@@ -264,7 +264,7 @@ if (count($msgs) > 0) {
 
     echo '</table>' . "\n";
 
-    Message::mark_all_as_read_for_recipient_artist_id($artist->id);
+    Message::mark_all_as_read_for_recipient_user_id($user->id);
 
 } else {
     echo 'No new messages.';
@@ -288,11 +288,11 @@ if (count($msgs) > 0) {
       <div id="widgetSearch">
 <?php
 
-$newestPrivateTrack = AudioTrack::fetch_all_private_tracks_the_artist_can_access(0, 0, $artist->id);
+$newestPrivateTrack = AudioTrack::fetch_all_private_tracks_the_user_can_access(0, 0, $user->id);
 if (count($newestPrivateTrack) > 0) {
-    $aidForWidget = $newestPrivateTrack[0]->artist_id;
+    $aidForWidget = $newestPrivateTrack[0]->user_id;
 } else {
-    $aidForWidget = $artist->id;
+    $aidForWidget = $user->id;
 }
 
 ?>

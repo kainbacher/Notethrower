@@ -3,9 +3,9 @@
 include_once('../Includes/Init.php');
 include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/Artist.php');
+include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/AudioTrack.php');
-include_once('../Includes/DB/AudioTrackArtistVisibility.php');
+include_once('../Includes/DB/AudioTrackUserVisibility.php');
 include_once('../Includes/DB/AudioTrackFile.php');
 include_once('../Includes/DB/AudioTrackAttribute.php');
 include_once('../Includes/DB/AudioTrackAudioTrackAttribute.php');
@@ -17,7 +17,7 @@ $errorFields = Array();
 $trackId = get_numeric_param('tid');
 
 $track  = AudioTrack::fetch_for_id($trackId);
-$artist = Artist::fetch_for_id($track->artist_id);
+$user   = User::fetch_for_id($track->user_id);
 
 $offer->email = '';
 $offer->usage = '';
@@ -38,7 +38,7 @@ if (get_param('action') == 'send') {
                 'Category: ' . $offer->usageCategory . "\n" .
                 'Offer in $: ' . $offer->price . "\n" . "\n" .
                 'Your Notethrower Team';
-        send_email($artist->email_address, 'New offer for song on Notethrower', $text);
+        send_email($user->email_address, 'New offer for song on Notethrower', $text);
         send_email($GLOBALS['SELLER_EMAIL'], 'New offer for song on Notethrower', $text);
         $offerSent = true;
     }
@@ -53,12 +53,12 @@ if (get_param('action') == 'send') {
                 'Category: ' . $offer->usageCategoryArtistOffer . "\n" .
                 'Once the user finishes the paypal transaction, you should receive from paypal a message about the purchase' . "\n\n" . 
                 'Your Notethrower Team';
-        send_email($artist->email_address, 'Song checkout on Notethrower', $text);
+        send_email($user->email_address, 'Song checkout on Notethrower', $text);
         send_email($GLOBALS['SELLER_EMAIL'], 'Song checkout on Notethrower', $text);
         //email sent, redirect to paypal
         $paypalUrl = $GLOBALS['PAYPAL_BASE_URL'] . '&business=' . $GLOBALS['SELLER_EMAIL'];
-        $paypalUrl .= '&item_name=' . urlencode($artist->name . ' - ' . $track->title);
-        $paypalUrl .= '&cbt=' . urlencode(substr('Download: ' . $artist->name . ' - ' . $track->title, 0, 60));
+        $paypalUrl .= '&item_name=' . urlencode($user->name . ' - ' . $track->title);
+        $paypalUrl .= '&cbt=' . urlencode(substr('Download: ' . $user->name . ' - ' . $track->title, 0, 60));
         $paypalUrl .= '&item_number=PPI' . $track->id;
         $paypalUrl .= '&amount=' . $track->price;
         $paypalUrl .= '&currency_code=' . $track->currency;
@@ -132,7 +132,7 @@ if (!$offerSent) {
                             <p>Artist Name</p>
                         </div>
                         <div class="makeAnOfferRight">
-                            <p><?php echo $artist->name ?></p>
+                            <p><?php echo $user->name ?></p>
                         </div>
                         <div class="clear"></div>
                     </div>

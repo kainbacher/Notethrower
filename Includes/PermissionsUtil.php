@@ -3,10 +3,10 @@
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/AudioTrack.php');
 
-function ensureArtistIsLoggedIn($artist) {
+function ensureUserIsLoggedIn($user) {
     global $logger;
 
-    if ($artist) {
+    if ($user) {
         $logger->info('user is logged in');
 
     } else {
@@ -16,7 +16,7 @@ function ensureArtistIsLoggedIn($artist) {
     }
 }
 
-function ensureTrackIdBelongsToArtistId($trackId, $artistId) {
+function ensureTrackIdBelongsToUserId($trackId, $userId) {
     if (!$trackId) {
         show_fatal_error_and_exit('Track ID not specified!');
     }
@@ -27,31 +27,31 @@ function ensureTrackIdBelongsToArtistId($trackId, $artistId) {
         show_fatal_error_and_exit('Track with ID ' . $trackId . ' not found!');
     }
 
-    ensureTrackBelongsToArtistId($track, $artistId);
+    ensureTrackBelongsToUserId($track, $userId);
 }
 
-function ensureTrackBelongsToArtistId($track, $artistId) {
+function ensureTrackBelongsToUserId($track, $userId) {
     if (!$track || !$track->id) {
         show_fatal_error_and_exit('Track object not specified!');
     }
 
-    if (!$artistId) {
-        show_fatal_error_and_exit('Artist ID not specified!');
+    if (!$userId) {
+        show_fatal_error_and_exit('User ID not specified!');
     }
 
-    if ($track->artist_id != $artistId) {
-        show_fatal_error_and_exit('Track with ID ' . $track->id . ' does not belong to artist with ID ' .
-                $artistId . ' (owner artist ID: ' . $track->artist_id . ')!');
+    if ($track->user_id != $userId) {
+        show_fatal_error_and_exit('Track with ID ' . $track->id . ' does not belong to user with ID ' .
+                $userId . ' (owner user ID: ' . $track->user_id . ')!');
     }
 }
 
-function ensureMessageIdBelongsToArtist($mid, $artist) {
+function ensureMessageIdBelongsToUser($mid, $user) {
     if (!$mid) {
         show_fatal_error_and_exit('Msg ID not specified!');
     }
 
-    if (!$artist || !$artist->id) {
-        show_fatal_error_and_exit('Artist not specified!');
+    if (!$user || !$user->id) {
+        show_fatal_error_and_exit('User not specified!');
     }
 
     $msg = Message::fetch_for_id($mid);
@@ -60,21 +60,21 @@ function ensureMessageIdBelongsToArtist($mid, $artist) {
         show_fatal_error_and_exit('Message with ID ' . $mid . ' not found!');
     }
 
-    ensureMessageBelongsToArtist($msg, $artist);
+    ensureMessageBelongsToUser($msg, $user);
 }
 
-function ensureMessageBelongsToArtist($msg, $artist) {
+function ensureMessageBelongsToUser($msg, $user) {
     if (!$msg || !$msg->id) {
         show_fatal_error_and_exit('Msg not specified!');
     }
 
-    if (!$artist || !$artist->id) {
-        show_fatal_error_and_exit('Artist not specified!');
+    if (!$user || !$user->id) {
+        show_fatal_error_and_exit('User not specified!');
     }
 
-    if ($msg->recipient_artist_id != $artist->id) {
-        show_fatal_error_and_exit('Msg with ID ' . $msg->id . ' does not belong to artist with ID ' .
-                $artist->id . ' (owner artist ID: ' . $msg->recipient_artist_id . ')!');
+    if ($msg->recipient_user_id != $user->id) {
+        show_fatal_error_and_exit('Msg with ID ' . $msg->id . ' does not belong to user with ID ' .
+                $user->id . ' (owner user ID: ' . $msg->recipient_user_id . ')!');
     }
 }
 

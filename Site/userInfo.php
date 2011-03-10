@@ -3,23 +3,23 @@
 include_once('../Includes/Init.php');
 
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/Artist.php');
+include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/AudioTrack.php');
-include_once('../Includes/DB/AudioTrackArtistVisibility.php');
+include_once('../Includes/DB/AudioTrackUserVisibility.php');
 
-// let's see if the visiting user is a logged in artist
-$visitorArtistId = -1;
-$visitorArtist = Artist::new_from_cookie();
-if ($visitorArtist) {
-    $visitorArtistId = $visitorArtist->id;
-    $logger->info('visitor artist id: ' . $visitorArtistId);
+// let's see if the visiting user is a logged in user
+$visitorUserId = -1;
+$visitorUser = User::new_from_cookie();
+if ($visitorUser) {
+    $visitorUserId = $visitorUser->id;
+    $logger->info('visitor user id: ' . $visitorUserId);
 }
 
-$artist_id = get_numeric_param('aid');
+$user_id = get_numeric_param('aid');
 
-$artist = Artist::fetch_for_id($artist_id);
-if (!$artist) {
-    show_fatal_error_and_exit('no artist found for id: ' . $artist_id);
+$user = User::fetch_for_id($user_id);
+if (!$user) {
+    show_fatal_error_and_exit('no user found for id: ' . $user_id);
 }
 
 writePageDoctype();
@@ -49,8 +49,8 @@ function reloadDataInWidget(aid, tid) {
     getFlashContent("NTWidget").reloadData(aid, tid);
 }
 
-function showCollaborationArtistsPopup() {
-    window.open('showCollaborationArtists.php?aid=<?php echo $artist->id; ?>', 'NT_COLLABORATORS', 'scrollbars=yes,resizable=yes,status=0,width=400,height=600');
+function showCollaborationUsersPopup() {
+    window.open('showCollaborationUsers.php?aid=<?php echo $user->id; ?>', 'NT_COLLABORATORS', 'scrollbars=yes,resizable=yes,status=0,width=400,height=600');
 }
 
 function showSendMessagePopup(raid) {
@@ -72,24 +72,24 @@ function showSendMessagePopup(raid) {
                     </ul>
                 </div>
 
-                <div id="artistInfoContainer">
+                <div id="userInfoContainer">
 
-                    <div id="artistInfoDiv">
+                    <div id="userInfoDiv">
                         <div id="container">
 
 
-                            <div id="artistInfoLeft">
+                            <div id="userInfoLeft">
 
 <?php
-    // artist image
-    if ($artist->image_filename) {
-        $artistImg    = $GLOBALS['ARTIST_IMAGE_BASE_PATH'] . $artist->image_filename;
-        $artistImgUrl = $GLOBALS['ARTIST_IMAGE_BASE_URL']  . $artist->image_filename;
+    // user image
+    if ($user->image_filename) {
+        $userImg    = $GLOBALS['USER_IMAGE_BASE_PATH'] . $user->image_filename;
+        $userImgUrl = $GLOBALS['USER_IMAGE_BASE_URL']  . $user->image_filename;
 
-        $logger->info('artist img: ' . $artistImg);
+        $logger->info('user img: ' . $userImg);
 
-        if (file_exists($artistImg)) {
-      	    echo '<img src="' . $artistImgUrl . '" width="200">';
+        if (file_exists($userImg)) {
+      	    echo '<img src="' . $userImgUrl . '" width="200">';
 
         } else {
       	    echo '<img src="' . $GLOBALS['BASE_URL'] . 'Images/no_artist_image.png" width="200">';
@@ -102,37 +102,37 @@ function showSendMessagePopup(raid) {
     echo '<br><br>' . "\n";
 
     // webpage url
-    if ($artist->webpage_url) {
-        $webpageUrl = $artist->webpage_url;
-        if (substr($artist->webpage_url, 0, 7) != 'http://' && substr($artist->webpage_url, 0, 8) != 'https://') {
-            $webpageUrl = 'http://' . $artist->webpage_url;
+    if ($user->webpage_url) {
+        $webpageUrl = $user->webpage_url;
+        if (substr($user->webpage_url, 0, 7) != 'http://' && substr($user->webpage_url, 0, 8) != 'https://') {
+            $webpageUrl = 'http://' . $user->webpage_url;
         }
-        echo '<div class="weblink"><a href="' . escape($webpageUrl) . '" target="_blank"><img src="../Images/icon_weblink.png" alt="icon_weblink" width="16" height="16"/><span class="weblinkText">' . escape($artist->webpage_url) . '</span></a></div>' . "\n";
+        echo '<div class="weblink"><a href="' . escape($webpageUrl) . '" target="_blank"><img src="../Images/icon_weblink.png" alt="icon_weblink" width="16" height="16"/><span class="weblinkText">' . escape($user->webpage_url) . '</span></a></div>' . "\n";
     }
 
     // send Message
 /*
-    if ($visitorArtist && $artist->id != $visitorArtist->id) {
+    if ($visitorUser && $user->id != $visitorUser->id) {
         echo '<br>' . "\n";
-        echo '<div class="sendMessageLink"><a href="javascript:showSendMessagePopup(' . $artist->id . ');"><img border="0" src="../Images/Mail_Icon.png">&nbsp;Send message to ' . escape($artist->name) . '</a></div>' . "\n";
+        echo '<div class="sendMessageLink"><a href="javascript:showSendMessagePopup(' . $user->id . ');"><img border="0" src="../Images/Mail_Icon.png">&nbsp;Send message to ' . escape($user->name) . '</a></div>' . "\n";
     }
 */
 
     // send Message
-    if ($visitorArtist && $artist->id != $visitorArtist->id) {
+    if ($visitorUser && $user->id != $visitorUser->id) {
         echo '<br>' . "\n";
-        echo '<div class="sendMessageLink"><a href="sendMessage.php?raid=' . $artist->id . '"><img border="0" src="../Images/Mail_Icon.png">&nbsp;Send message to ' . escape($artist->name) . '</a></div>' . "\n";
+        echo '<div class="sendMessageLink"><a href="sendMessage.php?raid=' . $user->id . '"><img border="0" src="../Images/Mail_Icon.png">&nbsp;Send message to ' . escape($user->name) . '</a></div>' . "\n";
     }
 
 
 
 ?>
 
-                            </div> <!-- artistInfoLeft -->
+                            </div> <!-- userInfoLeft -->
 
-                            <div id="artistInfoMiddle">
+                            <div id="userInfoMiddle">
 
-                                <h1><?php echo escape($artist->name); ?></h1>
+                                <h1><?php echo escape($user->name); ?></h1>
                                 <br/>
 
 
@@ -142,34 +142,34 @@ function showSendMessagePopup(raid) {
 
 
     // artist info
-    if ($artist->artist_info) {
+    if ($user->artist_info) {
 
         echo '<h2>Artist/Band information:</h2><p>' . "\n";
-        echo escape($artist->artist_info) . "\n";
+        echo escape($user->artist_info) . "\n";
         echo '</p><br/>' . "\n";
 
     }
 
     // additional info
-    if ($artist->additional_info) {
+    if ($user->additional_info) {
         echo '<h2>Additional information:</h2><p>' . "\n";
-        echo escape($artist->additional_info) . "\n";
+        echo escape($user->additional_info) . "\n";
         echo '</p><br/>' . "\n";
     }
 
 
     // collaborators
-    $collaborators = AudioTrackArtistVisibility::fetch_all_collaboration_artists_of_artist_id($artist->id, 10); // attention: if the limit of 10 is changed, the code below must be changed as well (row processing code and colspans)
+    $collaborators = AudioTrackUserVisibility::fetch_all_collaboration_users_of_user_id($user->id, 10); // attention: if the limit of 10 is changed, the code below must be changed as well (row processing code and colspans)
     if (count($collaborators) > 0) {
-        echo '<br><br><h2>' . escape($artist->name) . '\'s friends:</h2>' . "\n";
+        echo '<br><br><h2>' . escape($user->name) . '\'s friends:</h2>' . "\n";
         echo '<table>';
         // row 1
         echo '<tr>';
         for ($i = 0; $i < 5; $i++) {
             echo '<td>';
             if (isset($collaborators[$i])) {
-                echo '<a href="artistInfo.php?aid=' . $collaborators[$i]->collaborating_artist_id . '" target="_blank">';
-                echo getArtistImageHtml($collaborators[$i]->artist_image_filename, $collaborators[$i]->artist_name, 'tiny');
+                echo '<a href="userInfo.php?aid=' . $collaborators[$i]->collaborating_user_id . '" target="_blank">';
+                echo getUserImageHtml($collaborators[$i]->user_image_filename, $collaborators[$i]->user_name, 'tiny');
                 echo '</a>';
 
             } else {
@@ -184,8 +184,8 @@ function showSendMessagePopup(raid) {
         for ($i = 5; $i < 10; $i++) {
             echo '<td>';
             if (isset($collaborators[$i])) {
-                echo '<a href="artistInfo.php?aid=' . $collaborators[$i]->collaborating_artist_id . '" target="_blank">';
-                echo getArtistImageHtml($collaborators[$i]->artist_image_filename, $collaborators[$i]->artist_name, 'tiny');
+                echo '<a href="userInfo.php?aid=' . $collaborators[$i]->collaborating_user_id . '" target="_blank">';
+                echo getUserImageHtml($collaborators[$i]->user_image_filename, $collaborators[$i]->user_name, 'tiny');
                 echo '</a>';
 
             } else {
@@ -197,7 +197,7 @@ function showSendMessagePopup(raid) {
 
         if (count($collaborators) > 10) {
             echo '<tr><td colspan="5">' . "\n";
-            echo '... and some more. <div class="sendMessageLink"><a href="javascript:showCollaborationArtistsPopup();" target="_blank"></div>';
+            echo '... and some more. <div class="sendMessageLink"><a href="javascript:showCollaborationUsersPopup();" target="_blank"></div>';
             echo 'See all.';
             echo '</a>';
             echo '</td></tr>' . "\n";
@@ -211,24 +211,24 @@ function showSendMessagePopup(raid) {
 
 
 
-                            </div> <!-- artistInfoMiddle -->
+                            </div> <!-- userInfoMiddle -->
 
-                            <div id="artistInfoRight">
-
-
+                            <div id="userInfoRight">
 
 
-                                <div id="artistInfoWidget">
+
+
+                                <div id="userInfoWidget">
                                   <div id="inner">
 	                                <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="300" height="400" id="NTWidget" align="middle">
 	                                  <param name="allowScriptAccess" value="always" />
 	                                  <param name="allowFullScreen" value="false" />
-	                                  <param name="movie" value="../Widget/PpWidget.swf?aid=<?php echo $artist->id; ?>" />
+	                                  <param name="movie" value="../Widget/PpWidget.swf?aid=<?php echo $user->id; ?>" />
 	                                  <param name="loop" value="false" />
 	                                  <param name="quality" value="high" />
 	                                  <param name="wmode" value="transparent" />
 	                                  <param name="bgcolor" value="#ffffff" />
-	                                  <embed src="../Widget/PpWidget.swf?aid=<?php echo $artist->id; ?>" loop="false" quality="high" wmode="transparent" bgcolor="#ffffff" width="300" height="400" name="NTWidget" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+	                                  <embed src="../Widget/PpWidget.swf?aid=<?php echo $user->id; ?>" loop="false" quality="high" wmode="transparent" bgcolor="#ffffff" width="300" height="400" name="NTWidget" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
 	                                </object>
 	                              </div>
                                 </div>
@@ -236,14 +236,14 @@ function showSendMessagePopup(raid) {
 
 
 
-                            </div><!-- artistInfoRight -->
+                            </div><!-- userInfoRight -->
 
 
                             <div class="clear"></div>
 
 
       </div>
-      </div> <!-- artistInfoContainer -->
+      </div> <!-- userInfoContainer -->
 
 
       </div>
@@ -261,14 +261,14 @@ function showSendMessagePopup(raid) {
 
 <?php
 
-$originals         = AudioTrack::fetch_all_originals_of_artist_id_from_to($artist_id, 0, 99999999, false, false, $visitorArtistId);
-$remixes           = AudioTrack::fetch_all_remixes_of_artist_id_from_to($artist_id, 0, 99999999, false, false, $visitorArtistId);
-$remixed_by_others = AudioTrack::fetch_all_remixes_for_originating_artist_id_from_to($artist_id, 0, 99999999, false, false, $visitorArtistId);
+$originals         = AudioTrack::fetch_all_originals_of_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
+$remixes           = AudioTrack::fetch_all_remixes_of_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
+$remixed_by_others = AudioTrack::fetch_all_remixes_for_originating_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
 
 $rows = max(max(count($originals), count($remixes)), count($remixed_by_others));
 
 for ($i = 0; $i < $rows; $i++) {
-    echo '<div><a href="javascript:reloadDataInWidget(' . $artist_id . ', ' . $originals[$i]->id . ');">'         . escape($originals[$i]->title)         . '</a></div>' . "\n";
+    echo '<div><a href="javascript:reloadDataInWidget(' . $user_id . ', ' . $originals[$i]->id . ');">'         . escape($originals[$i]->title)         . '</a></div>' . "\n";
 }
 
 ?>
@@ -285,7 +285,7 @@ for ($i = 0; $i < $rows; $i++) {
 $rows = max(max(count($originals), count($remixes)), count($remixed_by_others));
 
 for ($i = 0; $i < $rows; $i++) {
-    echo '<div><a href="javascript:reloadDataInWidget(' . $artist_id . ', ' . $remixes[$i]->id . ');">'           . escape($remixes[$i]->title)           . '</a></div>' . "\n";
+    echo '<div><a href="javascript:reloadDataInWidget(' . $user_id . ', ' . $remixes[$i]->id . ');">'           . escape($remixes[$i]->title)           . '</a></div>' . "\n";
 }
 
 ?>
@@ -302,7 +302,7 @@ for ($i = 0; $i < $rows; $i++) {
 $rows = max(max(count($originals), count($remixes)), count($remixed_by_others));
 
 for ($i = 0; $i < $rows; $i++) {
-    echo '<div><a href="javascript:reloadDataInWidget(' . $artist_id . ', ' . $remixed_by_others[$i]->id . ');">' . escape($remixed_by_others[$i]->title) . '</a></div>' . "\n";
+    echo '<div><a href="javascript:reloadDataInWidget(' . $user_id . ', ' . $remixed_by_others[$i]->id . ');">' . escape($remixed_by_others[$i]->title) . '</a></div>' . "\n";
 }
 
 ?>

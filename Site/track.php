@@ -3,16 +3,16 @@
 include_once('../Includes/Init.php');
 include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/Artist.php');
+include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/AudioTrack.php');
-include_once('../Includes/DB/AudioTrackArtistVisibility.php');
+include_once('../Includes/DB/AudioTrackUserVisibility.php');
 include_once('../Includes/DB/AudioTrackFile.php');
 include_once('../Includes/DB/AudioTrackAttribute.php');
 include_once('../Includes/DB/AudioTrackAudioTrackAttribute.php');
 include_once('../Uploader/SolmetraUploader.php');
 
-$artist = Artist::new_from_cookie();
-ensureArtistIsLoggedIn($artist);
+$user = User::new_from_cookie();
+ensureUserIsLoggedIn($user);
 
 $track = null;
 $unpersistedTrack = null;
@@ -32,11 +32,11 @@ $logger->debug('$uploaderParams: ' . $uploaderParams);
 
 if (get_param('action') == 'create') {
     $track = new AudioTrack();
-    $track->artist_id                 = $artist->id;
+    $track->user_id                 = $user->id;
     $track->title                     = 'New audio track';
     $track->type                      = 'original';
     $track->is_full_song              = false;
-    $track->originating_artist_id     = null;
+    $track->originating_user_id     = null;
     $track->parent_track_id           = null;
     $track->price                     = 0;
     $track->currency                  = 'USD'; // TODO - take from config - check other occurences as well
@@ -53,9 +53,9 @@ if (get_param('action') == 'create') {
     $track->orig_preview_mp3_filename = '';
     $track->save();
 
-    // create a visibility record for this artist
-    $atav = new AudioTrackArtistVisibility();
-    $atav->artist_id = $artist->id;
+    // create a visibility record for this user
+    $atav = new AudioTrackUserVisibility();
+    $atav->user_id = $user->id;
     $atav->track_id  = $track->id;
     $atav->save();
 
@@ -65,7 +65,7 @@ if (get_param('action') == 'create') {
     }
 
     $track = AudioTrack::fetch_for_id($trackId);
-    ensureTrackBelongsToArtistId($track, $artist->id);
+    ensureTrackBelongsToUserId($track, $user->id);
 
 } else if (get_param('action') == 'save') {
     $logger->info('attempting to save track data ...');
@@ -74,10 +74,10 @@ if (get_param('action') == 'create') {
     }
 
     $track = AudioTrack::fetch_for_id($trackId);
-    ensureTrackBelongsToArtistId($track, $artist->id);
+    ensureTrackBelongsToUserId($track, $user->id);
 
     if (inputDataOk($errorFields, $track, $uploaderParams)) {
-        processParams($track, $artist, $uploaderParams);
+        processParams($track, $user, $uploaderParams);
 
         if ($track->status == 'newborn') {
             $track->status = 'active';
@@ -87,10 +87,10 @@ if (get_param('action') == 'create') {
 
         // if the track is private, make sure that the owner can see it
 //        if ($track->visibility == 'private') {
-//            $atav = AudioTrackArtistVisibility::fetch_for_artist_id_track_id($artist->id, $track->id);
+//            $atav = AudioTrackUserVisibility::fetch_for_user_id_track_id($user->id, $track->id);
 //            if (!$atav) {
-//                $atav = new AudioTrackArtistVisibility();
-//                $atav->artist_id = $artist->id;
+//                $atav = new AudioTrackUserVisibility();
+//                $atav->user_id = $user->id;
 //                $atav->track_id = $track->id;
 //                $atav->save();
 //            }
@@ -98,9 +98,9 @@ if (get_param('action') == 'create') {
 
         // if the track is a full song, the associated tracks inherit the visibility setting
         if ($track->is_full_song) {
-            $logger->info('copying audio track artist visibility associations from the parent song to it\'s children');
+            $logger->info('copying audio track user visibility associations from the parent song to it\'s children');
             $logger->debug('fetching child tracks');
-            $children = AudioTrack::fetchAllChildTracksOfFullSong($track->id, true, true, $artist->id);
+            $children = AudioTrack::fetchAllChildTracksOfFullSong($track->id, true, true, $user->id);
             foreach ($children as $childTrack) {
                 $logger->debug('processing child track ' . $childTrack->id);
                 if ($childTrack->visibility != $track->visibility) {
@@ -111,18 +111,18 @@ if (get_param('action') == 'create') {
 
                     // clean up the old associations of the child track
                     $logger->debug('cleaning up the child\' old associations');
-                    AudioTrackArtistVisibility::delete_all_with_track_id($childTrack->id);
+                    AudioTrackUserVisibility::delete_all_with_track_id($childTrack->id);
 
                     // copy the information who may see the private track
                     if ($track->visibility == 'private') {
                         $logger->debug('visibility has changed to private');
                         // get the parent's associations to copy them
-                        $logger->debug('fetching parent\'s track/artist visibility associations');
-                        $parentAssoc = AudioTrackArtistVisibility::fetch_all_for_track_id($track->id);
+                        $logger->debug('fetching parent\'s track/user visibility associations');
+                        $parentAssoc = AudioTrackUserVisibility::fetch_all_for_track_id($track->id);
                         foreach ($parentAssoc as $assoc) {
-                            $logger->debug('creating new association for artist/track ' . $assoc->artist_id . '/' . $childTrack->id);
-                            $atav = new AudioTrackArtistVisibility();
-                            $atav->artist_id = $assoc->artist_id;
+                            $logger->debug('creating new association for user/track ' . $assoc->user_id . '/' . $childTrack->id);
+                            $atav = new AudioTrackUserVisibility();
+                            $atav->user_id = $assoc->user_id;
                             $atav->track_id  = $childTrack->id;
                             $atav->save();
                         }
@@ -151,7 +151,7 @@ if (get_param('action') == 'create') {
         $logger->info('input data was invalid: ' . print_r($errorFields, true));
         $unpersistedTrack = new AudioTrack();
         $unpersistedTrack->id = $trackId;
-        processParams($unpersistedTrack, $artist, $uploaderParams);
+        processParams($unpersistedTrack, $user, $uploaderParams);
         $message = 'Please correct the highlighted problems!';
         $problemOccured = true;
     }
@@ -162,7 +162,7 @@ if (get_param('action') == 'create') {
     }
 
     $track = AudioTrack::fetch_for_id($trackId);
-    ensureTrackBelongsToArtistId($track, $artist->id);
+    ensureTrackBelongsToUserId($track, $user->id);
 
     AudioTrack::delete_with_id($trackId);
     AudioTrackAudioTrackAttribute::deleteForTrackId($trackId);
@@ -179,7 +179,7 @@ if (get_param('action') == 'create') {
     $msg = '';
 
     $track = AudioTrack::fetch_for_id($trackId);
-    ensureTrackBelongsToArtistId($track, $artist->id);
+    ensureTrackBelongsToUserId($track, $user->id);
 
     if ($track->status == 'active') {
         $track->status = 'inactive';
@@ -205,7 +205,7 @@ if (get_param('action') == 'create') {
     }
 
     $track = AudioTrack::fetch_for_id($trackId);
-    ensureTrackBelongsToArtistId($track, $artist->id);
+    ensureTrackBelongsToUserId($track, $user->id);
 
     $file = AudioTrackFile::fetch_for_id(get_numeric_param('fid'));
     if (!$file) {
@@ -224,7 +224,7 @@ if (get_param('action') == 'create') {
     }
 
     $track = AudioTrack::fetch_for_id($trackId);
-    ensureTrackBelongsToArtistId($track, $artist->id);
+    ensureTrackBelongsToUserId($track, $user->id);
 
     $file = AudioTrackFile::fetch_for_id(get_numeric_param('fid'));
     if (!$file) {
@@ -274,14 +274,14 @@ function inputDataOk(&$errorFields, &$track, $uploaderParams) {
     }
 
     if (get_param('type') == 'remix') {
-        if (!get_numeric_param('originating_artist_id')) {
-            $errorFields['originating_artist_id'] = 'Originating artist is missing!';
+        if (!get_numeric_param('originating_user_id')) {
+            $errorFields['originating_user_id'] = 'Originating user is missing!';
             $result = false;
 
         } else {
-            $checkArtist = Artist::fetch_for_id(get_numeric_param('originating_artist_id'));
-            if (!$checkArtist) {
-                $errorFields['originating_artist_id'] = 'Originating artist is invalid!';
+            $checkUser = User::fetch_for_id(get_numeric_param('originating_user_id'));
+            if (!$checkUser) {
+                $errorFields['originating_user_id'] = 'Originating user is invalid!';
                 $result = false;
             }
         }
@@ -339,14 +339,14 @@ function inputDataOk(&$errorFields, &$track, $uploaderParams) {
     return $result;
 }
 
-function processParams(&$track, &$artist, $uploaderParams) {
+function processParams(&$track, &$user, $uploaderParams) {
     global $logger;
 
-    $track->artist_id               = $artist->id;
+    $track->user_id               = $user->id;
     $track->title                   = get_param('title');
     $track->type                    = get_param('type');
     $track->is_full_song            = get_numeric_param('is_full_song');
-    $track->originating_artist_id   = get_numeric_param('originating_artist_id');
+    $track->originating_user_id   = get_numeric_param('originating_user_id');
 
     if (!$track->is_full_song) {
         $track->parent_track_id     = get_numeric_param('parent_track_id');
@@ -362,19 +362,19 @@ function processParams(&$track, &$artist, $uploaderParams) {
     //$track->rating_value            = 0; // read-only field on this page
     $track->additionalInfo          = get_param('additionalInfo');
 
-    handleNewFileUpload($track, $artist, $uploaderParams);
+    handleNewFileUpload($track, $user, $uploaderParams);
 
-    if ($track->type == 'remix' && $track->originating_artist_id && !$track->originator_notified) {
+    if ($track->type == 'remix' && $track->originating_user_id && !$track->originator_notified) {
         $logger->info('new remix detected, sending notification mail to originator');
 
-        $originator = Artist::fetch_for_id($track->originating_artist_id);
+        $originator = User::fetch_for_id($track->originating_user_id);
         if ($originator) {
             // send notification mail to originator
-            $email_sent = send_email($originator->email_address, $artist->name . ' has created a remix using one of your tracks',
+            $email_sent = send_email($originator->email_address, $user->name . ' has created a remix using one of your tracks',
                     'Hey ' . $originator->name . ',' . "\n\n" .
-                    $artist->name . ' has just created a new remix using one of your tracks.' . "\n\n" .
-                    'You may want to check out the "Remixed by others" section in your Notethrower Widget or on your public artist page: ' .
-                    $GLOBALS['BASE_URL'] . 'Site/artistInfo.php?aid=' . $track->originating_artist_id . "\n\n" .
+                    $user->name . ' has just created a new remix using one of your tracks.' . "\n\n" .
+                    'You may want to check out the "Remixed by others" section in your Notethrower Widget or on your public user page: ' .
+                    $GLOBALS['BASE_URL'] . 'Site/userInfo.php?aid=' . $track->originating_user_id . "\n\n" .
                     'Please note that you might not see the new track until the remixer puts it online.');
 
             if (!$email_sent) {
@@ -386,7 +386,7 @@ function processParams(&$track, &$artist, $uploaderParams) {
             }
 
         } else {
-            $logger->error('no originator found for artist id: ' . $track->originating_artist_id);
+            $logger->error('no originator found for user id: ' . $track->originating_user_id);
         }
     }
 
@@ -403,7 +403,7 @@ function processParams(&$track, &$artist, $uploaderParams) {
     }
 }
 
-function handleNewFileUpload(&$track, &$artist, $uploaderParams) {
+function handleNewFileUpload(&$track, &$user, $uploaderParams) {
     global $logger;
 
 //    // handle preview mp3 upload
@@ -412,19 +412,19 @@ function handleNewFileUpload(&$track, &$artist, $uploaderParams) {
 //
 //        $track->orig_preview_mp3_filename = $_FILES['preview_mp3_filename']['name'];
 //
-//        $artistSubdir = null;
+//        $userSubdir = null;
 //        if (ini_get('safe_mode')) {
-//            $artistSubdir = ''; // in safe mode we're not allowed to create directories
+//            $userSubdir = ''; // in safe mode we're not allowed to create directories
 //        } else {
-//            $artistSubdir = md5('Wuizi' . $artist->id);
+//            $userSubdir = md5('Wuizi' . $user->id);
 //        }
-//        $upload_dir = $GLOBALS['CONTENT_BASE_PATH'] . $artistSubdir;
+//        $upload_dir = $GLOBALS['CONTENT_BASE_PATH'] . $userSubdir;
 //
 //        // upload to tmp file
 //        $upload_filename = $track->id . '_preview.mp3';
 //        do_upload($upload_dir, 'preview_mp3_filename', $upload_filename);
 //
-//        $track->preview_mp3_filename = $artistSubdir . '/' . $upload_filename;
+//        $track->preview_mp3_filename = $userSubdir . '/' . $upload_filename;
 //    }
 
     // handle new file upload
@@ -438,18 +438,28 @@ function handleNewFileUpload(&$track, &$artist, $uploaderParams) {
         //$logger->info('processing new track file upload: ' . $_FILES['newfilename']['name']);
         $logger->info('processing new track file upload: ' . $filename . ' (orig filename: ' . $origFilename . ')');
 
-        $artistSubdir = null;
+        $userSubdir = null;
         if (ini_get('safe_mode')) {
-            $artistSubdir = ''; // in safe mode we're not allowed to create directories
+            $userSubdir = ''; // in safe mode we're not allowed to create directories
         } else {
-            $artistSubdir = md5('Wuizi' . $artist->id);
+            $userSubdir = md5('Wuizi' . $user->id);
         }
-        $upload_dir = $GLOBALS['CONTENT_BASE_PATH'] . $artistSubdir;
+        $upload_dir = $GLOBALS['CONTENT_BASE_PATH'] . $userSubdir;
 
         $newFileType = get_param('newfiletype');
 
         // upload to tmp file
-        $upload_filename = $track->id . '_' . $newFileType . '.mp3';
+        $upload_filename = $track->id . '_' . $newFileType;
+        if ($newFileType == 'WAV') {
+             $upload_filename .= '.wav';
+        } else if ($newFileType == 'ZIP') {
+             $upload_filename .= '.zip';
+        } else if ($newFileType == 'HQMP3') {
+             $upload_filename .= '.mp3';
+        } else {
+            show_fatal_error_and_exit('unrecognised file type: ' . $newFileType);
+        }
+
         //do_upload($upload_dir, 'newfilename', $upload_filename);
         do_solmetra_upload($GLOBALS['TMP_UPLOAD_PATH'] . $filename, $upload_dir, $upload_filename, true);
 
@@ -459,7 +469,7 @@ function handleNewFileUpload(&$track, &$artist, $uploaderParams) {
         }
 
         $newTrackFile->track_id = $track->id;
-        $newTrackFile->filename = $artistSubdir . '/' . $upload_filename;
+        $newTrackFile->filename = $userSubdir . '/' . $upload_filename;
         //$newTrackFile->orig_filename = $_FILES['newfilename']['name'];
         $newTrackFile->orig_filename = $origFilename;
         $newTrackFile->type = $newFileType;
@@ -492,12 +502,12 @@ writePageDoctype();
     <script type="text/javascript">
 
 function typeHasChanged(elt) {
-    if (document.getElementById('originating_artist_id_row')) {
+    if (document.getElementById('originating_user_id_row')) {
         var trackType = elt.options[elt.selectedIndex].value;
         if (trackType == 'remix') {
-            document.getElementById('originating_artist_id_row').style.display = '';
+            document.getElementById('originating_user_id_row').style.display = '';
         } else {
-            document.getElementById('originating_artist_id_row').style.display = 'none';
+            document.getElementById('originating_user_id_row').style.display = 'none';
         }
     }
 }
@@ -514,12 +524,12 @@ function trackVsSongHasChanged(elt) {
 }
 
 function visibilityHasChanged(elt) {
-    if (document.getElementById('associated_artists_row')) {
+    if (document.getElementById('associated_users_row')) {
         var sel = elt.options[elt.selectedIndex].value;
         if (sel == 'private') {
-            document.getElementById('associated_artists_row').style.display = '';
+            document.getElementById('associated_users_row').style.display = '';
         } else {
-            document.getElementById('associated_artists_row').style.display = 'none';
+            document.getElementById('associated_users_row').style.display = 'none';
         }
     }
 }
@@ -566,6 +576,7 @@ function showSelectFriendsPopup() {
         <div id="trackFormPlusImage">
 
           <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="MAX_FILE_SIZE" value="524288001">
             <input type="hidden" name="action" value="save">
             <input type="hidden" name="tid" value="<?php echo $track->id; ?>">
             <table class="trackFormTable">
@@ -583,18 +594,18 @@ if ($message) {
     echo '<tr><td colspan="3">&nbsp;</td></tr>' . "\n";
 }
 
-$artistSelectionArray = array();
-$artistSelectionArray[0] = '- Please choose -';
-$artists = Artist::fetch_all_from_to(0, 999999999, false, false);
-foreach ($artists as $a) {
-    if ($a->name != $artist->name) {
-        $artistSelectionArray[$a->id] = $a->name;
+$userSelectionArray = array();
+$userSelectionArray[0] = '- Please choose -';
+$users = User::fetch_all_from_to(0, 999999999, false, false);
+foreach ($users as $a) {
+    if ($a->name != $user->name) {
+        $userSelectionArray[$a->id] = $a->name;
     }
 }
 
 $songSelectionArray = array();
 $songSelectionArray[0] = '- Please choose -';
-$songs = AudioTrack::fetchAllFullSongsOfArtist($artist->id);
+$songs = AudioTrack::fetchAllFullSongsOfUser($user->id);
 foreach ($songs as $s) {
     if ($s->id != $track->id) {
         $songSelectionArray[$s->id] = $s->title;
@@ -617,8 +628,8 @@ showFormField('Associated with song',         'select', 'parent_track_id',      
 showTypeField('Type',                         'select', 'type',                  '<b>Please SELECT ORIGINAL if:</b> You are uploading a track that you have full copyright ownership of or have cleared the rights to upload.<br><p><br><b>Please SELECT REMIX if:</b> You have made a musical contribution to another Notethrower Artist\'s track, and are uploading the full result of your contributions mixed in with their original track</br></p> <p><br><b>NOTE:</b> You may not upload a remix of a remix. Under Notethrower\'s terms and conditions, you may only make musical contributions to another artist\'s ORIGINAL track, and not a track that has already been adapted by another Notethrower artist. However; you can make multiple versions of the same track by another artist.  This is done so both the original artist and the remixer split the profits from the sale of their collaboration 50/50. Make sense? Great!', true,  0,   $track, $unpersistedTrack, $problemOccured, $errorFields, array('original' => 'Original', 'remix' => 'Remix'), null);
 
 $hidden = true;
-if ($errorFields['originating_artist_id'] || ($track && $track->type == 'remix') || ($unpersistedTrack && $unpersistedTrack->type == 'remix')) $hidden = false;
-showFormField('Originating artist',           'select', 'originating_artist_id', '', false, 0,   $track, $unpersistedTrack, $problemOccured, $errorFields, $artistSelectionArray, null, $hidden);
+if ($errorFields['originating_user_id'] || ($track && $track->type == 'remix') || ($unpersistedTrack && $unpersistedTrack->type == 'remix')) $hidden = false;
+showFormField('Originating artist',           'select', 'originating_user_id', '', false, 0,   $track, $unpersistedTrack, $problemOccured, $errorFields, $userSelectionArray, null, $hidden);
 
 showFormField('Price for commercial license', 'text',   'price',                 'Please enter the price you want others to pay to license your work.  Notethrower will take a 10% fee from the sale at this price.  If you are uploading a remix of another Notethrower artist\'s track, you will split the profit with that artist 50/50, minus the 10% fee.', false, 255, $track, $unpersistedTrack, $problemOccured, $errorFields, null, null);
 showFormField('Currency',                     'select', 'currency',              '', false, 0,   $track, $unpersistedTrack, $problemOccured, $errorFields, array('USD' => 'USD'), null);
@@ -627,35 +638,35 @@ showVisibilityField('Visibility',             'select', 'visibility',           
 
 $hidden = true;
 if ($errorFields['visibility'] || ($track && $track->visibility == 'private') || ($unpersistedTrack && $unpersistedTrack->visibility == 'private')) $hidden = false;
-echo '<tr id="associated_artists_row"' . ($hidden ? ' style="display:none";' : '') . '>' . "\n";
+echo '<tr id="associated_users_row"' . ($hidden ? ' style="display:none";' : '') . '>' . "\n";
 //echo '<td>Artists who have access to this track:</td>' . "\n";
 echo '<td>&nbsp;</td>' . "\n";
 
-//$artistsWithAccessListStr = '';
-//$artistsWithAccessList = AudioTrackArtistVisibility::fetch_all_for_track_id($track->id);
-//$ac = count($artistsWithAccessList);
+//$usersWithAccessListStr = '';
+//$usersWithAccessList = AudioTrackUserVisibility::fetch_all_for_track_id($track->id);
+//$ac = count($usersWithAccessList);
 //if ($ac > 20) {
 //    for ($ai = 0; $ai < 20; $ai++) {
-//        if ($artistsWithAccessList[$ai]->artist_id != $artist->id) {
-//            $artistsWithAccessListStr .= '<a href="artistInfo.php?aid=' . $artistsWithAccessList[$ai]->artist_id . '" target="_blank">' .
-//                    escape($artistsWithAccessList[$ai]->artist_name) . '</a>, ';
+//        if ($usersWithAccessList[$ai]->user_id != $user->id) {
+//            $usersWithAccessListStr .= '<a href="userInfo.php?aid=' . $usersWithAccessList[$ai]->user_id . '" target="_blank">' .
+//                    escape($usersWithAccessList[$ai]->user_name) . '</a>, ';
 //        }
 //    }
-//    $artistsWithAccessListStr .= 'and some more ...';
+//    $usersWithAccessListStr .= 'and some more ...';
 //
 //} else if ($ac > 1) {
-//    foreach ($artistsWithAccessList as $a) {
-//        if ($a->artist_id != $artist->id) {
-//            $artistsWithAccessListStr .= '<a href="artistInfo.php?aid=' . $a->artist_id . '" target="_blank">' .
-//                    escape($a->artist_name) . '</a>, ';
+//    foreach ($usersWithAccessList as $a) {
+//        if ($a->user_id != $user->id) {
+//            $usersWithAccessListStr .= '<a href="userInfo.php?aid=' . $a->user_id . '" target="_blank">' .
+//                    escape($a->user_name) . '</a>, ';
 //        }
 //    }
-//    $artistsWithAccessListStr = substr($artistsWithAccessListStr, 0, -2);
+//    $usersWithAccessListStr = substr($usersWithAccessListStr, 0, -2);
 //
 //} else {
-//    $artistsWithAccessListStr = '(none)';
+//    $usersWithAccessListStr = '(none)';
 //}
-//echo '<td>' . $artistsWithAccessListStr . '<br><a href="javascript:showSelectFriendsPopup();">Select artists</a></td>' . "\n";
+//echo '<td>' . $usersWithAccessListStr . '<br><a href="javascript:showSelectFriendsPopup();">Select artists</a></td>' . "\n";
 echo '<td><a href="javascript:showSelectFriendsPopup();">Select the artists you want to have access to this track</a></td>' . "\n";
 echo '<td>&nbsp;</td>' . "\n";
 echo '</tr>' . "\n";

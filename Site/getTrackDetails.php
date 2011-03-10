@@ -2,19 +2,19 @@
 
 include_once('../Includes/Init.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/Artist.php');
+include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/AudioTrackAudioTrackAttribute.php');
-include_once('../Includes/DB/AudioTrackArtistVisibility.php');
+include_once('../Includes/DB/AudioTrackUserVisibility.php');
 include_once('../Includes/DB/AudioTrackFile.php');
 
-$visitorArtistId = -1;
+$visitorUserId = -1;
 $userIsLoggedIn  = false;
 
-$artist = Artist::new_from_cookie();
-if ($artist) {
-    $visitorArtistId = $artist->id;
-    $logger->info('visitor artist id: ' . $visitorArtistId);
+$user = User::new_from_cookie();
+if ($user) {
+    $visitorUserId = $user->id;
+    $logger->info('visitor user id: ' . $visitorUserId);
 
     $userIsLoggedIn = true;
     $logger->info('user is logged in');
@@ -38,19 +38,19 @@ writePageDoctype();
   <body>
 <?php
 
-$track = AudioTrack::fetch_track_details($tid, $visitorArtistId);
+$track = AudioTrack::fetch_track_details($tid, $visitorUserId);
 
-if ($track) { // could be empty if wrong id or not visible for logged in artist
-    $ownerArtist = Artist::fetch_for_id($track->artist_id);
+if ($track) { // could be empty if wrong id or not visible for logged in user
+    $ownerUser = User::fetch_for_id($track->user_id);
 
     echo '<h1>' . escape($track->title) . '</h1>';
     echo '<small>';
 
     if ($track->type == 'remix') {
         echo 'Remix';
-        $oa = Artist::fetch_for_id($track->originating_artist_id);
+        $oa = User::fetch_for_id($track->originating_user_id);
         if ($oa) {
-            echo ' | Originating artist: <a href="artistInfo.php?aid=' . $oa->id . '" target="_blank">' . escape($oa->name) . '</a>' . "\n";
+            echo ' | Originating user: <a href="userInfo.php?aid=' . $oa->id . '" target="_blank">' . escape($oa->name) . '</a>' . "\n";
         }
 
     } else {
@@ -79,20 +79,20 @@ if ($track) { // could be empty if wrong id or not visible for logged in artist
 
     // child tracks
     if ($track->is_full_song) {
-        $childTracks = AudioTrack::fetchAllChildTracksOfFullSong($tid, false, false, $visitorArtistId);
+        $childTracks = AudioTrack::fetchAllChildTracksOfFullSong($tid, false, false, $visitorUserId);
         if (count($childTracks) > 0) {
             echo '<br><br>' . "\n";
             echo 'Associated tracks:<br>' . "\n";
             echo '<table class="trackDetailsTable">' . "\n";
             foreach ($childTracks as $ct) {
                 echo '<tr class="standardRow1" onmouseover="this.className=\'highlightedRow\';" onmouseout="this.className=\'standardRow1\';">';
-                echo '<td><a href="javascript:reloadDataInWidget(' . $ct->artist_id . ', ' . $ct->id . ');">' . escape($ct->title) . '</a><br>';
+                echo '<td><a href="javascript:reloadDataInWidget(' . $ct->user_id . ', ' . $ct->id . ');">' . escape($ct->title) . '</a><br>';
                 echo '<small>';
                 if ($ct->type == 'remix') {
                     echo 'Remix';
-                    $oa = Artist::fetch_for_id($ct->originating_artist_id);
+                    $oa = User::fetch_for_id($ct->originating_user_id);
                     if ($oa) {
-                        echo ' | Originating artist: <a href="artistInfo.php?aid=' . $oa->id . '" target="_blank">' . escape($oa->name) . '</a>' . "\n";
+                        echo ' | Originating user: <a href="userInfo.php?aid=' . $oa->id . '" target="_blank">' . escape($oa->name) . '</a>' . "\n";
                     }
 
                 } else {
@@ -109,23 +109,23 @@ if ($track) { // could be empty if wrong id or not visible for logged in artist
 
     //$trackFiles = AudioTrackFile::fetch_all_for_track_id($track->id, true);
 
-    if ($ownerArtist->id != $artist->id) {
+    if ($ownerUser->id != $user->id) {
         echo '<br><br>' . "\n";
-        echo '<a href="javascript:showSendMessagePopup(' . $ownerArtist->id . ');"><img border="0" src="../Images/Mail_Icon.png">&nbsp;Send message to ' . escape($ownerArtist->name) . '&nbsp;(need to be logged in)</a>' . "\n";
+        echo '<a href="javascript:showSendMessagePopup(' . $ownerUser->id . ');"><img border="0" src="../Images/Mail_Icon.png">&nbsp;Send message to ' . escape($ownerUser->name) . '&nbsp;(need to be logged in)</a>' . "\n";
     }
 
     // collaborators
-    $collaborators = AudioTrackArtistVisibility::fetch_all_collaboration_artists_of_artist_id($ownerArtist->id, 10); // attention: if the limit of 10 is changed, the code below must be changed as well (row processing code and colspans)
+    $collaborators = AudioTrackUserVisibility::fetch_all_collaboration_users_of_user_id($ownerUser->id, 10); // attention: if the limit of 10 is changed, the code below must be changed as well (row processing code and colspans)
     if (count($collaborators) > 0) {
-        echo '<br><br><h1>' . escape($ownerArtist->name) . '\'s friends:</h1>' . "\n";
+        echo '<br><br><h1>' . escape($ownerUser->name) . '\'s friends:</h1>' . "\n";
         echo '<table>';
         // row 1
         echo '<tr>';
         for ($i = 0; $i < 5; $i++) {
             echo '<td>';
             if (isset($collaborators[$i])) {
-                echo '<a href="artistInfo.php?aid=' . $collaborators[$i]->collaborating_artist_id . '" target="_blank">';
-                echo getArtistImageHtml($collaborators[$i]->artist_image_filename, $collaborators[$i]->artist_name, 'tiny');
+                echo '<a href="userInfo.php?aid=' . $collaborators[$i]->collaborating_user_id . '" target="_blank">';
+                echo getUserImageHtml($collaborators[$i]->user_image_filename, $collaborators[$i]->user_name, 'tiny');
                 echo '</a>';
 
             } else {
@@ -140,8 +140,8 @@ if ($track) { // could be empty if wrong id or not visible for logged in artist
         for ($i = 5; $i < 10; $i++) {
             echo '<td>';
             if (isset($collaborators[$i])) {
-                echo '<a href="artistInfo.php?aid=' . $collaborators[$i]->collaborating_artist_id . '" target="_blank">';
-                echo getArtistImageHtml($collaborators[$i]->artist_image_filename, $collaborators[$i]->artist_name, 'tiny');
+                echo '<a href="userInfo.php?aid=' . $collaborators[$i]->collaborating_user_id . '" target="_blank">';
+                echo getUserImageHtml($collaborators[$i]->user_image_filename, $collaborators[$i]->user_name, 'tiny');
                 echo '</a>';
 
             } else {
@@ -153,7 +153,7 @@ if ($track) { // could be empty if wrong id or not visible for logged in artist
 
         if (count($collaborators) > 10) {
             echo '<tr><td colspan="5">' . "\n";
-            echo '... and some more. <a href="javascript:showCollaborationArtistsPopup();" target="_blank">';
+            echo '... and some more. <a href="javascript:showCollaborationUsersPopup();" target="_blank">';
             echo 'See all.';
             echo '</a>';
             echo '</td></tr>' . "\n";

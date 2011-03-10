@@ -5,7 +5,7 @@ include_once('../Includes/Snippets.php');
 
 // dao for pp_stats table
 class Stats {
-    var $artist_id;
+    var $user_id;
     var $ip;
     var $entry_date;
 
@@ -20,10 +20,10 @@ class Stats {
         $ok = _mysql_query(
             'create table if not exists pp_stats ' .
             '(' .
-            'artist_id  int(10)     not null, ' .
+            'user_id  int(10)     not null, ' .
             'ip         varchar(15) not null, ' .
             'entry_date datetime    not null default "1970-01-01 00:00:00", ' .
-            'index (artist_id), ' .
+            'index (user_id), ' .
             'index (entry_date) ' .
             ')'
         );
@@ -36,9 +36,9 @@ class Stats {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_stats ' .
-            '(artist_id, ip, entry_date) ' .
+            '(user_id, ip, entry_date) ' .
             'values ('                     .
-            qq($this->artist_id)           . ', ' .
+            qq($this->user_id)           . ', ' .
             qq($this->ip)                  . ', ' .
             'now()'                        .
             ')'

@@ -11,6 +11,29 @@ for($i = 128; $i < 256; $i++){
 }
 
 // functions
+function chooseRandomGenre() {
+    $keys = array_keys($GLOBALS['GENRES']); 
+    shuffle($keys); 
+    $firstKey = reset($keys);
+    return $GLOBALS['GENRES'][$firstKey];
+}
+
+function getGenreCookieValue() {
+    if (isset($_COOKIE[$GLOBALS['COOKIE_NAME_GENRE']])) {
+        return $_COOKIE[$GLOBALS['COOKIE_NAME_GENRE']];
+    }
+    
+    return null;
+}
+
+function isValidGenre($genre) {
+    return isset($GLOBALS['GENRES'][$genre]);
+}
+
+function setGenreCookie($genre) {
+    setcookie($GLOBALS['COOKIE_NAME_GENRE'], $genre, time() + 60 * 60 * 24 * 365 * 100, '/' . $GLOBALS['WEBAPP_BASE']);
+}
+
 function writePageDoctype() {
     echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">' . "\n";
 }
@@ -46,21 +69,21 @@ function writeGoogleAnalyticsStuff() {
     }
 }
 
-function getArtistImageHtml($artistImageFilename, $artistName, $size) {
+function getUserImageHtml($userImageFilename, $userName, $size) {
     global $logger;
 
-    if ($artistImageFilename) {
-        if ($size == 'thumb' || $size == 'tiny') $artistImageFilename = str_replace('.jpg', '_thumb.jpg', $artistImageFilename);
+    if ($userImageFilename) {
+        if ($size == 'thumb' || $size == 'tiny') $userImageFilename = str_replace('.jpg', '_thumb.jpg', $userImageFilename);
 
-        $artistImg    = $GLOBALS['ARTIST_IMAGE_BASE_PATH'] . $artistImageFilename;
-        $artistImgUrl = $GLOBALS['ARTIST_IMAGE_BASE_URL']  . $artistImageFilename;
+        $userImg    = $GLOBALS['USER_IMAGE_BASE_PATH'] . $userImageFilename;
+        $userImgUrl = $GLOBALS['USER_IMAGE_BASE_URL']  . $userImageFilename;
 
-        $logger->debug('artist img: ' . $artistImg);
+        $logger->debug('user img: ' . $userImg);
 
-        return '<img title="' . escape($artistName) . '" src="' . $artistImgUrl . '"' . ($size == 'tiny' ? ' height="30"' : '') . '>';
+        return '<img title="' . escape($userName) . '" src="' . $userImgUrl . '"' . ($size == 'tiny' ? ' height="30"' : '') . '>';
 
     } else {
-        return '<img title="' . escape($artistName) . '" src="' . $GLOBALS['BASE_URL'] . 'Images/no_artist_image.png"' . ($size == 'tiny' ? ' height="30"' : '') . '>';
+        return '<img title="' . escape($userName) . '" src="' . $GLOBALS['BASE_URL'] . 'Images/no_artist_image.png"' . ($size == 'tiny' ? ' height="30"' : '') . '>';
     }
 }
 

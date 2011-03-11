@@ -92,7 +92,9 @@ function handleVoting(&$user) {
 
 function buildLeftPlayer(&$leftTrack) {
     return processTpl('Startpage/player.html', array(
+        '${playerId}'   => 1,
         '${trackId}'    => $leftTrack->id,
+        '${trackTitle}' => $leftTrack->title,
         '${mp3Url}'     => $leftTrack->getPreviewMp3Url(),
         '${compPoints}' => $leftTrack->competition_points
     ));
@@ -100,7 +102,9 @@ function buildLeftPlayer(&$leftTrack) {
 
 function buildRightPlayer(&$rightTrack) {
     return processTpl('Startpage/player.html', array(
+        '${playerId}'   => 2,
         '${trackId}'    => $rightTrack->id,
+        '${trackTitle}' => $rightTrack->title,
         '${mp3Url}'     => $rightTrack->getPreviewMp3Url(),
         '${compPoints}' => $rightTrack->competition_points
     ));

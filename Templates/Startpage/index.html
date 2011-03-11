@@ -6,10 +6,24 @@ ${Common/pageHeader}
 <br>
 
 <div id="pageContent">
+
+  <div id="fb-root"></div>
+  <script src="http://connect.facebook.net/en_US/all.js"></script>
+  <script>
+     FB.init({ 
+        appId:'${facebookAppId}', cookie:true, 
+        status:true, xfbml:true 
+     });
+  </script>
+  <fb:login-button perms="email">Login with Facebook</fb:login-button><br>
+  <br>
+      
   ${message}
   <div id="genreSelector" style="width:800px;text-align:center;background-color:#DDDDDD">
     Genre: ${selectedGenre}<br>
-    ${Startpage/genreSelection}
+    <div id="genreSelection">
+      <small>${Startpage/genreSelectionElement_list}</small>
+    </div>
   </div>
 
   <div id="songCompetition" style="width:800px;background-color:#EEEEEE">

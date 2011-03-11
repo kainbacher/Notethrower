@@ -35,16 +35,17 @@ if ($trackSelectionMessage) {
 list($nonce, $timestamp) = getNonceAndTimestamp($user);
 
 processAndPrintTpl('Startpage/index.html', array(
-    '${Common/pageHeader}'        => buildPageHeader(),
-    '${selectedGenre}'            => $genre,
-    '${Startpage/genreSelection}' => buildGenreSelection(),
-    '${message}'                  => $message,
-    '${Startpage/player_left}'    => buildLeftPlayer($leftTrack),
-    '${Startpage/player_right}'   => buildRightPlayer($rightTrack),
-    '${voteForLeftSongUrl}'       => $_SERVER['PHP_SELF'] . '?vt=' . $leftTrack->id . '&n=' . escape($nonce) . '&t=' . $timestamp,
-    '${bothSongsAreAwfulUrl}'     => $_SERVER['PHP_SELF'],
-    '${voteForRightSongUrl}'      => $_SERVER['PHP_SELF'] . '?vt=' . $rightTrack->id . '&n=' . escape($nonce) . '&t=' . $timestamp,
-    '${Common/pageFooter}'        => buildPageFooter()
+    '${Common/pageHeader}'                      => buildPageHeader(),
+    '${facebookAppId}'                          => 'xxx', // FIXME ############### add appid here. after login, read user data via https://graph.facebook.com/me
+    '${selectedGenre}'                          => $genre,
+    '${Startpage/genreSelectionElement_list}'   => buildGenreSelectionList(),
+    '${message}'                                => $message,
+    '${Startpage/player_left}'                  => buildLeftPlayer($leftTrack),
+    '${Startpage/player_right}'                 => buildRightPlayer($rightTrack),
+    '${voteForLeftSongUrl}'                     => $_SERVER['PHP_SELF'] . '?vt=' . $leftTrack->id . '&n=' . escape($nonce) . '&t=' . $timestamp,
+    '${bothSongsAreAwfulUrl}'                   => $_SERVER['PHP_SELF'],
+    '${voteForRightSongUrl}'                    => $_SERVER['PHP_SELF'] . '?vt=' . $rightTrack->id . '&n=' . escape($nonce) . '&t=' . $timestamp,
+    '${Common/pageFooter}'                      => buildPageFooter()
 ));
 
 // END
@@ -149,7 +150,7 @@ function getLeftAndRightTrack(&$leftTrack, &$rightTrack, &$genre) {
     return $trackSelectionMessage;
 }
 
-function buildGenreSelection() {
+function buildGenreSelectionList() {
     $genreList = '';
     foreach ($GLOBALS['GENRES'] as $g) {
         $genreList .= processTpl('Startpage/genreSelectionElement.html', array(
@@ -158,9 +159,7 @@ function buildGenreSelection() {
         ));
     }
 
-    return processTpl('Startpage/genreSelection.html', array(
-        '${genreSelectionElement_list}' => $genreList
-    ));
+    return $genreList;
 }
 
 function buildPageHeader() {

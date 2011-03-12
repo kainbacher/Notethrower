@@ -37,7 +37,7 @@ class AudioTrackAttribute {
 
         return $objs;
     }
-    
+
     function fetchShownFor($shownFor) {
         $objs = array();
 
@@ -102,7 +102,7 @@ class AudioTrackAttribute {
             'entry_date                datetime     not null default "1970-01-01 00:00:00", ' .
             'primary key (id), ' .
             'key entry_date (entry_date) ' .
-            ')'
+            ') default charset=utf8'
         );
 
         return $ok;
@@ -174,7 +174,7 @@ class AudioTrackAttribute {
 
         return $count;
     }
-    
+
     function countAllShownFor($shownFor) {
         $result = _mysql_query(
             'select count(*) as cnt ' .

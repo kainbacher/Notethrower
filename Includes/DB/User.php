@@ -268,7 +268,7 @@ class User {
             'key id_pwd (id, password_md5), ' .
             'key username_pwd (username, password_md5), ' .
             'key entry_date (entry_date) ' .
-            ')'
+            ') default charset=utf8'
         );
 
         if ($ok) {

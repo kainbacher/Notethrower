@@ -25,7 +25,7 @@ class Stats {
             'entry_date datetime    not null default "1970-01-01 00:00:00", ' .
             'index (user_id), ' .
             'index (entry_date) ' .
-            ')'
+            ') default charset=utf8'
         );
 
         return $ok;

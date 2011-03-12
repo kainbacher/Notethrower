@@ -31,8 +31,12 @@ function doSendGetRequest($protocol, $domain, $port, $endpointPathPlusQueryStrin
 
     $crlf = "\r\n";
 
+    if ($protocol == 'http://')  $protocol = '';
+    if ($protocol == 'https://') $protocol = 'ssl://';
+
+    if ($protocol == 'ssl://' && !$port) $port = 443;
+
     if (!$port) $port = 80;
-    if ($protocol == 'http://') $protocol = '';
 
     $header  = 'GET ' . $endpointPathPlusQueryString . ' HTTP/1.0' . $crlf;
     $header .= 'User-agent: imagazine_de_client' . $crlf;
@@ -131,8 +135,12 @@ function doSendPostRequest($protocol, $domain, $port, $endpointPath, $paramsList
 
     $crlf = "\r\n";
 
+    if ($protocol == 'http://')  $protocol = '';
+    if ($protocol == 'https://') $protocol = 'ssl://';
+
+    if ($protocol == 'ssl://' && !$port) $port = 443;
+
     if (!$port) $port = 80;
-    if ($protocol == 'http://') $protocol = '';
 
     $params = '';
     foreach ($paramsList as $key => $value) {

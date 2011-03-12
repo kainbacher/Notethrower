@@ -25,7 +25,7 @@ $EMAIL_DELIVERY_OVERRIDE_ADDR = null;
 $MAIL_FROM                    = null;
 
 /* include local Settings */
-include 'Config_local.php'; 
+include 'Config_local.php';
 
 $TEMPLATES_BASE_PATH = $BASE_PATH . 'Templates' . $PATH_SEPARATOR;
 
@@ -55,5 +55,8 @@ $OFFER_CATEGORIES = array('Documentary/Indie/Student Film', 'Feature Film', 'Cor
 
 $COOKIE_NAME_AUTHENTICATION = 'notethrower';
 $COOKIE_NAME_GENRE          = 'notethrower_genre';
+
+$FACEBOOK_APP_ID     = '135156203220376';
+$FACEBOOK_APP_SECRET = '9d58d6c9e8fb4bdf9eec658ccba46b91';
 
 ?>

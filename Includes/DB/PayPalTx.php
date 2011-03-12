@@ -97,7 +97,7 @@ class PayPalTx {
             'residence_country varchar(10)  not null default "", ' .
             'primary key  (id), ' .
             'key paypal_tx_id (paypal_tx_id) ' .
-            ')'
+            ') default charset=utf8'
         );
 
         return $ok;

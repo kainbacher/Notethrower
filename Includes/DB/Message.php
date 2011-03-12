@@ -101,7 +101,7 @@ class Message {
             'entry_date          datetime     not null default "1970-01-01 00:00:00", ' .
             'primary key (id), ' .
             'key aid_del (recipient_user_id, deleted) ' .
-            ')'
+            ') default charset=utf8'
         );
 
         return $ok;

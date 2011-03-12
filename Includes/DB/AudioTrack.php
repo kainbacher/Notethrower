@@ -619,7 +619,7 @@ class AudioTrack {
             'key type (type), ' .
             'key rating_value (rating_value), ' .
             'key entry_date (entry_date) ' .
-            ')'
+            ') default charset=utf8'
         );
 
         return $ok;

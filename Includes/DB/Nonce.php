@@ -26,7 +26,6 @@ class Nonce {
             );
 
             if ($row = mysql_fetch_array($result)) {
-                $logger->info($row['cnt']);
                 if ($row['cnt'] > 0) {
                     $logger->warn('nonce has already been consumed!');
                     mysql_free_result($result);
@@ -69,8 +68,9 @@ class Nonce {
             '(' .
             'nonce_str           varchar(255) not null, ' .
             'creation_date       datetime     not null, ' .
-            'primary key (nonce_str)' .
-            ')'
+            'primary key (nonce_str) ' .
+            'key date (creation_date)' .
+            ') default charset=utf8'
         );
     }
 }

@@ -125,7 +125,7 @@ class AudioTrackAudioTrackAttribute {
             'status                        varchar(30) not null, ' .
             'index (track_id), ' .
             'index (attribute_id) ' .
-            ')'
+            ') default charset=utf8'
         );
 
         return $ok;

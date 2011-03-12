@@ -109,7 +109,7 @@ class AudioTrackFile {
             'primary key (id), ' .
             'key track_id (track_id), ' .
             'key entry_date (entry_date) ' .
-            ')'
+            ') default charset=utf8'
         );
 
         return $ok;

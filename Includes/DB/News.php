@@ -80,7 +80,7 @@ class News {
 
         return $objs;
     }
-    
+
     function fetch_newest_from_to($from, $to) {
         $objs = array();
 
@@ -104,8 +104,8 @@ class News {
 
         return $objs;
     }
-    
-    
+
+
 
     function _read_row($a, $row) {
         $a->id          = $row['id'];
@@ -128,7 +128,7 @@ class News {
             'entry_date  datetime     not null default "1970-01-01 00:00:00", ' .
             'primary key (id), ' .
             'key entry_date (entry_date) ' .
-            ')'
+            ') default charset=utf8'
         );
 
         return $ok;

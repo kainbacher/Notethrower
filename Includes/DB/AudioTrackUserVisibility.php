@@ -140,7 +140,7 @@ class AudioTrackUserVisibility {
             'track_id                  int(10)      not null, ' .
             'primary key (user_id, track_id), ' .
             'key user_id (user_id)' .
-            ')'
+            ') default charset=utf8'
         );
 
         return $ok;

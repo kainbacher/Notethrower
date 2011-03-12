@@ -55,12 +55,12 @@ class User {
             );
 
             if ($row = mysql_fetch_array($result)) {
-                $a = new User();
-                $a = User::_read_row($a, $row);
-                $a->loggedIn = true;
-                if ($refreshLastActivityTimestamp) $a->refreshLastActivityTimestamp();
+                $u = new User();
+                $u = User::_read_row($u, $row);
+                $u->loggedIn = true;
+                if ($refreshLastActivityTimestamp) $u->refreshLastActivityTimestamp();
                 mysql_free_result($result);
-                return $a;
+                return $u;
 
             } else {
                 mysql_free_result($result);

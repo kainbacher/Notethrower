@@ -10,9 +10,17 @@ include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/Nonce.php');
 include_once('../Includes/DB/User.php');
 
-$message = '';
+$messages = '';
 
-$user = handleAuthentication(&$message);
+$user = handleAuthentication($messages);
+
+$loggedInUserInfoBlock = '';
+$loginBlock = '';
+if ($user) {
+    $loggedInUserInfoBlock = buildLoggedInUserInfoBlock($user);
+} else {
+    $loginBlock = buildLoginBlock();
+}
 
 $genre = null;
 handleCurrentGenreSelection($genre);
@@ -26,20 +34,12 @@ $trackSelectionMessage = getLeftAndRightTrack($leftTrack, $rightTrack, $genre);
 setGenreCookie($genre);
 
 if ($trackSelectionMessage) {
-    $message = processTpl('Common/message.html', array(
+    $messages .= processTpl('Common/message.html', array(
         '${msg}' => $trackSelectionMessage
     ));
 }
 
 list($nonce, $timestamp) = getNonceAndTimestamp($user);
-
-$loggedInUserInfoBlock = '';
-$loginBlock = '';
-if (!$user) {
-    $loggedInUserInfoBlock = buildLoggedInUserInfoBlock($user);
-} else {
-    $loginBlock = buildLoginBlock();
-}
 
 processAndPrintTpl('Startpage/index.html', array(
     '${Common/pageHeader}'                      => buildPageHeader(),
@@ -47,7 +47,7 @@ processAndPrintTpl('Startpage/index.html', array(
     '${Startpage/loggedInUserInfo_optional}'    => $loggedInUserInfoBlock,
     '${selectedGenre}'                          => $genre,
     '${Startpage/genreSelectionElement_list}'   => buildGenreSelectionList(),
-    '${message}'                                => $message,
+    '${message}'                                => $messages,
     '${Startpage/player_left}'                  => buildLeftPlayer($leftTrack),
     '${Startpage/player_right}'                 => buildRightPlayer($rightTrack),
     '${voteForLeftSongUrl}'                     => $_SERVER['PHP_SELF'] . '?vt=' . $leftTrack->id  . '&lt=' . $leftTrack->id . '&rt=' . $rightTrack->id . '&n=' . escape($nonce) . '&t=' . $timestamp,
@@ -60,10 +60,15 @@ processAndPrintTpl('Startpage/index.html', array(
 
 // functions
 // -----------------------------------------------------------------------------
-function handleAuthentication(&$loginErrorMsg) {
+function handleAuthentication(&$messages) {
+    global $logger;
+
     // check if user is logged in
     $user = User::new_from_cookie();
-    if ($user) return $user; // nothing more to do here, the user is logged in.
+    if ($user) {
+        $logger->info('user cookie found');
+        return $user; // nothing more to do here, the user is logged in.
+    }
 
     // check if user is about to login (the regular way)
     if (get_param('action') == 'login') {
@@ -77,13 +82,17 @@ function handleAuthentication(&$loginErrorMsg) {
                 exit;
 
             } else {
-                $loginErrorMsg = 'Login failed! Please try again.';
+                $messages .= processTpl('Common/message.html', array(
+                    '${msg}' => 'Login failed! Please try again.'
+                ));
                 $logger->info('login failed');
                 return null;
             }
 
         } else {
-            $loginErrorMsg = 'Please provide a username and password!';
+            $messages .= processTpl('Common/message.html', array(
+                '${msg}' => 'Please provide a username and password!'
+            ));
             $logger->info('username and/or password missing');
             return null;
         }
@@ -91,6 +100,7 @@ function handleAuthentication(&$loginErrorMsg) {
 
     // check if user data can be fetched from facebook
     if (get_param('access_token')) {
+        $logger->info('access_token param received');
         $resp = sendGetRequest('https://graph.facebook.com/me?access_token=' . get_param('access_token'), 15);
         if ($resp['result'] == 'SUCCESS') {
             $logger->info(print_r(json_decode($resp['responseBody']), true));
@@ -98,6 +108,7 @@ function handleAuthentication(&$loginErrorMsg) {
             // FIXME ##################
 
             // if user data complete, log user in FIXME
+            $user = User::fetch_for_username('hb'); // FIXME
             $user->doLogin();
             $logger->info('facebook login successful, user data is complete, reloading page to set cookie');
             header('Location: ' . $_SERVER['PHP_SELF']);
@@ -129,7 +140,7 @@ function buildLoggedInUserInfoBlock(&$user) {
     global $logger;
 
     $block = processTpl('Startpage/loggedInUserInfo.html', array(
-        '${userName}' => $user->name ? $user->name : $user->username,
+        '${userName}' => ($user->name ? $user->name : $user->username)
     ));
 
     return $block;

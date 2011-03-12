@@ -103,18 +103,18 @@ function handleAuthentication(&$messages) {
         $logger->info('access_token param received');
         $resp = sendGetRequest('https://graph.facebook.com/me?access_token=' . get_param('access_token'), 15);
         if ($resp['result'] == 'SUCCESS') {
-            $logger->info(print_r(json_decode($resp['responseBody']), true));
+            $fbUserData = json_decode($resp['responseBody'], true);
 
             // FIXME ##################
 
-            // if user data complete, log user in FIXME
-            $user = User::fetch_for_username('hb'); // FIXME
+            // if user data complete, log user in FIXME ##############
+            $user = User::fetch_for_email_address($fbUserData->email); // FIXME emails are not unique in NT database! and what if the user has an NT account and a FB account but the emails are different? ################
             $user->doLogin();
             $logger->info('facebook login successful, user data is complete, reloading page to set cookie');
             header('Location: ' . $_SERVER['PHP_SELF']);
             exit;
 
-            // if user data incomplete, show full registration page FIXME
+            // if user data incomplete, show full registration page FIXME ################
 
             return null; // FIXME
 

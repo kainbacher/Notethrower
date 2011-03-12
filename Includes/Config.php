@@ -56,7 +56,4 @@ $OFFER_CATEGORIES = array('Documentary/Indie/Student Film', 'Feature Film', 'Cor
 $COOKIE_NAME_AUTHENTICATION = 'notethrower';
 $COOKIE_NAME_GENRE          = 'notethrower_genre';
 
-$FACEBOOK_APP_ID     = '135156203220376';
-$FACEBOOK_APP_SECRET = '9d58d6c9e8fb4bdf9eec658ccba46b91';
-
 ?>

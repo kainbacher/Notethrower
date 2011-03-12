@@ -25,6 +25,10 @@ $SANDBOX_MODE = true;
 $PAYPAL_BASE_URL = 'https://www.sandbox.paypal.com/cgi-bin/webscr?';
 $PAYPAL_FIX_PARAMS = "&cmd=_xclick&no_shipping=1&no_note=1&rm=POST&bn=PP-BuyNowBF";
 
+// facebook api config
+$FACEBOOK_APP_ID     = 'xxxxxxxx';
+$FACEBOOK_APP_SECRET = 'xxxxxxxxxxxxxxxxxxxxxx';
+
 /*
 
 if ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_ADDR'] == '127.0.0.1') { // localhost

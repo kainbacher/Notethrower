@@ -8,8 +8,9 @@ $my_url = 'http://notethrower.com/NTTest/Site/fb.php';
 $code = $_REQUEST['code'];
 
 if(empty($code)) {
-    $dialog_url = "http://www.facebook.com/dialog/oauth?client_id="
-        . $GLOBALS['FACEBOOK_APP_ID'] . "&redirect_uri=" . urlencode($my_url);
+    $dialog_url = "http://www.facebook.com/dialog/oauth?client_id=" .
+        $GLOBALS['FACEBOOK_APP_ID'] . "&redirect_uri=" . urlencode($my_url) .
+        '&scope=email';
 
     //echo("<script> top.location.href='" . $dialog_url . "'</script>");
     header('Location: ' . $dialog_url);

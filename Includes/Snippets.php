@@ -11,9 +11,17 @@ for($i = 128; $i < 256; $i++){
 }
 
 // functions
+function redirectTo($uri) {
+    global $logger;
+
+    $logger->info('redirecting to: ' . $uri);
+    header('Location: ' . $uri);
+    exit;
+}
+
 function chooseRandomGenre() {
-    $keys = array_keys($GLOBALS['GENRES']); 
-    shuffle($keys); 
+    $keys = array_keys($GLOBALS['GENRES']);
+    shuffle($keys);
     $firstKey = reset($keys);
     return $GLOBALS['GENRES'][$firstKey];
 }
@@ -22,7 +30,7 @@ function getGenreCookieValue() {
     if (isset($_COOKIE[$GLOBALS['COOKIE_NAME_GENRE']])) {
         return $_COOKIE[$GLOBALS['COOKIE_NAME_GENRE']];
     }
-    
+
     return null;
 }
 
@@ -175,7 +183,7 @@ function qqList($list) {
     if (!isset($list)) {
         return 'NULL';
     }
-    
+
     $s = '';
     foreach($list as $entry) {
         $s = $s . qq($entry) . ',';

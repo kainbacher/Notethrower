@@ -149,14 +149,14 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
         if (strlen(get_param('name')) < 1) {
             $errorFields['name'] = 'Name is missing!';
             $result = false;
-    
+
         } else {
             $checkUser = User::fetch_for_name(get_param('name'));
             if ($checkUser) {
                 if (!$userIsLoggedIn) { // if user is created from scratch
                     $errorFields['name'] = 'Name already in use! Please choose a different one.';
                     $result = false;
-    
+
                 } else { // user data update
                     if ($user->name != get_param('name')) { // display an error only if the name was changed in the update process
                         $errorFields['name'] = 'Name already in use! Please choose a different one.';
@@ -165,7 +165,7 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
                 }
             }
         }
-        
+
     } else { // fan mode
         // if the user signs up as a fan only, the username is used as the (artist) name, too.
         if (strlen(get_param('username')) > 0) {
@@ -174,7 +174,7 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
                 if (!$userIsLoggedIn) { // if user is created from scratch
                     $errorFields['username'] = 'Name already in use! Please choose a different one.';
                     $result = false;
-    
+
                 } else { // user data update
                     if ($user->name != get_param('username')) { // display an error only if the name was changed in the update process
                         $errorFields['username'] = 'Name already in use! Please choose a different one.';
@@ -212,6 +212,21 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
         if (!email_syntax_ok(get_param('email_address'))) {
             $errorFields['email_address'] = 'Email address is invalid!';
             $result = false;
+
+        } else {
+            $checkUser = User::fetch_for_email_address(get_param('email_address'));
+            if ($checkUser) {
+                if (!$userIsLoggedIn) { // if user is created from scratch
+                    $errorFields['email_address'] = 'Email address already in use! Please choose a different one.';
+                    $result = false;
+
+                } else { // user data update
+                    if ($user->email_address != get_param('email_address')) { // display an error only if the address was changed in the update process
+                        $errorFields['email_address'] = 'Email address already in use! Please choose a different one.';
+                        $result = false;
+                    }
+                }
+            }
         }
     }
 
@@ -252,7 +267,7 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
 
     $user->username        = get_param('username');
     $user->email_address   = get_param('email_address');
-    
+
     if ($pageMode == 'artist') {
         $user->is_artist       = true;
         $user->webpage_url     = get_param('webpage_url');
@@ -260,7 +275,7 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
         $user->artist_info     = get_param('artist_info');
         $user->additional_info = get_param('additional_info');
         $user->paypal_account  = get_param('paypal_account');
-        
+
     } else {
         $user->is_artist       = false;
         $user->name            = get_param('username'); // use the username as (artist) name as long as the user is just a fan
@@ -310,8 +325,14 @@ function getPageMode($userIsLoggedIn, &$user) {
     $mode = 'fan';
     if (get_param('signupAs') && get_param('signupAs') == 'artist') $mode = 'artist';
     if ($userIsLoggedIn && $user->is_artist) $mode = 'artist';
-    
+
     return $mode;
+}
+
+// prefill form with some values if present
+if (!$user) {
+    $user = new User();
+    processParams($user, false, $userIsLoggedIn);
 }
 
 writePageDoctype();
@@ -346,7 +367,7 @@ $pageMode = getPageMode($userIsLoggedIn, $user);
 
 if ($userIsLoggedIn) {
     echo '<br><h1>Update user account:</h1>';
-    
+
 } else {
     if ($pageMode == 'artist') {
         echo '<br><h1>Share Your Frequency! Music Collaboration and Licensing...made easy.</h1><br>' .
@@ -363,7 +384,7 @@ if ($userIsLoggedIn) {
              'A verification email will be sent to you to log in. Once you have successfully done so, you can start your musical journey by uploading your first mp3 and artist info. Now let\'s make some music together!<br>';
         echo '<br>';
         echo '<h1>Create new artist account:</h1>';
-    
+
     } else {
         echo '<br><h1>Create new fan account:</h1>';
     }
@@ -400,7 +421,7 @@ if ($pageMode == 'artist') {
     showFormField('Artist/Band name',       'text',     'name',             '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">Please put your band or artist name in the field.</div></div>', true,  255, $user, $unpersistedUser, $problemOccured, $errorFields);
 }
 
-showFormField('Username',                   'text',     'username',         '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">This is your username for logging in to Notethrower.<br>If you want to provide a different name than your artist profile, you may do so.</div></div>', true,  255, $user, $unpersistedUser, $problemOccured, $errorFields);
+showFormField('Username',                   'text',     'username',         '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">This is your username for logging in to Notethrower.' . ($pageMode == 'artist' ? '<br>If you want to provide a different name than your artist profile, you may do so.' : '') . '</div></div>', true,  255, $user, $unpersistedUser, $problemOccured, $errorFields);
 showFormField('Email address',              'text',     'email_address',    '', '<div class="toolTipWrapper"><div class="toolTip"><img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" /></div><div class="toolTipContent">We will send you a verification link to this address to login.  If another user sends you a message, a notification will also be sent here.<br>We will never give out your email or spam you. Aren\'t we nice?</div></div>', true,  255, $user, $unpersistedUser, $problemOccured, $errorFields);
 
 if ($pageMode == 'artist') {

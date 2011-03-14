@@ -25,7 +25,7 @@ if ($user) {
 $genre = null;
 handleCurrentGenreSelection($genre);
 
-handleVoting($user);
+handleVoting($user, $messages);
 
 $leftTrack  = null;
 $rightTrack = null;
@@ -103,22 +103,26 @@ function handleAuthentication(&$messages) {
         $logger->info('access_token param received');
         $resp = sendGetRequest('https://graph.facebook.com/me?access_token=' . get_param('access_token'), 15);
         if ($resp['result'] == 'SUCCESS') {
-            $fbUserData = json_decode($resp['responseBody'], true);
+            $fbUserData = json_decode($resp['responseBody']);
+            $logger->debug(print_r($fbUserData, true));
 
-            // FIXME ##################
+            // if user data complete, log user in
+            $user = User::fetch_for_email_address($fbUserData->email); // ####### FIXME there are some duplicated emails in the NT database!
+            if ($user) {
+                $user->doLogin();
+                $logger->info('facebook login successful, reloading page to set cookie');
+                redirectTo($_SERVER['PHP_SELF']);
 
-            // if user data complete, log user in FIXME ##############
-            $user = User::fetch_for_email_address($fbUserData->email); // FIXME emails are not unique in NT database! and what if the user has an NT account and a FB account but the emails are different? ################
-            $user->doLogin();
-            $logger->info('facebook login successful, user data is complete, reloading page to set cookie');
-            header('Location: ' . $_SERVER['PHP_SELF']);
-            exit;
-
-            // if user data incomplete, show full registration page FIXME ################
-
-            return null; // FIXME
+            } else { // user not found -> this either means the user doesn't exist here yet or he was not found with the facebook email address
+                // the only thing we can do here is redirect the user to the signup page
+                // FIXME - which page mode? fan or artist or shall we redirect to the selection page (as soon as we have one)?
+                redirectTo('createUser.php?email_address=' . urlencode($fbUserData->email) . '&username=' . urlencode($fbUserData->email));
+            }
 
         } else {
+            $messages .= processTpl('Common/message.html', array(
+                '${msg}' => 'Failed to get user information from facebook! Please try again later.'
+            ));
             $logger->error('failed to get user information from facebook: ' . $resp['error']);
         }
     }
@@ -161,7 +165,7 @@ function getNonceAndTimestamp(&$user) {
     );
 }
 
-function handleVoting(&$user) {
+function handleVoting(&$user, &$messages) {
     global $logger;
 
     if (!isParamSet('vt')) return;
@@ -182,6 +186,12 @@ function handleVoting(&$user) {
     if ($votedTrack) {
         $votedTrack->competition_points = $votedTrack->competition_points + 1;
         $votedTrack->save();
+    }
+
+    if (!$user) {
+        $messages .= processTpl('Common/message.html', array(
+            '${msg}' => 'You would have just earned x points but we don\'t know who you are.<br />Sign in to find out what you can do with these points!'
+        ));
     }
 
     // FIXME - increment fan points only if fan is logged in (no na)

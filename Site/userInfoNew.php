@@ -12,7 +12,7 @@ require_once('../Includes/mobile_device_detect.php');
 // find out if the user browses with a mobile device
 $showMobileVersion = '';
 $isMobileDevice = mobile_device_detect(true,false,true,true,true,true,true,false,false);
-if ($isMobileDevice || get_param('_forceMobile')) { // FIXME - add an override param for testing
+if ($isMobileDevice || get_param('_forceMobile')) {
     $showMobileVersion = 'mobile/';
 }
 

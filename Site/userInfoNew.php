@@ -7,6 +7,14 @@ include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/AudioTrackUserVisibility.php');
+require_once('../Includes/mobile_device_detect.php');
+
+// find out if the user browses with a mobile device
+$showMobileVersion = '';
+$isMobileDevice = mobile_device_detect(true,false,true,true,true,true,true,false,false);
+if ($isMobileDevice || get_param('_forceMobile')) { // FIXME - add an override param for testing
+    $showMobileVersion = 'mobile/';
+}
 
 // let's see if the visiting user is a logged in user
 $visitorUserId = -1;
@@ -128,12 +136,12 @@ if ($user->additional_info) {
 //        <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="300" height="400" id="NTWidget" align="middle">
 //	                                  <param name="allowScriptAccess" value="always" />
 //	                                  <param name="allowFullScreen" value="false" />
-//	                                  <param name="movie" value="../Widget/PpWidget.swf?aid=<?php echo $user->id; ?>" />
+//	                                  <param name="movie" value="../Widget/PpWidget.swf?aid=#####php echo $user->id; ####" />
 //	                                  <param name="loop" value="false" />
 //	                                  <param name="quality" value="high" />
 //	                                  <param name="wmode" value="transparent" />
 //	                                  <param name="bgcolor" value="#ffffff" />
-//	                                  <embed src="../Widget/PpWidget.swf?aid=<?php echo $user->id; ?>" loop="false" quality="high" wmode="transparent" bgcolor="#ffffff" width="300" height="400" name="NTWidget" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+//	                                  <embed src="../Widget/PpWidget.swf?aid=#####php echo $user->id; #######" loop="false" quality="high" wmode="transparent" bgcolor="#ffffff" width="300" height="400" name="NTWidget" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
 //	                                </object>
 //
 
@@ -142,7 +150,6 @@ if ($user->additional_info) {
 //			<div class="trackInfoTitle">My songs</div>
 //			<div class="trackInfoContent">
 //
-//<?php
 //
 //$originals         = AudioTrack::fetch_all_originals_of_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
 //$remixes           = AudioTrack::fetch_all_remixes_of_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
@@ -154,7 +161,6 @@ if ($user->additional_info) {
 //    echo '<div><a href="javascript:reloadDataInWidget(' . $user_id . ', ' . $originals[$i]->id . ');">'         . escape($originals[$i]->title)         . '</a></div>' . "\n";
 //}
 //
-//?>
 //
 //			</div> <!-- trackInfoContent -->
 //		</div> <!-- trackInfoColumn -->
@@ -163,7 +169,6 @@ if ($user->additional_info) {
 //			<div class="trackInfoTitle">My remixes</div>
 //			<div class="trackInfoContent">
 //
-//<?php
 //
 //$rows = max(max(count($originals), count($remixes)), count($remixed_by_others));
 //
@@ -171,7 +176,6 @@ if ($user->additional_info) {
 //    echo '<div><a href="javascript:reloadDataInWidget(' . $user_id . ', ' . $remixes[$i]->id . ');">'           . escape($remixes[$i]->title)           . '</a></div>' . "\n";
 //}
 //
-//?>
 //
 //			</div> <!-- trackInfoContent -->
 //		</div> <!-- trackInfoColumn -->
@@ -180,7 +184,6 @@ if ($user->additional_info) {
 //			<div class="trackInfoTitle">Remixed from other artists</div>
 //			<div class="trackInfoContent">
 //
-//<?php
 //
 //$rows = max(max(count($originals), count($remixes)), count($remixed_by_others));
 //
@@ -188,7 +191,6 @@ if ($user->additional_info) {
 //    echo '<div><a href="javascript:reloadDataInWidget(' . $user_id . ', ' . $remixed_by_others[$i]->id . ');">' . escape($remixed_by_others[$i]->title) . '</a></div>' . "\n";
 //}
 //
-//?>
 //
 //                        </div> <!-- trackInfoContent -->
 //                    </div> <!-- trackInfoColumn -->
@@ -206,7 +208,7 @@ processAndPrintTpl('UserInfo/index.html', array(
     '${artistInfo}'                             => $artistInfo,
     '${additionalInfo}'                         => $additionalInfo,
     '${Common/pageFooter}'                      => buildPageFooter()
-));
+), $showMobileVersion);
 
 // END
 

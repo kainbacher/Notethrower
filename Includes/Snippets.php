@@ -42,6 +42,31 @@ function setGenreCookie($genre) {
     setcookie($GLOBALS['COOKIE_NAME_GENRE'], $genre, time() + 60 * 60 * 24 * 365 * 100, '/' . $GLOBALS['WEBAPP_BASE']);
 }
 
+function buildPageHeader($titleSuffix, $includeJPlayerStuff = false, $includeJQueryMainScript = false) {
+    $jplayerStylesheet = '';
+    $jplayerScript     = '';
+    if ($includeJPlayerStuff) {
+        $jplayerStylesheet = processTpl('Common/jPlayerStylesheet.html');
+        $jplayerScript     = processTpl('Common/jPlayerScript.html');
+    }
+
+    $jQueryMainScript = '';
+    if ($includeJQueryMainScript) {
+        $jQueryMainScript = processTpl('Common/jQueryMainScript.html');
+    }
+
+    return processTpl('Common/pageHeader.html', array(
+        '${pageTitleSuffix}'   => escape($titleSuffix),
+        '${jPlayerStylesheet}' => $jplayerStylesheet,
+        '${jPlayerScript}'     => $jplayerScript,
+        '${jQueryMainScript}'  => $jQueryMainScript
+    ));
+}
+
+function buildPageFooter() {
+    return processTpl('Common/pageFooter.html', array());
+}
+
 function writePageDoctype() {
     echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">' . "\n";
 }

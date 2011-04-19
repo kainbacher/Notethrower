@@ -42,7 +42,7 @@ if ($trackSelectionMessage) {
 list($nonce, $timestamp) = getNonceAndTimestamp($user);
 
 processAndPrintTpl('Startpage/index.html', array(
-    '${Common/pageHeader}'                      => buildPageHeader(),
+    '${Common/pageHeader}'                      => buildPageHeader('Start', true, false),
     '${Startpage/login_optional}'               => $loginBlock,
     '${Startpage/loggedInUserInfo_optional}'    => $loggedInUserInfoBlock,
     '${selectedGenre}'                          => $genre,
@@ -266,16 +266,6 @@ function buildGenreSelectionList() {
     }
 
     return $genreList;
-}
-
-function buildPageHeader() {
-    return processTpl('Common/pageHeader.html', array(
-        '${pageTitleSuffix}' => ' - Start'
-    ));
-}
-
-function buildPageFooter() {
-    return processTpl('Common/pageFooter.html', array());
 }
 
 ?>

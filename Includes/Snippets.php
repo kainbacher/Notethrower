@@ -235,7 +235,7 @@ function n($s) {
     }
 
     // this is needed to prevent sql injections like " and "1"="1
-    $s = str_replace('/[^0-9.-]/', '', $s);
+    $s = preg_replace('/[^0-9.-]/', '', $s);
 
     return $s;
 }

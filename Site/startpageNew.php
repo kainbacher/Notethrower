@@ -42,18 +42,18 @@ if ($trackSelectionMessage) {
 list($nonce, $timestamp) = getNonceAndTimestamp($user);
 
 processAndPrintTpl('Startpage/index.html', array(
-    '${Common/pageHeader}'                      => buildPageHeader('Start', true, false),
-    '${Startpage/login_optional}'               => $loginBlock,
-    '${Startpage/loggedInUserInfo_optional}'    => $loggedInUserInfoBlock,
-    '${selectedGenre}'                          => $genre,
-    '${Startpage/genreSelectionElement_list}'   => buildGenreSelectionList(),
-    '${message}'                                => $messages,
-    '${Startpage/player_left}'                  => buildLeftPlayer($leftTrack),
-    '${Startpage/player_right}'                 => buildRightPlayer($rightTrack),
-    '${voteForLeftSongUrl}'                     => $_SERVER['PHP_SELF'] . '?vt=' . $leftTrack->id  . '&lt=' . $leftTrack->id . '&rt=' . $rightTrack->id . '&n=' . escape($nonce) . '&t=' . $timestamp,
-    '${bothSongsAreAwfulUrl}'                   => $_SERVER['PHP_SELF'],
-    '${voteForRightSongUrl}'                    => $_SERVER['PHP_SELF'] . '?vt=' . $rightTrack->id . '&lt=' . $leftTrack->id . '&rt=' . $rightTrack->id . '&n=' . escape($nonce) . '&t=' . $timestamp,
-    '${Common/pageFooter}'                      => buildPageFooter()
+    '${Common/pageHeader}'                    => buildPageHeader('Start', true, false),
+    '${Startpage/login_optional}'             => $loginBlock,
+    '${Startpage/loggedInUserInfo_optional}'  => $loggedInUserInfoBlock,
+    '${selectedGenre}'                        => $genre,
+    '${Startpage/genreSelectionElement_list}' => buildGenreSelectionList(),
+    '${Common/message_list}'                  => $messages,
+    '${Startpage/player_left}'                => buildLeftPlayer($leftTrack),
+    '${Startpage/player_right}'               => buildRightPlayer($rightTrack),
+    '${voteForLeftSongUrl}'                   => $_SERVER['PHP_SELF'] . '?vt=' . $leftTrack->id  . '&lt=' . $leftTrack->id . '&rt=' . $rightTrack->id . '&n=' . escape($nonce) . '&t=' . $timestamp,
+    '${bothSongsAreAwfulUrl}'                 => $_SERVER['PHP_SELF'],
+    '${voteForRightSongUrl}'                  => $_SERVER['PHP_SELF'] . '?vt=' . $rightTrack->id . '&lt=' . $leftTrack->id . '&rt=' . $rightTrack->id . '&n=' . escape($nonce) . '&t=' . $timestamp,
+    '${Common/pageFooter}'                    => buildPageFooter()
 ));
 
 // END

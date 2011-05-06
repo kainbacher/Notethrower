@@ -42,29 +42,29 @@ function setGenreCookie($genre) {
     setcookie($GLOBALS['COOKIE_NAME_GENRE'], $genre, time() + 60 * 60 * 24 * 365 * 100, '/' . $GLOBALS['WEBAPP_BASE']);
 }
 
-function buildPageHeader($titleSuffix, $includeJPlayerStuff = false, $includeJQueryMainScript = false) {
+function buildPageHeader($titleSuffix, $includeJPlayerStuff = false, $includeJQueryMainScript = false, $useMobileVersion = false) {
     $jplayerStylesheet = '';
     $jplayerScript     = '';
     if ($includeJPlayerStuff) {
-        $jplayerStylesheet = processTpl('Common/jPlayerStylesheet.html');
-        $jplayerScript     = processTpl('Common/jPlayerScript.html');
+        $jplayerStylesheet = processTpl('Common/jPlayerStylesheet.html', array(), $useMobileVersion);
+        $jplayerScript     = processTpl('Common/jPlayerScript.html', array(), $useMobileVersion);
     }
 
     $jQueryMainScript = '';
     if ($includeJQueryMainScript) {
-        $jQueryMainScript = processTpl('Common/jQueryMainScript.html');
+        $jQueryMainScript = processTpl('Common/jQueryMainScript.html', array(), $useMobileVersion);
     }
 
     return processTpl('Common/pageHeader.html', array(
         '${pageTitleSuffix}'   => escape($titleSuffix),
-        '${jPlayerStylesheet}' => $jplayerStylesheet,
-        '${jPlayerScript}'     => $jplayerScript,
-        '${jQueryMainScript}'  => $jQueryMainScript
-    ));
+        '${Common/jPlayerStylesheet}' => $jplayerStylesheet,
+        '${Common/jPlayerScript}'     => $jplayerScript,
+        '${Common/jQueryMainScript}'  => $jQueryMainScript
+    ), $useMobileVersion);
 }
 
-function buildPageFooter() {
-    return processTpl('Common/pageFooter.html', array());
+function buildPageFooter($useMobileVersion = false) {
+    return processTpl('Common/pageFooter.html', array(), $useMobileVersion);
 }
 
 function writePageDoctype() {

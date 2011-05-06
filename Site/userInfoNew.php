@@ -10,10 +10,10 @@ include_once('../Includes/DB/AudioTrackUserVisibility.php');
 require_once('../Includes/mobile_device_detect.php');
 
 // find out if the user browses with a mobile device
-$showMobileVersion = '';
+$showMobileVersion = false;
 $isMobileDevice = mobile_device_detect(true,false,true,true,true,true,true,false,false);
 if ($isMobileDevice || get_param('_forceMobile')) {
-    $showMobileVersion = 'mobile/';
+    $showMobileVersion = true;
 }
 
 // let's see if the visiting user is a logged in user
@@ -32,6 +32,7 @@ if (!$user) {
 }
 
 // user image
+$userImgUrl = null;
 if ($user->image_filename) {
     $userImg    = $GLOBALS['USER_IMAGE_BASE_PATH'] . $user->image_filename;
     $userImgUrl = $GLOBALS['USER_IMAGE_BASE_URL']  . $user->image_filename;
@@ -57,7 +58,7 @@ if ($user->webpage_url) {
     $webpageLink = processTpl('Common/externalWebLink.html', array(
         '${href}'  => escape($webpageUrl),
         '${label}' => escape($user->webpage_url)
-    )) . '<br /><br />'; // we don't put the newlines into the template because we probably need the link without them on a different page.
+    ), $showMobileVersion) . '<br /><br />'; // we don't put the newlines into the template because we probably need the link without them on a different page.
 }
 
 // send message
@@ -66,7 +67,7 @@ if ($visitorUser && $user->id != $visitorUser->id) {
     $sendMessageBlock = processTpl('UserInfo/sendMessage.html', array(
         '${recipientUserId}' => $user->id,
         '${recipientName}'   => escape($user->name)
-    ));
+    ), $showMobileVersion);
 }
 
 // artist info
@@ -74,7 +75,7 @@ $artistInfo = '';
 if ($user->artist_info) {
     $artistInfo = processTpl('UserInfo/artistInfo.html', array(
         '${artistInfo}' => escape($user->artist_info)
-    ));
+    ), $showMobileVersion);
 }
 
 // additional info
@@ -82,7 +83,7 @@ $additionalInfo = '';
 if ($user->additional_info) {
     $additionalInfo = processTpl('UserInfo/additionalInfo.html', array(
         '${additionalInfo}' => escape($user->additional_info)
-    ));
+    ), $showMobileVersion);
 }
 
 // collaborators - FIXME - put into common template
@@ -145,69 +146,55 @@ if ($user->additional_info) {
 //	                                </object>
 //
 
-// FIXME - song list
-//<div class="trackInfoColumn">
-//			<div class="trackInfoTitle">My songs</div>
-//			<div class="trackInfoContent">
-//
-//
-//$originals         = AudioTrack::fetch_all_originals_of_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
-//$remixes           = AudioTrack::fetch_all_remixes_of_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
-//$remixed_by_others = AudioTrack::fetch_all_remixes_for_originating_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
-//
-//$rows = max(max(count($originals), count($remixes)), count($remixed_by_others));
-//
-//for ($i = 0; $i < $rows; $i++) {
-//    echo '<div><a href="javascript:reloadDataInWidget(' . $user_id . ', ' . $originals[$i]->id . ');">'         . escape($originals[$i]->title)         . '</a></div>' . "\n";
-//}
-//
-//
-//			</div> <!-- trackInfoContent -->
-//		</div> <!-- trackInfoColumn -->
-//
-//		<div class="trackInfoColumn">
-//			<div class="trackInfoTitle">My remixes</div>
-//			<div class="trackInfoContent">
-//
-//
-//$rows = max(max(count($originals), count($remixes)), count($remixed_by_others));
-//
-//for ($i = 0; $i < $rows; $i++) {
-//    echo '<div><a href="javascript:reloadDataInWidget(' . $user_id . ', ' . $remixes[$i]->id . ');">'           . escape($remixes[$i]->title)           . '</a></div>' . "\n";
-//}
-//
-//
-//			</div> <!-- trackInfoContent -->
-//		</div> <!-- trackInfoColumn -->
-//
-//		<div class="trackInfoColumn last">
-//			<div class="trackInfoTitle">Remixed from other artists</div>
-//			<div class="trackInfoContent">
-//
-//
-//$rows = max(max(count($originals), count($remixes)), count($remixed_by_others));
-//
-//for ($i = 0; $i < $rows; $i++) {
-//    echo '<div><a href="javascript:reloadDataInWidget(' . $user_id . ', ' . $remixed_by_others[$i]->id . ');">' . escape($remixed_by_others[$i]->title) . '</a></div>' . "\n";
-//}
-//
-//
-//                        </div> <!-- trackInfoContent -->
-//                    </div> <!-- trackInfoColumn -->
-//
+// track lists
+$originals         = AudioTrack::fetch_all_originals_of_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
+$remixes           = AudioTrack::fetch_all_remixes_of_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
+$remixed_by_others = AudioTrack::fetch_all_remixes_for_originating_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
 
+$rows = max(max(count($originals), count($remixes)), count($remixed_by_others));
 
+$mySongsList = '';
+$myRemixesList = '';
+$remixedByOthersList = '';
+for ($i = 0; $i < $rows; $i++) {
+    if (isset($originals[$i])) {
+        $mySongsList .= processTpl('UserInfo/trackListElement.html', array(
+            '${userId}'  => $user_id,
+            '${trackId}' => $originals[$i]->id,
+            '${title}'   => escape($originals[$i]->title)
+        ), $showMobileVersion);
+    }
+    
+    if (isset($remixes[$i])) {
+        $myRemixesList .= processTpl('UserInfo/trackListElement.html', array(
+            '${userId}'  => $user_id,
+            '${trackId}' => $remixes[$i]->id,
+            '${title}'   => escape($remixes[$i]->title)
+        ), $showMobileVersion);
+    }
+    
+    if (isset($remixed_by_others[$i])) {
+        $remixedByOthersList .= processTpl('UserInfo/trackListElement.html', array(
+            '${userId}'  => $user_id,
+            '${trackId}' => $remixed_by_others[$i]->id,
+            '${title}'   => escape($remixed_by_others[$i]->title)
+        ), $showMobileVersion);
+    }
+}
 
 processAndPrintTpl('UserInfo/index.html', array(
-    '${Common/pageHeader}'                      => buildPageHeader('User Info', false, true),
-    '${userId}'                                 => $user->id,
-    '${userName}'                               => escape($user->name),
-    '${userImgUrl}'                             => $userImgUrl,
-    '${webpageLink}'                            => $webpageLink,
-    '${sendMessage}'                            => $sendMessageBlock,
-    '${artistInfo}'                             => $artistInfo,
-    '${additionalInfo}'                         => $additionalInfo,
-    '${Common/pageFooter}'                      => buildPageFooter()
+    '${Common/pageHeader}'                              => buildPageHeader('User Info', false, true, $showMobileVersion),
+    '${userId}'                                         => $user->id,
+    '${userName}'                                       => escape($user->name),
+    '${userImgUrl}'                                     => $userImgUrl,
+    '${Common/externalWebLink_optional}'                => $webpageLink,
+    '${UserInfo/sendMessage_optional}'                  => $sendMessageBlock,
+    '${UserInfo/artistInfo_optional}'                   => $artistInfo,
+    '${UserInfo/additionalInfo_optional}'               => $additionalInfo,
+    '${UserInfo/trackListElement_list_mySongs}'         => $mySongsList,
+    '${UserInfo/trackListElement_list_myRemixes}'       => $myRemixesList,
+    '${UserInfo/trackListElement_list_remixedByOthers}' => $remixedByOthersList,
+    '${Common/pageFooter}'                              => buildPageFooter()
 ), $showMobileVersion);
 
 // END

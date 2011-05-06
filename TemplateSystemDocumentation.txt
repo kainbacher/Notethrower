@@ -1,0 +1,56 @@
+Template system:
+================
+
+General:
+--------
+
+Templates are stored in the Templates/ folder. For every webpage there is one subfolder, eg. for the startpage.php script there is a Startpage template folder.
+
+The variable names inside the templates are either
+A) named like another (sub-)template file (eg. ${Startpage/loginArea}) or
+B) have a standard name like ${additionalInfo}
+
+This is to make it easier to find out how the template variable is filled. It's either filled with another (sub-)template or it is filled directly with content.
+
+
+Lists:
+------
+
+Sometimes a list of elements has to be built. This is indicated by appending "_list" to the template variable name. Eg. if a template variable is named
+${UserInfo/trackListElement_list} it means that it will be filled with a concatenated list of the trackListElement.html template in the UserInfo/ folder.
+
+
+Optional content:
+-----------------
+Sometimes content shall be shown or not, depending on the user interaction or other reasons. If a template variable has the suffix "_optional" it indicates, that
+this content might not be there under certain circumstances.
+
+
+Other template variable suffixes:
+---------------------------------
+Sometimes one sub-template can be used several times on the same page (but not as a list). In this case there can be custom template variable suffixes like 
+"_left", "_right" or even "_1", "_2", "_3" etc. There are no strict rules for these suffixes. 
+
+Eg. if there is a "player.html" subtemplate and the player is used two times on the webpage, the template variables could be
+${Startpage/player_left} and ${Startpage/player_right}.
+
+
+Mobile versions:
+----------------
+Every template folder can have a subfolder called "mobile/". If it is present and the script determines that the user's device is a mobile device, the templates are 
+taken from that subfolder. If the template file is not existing there, the system takes the regular web template as fallback.
+
+Eg:
+
+The user browses with a mobile device to userInfo.php:
++ The system tries to load the UserInfo/mobile/index.html template and all the other subtemplates from the mobile/ folders.
++ If it's not there, it uses the UserInfo/index.html template instead. The same logic is applied to the subtemplates.
+
+The user browses with a regular web browser to userInfo.php:
++ The system loads the UserInfo/index.html template and all the other subtemplates from the regular folders.
+
+If a designer or web developer wants to view the mobile version of a page on a regular web browser s/he can simply force the mobile version by appending a
+"_forceMobile=1" parameter to the webpage url.
+
+Note that not all webpages are offering to show mobile versions. If a page is supposed to be used on PC's only, there will be no mobile templates and thus 
+no mobile view is possible and the _forceMobile parameter will have no effect.

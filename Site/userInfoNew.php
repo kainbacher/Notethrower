@@ -133,7 +133,7 @@ if ($user->additional_info) {
 //        echo '</table' . "\n";
 //    }
 
-// FIXME - what about the widget?
+// FIXME - what about the widget? we wanna get away from the flash stuff but can we use the jplayer instead? can it be started by a JS call?
 //        <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="300" height="400" id="NTWidget" align="middle">
 //	                                  <param name="allowScriptAccess" value="always" />
 //	                                  <param name="allowFullScreen" value="false" />

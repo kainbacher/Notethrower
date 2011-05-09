@@ -322,8 +322,8 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
 }
 
 function getPageMode($userIsLoggedIn, &$user) {
-    $mode = 'fan';
-    if (get_param('signupAs') && get_param('signupAs') == 'artist') $mode = 'artist';
+    $mode = 'artist';
+    if (get_param('signupAs') && get_param('signupAs') == 'fan') $mode = 'fan';
     if ($userIsLoggedIn && $user->is_artist) $mode = 'artist';
 
     return $mode;

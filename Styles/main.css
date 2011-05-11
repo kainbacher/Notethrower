@@ -1201,8 +1201,22 @@ a.nohighlight:hover {
 
 .horizontalMenu {
     background-color: #ffffff;
-	border-bottom: 1px solid #cccccc;
-	border-top: 1px solid #cccccc;
+ 
+    /* Mozilla: */
+    background: -moz-linear-gradient(top, #ffffff, #e1e1e1);
+    /* Chrome, Safari:*/
+    background: -webkit-gradient(linear,
+                left top, left bottom, from(#ffffff), to(#e1e1e1));
+    /* MSIE */
+    filter: progid:DXImageTransform.Microsoft.Gradient(
+                StartColorStr='#ffffff', EndColorStr='#e1e1e1', GradientType=0);
+
+
+	border: 1px solid #cccccc;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    
     height: 36px;
     margin-bottom: 18px;
 }
@@ -1222,16 +1236,13 @@ a.nohighlight:hover {
 }
 
 .horizontalMenu a {
-    color: #444444;
+    color: #4BA8E0;
     font-size: 13px;
     display: block;
     padding-left: 10px;
     padding-top: 10px;
 }
 
-.horizontalMenu a:hover {
-    color: #ffd321;
-}
 
 /* !startpage */
 /* ---------------------------------------------------------------------- */

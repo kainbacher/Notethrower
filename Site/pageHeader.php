@@ -1,3 +1,4 @@
+<div id="pageHeaderWrapper">
 <div id="pageHeader">
 
 <?php
@@ -32,7 +33,9 @@ if (!$userIsLoggedIn) { // this can either mean that the user is not logged in o
     }
 }
 
-show_header_logo();
+/* show_header_logo(); */
+
+echo '<div id="logo">oneoudr.com</div>';
 
 if (!$userIsLoggedIn) {
     echo '<div id="signUpTeaser"><a href="createUser.php">...</a></div>' . "\n";
@@ -143,3 +146,4 @@ echo '</div>' . "\n";
         </div>
     </div> <!-- loginWrapper -->
 </div> <!-- pageHeader -->
+</div><!-- pageHeaderWrapper -->

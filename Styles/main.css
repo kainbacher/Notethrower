@@ -3,9 +3,9 @@
 /*
 
 yellow  #ffd321
-orange  #ff8000
+orange  #4BA8E0
 
-orange  #ff8000
+orange  #4BA8E0
 
 */
 
@@ -18,34 +18,31 @@ orange  #ff8000
 }
 
 body {
-	background-image: url(../Images/background_body.png);
-	/* background: #FFFFFF url(../Images/background_03.jpg) no-repeat; */
-	background-repeat: repeat;
-	font-family: Verdana, "Lucida Grande", Arial, Sans-Serif;
-	font-size: 13px;
+	font-family: Arial, "Lucida Grande", Arial, Sans-Serif;
+	font-size: 16px;
     color: #444444;
-	line-height: 18px;
+	line-height: 22px;
 	text-align: left;
 	vertical-align: top;
 }
 
 p {
-    font-family: Verdana, Arial, sans;
+    font-family: Arial, Arial, sans;
     font-weight: normal;
-    font-size: 13px;
-    line-height: 18px;
+    font-size: 16px;
+    line-height: 22px;
 }
 
 h1 {
     color: #444444;
-    font-size: 21px;
+    font-size: 24px;
     font-weight: normal;
-    line-height: 28px;
+    line-height: 32px;
 }
 
 h2 {
     color: #444444;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: normal;
     line-height: 36px;
 }
@@ -84,7 +81,7 @@ a:active  {
 }
 
 a:hover   {
-	color: #ff8000;
+	color: #4BA8E0;
 	text-decoration:none;
 	outline: none;
 }
@@ -98,7 +95,7 @@ img {
 }
 
 textarea {
-    font-family: Verdana, Arial, sans-seriv;
+    font-family: Arial, Arial, sans-seriv;
     font-size: 11px;
 }
 
@@ -271,15 +268,11 @@ textarea {
 /* ---------------------------------------------------------------------- */
 
 #bodyWrapperStart {
-	background-image: url(../Images/background_start.png);
-	background-repeat: repeat-x;
 	width: 100%;
 	height: 100%;
 }
 
 #bodyWrapper {
-	background-image: url(../Images/background.png);
-	background-repeat: repeat-x;
 	width: 100%;
 	height: 100%;
 }
@@ -504,7 +497,7 @@ a.nohighlight:hover {
 
 .formFieldWithProblem {
     font-weight: bold;
-    color: #ff8000
+    color: #4BA8E0
 }
 
 .noticeMessage {
@@ -514,7 +507,7 @@ a.nohighlight:hover {
 
 .problemMessage {
     font-weight: bold;
-    color: #ff8000
+    color: #4BA8E0
 }
 
 .submitButton {
@@ -583,21 +576,29 @@ a.nohighlight:hover {
 /* !start */
 /* ---------------------------------------------------------------------- */
 
+#pageHeaderWrapper {
+    background-color: #333;
+    width: 100%;
+}
+
 #pageHeader {
     width: 950px;
-    height: 108px;
+    height: 36px;
     margin: 0px auto;
     position: relative;
 }
 
 #logo {
-    background: url(../Images/logo_01.png);	
+    /* background: url(../Images/logo_01.png);	 */
+    color: #ffffff;
+    font-size: 28px;
     float: left;
     width: 365px;
-    height: 62px;
-    margin-top: 16px;
+    height: 26px;
+    margin-top: 8px;
     cursor: pointer;
 }
+
 
 /* !loginbox */
 /* ---------------------------------------------------------------------- */
@@ -624,14 +625,12 @@ a.nohighlight:hover {
 }
 
 .topMenuItem {
-	background-color: #434345;
 	float: left;
 	height: 36px;
 	margin-left: 1px;
 }
 
 .topMenuItemSearch {
-	background-color: #434345;
 	float: left;
 	width: 150px;
 	height: 36px;
@@ -681,7 +680,7 @@ a.nohighlight:hover {
 }
 
 #loginStatusDiv a:hover {
-    color: #ff8000
+    color: #4BA8E0
 }
 
 #loginFormDiv {
@@ -723,7 +722,13 @@ a.nohighlight:hover {
 /* ---------------------------------------------------------------------- */
 
 #mainMenuWrapper {
+	background-image: url(../Images/main_menu_background.png);
+	background-repeat: repeat-x;
+    background-color: #888888;
+	border-bottom: 1px solid #999999;
+	border-top: 1px solid #999999;
 	height: 36px;
+	margin-bottom: 30px;
 }
 
 #mainMenu {
@@ -743,21 +748,20 @@ a.nohighlight:hover {
 }
 
 #mainMenu a {
-	background-image: url(../Images/main_menu_background.png);
-	background-repeat: repeat-x;
 	display: block;
-	color: #444444;
-	font-size: 15px;
+	color: #222;
+	font-size: 18px;
+	font-weight: bold;
 	height: 26px;
 	padding-left: 20px;
 	padding-right: 20px;
 	padding-top: 10px;
-	margin-right: 10px;
 }
 
 #mainMenu a:hover {
 	background-image: url(../Images/main_menu_background_act.png);
 	background-repeat: repeat-x;
+	color: #ddd;
 }
 
 /* !contentTop */
@@ -780,8 +784,6 @@ a.nohighlight:hover {
 }
 
 #trackGridWrapper {
-	background-image: url(../Images/arrow.png);
-	background-position: right;
 	float: left;
 	width: 630px;
 	height: 522px;
@@ -1047,9 +1049,7 @@ a.nohighlight:hover {
 /* ---------------------------------------------------------------------- */
 
 #footerWrapper {
-	background-image: url(../Images/footer_background.jpg);
-	background-repeat: repeat-x;
-	background-color: #7A7B7D;
+	background-color: #222222;
 }
 
 #footer {
@@ -1109,7 +1109,7 @@ a.nohighlight:hover {
 }
 
 .footerMenu a:hover {
-    color: #FF8000;
+    color: #4BA8E0;
 }
 
 .coyright {
@@ -1346,15 +1346,13 @@ a.nohighlight:hover {
 #startpageContent h1 {
     font-size: 40px;
     line-height: 26px;
-    color: #ffffff;
-    text-shadow: rgba(0, 0, 0, 0.246094) 0px -1px 1px;
+    color: #222;
 }
 
 #startpageContent h2 {
     font-size: 18px;
     line-height: 26px;
     color: #444444;
-    text-shadow: rgba(0, 0, 0, 0.246094) 0px -1px 1px;
 }
 
 #startpageContent p {
@@ -1412,9 +1410,7 @@ a.nohighlight:hover {
     margin-top: 26px;
 }
 
-.startpageMainContentWrapper p {
-    font-size: 13px;
-    line-height: 18px;
+.startpageMainContentWrapper p {;
 }
 
 

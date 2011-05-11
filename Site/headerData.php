@@ -3,6 +3,7 @@
 
 <title><?php writePageTitle(); ?></title>
 
+<link rel="stylesheet" href="../Styles/buttons.css" type="text/css">
 <link rel="stylesheet" href="../Styles/main.css" type="text/css">
 <link rel="stylesheet" href="../Styles/ajaxpagination.css" type="text/css">
 

@@ -137,104 +137,6 @@ textarea {
     line-height: 11px;
 }
 
-/* !Buttons */
-/* ---------------------------------------------------------------------- */
-
-.button {
-    -webkit-box-shadow: rgba(0, 0, 0, 0.496094) 0px 1px 3px;
-    -moz-border-radius: 5px;
-    background-color: #444444;
-    border: 0px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.246094);
-    border-bottom-left-radius: 5px 5px;
-    border-bottom-right-radius: 5px 5px;
-    border-top-left-radius: 5px 5px;
-    border-top-right-radius: 5px 5px;
-    color: white;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 11px;
-    font-weight: bold;
-    padding-bottom: 2px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 2px;
-    position: relative;
-    text-decoration: none;
-    text-shadow: rgba(0, 0, 0, 0.246094) 0px -1px 1px;
-}
-
-.button:hover {
-    background-color: #222222;
-    color: #cccccc;
-    font-size: 11px;
-    font-weight: bold;
-    text-shadow: rgba(0, 0, 0, 0.246094) 0px -1px 1px;
-}
-
-.buttonsmall {
-    -webkit-box-shadow: rgba(0, 0, 0, 0.496094) 0px 1px 3px;
-    background-color: #444444;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.246094);
-    border-bottom-left-radius: 5px 5px;
-    border-bottom-right-radius: 5px 5px;
-    border-top-left-radius: 5px 5px;
-    border-top-right-radius: 5px 5px;
-    color: white;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 11px;
-    font-weight: bold;
-    margin: 2px;
-    padding-bottom: 1px;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 1px;
-    position: relative;
-    text-decoration: none;
-    text-shadow: rgba(0, 0, 0, 0.246094) 0px -1px 1px;
-}
-
-.buttonsmall:hover {
-    background-color: #222222;
-    color: #cccccc;
-    font-size: 11px;
-    font-weight: bold;
-    text-shadow: rgba(0, 0, 0, 0.246094) 0px -1px 1px;
-}
-
-.buttonbig {
-    -webkit-box-shadow: rgba(0, 0, 0, 0.496094) 0px 1px 3px;
-    -moz-border-radius: 5px;
-    background-color: #ffd700;
-    border: 0px;
-    border-bottom-left-radius: 5px 5px;
-    border-bottom-right-radius: 5px 5px;
-    border-top-left-radius: 5px 5px;
-    border-top-right-radius: 5px 5px;
-    border: 3px solid #ffffff;
-    color: #444444 !important;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 18px;
-    font-weight: normal;
-    padding-bottom: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 10px;
-    position: relative;
-    text-decoration: none;
-    text-shadow: rgba(0, 0, 0, 0.246094) 0px -1px 1px;
-}
-
-.buttonbig:hover {
-    background-color: #ffd700;
-    border: 3px solid #cccccc;
-    color: #ffffff !important;
-    text-shadow: rgba(0, 0, 0, 0.246094) 0px -1px 1px;
-}
-
-
 
 /* !tooltip */
 /* ---------------------------------------------------------------------- */
@@ -648,13 +550,19 @@ a.nohighlight:hover {
 }
 
 .topMenuSub {
-	background-color: #434345;
+	background-color: #333333;
 	display: none;
 	padding-bottom: 3px;
 	padding-top: 14px;
 	position: absolute;
 	text-align: left;
 	width: 140px;
+
+    -moz-border-radius-bottomright: 5px;
+    border-bottom-right-radius: 5px;
+    
+    -moz-border-radius-bottomleft: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 .topMenuSubLogin {
@@ -664,14 +572,15 @@ a.nohighlight:hover {
 }
 
 .topMenuSubItem {
-    border-top: 1px dotted #cccccc;
-    margin-left: 10px;
-    margin-right: 10px; 
+    border-top: 1px solid #404040;
+    margin-left: 0px;
+    margin-right: 0px; 
 }
 
 .topMenuSubItem a {
     height: 20px;
-    padding-top: 3px; 
+    padding-top: 6px;
+    padding-bottom: 6px; 
 }
 
 
@@ -767,12 +676,11 @@ a.nohighlight:hover {
 /* !contentTop */
 /* ---------------------------------------------------------------------- */
 
-#contentTop {
-    height: 522px;
-	width: 950px;
+#contentTop {	
 	margin-left: auto;
 	margin-right: auto;
 	overflow: hidden;
+    width: 950px;
 }
 
 .contentTopInner {}
@@ -1049,7 +957,7 @@ a.nohighlight:hover {
 /* ---------------------------------------------------------------------- */
 
 #footerWrapper {
-	background-color: #222222;
+	background-color: #333333;
 }
 
 #footer {
@@ -1104,7 +1012,7 @@ a.nohighlight:hover {
 .footerMenu a {
     color: #cccccc;
     display: block;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: normal;
 }
 
@@ -1453,6 +1361,9 @@ a.nohighlight:hover {
 
 .topSearch {
     background-color: #ffffff;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
     height: 16px;
     margin: 5px;
     margin-top: 6px;
@@ -1483,29 +1394,6 @@ a.nohighlight:hover {
 
 .searchAttributes td {
     width: 143px;
-}
-
-/* !buttons */
-/* ---------------------------------------------------------------------- */
-
-.buttonSave {
-    background-image: url(../Images/button_save.png);
-    background-repeat: no-repeat;
-    background-color: transparent;
-    border: 0px;
-    cursor: pointer;
-    height: 55px;
-    width: 115px;
-}
-
-.buttonSearch {
-    background-image: url(../Images/button_search.png);
-    background-repeat: no-repeat;
-    background-color: transparent;
-    border: 0px;
-    cursor: pointer;
-    height: 55px;
-    width: 115px;
 }
 
 /* !userInfo Page */

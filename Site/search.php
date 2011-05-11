@@ -134,7 +134,8 @@ writePageDoctype();
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <?php writePageMetaTags(); ?>
     <title><?php writePageTitle(); ?></title>
-    
+  
+    <link rel="stylesheet" href="../Styles/buttons.css" type="text/css">  
     <link rel="stylesheet" href="../Styles/main.css" type="text/css">
     <link rel="stylesheet" href="../Styles/datatables.css" type="text/css">
     
@@ -193,7 +194,7 @@ $(document).ready(function() {
 		"fnRowCallback": function( nRow, aData, iDisplayIndex ) {
 		    $('td:eq(0)', nRow).html('<img width="30" src="' + aData[0] + '">');
 		    $('td:eq(2)', nRow).html('<a href="#" onclick="featuredTrackClicked(' + aData[3] + '); return false;">' + aData[2] + '</a>');
-		    $('td:eq(3)', nRow).html('<a href="#" onclick="reloadDataInWidget(' + aData[4] + ',' + aData[3] + '); return false;">Play</a>');
+		    $('td:eq(3)', nRow).html('<a class="button grey" href="#" onclick="reloadDataInWidget(' + aData[4] + ',' + aData[3] + '); return false;">Play</a>');
 		    return nRow;
         }
 		});
@@ -349,7 +350,7 @@ function showLogin() {
                 
                 <tr>
                     <td>&nbsp;</td>
-                    <td><input class="buttonSearch" type="submit" value="" onClick="doSearch()"/>
+                    <td><input class="button blue" type="submit" value="submit" onClick="doSearch()"/>
                     <td>
                 </tr>
             </table>

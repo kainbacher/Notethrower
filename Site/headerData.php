@@ -10,13 +10,6 @@
 <script type="text/javascript" src="../Javascripts/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="../Javascripts/jquery.main.js"></script>
 
-<script src="../Javascripts/cufon/cufon-yui.js" type="text/javascript"></script>
-<script src="../Javascripts/cufon/Fertigo_Pro_400.font.js" type="text/javascript"></script>
-<script type="text/javascript">
-    Cufon.replace('h3');
-    Cufon.replace('.fertigo');
-</script>
-
 <script type="text/javascript" src="../Javascripts/Snippets.js"></script>
 
 <script src="../Javascripts/ajaxpagination.js" type="text/javascript">

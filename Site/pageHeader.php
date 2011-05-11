@@ -35,7 +35,7 @@ if (!$userIsLoggedIn) { // this can either mean that the user is not logged in o
 
 /* show_header_logo(); */
 
-echo '<div id="logo">oneoudr.com</div>';
+echo '<div id="logo">oneloudr.com</div>';
 
 if (!$userIsLoggedIn) {
     echo '<div id="signUpTeaser"><a href="createUser.php">...</a></div>' . "\n";

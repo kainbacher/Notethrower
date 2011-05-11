@@ -7,7 +7,7 @@
 
             <ul class="footerMenu">
                 <!--<li><a href="termsofuse.php">Terms of use</a></li>-->
-                <li><a href="http://notethrower.uservoice.com/" target="_blank">Help and Feedback</a></li>
+                <li><a href="faq.php" target="_blank">Help and Feedback</a></li>
                 <li><a href="faq.php">FAQ</a></li>
                 <li><a href="about.php">About Page</a></li>
             </ul>
@@ -32,7 +32,7 @@
 
         <div id="footerThree" class="footerItem">
 
-            <h3>Notethrower <span class="blue">Pro</span></h3>
+            <h3>oneloudr.com <span class="blue">Pro</span></h3>
             <br/>
             <p>Custom Music Supervision and Audio branding Services. For Rates contact <a href="mailto:music@notethrower.com">music(at)notethrower.com</a>.</p>
 
@@ -42,7 +42,7 @@
 
         <div id="footerFour" class="footerItem">
 
-            <h3>Notethrower</h3>
+            <h3>oneloudr.com</h3>
             <br/>
             <p>Notethrower is music collaboration and music licensing, made easy. Share your Frequency.</p>
 

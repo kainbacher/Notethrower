@@ -20,23 +20,23 @@ function getFormFieldForParams($params) {
     $workWithUnpersistedObj   = $params['workWithUnpersistedObj'];
 
     // optional params
-    $label                    = isset($params['label'])                    ? $params['label']                    : str($propName);
-    $inputType                = isset($params['inputType'])                ? $params['inputType']                : 'text';
-    $inputFieldGroupPrefix    = isset($params['inputFieldGroupPrefix'])    ? $params['inputFieldGroupPrefix']    : null;
-    $inputFieldPrefix         = isset($params['inputFieldPrefix'])         ? $params['inputFieldPrefix']         : null;
-    $inputFieldSuffix         = isset($params['inputFieldSuffix'])         ? $params['inputFieldSuffix']         : null;
-    $inputFieldGroupSuffix    = isset($params['inputFieldGroupSuffix'])    ? $params['inputFieldGroupSuffix']    : null;
-    $maxlength                = isset($params['maxlength'])                ? $params['maxlength']                : 0;
-    $size                     = isset($params['size'])                     ? $params['size']                     : 0;
-    $selectOptions            = isset($params['selectOptions'])            ? $params['selectOptions']            : array();
-    $objValues                = isset($params['objValues'])                ? $params['objValues']                : null;
-    $infoText                 = isset($params['infoText'])                 ? $params['infoText']                 : null;
-    $onChangeCallback         = isset($params['onChangeCallback'])         ? $params['onChangeCallback']         : null;
-    $customStyleForInputField = isset($params['customStyleForInputField']) ? $params['customStyleForInputField'] : null;
-    $hideRow                  = isset($params['hideRow'])                  ? $params['hideRow']                  : false;
-    $rows                     = isset($params['rows'])                     ? $params['rows']                     : 3;
-    $cols                     = isset($params['cols'])                     ? $params['cols']                     : 30;
-    $disabled                 = isset($params['disabled'])                 ? $params['disabled']                 : false;
+    $label                    = array_key_exists('label', $params)                    ? $params['label']                    : str($propName);
+    $inputType                = array_key_exists('inputType', $params)                ? $params['inputType']                : 'text';
+    $inputFieldGroupPrefix    = array_key_exists('inputFieldGroupPrefix', $params)    ? $params['inputFieldGroupPrefix']    : null;
+    $inputFieldPrefix         = array_key_exists('inputFieldPrefix', $params)         ? $params['inputFieldPrefix']         : null;
+    $inputFieldSuffix         = array_key_exists('inputFieldSuffix', $params)         ? $params['inputFieldSuffix']         : null;
+    $inputFieldGroupSuffix    = array_key_exists('inputFieldGroupSuffix', $params)    ? $params['inputFieldGroupSuffix']    : null;
+    $maxlength                = array_key_exists('maxlength', $params)                ? $params['maxlength']                : 0;
+    $size                     = array_key_exists('size', $params)                     ? $params['size']                     : 0;
+    $selectOptions            = array_key_exists('selectOptions', $params)            ? $params['selectOptions']            : array();
+    $objValues                = array_key_exists('objValues', $params)                ? $params['objValues']                : null;
+    $infoText                 = array_key_exists('infoText', $params)                 ? $params['infoText']                 : null;
+    $onChangeCallback         = array_key_exists('onChangeCallback', $params)         ? $params['onChangeCallback']         : null;
+    $customStyleForInputField = array_key_exists('customStyleForInputField', $params) ? $params['customStyleForInputField'] : null;
+    $hideRow                  = array_key_exists('hideRow', $params)                  ? $params['hideRow']                  : false;
+    $rows                     = array_key_exists('rows', $params)                     ? $params['rows']                     : 3;
+    $cols                     = array_key_exists('cols', $params)                     ? $params['cols']                     : 30;
+    $disabled                 = array_key_exists('disabled', $params)                 ? $params['disabled']                 : false;
 
     // label
     $label = processTpl('Common/formElementLabel_' . ($mandatory ? 'mandatory' : 'optional') . '.html', array(

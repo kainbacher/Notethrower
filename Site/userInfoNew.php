@@ -164,7 +164,7 @@ for ($i = 0; $i < $rows; $i++) {
             '${title}'   => escape($originals[$i]->title)
         ), $showMobileVersion);
     }
-    
+
     if (isset($remixes[$i])) {
         $myRemixesList .= processTpl('UserInfo/trackListElement.html', array(
             '${userId}'  => $user_id,
@@ -172,7 +172,7 @@ for ($i = 0; $i < $rows; $i++) {
             '${title}'   => escape($remixes[$i]->title)
         ), $showMobileVersion);
     }
-    
+
     if (isset($remixed_by_others[$i])) {
         $remixedByOthersList .= processTpl('UserInfo/trackListElement.html', array(
             '${userId}'  => $user_id,
@@ -184,6 +184,7 @@ for ($i = 0; $i < $rows; $i++) {
 
 processAndPrintTpl('UserInfo/index.html', array(
     '${Common/pageHeader}'                              => buildPageHeader('User Info', false, true, $showMobileVersion),
+    '${Common/bodyHeader}'                              => buildBodyHeader($showMobileVersion),
     '${userId}'                                         => $user->id,
     '${userName}'                                       => escape($user->name),
     '${userImgUrl}'                                     => $userImgUrl,
@@ -194,6 +195,7 @@ processAndPrintTpl('UserInfo/index.html', array(
     '${UserInfo/trackListElement_list_mySongs}'         => $mySongsList,
     '${UserInfo/trackListElement_list_myRemixes}'       => $myRemixesList,
     '${UserInfo/trackListElement_list_remixedByOthers}' => $remixedByOthersList,
+    '${Common/bodyFooter}'                              => buildBodyFooter($showMobileVersion),
     '${Common/pageFooter}'                              => buildPageFooter()
 ), $showMobileVersion);
 

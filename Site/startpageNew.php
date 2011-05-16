@@ -43,6 +43,7 @@ list($nonce, $timestamp) = getNonceAndTimestamp($user);
 
 processAndPrintTpl('Startpage/index.html', array(
     '${Common/pageHeader}'                    => buildPageHeader('Start', true, false),
+    '${Common/bodyHeader}'                    => buildBodyHeader(),
     '${Startpage/login_optional}'             => $loginBlock,
     '${Startpage/loggedInUserInfo_optional}'  => $loggedInUserInfoBlock,
     '${selectedGenre}'                        => $genre,
@@ -53,6 +54,7 @@ processAndPrintTpl('Startpage/index.html', array(
     '${voteForLeftSongUrl}'                   => $_SERVER['PHP_SELF'] . '?vt=' . $leftTrack->id  . '&lt=' . $leftTrack->id . '&rt=' . $rightTrack->id . '&n=' . escape($nonce) . '&t=' . $timestamp,
     '${bothSongsAreAwfulUrl}'                 => $_SERVER['PHP_SELF'],
     '${voteForRightSongUrl}'                  => $_SERVER['PHP_SELF'] . '?vt=' . $rightTrack->id . '&lt=' . $leftTrack->id . '&rt=' . $rightTrack->id . '&n=' . escape($nonce) . '&t=' . $timestamp,
+    '${Common/bodyFooter}'                    => buildBodyFooter(),
     '${Common/pageFooter}'                    => buildPageFooter()
 ));
 

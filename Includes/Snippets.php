@@ -63,6 +63,14 @@ function buildPageHeader($titleSuffix, $includeJPlayerStuff = false, $includeJQu
     ), $useMobileVersion);
 }
 
+function buildBodyHeader($useMobileVersion = false) {
+    return processTpl('Common/bodyHeader.html', array(), $useMobileVersion);
+}
+
+function buildBodyFooter($useMobileVersion = false) {
+    return processTpl('Common/bodyFooter.html', array(), $useMobileVersion);
+}
+
 function buildPageFooter($useMobileVersion = false) {
     return processTpl('Common/pageFooter.html', array(), $useMobileVersion);
 }

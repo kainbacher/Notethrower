@@ -2,7 +2,9 @@ ${Common/pageHeader}
 
 <body>
 
-(mobile version)
+  ${Common/bodyHeader}
+
+  (mobile version)
 
   <h1>${userName}</h1>
 
@@ -13,7 +15,7 @@ ${Common/pageHeader}
   ${UserInfo/sendMessage_optional}
   ${UserInfo/artistInfo_optional}
   ${UserInfo/additionalInfo_optional}
-  
+
   <div class="trackInfoColumn">
     <div class="trackInfoTitle">My songs</div>
     <div class="trackInfoContent">
@@ -35,11 +37,17 @@ ${Common/pageHeader}
     </div>
   </div>
 
+  <div style="clear:both" />
+
   <div id="sendMessageOverlay">
     <div id="sendMessageWrapper"></div>
   </div>
 
-  <script type="text/javascript">
+  ${Common/bodyFooter}
+
+</body>
+
+<script type="text/javascript">
 
 function getFlashContent(name) {
     if (navigator.appName.indexOf("Microsoft") != -1) {
@@ -57,8 +65,6 @@ function showCollaborationUsersPopup() {
     window.open('showCollaborationUsers.php?aid=${userId}', 'NT_COLLABORATORS', 'scrollbars=yes,resizable=yes,status=0,width=400,height=600');
 }
 
-  </script>
-
-</body>
+</script>
 
 ${Common/pageFooter}

@@ -336,6 +336,7 @@ if (!$userIsLoggedIn) {
 
 processAndPrintTpl('Account/index.html', array(
     '${Common/pageHeader}'                    => buildPageHeader('Account', true, false),
+    '${Common/bodyHeader}'                    => buildBodyHeader(),
     '${headline}'                             => $headline,
     '${Common/message_choice_list}'           => $messageList,
     '${formAction}'                           => $_SERVER['PHP_SELF'],
@@ -345,6 +346,7 @@ processAndPrintTpl('Account/index.html', array(
     '${Common/formElement_section2_list}'     => $formElementsSection2,
     '${submitButtonClass}'                    => $userIsLoggedIn ? 'updateAccountButton' : 'createAccountButton',
     '${submitButtonValue}'                    => $userIsLoggedIn ? 'update Account' : 'create Account',
+    '${Common/bodyFooter}'                    => buildBodyFooter(),
     '${Common/pageFooter}'                    => buildPageFooter()
 ));
 

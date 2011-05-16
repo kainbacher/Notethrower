@@ -28,8 +28,8 @@ this content might not be there under certain circumstances.
 
 Other template variable suffixes:
 ---------------------------------
-Sometimes one sub-template can be used several times on the same page (but not as a list). In this case there can be custom template variable suffixes like 
-"_left", "_right" or even "_1", "_2", "_3" etc. There are no strict rules for these suffixes. 
+Sometimes one sub-template can be used several times on the same page (but not as a list). In this case there can be custom template variable suffixes like
+"_left", "_right" or even "_1", "_2", "_3" etc. There are no strict rules for these suffixes.
 
 Eg. if there is a "player.html" subtemplate and the player is used two times on the webpage, the template variables could be
 ${Startpage/player_left} and ${Startpage/player_right}.
@@ -37,7 +37,7 @@ ${Startpage/player_left} and ${Startpage/player_right}.
 
 Mobile versions:
 ----------------
-Every template folder can have a subfolder called "mobile/". If it is present and the script determines that the user's device is a mobile device, the templates are 
+Every template folder can have a subfolder called "mobile/". If it is present and the script determines that the user's device is a mobile device, the templates are
 taken from that subfolder. If the template file is not existing there, the system takes the regular web template as fallback.
 
 Eg:
@@ -52,5 +52,8 @@ The user browses with a regular web browser to userInfo.php:
 If a designer or web developer wants to view the mobile version of a page on a regular web browser s/he can simply force the mobile version by appending a
 "_forceMobile=1" parameter to the webpage url.
 
-Note that not all webpages are offering to show mobile versions. If a page is supposed to be used on PC's only, there will be no mobile templates and thus 
+Note that not all webpages are offering to show mobile versions. If a page is supposed to be used on PC's only, there will be no mobile templates and thus
 no mobile view is possible and the _forceMobile parameter will have no effect.
+
+----
+2011-05-14, hjonas

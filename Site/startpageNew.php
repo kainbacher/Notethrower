@@ -34,7 +34,7 @@ $trackSelectionMessage = getLeftAndRightTrack($leftTrack, $rightTrack, $genre);
 setGenreCookie($genre);
 
 if ($trackSelectionMessage) {
-    $messages .= processTpl('Common/message.html', array(
+    $messages .= processTpl('Common/message_notice.html', array(
         '${msg}' => $trackSelectionMessage
     ));
 }
@@ -47,7 +47,7 @@ processAndPrintTpl('Startpage/index.html', array(
     '${Startpage/loggedInUserInfo_optional}'  => $loggedInUserInfoBlock,
     '${selectedGenre}'                        => $genre,
     '${Startpage/genreSelectionElement_list}' => buildGenreSelectionList(),
-    '${Common/message_list}'                  => $messages,
+    '${Common/message_choice_list}'           => $messages,
     '${Startpage/player_left}'                => buildLeftPlayer($leftTrack),
     '${Startpage/player_right}'               => buildRightPlayer($rightTrack),
     '${voteForLeftSongUrl}'                   => $_SERVER['PHP_SELF'] . '?vt=' . $leftTrack->id  . '&lt=' . $leftTrack->id . '&rt=' . $rightTrack->id . '&n=' . escape($nonce) . '&t=' . $timestamp,
@@ -82,7 +82,7 @@ function handleAuthentication(&$messages) {
                 exit;
 
             } else {
-                $messages .= processTpl('Common/message.html', array(
+                $messages .= processTpl('Common/message_error.html', array(
                     '${msg}' => 'Login failed! Please try again.'
                 ));
                 $logger->info('login failed');
@@ -90,7 +90,7 @@ function handleAuthentication(&$messages) {
             }
 
         } else {
-            $messages .= processTpl('Common/message.html', array(
+            $messages .= processTpl('Common/message_error.html', array(
                 '${msg}' => 'Please provide a username and password!'
             ));
             $logger->info('username and/or password missing');
@@ -120,7 +120,7 @@ function handleAuthentication(&$messages) {
             }
 
         } else {
-            $messages .= processTpl('Common/message.html', array(
+            $messages .= processTpl('Common/message_error.html', array(
                 '${msg}' => 'Failed to get user information from facebook! Please try again later.'
             ));
             $logger->error('failed to get user information from facebook: ' . $resp['error']);
@@ -189,7 +189,7 @@ function handleVoting(&$user, &$messages) {
     }
 
     if (!$user) {
-        $messages .= processTpl('Common/message.html', array(
+        $messages .= processTpl('Common/message_notice.html', array(
             '${msg}' => 'You would have just earned x points but we don\'t know who you are.<br />Sign in to find out what you can do with these points!'
         ));
     }

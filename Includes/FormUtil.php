@@ -1,6 +1,7 @@
 <?php
 
 include_once('../Includes/Config.php');
+include_once('../Includes/recaptchalib.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 
@@ -37,6 +38,7 @@ function getFormFieldForParams($params) {
     $rows                     = array_key_exists('rows', $params)                     ? $params['rows']                     : 3;
     $cols                     = array_key_exists('cols', $params)                     ? $params['cols']                     : 30;
     $disabled                 = array_key_exists('disabled', $params)                 ? $params['disabled']                 : false;
+    $recaptchaPublicKey       = array_key_exists('recaptchaPublicKey', $params)       ? $params['recaptchaPublicKey']       : '';
 
     // label
     $label = processTpl('Common/formElementLabel_' . ($mandatory ? 'mandatory' : 'optional') . '.html', array(
@@ -312,6 +314,13 @@ function getFormFieldForParams($params) {
             '${suffix}'                    => ($inputFieldSuffix ? '&nbsp;' . escape($inputFieldSuffix) : ''),
             '${readonly_optional}'         => ($disabled ? ' readonly' : ''),
             '${onChangeCallback_optional}' => ($onChangeCallback ? ' onChange="' . $onChangeCallback . '"' : '')
+        ));
+
+    } else if ($inputType == 'recaptcha') {
+        $inputField = processTpl('Common/formElementInputField_recaptcha.html', array(
+            '${prefix}'    => ($inputFieldPrefix ? escape($inputFieldPrefix) . '&nbsp;' : ''),
+            '${recaptcha}' => recaptcha_get_html($recaptchaPublicKey),
+            '${suffix}'    => ($inputFieldSuffix ? '&nbsp;' . escape($inputFieldSuffix) : '')
         ));
     }
 

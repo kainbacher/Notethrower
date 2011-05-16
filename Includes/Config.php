@@ -56,4 +56,6 @@ $OFFER_CATEGORIES = array('Documentary/Indie/Student Film', 'Feature Film', 'Cor
 $COOKIE_NAME_AUTHENTICATION = 'notethrower';
 $COOKIE_NAME_GENRE          = 'notethrower_genre';
 
+$RECAPTCHA_PUBLIC_KEY = '6LcNIgoAAAAAAP0BgB5wNty92PiCewdRq7y5L6qw';
+
 ?>

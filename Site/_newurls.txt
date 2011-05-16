@@ -4,11 +4,8 @@ New Pages
 --------------------------------------------------
 
 /notethrower/Site/startpageNew.php
-/notethrower/Site/userInfoNew.php?aid=1
-
-
-
-/notethrower/Site/indexNew.php
+/notethrower/Site/userInfoNew.php?aid=3
+/notethrower/Site/account.php
 
 
 

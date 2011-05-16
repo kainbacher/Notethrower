@@ -337,7 +337,7 @@ if (!$userIsLoggedIn) {
 processAndPrintTpl('Account/index.html', array(
     '${Common/pageHeader}'                    => buildPageHeader('Account', true, false),
     '${headline}'                             => $headline,
-    '${Common/message_list}'                  => $messageList,
+    '${Common/message_choice_list}'           => $messageList,
     '${formAction}'                           => $_SERVER['PHP_SELF'],
     '${signupAs}'                             => get_param('signupAs'),
     '${Common/formElement_section1_list}'     => $formElementsSection1,

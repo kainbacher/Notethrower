@@ -317,13 +317,13 @@ class User {
     function refreshLastActivityTimestamp() {
         global $logger;
         $logger->info('refreshing activity timestamp by setting cookie with value: ' . $this->password_md5 . '#' . $this->id . '#' . time());
-        setcookie($GLOBALS['COOKIE_NAME'], $this->passwordMd5 . '#' . $this->id . '#' . time(), 0, '/'); // TODO - make this more secure - a brute force attack could be used to break md5 encryption of short passwords
+        setcookie($GLOBALS['COOKIE_NAME_AUTHENTICATION'], $this->passwordMd5 . '#' . $this->id . '#' . time(), 0, '/'); // TODO - make this more secure - a brute force attack could be used to break md5 encryption of short passwords
     }
 
     function doLogin() {
         global $logger;
         $logger->info('setting cookie with value: ' . $this->password_md5 . '#' . $this->id . '#' . time());
-        setcookie($GLOBALS['COOKIE_NAME_AUTHENTICATION'], $this->password_md5 . '#' . $this->id . '#' . time(), null, '/' . $GLOBALS['WEBAPP_BASE']);
+        setcookie($GLOBALS['COOKIE_NAME_AUTHENTICATION'], $this->password_md5 . '#' . $this->id . '#' . time(), 0, '/' . $GLOBALS['WEBAPP_BASE']);
     }
 
     function doLogout() {

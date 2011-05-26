@@ -50,7 +50,9 @@
             <ul class="footerMenu">
                 <li><a href="#">Sign up for Free</a></li>
                 <li><p>&copy; Copyright 2010 Notethrower</p></li>
-                <li><p>Gefördert mit Mitteln aus dem Impulse XL Programm der AWS.</p></li>
+                <li><p>Gefördert mit Mitteln aus dem Impulse XL Programm der AWS.<br>
+                <img src="http://www.spectralmind.com/wp-content/uploads/impulseaws_small.jpg" border="0">
+                </p></li>
             </ul>
 
         </div> <!-- footerFour -->

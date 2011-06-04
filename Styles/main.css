@@ -18,7 +18,7 @@ orange  #4BA8E0
 }
 
 body {
-	font-family: Arial, "Lucida Grande", Arial, Sans-Serif;
+	font-family: Arial, Sans-Serif;
 	font-size: 16px;
     color: #444444;
 	line-height: 22px;
@@ -36,20 +36,21 @@ p {
 h1 {
     color: #444444;
     font-size: 24px;
-    font-weight: normal;
+    font-weight: bold;
     line-height: 32px;
 }
 
 h2 {
     color: #444444;
-    font-size: 16px;
-    font-weight: normal;
-    line-height: 36px;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 24px;
+    margin-bottom: 12px;
 }
 
 h3 {
     color: #444444;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: bold;
     line-height: 18px;
     text-transform: uppercase;
@@ -82,7 +83,7 @@ a:active  {
 
 a:hover   {
 	color: #4BA8E0;
-	text-decoration:none;
+	text-decoration: underline;
 	outline: none;
 }
 
@@ -163,6 +164,42 @@ textarea {
     border: 1px solid #dddddd;
     font-size: 11px;
     line-height: 13px;
+}
+
+
+/* !box */
+/* ---------------------------------------------------------------------- */
+
+.box-yellow {
+    background-color: #FFFAE6;
+    border-bottom: 1px solid #FFD321;
+    border-top: 1px solid #FFD321;
+    padding: 18px;
+    margin-bottom: 18px;
+}
+
+.box-grey {
+    background-color: #F9F9F9;
+    border-bottom: 1px solid #CCC;
+    border-top: 1px solid #CCC;
+    padding: 18px;
+    margin-bottom: 18px;
+}
+
+.box-blue {
+    background-color: #eef9ff;
+    border-bottom: 1px solid #4BA8E0;
+    border-top: 1px solid #4BA8E0;
+    padding: 18px;
+    margin-bottom: 18px;
+}
+
+.box-green {
+    background-color:#E6EFC2;
+    border-bottom: 1px solid #C6D880;
+    border-top: 1px solid #C6D880;
+    padding: 18px;
+    margin-bottom: 18px;
 }
 
 
@@ -479,12 +516,16 @@ a.nohighlight:hover {
 /* ---------------------------------------------------------------------- */
 
 #pageHeaderWrapper {
-    background-color: #333;
+    /* background-color: #333; */
+    background: #0095cd;
+    background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));
+    background: -moz-linear-gradient(top,  #00adee,  #0078a5);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
     width: 100%;
 }
 
 #pageHeader {
-    width: 950px;
+    width: 998px;
     height: 36px;
     margin: 0px auto;
     position: relative;
@@ -493,7 +534,7 @@ a.nohighlight:hover {
 #logo {
     /* background: url(../Images/logo_01.png);	 */
     color: #ffffff;
-    font-size: 28px;
+    font-size: 18px;
     float: left;
     width: 365px;
     height: 26px;
@@ -506,7 +547,7 @@ a.nohighlight:hover {
 /* ---------------------------------------------------------------------- */
 
 #loginWrapper {
-	float: left;
+	float: right;
     /* margin-top: 6px; */
 	width: 585px;
 }
@@ -550,7 +591,8 @@ a.nohighlight:hover {
 }
 
 .topMenuSub {
-	background-color: #333333;
+	/* background-color: #333333; */
+	background-color: #0078a5;
 	display: none;
 	padding-bottom: 3px;
 	padding-top: 14px;
@@ -568,7 +610,7 @@ a.nohighlight:hover {
 .topMenuSubLogin {
     padding-bottom: 12px;
     padding-left: 10px;
-    width: 150px;
+    width: 215px;
 }
 
 .topMenuSubItem {
@@ -603,13 +645,15 @@ a.nohighlight:hover {
 }
 
 .topMenuSub input {
-    width: 80px;
     color: #444444;
+    font-size: 12px;
+    padding: 4px;
+    width: 120px;
 }
 
 .loginFormLabel {
     color: #cccccc;
-    font-size: 9px;
+    font-size: 12px;
 }
 
 #loginUsername {
@@ -641,7 +685,7 @@ a.nohighlight:hover {
 }
 
 #mainMenu {
-	width: 950px;
+	width: 998px;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -662,15 +706,13 @@ a.nohighlight:hover {
 	font-size: 18px;
 	font-weight: bold;
 	height: 26px;
-	padding-left: 20px;
+	padding-left: 0px;
 	padding-right: 20px;
 	padding-top: 10px;
 }
 
 #mainMenu a:hover {
-	background-image: url(../Images/main_menu_background_act.png);
-	background-repeat: repeat-x;
-	color: #ddd;
+	color: #4BA8E0;
 }
 
 /* !contentTop */
@@ -680,7 +722,7 @@ a.nohighlight:hover {
 	margin-left: auto;
 	margin-right: auto;
 	overflow: hidden;
-    width: 950px;
+    width: 998px;
 }
 
 .contentTopInner {}
@@ -688,7 +730,7 @@ a.nohighlight:hover {
 .contentTopEntry {
     float: left;
     margin-right: 500px;
-    width: 950px;
+    width: 998px;
 }
 
 #trackGridWrapper {
@@ -812,7 +854,7 @@ a.nohighlight:hover {
     margin-left: auto;
     margin-right: auto;
     position: relative;
-    width: 950px;
+    width: 998px;
 }
 
 .contentTopStartInner {
@@ -898,7 +940,7 @@ a.nohighlight:hover {
     background-color: #f9f9f9;
     border-bottom: 1px solid #cccccc;
     border-top: 1px solid #cccccc;
-    width: 950px;
+    width: 998px;
     min-height: 500px;
 }
 
@@ -932,7 +974,7 @@ a.nohighlight:hover {
 }
 
 #pageMainContent {
-    width: 950px;
+    width: 998px;
     margin-left: auto;
     margin-right: auto;
     padding-top: 72px;
@@ -957,45 +999,21 @@ a.nohighlight:hover {
 /* ---------------------------------------------------------------------- */
 
 #footerWrapper {
-	background-color: #333333;
+	/* background-color: #333333; */
+    background-color: #EFEFEF;
+    border-top: 1px solid #E0E0E0;
 }
 
 #footer {
-	width: 950px;
-	margin-left: auto;
-	margin-right: auto;
+    padding-top: 30px;
+}
+
+#footer p {
+    font-weight: 14px;
 }
 
 #footer h3 {
     color: #cccccc;
-}
-
-#footerOne {
-    float: left;
-    width: 230px;
-}
-
-#footerTwo {
-    float: left;
-    margin-left: 10px;
-    width: 230px;
-}
-
-#footerThree {
-    float: left;
-    margin-left: 10px;
-    width: 230px;
-}
-
-#footerFour {
-    float: left;
-    margin-left: 10px;
-    width: 230px;
-}
-
-.footerItem {
-    margin-bottom: 30px;
-    margin-top: 30px;
 }
 
 .footerMenu {
@@ -1012,7 +1030,7 @@ a.nohighlight:hover {
 .footerMenu a {
     color: #cccccc;
     display: block;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: normal;
 }
 
@@ -1096,7 +1114,7 @@ a.nohighlight:hover {
 
 #userInfoContainer {
 	float: left;
-	width: 950px;
+	width: 998px;
 }
 
 .sidebarIcons {
@@ -1111,7 +1129,7 @@ a.nohighlight:hover {
     background-color: #f9f9f9;
     border-bottom: 1px solid #cccccc;
     border-top: 1px solid #cccccc;
-    width: 950px;
+    width: 998px;
     min-height: 400px;
 }
 
@@ -1121,7 +1139,7 @@ a.nohighlight:hover {
 }
 
 #aiTrackInfo {
-    width: 950px;
+    width: 998px;
 }
 
 /* !tracklist */
@@ -1132,6 +1150,57 @@ a.nohighlight:hover {
     border-bottom: 1px solid #cccccc;
     border-top: 1px solid #cccccc;
     min-height: 500px;
+}
+
+
+.trackList {
+    border-top: 1px solid #ccc;
+}
+
+.trackListItem {
+    border-bottom: 1px solid #ccc;
+    padding-top: 5px; 
+}
+
+.trackListButton {
+    height: 16px;
+    width: 16px;
+    display: block;
+    float: right;
+    margin-left: 10px;
+    margin-top: 3px;
+}
+
+.trackListPlay {
+    background-image: url(../Images/icons/control_play.png);
+}
+
+.trackListPlay:hover {
+    background-image: url(../Images/icons/control_play_blue.png);
+    text-decoration: none;
+}
+
+.trackListStar {
+    background-image: url(../Images/icons/star-grey.png);
+}
+
+.trackListStar:hover {
+    background-image: url(../Images/icons/star.png);
+    text-decoration: none;
+}
+
+
+/* !fanList */
+/* ---------------------------------------------------------------------- */
+
+.fanList {
+    border-top: 1px solid #ccc;
+    list-style-type: none;
+    margin-left: 0px;
+}
+
+.fanList li {
+    border-bottom: 1px solid #ccc;
 }
 
 /* ! */
@@ -1372,9 +1441,9 @@ a.nohighlight:hover {
 
 .topSearch {
     background-color: #ffffff;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
     height: 16px;
     margin: 5px;
     margin-top: 6px;

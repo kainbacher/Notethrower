@@ -35,7 +35,7 @@ if (!$userIsLoggedIn) { // this can either mean that the user is not logged in o
 
 /* show_header_logo(); */
 
-echo '<div id="logo">oneloudr.com</div>';
+echo '<div id="logo">ONELOUDR <span class="black">BETA</span></div>';
 
 if (!$userIsLoggedIn) {
     echo '<div id="signUpTeaser"><a href="createUser.php">...</a></div>' . "\n";
@@ -121,7 +121,7 @@ echo '</div>' . "\n";
     echo '<input id="loginPassword" type="password" name="password" value="">' . "\n";
     echo '<span class="loginFormLabel">Password</span><br/>' . "\n";
 
-    echo '<input class="submitButtonSmall" type="submit" value="">' . "\n";
+    echo '<input class="button blue small" type="submit" value="login">' . "\n";
 
     echo '</form>' . "\n";
     echo '</div>' . "\n";

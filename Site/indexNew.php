@@ -201,142 +201,263 @@ $(document).ready(function(){
             <? include ("pageHeader.php"); ?>
             <? include ("mainMenu.php"); ?>
 
+            <div class="container">
+                
+                <div class="span-16">
+
+                    <h1>Latest Tacks</h1>
+                    <div class="trackList">
+                    
+                        <div class="span-16 trackListItem">
+                            <div class="span-2">
+                                <img src="../Images/no_artist_image.png" height="25" />
+                            </div>
+                            <div class="span-6">
+                                Linkin Park
+                            </div>
+                            <div class="span-6">
+                                Track Name
+                            </div>
+                            <div class="span-2 last">
+                                <a href="#" class="trackListButton trackListPlay">&nbsp;</a>
+                                <a href="#" class="trackListButton trackListStar">&nbsp;</a>
+                            </div>
+                        </div>
+
+                        <div class="span-16 trackListItem">
+                            <div class="span-2">
+                                <img src="../Images/no_artist_image.png" height="25" />
+                            </div>
+                            <div class="span-6">
+                                Guns'n'Roses
+                            </div>
+                            <div class="span-6">
+                                Track Name
+                            </div>
+                            <div class="span-2 last">
+                                <a href="#" class="trackListButton trackListPlay">&nbsp;</a>
+                                <a href="#" class="trackListButton trackListStar">&nbsp;</a>
+                            </div>
+                        </div>
+
+                        <div class="span-16 trackListItem">
+                            <div class="span-2">
+                                <img src="../Images/no_artist_image.png" height="25" />
+                            </div>
+                            <div class="span-6">
+                                Guns'n'Roses
+                            </div>
+                            <div class="span-6">
+                                Track Name
+                            </div>
+                            <div class="span-2 last">
+                                <a href="#" class="trackListButton trackListPlay">&nbsp;</a>
+                                <a href="#" class="trackListButton trackListStar">&nbsp;</a>
+                            </div>
+                        </div>
+
+                        <div class="span-16 trackListItem">
+                            <div class="span-2">
+                                <img src="../Images/no_artist_image.png" height="25" />
+                            </div>
+                            <div class="span-6">
+                                Guns'n'Roses
+                            </div>
+                            <div class="span-6">
+                                Track Name
+                            </div>
+                            <div class="span-2 last">
+                                <a href="#" class="trackListButton trackListPlay">&nbsp;</a>
+                                <a href="#" class="trackListButton trackListStar">&nbsp;</a>
+                            </div>
+                        </div>
+
+                        <div class="span-16 trackListItem">
+                            <div class="span-2">
+                                <img src="../Images/no_artist_image.png" height="25" />
+                            </div>
+                            <div class="span-6">
+                                Guns'n'Roses
+                            </div>
+                            <div class="span-6">
+                                Track Name
+                            </div>
+                            <div class="span-2 last">
+                                <a href="#" class="trackListButton trackListPlay">&nbsp;</a>
+                                <a href="#" class="trackListButton trackListStar">&nbsp;</a>
+                            </div>
+                        </div>
+
+                        <div><a href="#">more Traks</a></div>
+                        <br />
+                        <br />
+                    </div>
+
+                    <h1>Top Traks</h1>
+                    <div class="trackList">
+                    
+                        <div class="span-16 trackListItem">
+                            <div class="span-2">
+                                <img src="../Images/no_artist_image.png" height="25" />
+                            </div>
+                            <div class="span-6">
+                                Linkin Park
+                            </div>
+                            <div class="span-6">
+                                Track Name
+                            </div>
+                            <div class="span-2 last">
+                                <a href="#" class="trackListButton trackListPlay">&nbsp;</a>
+                                <a href="#" class="trackListButton trackListStar">&nbsp;</a>
+                            </div>
+                        </div>
+
+                        <div class="span-16 trackListItem">
+                            <div class="span-2">
+                                <img src="../Images/no_artist_image.png" height="25" />
+                            </div>
+                            <div class="span-6">
+                                Guns'n'Roses
+                            </div>
+                            <div class="span-6">
+                                Track Name
+                            </div>
+                            <div class="span-2 last">
+                                <a href="#" class="trackListButton trackListPlay">&nbsp;</a>
+                                <a href="#" class="trackListButton trackListStar">&nbsp;</a>
+                            </div>
+                        </div>
+ 
+                         <div class="span-16 trackListItem">
+                            <div class="span-2">
+                                <img src="../Images/no_artist_image.png" height="25" />
+                            </div>
+                            <div class="span-6">
+                                Guns'n'Roses
+                            </div>
+                            <div class="span-6">
+                                Track Name
+                            </div>
+                            <div class="span-2 last">
+                                <a href="#" class="trackListButton trackListPlay">&nbsp;</a>
+                                <a href="#" class="trackListButton trackListStar">&nbsp;</a>
+                            </div>
+                        </div>
+
+                        <div class="span-16 trackListItem">
+                            <div class="span-2">
+                                <img src="../Images/no_artist_image.png" height="25" />
+                            </div>
+                            <div class="span-6">
+                                Guns'n'Roses
+                            </div>
+                            <div class="span-6">
+                                Track Name
+                            </div>
+                            <div class="span-2 last">
+                                <a href="#" class="trackListButton trackListPlay">&nbsp;</a>
+                                <a href="#" class="trackListButton trackListStar">&nbsp;</a>
+                            </div>
+                        </div>
+
+                        <div><a href="#">more Traks</a></div>
+                        <br />
+                        <br />
+
+                    </div>
+                
+                </div>
+                
+                <div class="span-8 last">
+                    <div class="box-grey">
+                        player goes here
+                    </div>
+                    
+                    <div class="box-grey">
+                        <h2>Discover new music support the artists and be a fan.</h2>
+                        
+                        <p>
+                            <strong>browse by genre:</strong><br />
+                            <a href="#">hip-hop</a> 
+                            <a href="#">rock</a> 
+                            <a href="#">electro</a> 
+                            <a href="#">rap</a> 
+                            <a href="#">alternative</a> 
+                            <a href="#">funk</a> 
+                            <a href="#">jazz</a> 
+                            <a href="#">soul</a> 
+                            <a href="#">folk</a> 
+                            <a href="#">r&b</a> 
+                            <a href="#">noise</a> 
+                            <a href="#">dance</a> 
+                            <a href="#">metal</a> 
+                            <a href="#">indie</a> 
+                            <a href="#">instrumental</a> 
+                        </p>
+                    </div>
+                    
+                    <div class="box-blue">
+                        <h2>Wall of Fan</h2>
+                        
+                        <ul class="fanList">
+                            <li>
+                                 <img src="../Images/no_artist_image.png" height="25" />
+                                 Joe Benso
+                            </li>
+                            <li>
+                                 <img src="../Images/no_artist_image.png" height="25" />
+                                 Franz Ferdinant
+                            </li>
+                            <li>
+                                 <img src="../Images/no_artist_image.png" height="25" />
+                                 Napoleon Ponaparte
+                            </li>
+                            <li>
+                                 <img src="../Images/no_artist_image.png" height="25" />
+                                 Max Mustermann
+                            </li>
+                            <li>
+                                 <img src="../Images/no_artist_image.png" height="25" />
+                                 Indiana Jones
+                            </li>
+                        </ul>
+                        
+                    </div>
+                    
+                </div>
+            
+            </div>
+
+
+
+
+<!--
     <div id="contentTop">
-
 		<div id="trackGridWrapper">
-
 			<div id="trackGridHeadlineContainer">
-
-        		<div id="trackGridHeadline">
-					Most recent tracks:
-        		</div>
-
-        		<div>
-        			<a class="button blue" href="javascript:toggleMode();">Show most downloaded</a>
-        		</div>
-
+        		<div id="trackGridHeadline">Most recent tracks:</div>
+        		<div><a class="button blue" href="javascript:toggleMode();">Show most downloaded</a></div>
       			<div class="clear"></div>
-
       		</div>
 
       		<div id="chosenTrackHeadlineContainer" style="display:none">
-        		<div id="chosenTrackHeadline">
-				Track details:
-        		</div>
+        		<div id="chosenTrackHeadline">Track details:</div>
       		</div>
 
-      		<div id="trackGrid">
-      			<div id="tracksContent"> </div>
-      		</div>
-
-            <br />
-            <br />
-
-            <!-- !R! muss noch inhalt rein -->
-            <div id="trackList">
-                <div class="trackListItem">
-                    <a href="#">
-                        <span class="trackListLeft">
-                            <img src="../Images/no_artist_image.png">
-                        </span>
-                        <span class="trackListRight">
-                            <h2>Title Name</h2>
-                            <p>Track Name</p>
-                        </span>
-                        <span class="clear"></span>
-                    </a>
-                </div>
-                
-            </div>
-
-            <br />
-            <br />
+      		<div id="trackGrid"><div id="tracksContent"></div></div>
 
 			<div id="paginationWrapper">
         		<div id="pagination"> </div>
-      			<script type="text/javascript">
-      				initTracksPagination();
-      			</script>
+      			<script type="text/javascript">initTracksPagination();</script>
 			</div>
 
       		<div id="chosenTrackDetailsContainer" style="display:none">
-        		<div id="chosenTrackDetails">
-        	  		Some track details<br>
-        		</div>
+        		<div id="chosenTrackDetails">Some track details<br></div>
         		<div class="clear"></div>
       		</div>
-
-		</div> <!-- trackGridWrapper -->
-
-      	<div id="widget">
-
-<?php
-
-$aidForWidget = null;
-
-if ($userIsLoggedIn) {
-    $aidForWidget = $user->id;
-
-} else {
-    $newestTrack = AudioTrack::fetch_newest_from_to(0, 1, false, false, $visitorUserId);
-    if (count($newestTrack) > 0) {
-        $aidForWidget = $newestTrack[0]->user_id;
-    }
-}
-
-?>
-	      	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="300" height="400" id="NTWidget" align="middle">
-	        	<param name="allowScriptAccess" value="always" />
-	        	<param name="allowFullScreen" value="false" />
-	        	<param name="movie" value="../Widget/PpWidget.swf?aid=<?php echo $aidForWidget; ?>" />
-	        	<param name="loop" value="false" />
-	        	<param name="quality" value="high" />
-	        	<param name="wmode" value="transparent" />
-	        	<param name="bgcolor" value="#ffffff" />
-	        	<embed src="../Widget/PpWidget.swf?aid=<?php echo $aidForWidget; ?>" loop="false" quality="high" wmode="transparent" bgcolor="#ffffff" width="300" height="400" name="NTWidget" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
-	      	</object>
-
-  		</div>
-
-      	<div class="clear"></div>
-
-	</div> <!-- contentTop -->
-
-	<div id="pageMainContentWrapper">
-		<div id="pageMainContent">
-
-		<div id="mainColumnLeft">
-
-			<div id="news">
-
-        		<div id="newsDiv">
-        			<div id="container"></div>
-        		</div>
-
-				<div id="newsPagination"> </div>
-      			<script type="text/javascript">
-      				var newsCount = <?php echo $newsCount; ?>;
-      				var newsPageCount = Math.ceil(newsCount / <?php echo $GLOBALS['NEWS_PER_PAGE'] ?>);
-      				var newsLinks = {pages: [], selectedpage: 0};
-      			 	for (var i=0; i < newsPageCount; i++) {
-      			 		newsLinks.pages[i] = 'newsSnippet.php?page=' + (i+1);
-      			 	}
-
-      		   		var newsPagingInstance=new ajaxpageclass.createBook(newsLinks, "container", ["newsPagination"]);
-      			</script>
-
-      		</div>
-		</div> <!-- mainColumnLeft -->
-
-		<div id="mainColumnRight">
-            <? include ("sidebar.php"); ?>
-		</div> <!-- mainColumnRight -->
-
-      	<div style="clear:both"></div>
-
-
-	</div> <!-- pageMainContent -->
-	</div> <!-- pageMainContentWrapper -->
+		</div>
+	</div>
+-->
 
 
 	<? include ("footer.php"); ?>

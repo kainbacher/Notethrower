@@ -3,12 +3,22 @@
 
 <title><?php writePageTitle(); ?></title>
 
-<link rel="stylesheet" href="../Styles/buttons.css" type="text/css">
-<link rel="stylesheet" href="../Styles/main.css" type="text/css">
-<link rel="stylesheet" href="../Styles/ajaxpagination.css" type="text/css">
+
+
+<link rel="stylesheet" href="../Styles/bp-print.css" type="text/css" media="print" />
+<link rel="stylesheet" href="../Styles/bp-screen.css" type="text/css" media="screen, projection" />
+<!--[if lt IE 8]>
+<link rel="stylesheet" href="../Styles/bp-ie.css" type="text/css" media="screen, projection" />
+<![endif]-->
+
+<link rel="stylesheet" href="../Styles/buttons.css" type="text/css" />
+<link rel="stylesheet" href="../Styles/main.css" type="text/css" />
+<link rel="stylesheet" href="../Styles/ajaxpagination.css" type="text/css" />
+
 
 <script type="text/javascript" src="../Javascripts/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="../Javascripts/jquery.main.js"></script>
+
 
 <script type="text/javascript" src="../Javascripts/Snippets.js"></script>
 

@@ -1,0 +1,36 @@
+
+
+
+horizontales Menü
+--------------------------------------------------
+
+<div class="horizontalMenu">
+    <ul>
+        <li><a href="index.php">Startpage</a></li>
+    </ul>
+</div>
+
+
+
+
+
+
+Text von der createUser.php Seite
+--------------------------------------------------
+
+<h1>Share Your Frequency! Music Collaboration and Licensing...made easy.</h1>
+
+<p>'We are a team of music lovers that believe that musicians deserve to get paid for their work. We created Notethrower to help them find other artists to share in the music making and music selling process.  When artists from different backgrounds collaborate together, the potential for great creative works increases significantly. Plus, it is just fun to hear how another artist transforms or works your guitar riff or vocal track into a completely new song!
+<br />
+There are many remix contests and sites on the web, but they all seem to ask the artist to be happy with giving away their music for free.
+<br />
+Notethrower recognizes the hard work and talent of it\'s community and wants to reward musicians by providing an innovative platform to collaborate and share in the ownership of new work, and of course, get paid.
+<br />
+Think of us as a Co-Writers community.  We provide the legal framework regarding the copyrights and ownership of work so artists can spend their time creating music instead of dealing with the complicated paperwork of music licensing, especially with another artist.  With Notethrower, artists agree to work together and co-write new pieces of music that are then made available to the global marketplace of music licensing.
+<br />
+Artists upload their music and easily create their own Notethrower music collaboration and licensing widget that can be embedded everywhere like Facebook, Myspace and countless other sites.  Just click the grab this button and follow the easy instructions.  Once an artists widget is visible online, anyone who sees it can listen to, purchase, and download a music track for commercial licensing.  The artist or bands who created the music get paid, and Notethrower only keeps 10% of the profit. That\'s 90% directly to the artists!
+<br />
+Just fill in the details below.  You can update your information at any time.
+<br />
+A verification email will be sent to you to log in. Once you have successfully done so, you can start your musical journey by uploading your first mp3 and artist info. Now let\'s make some music together!
+</p>

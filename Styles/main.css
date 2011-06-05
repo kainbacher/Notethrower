@@ -18,6 +18,7 @@ orange  #4BA8E0
 }
 
 body {
+    background-color: #f2f2f2;
 	font-family: Arial, Sans-Serif;
 	font-size: 16px;
     color: #444444;
@@ -695,9 +696,9 @@ a.nohighlight:hover {
 */
 
     background: #ffffff;
-    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#eeeeee));
-    background: -moz-linear-gradient(top,  #ffffff,  #eeeeee);
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#eeeeee');
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dddddd));
+    background: -moz-linear-gradient(top,  #ffffff,  #dddddd);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dddddd');
 
     border-bottom: 1px solid #eee;
 
@@ -1021,20 +1022,22 @@ a.nohighlight:hover {
 
 #footerWrapper {
 	/* background-color: #333333; */
-    background-color: #EFEFEF;
-    border-top: 1px solid #E0E0E0;
+    background-color: #EEE;
+    border-top: 3px solid #E9E9E9;
 }
 
 #footer {
+    color: #aaa;
     padding-top: 30px;
 }
 
 #footer p {
+    color: #aaa;
     font-weight: 14px;
 }
 
 #footer h3 {
-    color: #cccccc;
+    color: #aaa;
 }
 
 .footerMenu {
@@ -1051,38 +1054,11 @@ a.nohighlight:hover {
 .footerMenu a {
     color: #cccccc;
     display: block;
-    font-size: 14px;
-    font-weight: normal;
+    text-decoration: none;
 }
 
 .footerMenu a:hover {
     color: #4BA8E0;
-}
-
-.coyright {
-	background-image: url(../Images/footer_spacer.png);
-	background-repeat: no-repeat;
-    font-size: 11px;
-    font-weight: normal;
-    float: right;
-	list-style: none;
-	height: 36px;
-}
-
-.coyright li {
-	background-image: url(../Images/footer_spacer.png);
-	background-repeat: no-repeat;
-	background-position: right;
-	float: left;
-	padding-left: 20px;
-	padding-right: 20px;
-	height: 36px;
-}
-
-.coyright p {
-	color: #cccccc;
-	display: block;
-	padding-top: 12px;
 }
 
 /* !news */
@@ -1105,12 +1081,11 @@ a.nohighlight:hover {
 }
 
 .newsEntry {
-	border-bottom: 3px solid #eee;
+	border-bottom: 3px solid #ddd;
     padding-bottom: 30px;
 }
 
 .newsSpacer {
-	background-color: #ffffff;
 	height: 18px;
 }
 

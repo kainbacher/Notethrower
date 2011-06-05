@@ -558,18 +558,9 @@ function showSelectFriendsPopup() {
         <? include ("pageHeader.php"); ?>
         <? include ("mainMenu.php"); ?>
 
-    <div id="pageMainContent">
+    <div class="container">
 
-
-        <div class="horizontalMenu">
-            <ul>
-                <li><a href="index.php">Startpage</a></li>
-                <li><a href="trackList.php">Track List</a></li>
-            </ul>
-        </div>
-
-            <div id="trackFormDivStart"></div>
-            <div id="trackFormDiv"><div id="container">
+            <div class="span-18 last box-grey">
 
         <br/>
         <h1>Track information:</h1><br>
@@ -769,15 +760,14 @@ if ($message) {
         <br/>
         <br/>
 
-      </div></div>
-      <div id="trackFormDivEnd"></div>
+      </div>
 
 
-    </div> <!-- pageMainContent -->
+    </div>
 
     <? include ("footer.php"); ?>
 
-    </div> <!-- bodyWrapper -->
+    </div>
 
     <?php writeGoogleAnalyticsStuff(); ?>
   </body>

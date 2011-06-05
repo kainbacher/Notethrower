@@ -35,7 +35,7 @@ if (!$userIsLoggedIn) { // this can either mean that the user is not logged in o
 
 /* show_header_logo(); */
 
-echo '<div id="logo">ONELOUDR <span class="black">BETA</span></div>';
+echo '<div id="logo">ONELOUDR <span class="blue">BETA</span></div>';
 
 if (!$userIsLoggedIn) {
     echo '<div id="signUpTeaser"><a href="createUser.php">...</a></div>' . "\n";
@@ -77,10 +77,10 @@ if ($userIsLoggedIn) {
 
 
 	echo '<div class="topMenuItem">' . "\n";
-	echo '<a href="createUser.php">Profile</a>' . "\n";
+	echo '<a href="createUser.php">Settings</a>' . "\n";
 	echo '<div class="topMenuSub">' . "\n";
 	echo '<div class="topMenuSubItem">' . "\n";
-	echo '<a href="createUser.php">Edit Profile</a>' . "\n";
+	echo '<a href="createUser.php">Profile</a>' . "\n";
 	echo '</div>' . "\n";
 	echo '</div>' . "\n";
 	echo '</div>' . "\n";

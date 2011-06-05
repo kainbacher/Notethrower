@@ -1,3 +1,0 @@
-<Limit GET HEAD POST>
-deny from all
-</Limit>

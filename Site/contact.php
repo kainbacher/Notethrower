@@ -18,12 +18,6 @@ writePageDoctype();
 
 		<div id="pageMainContent">
 
-        <div class="horizontalMenu">
-            <ul>
-                <li><a href="index.php">Startpage</a></li>
-            </ul>
-        </div>  
-
 		<div id="mainColumnLeft">
 
 

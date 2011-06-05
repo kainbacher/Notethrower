@@ -176,13 +176,7 @@ function showSendMessagePopup(raid, replyToMsgId) {
             <? include ("pageHeader.php"); ?>
             <? include ("mainMenu.php"); ?>
 
-    <div id="pageMainContent">
-
-        <div class="horizontalMenu">
-            <ul>
-                <li><a href="index.php">Startpage</a></li>
-            </ul>
-        </div>
+    <div class="container">
 
 
         <div id="mainColumnLeft">

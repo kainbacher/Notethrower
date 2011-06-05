@@ -66,12 +66,6 @@ function showSendMessagePopup(raid) {
 
             <div id="pageMainContent">
 
-                <div class="horizontalMenu">
-                    <ul>
-                        <li><a href="index.php">Startpage</a></li>
-                    </ul>
-                </div>
-
                 <div id="userInfoContainer">
 
                     <div id="userInfoDiv">

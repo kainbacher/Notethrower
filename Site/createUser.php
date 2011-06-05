@@ -348,51 +348,31 @@ writePageDoctype();
             <? include ("pageHeader.php"); ?>
             <? include ("mainMenu.php"); ?>
 
-    	<div id="pageMainContent">
+    	<div class="container">
 
 
-
-            <div class="horizontalMenu">
-                <ul>
-                    <li><a href="index.php">Startpage</a></li>
-                </ul>
-            </div>
-
-      		<div id="userFormDivStart"></div>
-      		<div id="userFormDiv"><div id="container">
+      		<div class="span-16 last box-grey">
+      		    <div id="container">
 
 <?php
 
 $pageMode = getPageMode($userIsLoggedIn, $user);
 
 if ($userIsLoggedIn) {
-    echo '<br><h1>Update user account:</h1>';
+    echo '<h1>Update user account:</h1>';
 
 } else {
     if ($pageMode == 'artist') {
-        echo '<br><h1>Share Your Frequency! Music Collaboration and Licensing...made easy.</h1><br>' .
-             'We are a team of music lovers that believe that musicians deserve to get paid for their work. We created Notethrower to help them find other artists to share in the music making and music selling process.  When artists from different backgrounds collaborate together, the potential for great creative works increases significantly. Plus, it is just fun to hear how another artist transforms or works your guitar riff or vocal track into a completely new song!<br>' .
-             '<br>' .
-             'There are many remix contests and sites on the web, but they all seem to ask the artist to be happy with giving away their music for free.<br>' .
-             'Notethrower recognizes the hard work and talent of it\'s community and wants to reward musicians by providing an innovative platform to collaborate and share in the ownership of new work, and of course, get paid.<br>' .
-             '<br>' .
-             'Think of us as a Co-Writers community.  We provide the legal framework regarding the copyrights and ownership of work so artists can spend their time creating music instead of dealing with the complicated paperwork of music licensing, especially with another artist.  With Notethrower, artists agree to work together and co-write new pieces of music that are then made available to the global marketplace of music licensing.<br>' .
-             'Artists upload their music and easily create their own Notethrower music collaboration and licensing widget that can be embedded everywhere like Facebook, Myspace and countless other sites.  Just click the grab this button and follow the easy instructions.  Once an artists widget is visible online, anyone who sees it can listen to, purchase, and download a music track for commercial licensing.  The artist or bands who created the music get paid, and Notethrower only keeps 10% of the profit. That\'s 90% directly to the artists!<br>' .
-             '<br>' .
-             'Just fill in the details below.  You can update your information at any time.<br>' .
-             '<br>' .
-             'A verification email will be sent to you to log in. Once you have successfully done so, you can start your musical journey by uploading your first mp3 and artist info. Now let\'s make some music together!<br>';
-        echo '<br>';
         echo '<h1>Create new artist account:</h1>';
 
     } else {
-        echo '<br><h1>Create new fan account:</h1>';
+        echo '<h1>Create new fan account:</h1>';
     }
 }
 
 
 ?>
-        <br><br>
+        
 
         <div id="userFormPlusImage">
 
@@ -472,7 +452,7 @@ if (!$userIsLoggedIn) {
               <tr>
                 <td colspan="3" align="left">
 
-                <input class="<?php echo $userIsLoggedIn ? 'updateAccountButton' : 'createAccountButton'; ?> buttonbig" type="submit" value="<?php echo $userIsLoggedIn ? 'update Account' : 'create Account'; ?>">
+                <input class="<?php echo $userIsLoggedIn ? 'updateAccountButton' : 'createAccountButton'; ?> button blue" type="submit" value="<?php echo $userIsLoggedIn ? 'update Account' : 'create Account'; ?>">
 
                 </td>
               </tr>
@@ -500,8 +480,8 @@ if ($message) {
         <br>
 
 
-      </div></div>
-      <div id="userFormDivEnd"></div>
+        </div>
+      </div>
 
 
     </div>
@@ -589,7 +569,7 @@ function showFormField($label, $inputType, $propName, $suffix, $helpTextHtml, $m
 //        echo '&nbsp;' . $errorFields[$propName];
 //    } else {
         if ($helpTextHtml) {
-            echo '<span style="font-size:11px">' . $helpTextHtml . '</span>';
+            echo '<span>' . $helpTextHtml . '</span>';
         } else {
             echo '&nbsp;';
         }

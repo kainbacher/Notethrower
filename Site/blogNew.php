@@ -206,9 +206,9 @@ $(document).ready(function(){
 
                 <div class="span-16">
     
-            		<div id="newsDiv">
-            			<div id="container"></div>
-            		</div>
+            		
+            		<div id="container"></div>
+            		
     
     				<div id="newsPagination"> </div>
           			<script type="text/javascript">

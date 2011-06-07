@@ -41,6 +41,11 @@ if ($trackSelectionMessage) {
 
 list($nonce, $timestamp) = getNonceAndTimestamp($user);
 
+$leftTrackId  = null;
+$rightTrackId = null;
+if ($leftTrack)  $leftTrackId  = $leftTrack->id;
+if ($rightTrack) $rightTrackId = $rightTrack->id;
+
 processAndPrintTpl('Startpage/index.html', array(
     '${Common/pageHeader}'                    => buildPageHeader('Start', true, false),
     '${Common/bodyHeader}'                    => buildBodyHeader(),
@@ -51,9 +56,9 @@ processAndPrintTpl('Startpage/index.html', array(
     '${Common/message_choice_list}'           => $messages,
     '${Startpage/player_left}'                => buildLeftPlayer($leftTrack),
     '${Startpage/player_right}'               => buildRightPlayer($rightTrack),
-    '${voteForLeftSongUrl}'                   => $_SERVER['PHP_SELF'] . '?vt=' . $leftTrack->id  . '&lt=' . $leftTrack->id . '&rt=' . $rightTrack->id . '&n=' . escape($nonce) . '&t=' . $timestamp,
+    '${voteForLeftSongUrl}'                   => $_SERVER['PHP_SELF'] . '?vt=' . $leftTrackId  . '&lt=' . $leftTrackId . '&rt=' . $rightTrackId . '&n=' . escape($nonce) . '&t=' . $timestamp,
     '${bothSongsAreAwfulUrl}'                 => $_SERVER['PHP_SELF'],
-    '${voteForRightSongUrl}'                  => $_SERVER['PHP_SELF'] . '?vt=' . $rightTrack->id . '&lt=' . $leftTrack->id . '&rt=' . $rightTrack->id . '&n=' . escape($nonce) . '&t=' . $timestamp,
+    '${voteForRightSongUrl}'                  => $_SERVER['PHP_SELF'] . '?vt=' . $rightTrackId . '&lt=' . $leftTrackId . '&rt=' . $rightTrackId . '&n=' . escape($nonce) . '&t=' . $timestamp,
     '${Common/bodyFooter}'                    => buildBodyFooter(),
     '${Common/pageFooter}'                    => buildPageFooter()
 ));
@@ -202,20 +207,20 @@ function handleVoting(&$user, &$messages) {
 function buildLeftPlayer(&$leftTrack) {
     return processTpl('Startpage/player.html', array(
         '${playerId}'   => 1,
-        '${trackId}'    => $leftTrack->id,
-        '${trackTitle}' => $leftTrack->title,
-        '${mp3Url}'     => $leftTrack->getPreviewMp3Url(),
-        '${compPoints}' => $leftTrack->competition_points
+        '${trackId}'    => $leftTrack ? $leftTrack->id : null,
+        '${trackTitle}' => $leftTrack ? $leftTrack->title : 'n/a',
+        '${mp3Url}'     => $leftTrack ? $leftTrack->getPreviewMp3Url() : '',
+        '${compPoints}' => $leftTrack ? $leftTrack->competition_points : null
     ));
 }
 
 function buildRightPlayer(&$rightTrack) {
     return processTpl('Startpage/player.html', array(
         '${playerId}'   => 2,
-        '${trackId}'    => $rightTrack->id,
-        '${trackTitle}' => $rightTrack->title,
-        '${mp3Url}'     => $rightTrack->getPreviewMp3Url(),
-        '${compPoints}' => $rightTrack->competition_points
+        '${trackId}'    => $rightTrack ? $rightTrack->id : null,
+        '${trackTitle}' => $rightTrack ? $rightTrack->title : 'n/a',
+        '${mp3Url}'     => $rightTrack ? $rightTrack->getPreviewMp3Url() : '',
+        '${compPoints}' => $rightTrack ? $rightTrack->competition_points : null
     ));
 }
 
@@ -252,7 +257,10 @@ function getLeftAndRightTrack(&$leftTrack, &$rightTrack, &$genre) {
     }
 
     if (!$leftTrack || !$rightTrack) {
-        show_fatal_error_and_exit('unable to find two different tracks in the same genre, giving up.');
+        $logger->warn('unable to find two different tracks in the same genre, giving up.');
+        $trackSelectionMessage = 'No tracks found.';
+        $leftTrack  = null;
+        $rightTrack = null;
     }
 
     return $trackSelectionMessage;

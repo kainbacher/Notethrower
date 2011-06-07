@@ -316,6 +316,7 @@ if (!$userIsLoggedIn) {
             'unpersistedObj'         => $unpersistedUser,
             'errorFields'            => $errorFields,
             'workWithUnpersistedObj' => $problemOccured,
+            'objValueOverride'       => get_param('terms_accepted'), // since this field is not stored in the user obj, we need an override
             'infoText'               => 'I\'ve read and agree to <a href="javascript:showTermsAndConditions();">Notethrower\'s Artist Agreement</a>.'
         ));
     }
@@ -505,7 +506,7 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
     }
 
     if ($pageMode == 'artist') {
-        if (!$userIsLoggedIn && get_param('terms_accepted') != 'yes') {
+        if (!$userIsLoggedIn && !get_param('terms_accepted')) {
             $errorFields['terms_accepted'] = 'You need to agree to Notethrower\'s Artist Agreement in order to sign up.';
             $result = false;
         }

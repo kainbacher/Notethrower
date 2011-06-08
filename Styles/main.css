@@ -1,11 +1,9 @@
-/* !colorScheme */
+/* !ONELOUDR.COM */
 /* ---------------------------------------------------------------------- */
 /*
 
-yellow  #ffd321
-orange  #4BA8E0
-
-orange  #4BA8E0
+    Hanno Jonas - www.rastaduck.org
+    Roland Kainbacher MA - www.beautyparlour.at
 
 */
 
@@ -212,6 +210,18 @@ textarea {
     padding: 18px;
     margin-bottom: 18px;
 }
+
+
+/* ! forms */
+/* ---------------------------------------------------------------------- */
+
+.formElement {
+    margin-bottom: 10px;
+}
+
+
+
+
 
 
 /* !bodyWrapper */

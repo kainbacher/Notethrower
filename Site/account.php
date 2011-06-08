@@ -160,30 +160,32 @@ $formElementsSection1 .= getFormFieldForParams(array(
     'infoText'               => 'We will send you a verification link to this address to login. If another user sends you a message, a notification will also be sent here.<br>We will never give out your email or spam you. Aren\'t we nice?'
 ));
 
-if ($pageMode == 'artist') {
-    $formElementsSection1 .= getFormFieldForParams(array(
-        'propName'               => 'webpage_url',
-        'label'                  => 'Webpage URL',
-        'mandatory'              => false,
-        'maxlength'              => 255,
-        'obj'                    => $user,
-        'unpersistedObj'         => $unpersistedUser,
-        'errorFields'            => $errorFields,
-        'workWithUnpersistedObj' => $problemOccured,
-        'infoText'               => 'If you have another place you would like your fans to find you, please enter the link here. For example, your MySpace or Facebook page.'
-    ));
+if ($userIsLoggedIn) { // it's an update
+    if ($pageMode == 'artist') {
+        $formElementsSection1 .= getFormFieldForParams(array(
+            'propName'               => 'webpage_url',
+            'label'                  => 'Webpage URL',
+            'mandatory'              => false,
+            'maxlength'              => 255,
+            'obj'                    => $user,
+            'unpersistedObj'         => $unpersistedUser,
+            'errorFields'            => $errorFields,
+            'workWithUnpersistedObj' => $problemOccured,
+            'infoText'               => 'If you have another place you would like your fans to find you, please enter the link here. For example, your MySpace or Facebook page.'
+        ));
 
-    $formElementsSection1 .= getFormFieldForParams(array(
-        'propName'               => 'paypal_account',
-        'label'                  => 'Paypal account',
-        'mandatory'              => false,
-        'maxlength'              => 255,
-        'obj'                    => $user,
-        'unpersistedObj'         => $unpersistedUser,
-        'errorFields'            => $errorFields,
-        'workWithUnpersistedObj' => $problemOccured,
-        'infoText'               => 'This is where your earnings will be sent. <a href="http://www.paypal.com" target="_blank">Get a PayPal account!</a><br>You can always add this later, but we need it in order to pay you.  We\'ve made it extremely easy for you to get paid for licensing your work. If someone has remixed your work and made it available in their widget, You get paid 50% of the earnings from the sale of that work. Now imagine if there are hundreds of remixed versions of your track all available for licensing. Many more opportunities to get paid for your initial work.'
-    ));
+        $formElementsSection1 .= getFormFieldForParams(array(
+            'propName'               => 'paypal_account',
+            'label'                  => 'Paypal account',
+            'mandatory'              => false,
+            'maxlength'              => 255,
+            'obj'                    => $user,
+            'unpersistedObj'         => $unpersistedUser,
+            'errorFields'            => $errorFields,
+            'workWithUnpersistedObj' => $problemOccured,
+            'infoText'               => 'This is where your earnings will be sent. <a href="http://www.paypal.com" target="_blank">Get a PayPal account!</a><br>You can always add this later, but we need it in order to pay you.  We\'ve made it extremely easy for you to get paid for licensing your work. If someone has remixed your work and made it available in their widget, You get paid 50% of the earnings from the sale of that work. Now imagine if there are hundreds of remixed versions of your track all available for licensing. Many more opportunities to get paid for your initial work.'
+        ));
+    }
 }
 
 $userImage = '';
@@ -279,30 +281,32 @@ if ($userIsLoggedIn) { // it's an update
     ));
 }
 
-if ($pageMode == 'artist') {
-    $formElementsSection2 .= getFormFieldForParams(array(
-        'inputType'              => 'textarea',
-        'propName'               => 'artist_info',
-        'label'                  => 'Artist/Band information',
-        'mandatory'              => false,
-        'obj'                    => $user,
-        'unpersistedObj'         => $unpersistedUser,
-        'errorFields'            => $errorFields,
-        'workWithUnpersistedObj' => $problemOccured,
-        'infoText'               => 'Tell us a bit about yourself or your band. What other bands or music influenced you? Where are you from?'
-    ));
+if ($userIsLoggedIn) { // it's an update
+    if ($pageMode == 'artist') {
+        $formElementsSection2 .= getFormFieldForParams(array(
+            'inputType'              => 'textarea',
+            'propName'               => 'artist_info',
+            'label'                  => 'Artist/Band information',
+            'mandatory'              => false,
+            'obj'                    => $user,
+            'unpersistedObj'         => $unpersistedUser,
+            'errorFields'            => $errorFields,
+            'workWithUnpersistedObj' => $problemOccured,
+            'infoText'               => 'Tell us a bit about yourself or your band. What other bands or music influenced you? Where are you from?'
+        ));
 
-    $formElementsSection2 .= getFormFieldForParams(array(
-        'inputType'              => 'textarea',
-        'propName'               => 'additional_info',
-        'label'                  => 'Additional information',
-        'mandatory'              => false,
-        'obj'                    => $user,
-        'unpersistedObj'         => $unpersistedUser,
-        'errorFields'            => $errorFields,
-        'workWithUnpersistedObj' => $problemOccured,
-        'infoText'               => 'Anything else we should know?'
-    ));
+        $formElementsSection2 .= getFormFieldForParams(array(
+            'inputType'              => 'textarea',
+            'propName'               => 'additional_info',
+            'label'                  => 'Additional information',
+            'mandatory'              => false,
+            'obj'                    => $user,
+            'unpersistedObj'         => $unpersistedUser,
+            'errorFields'            => $errorFields,
+            'workWithUnpersistedObj' => $problemOccured,
+            'infoText'               => 'Anything else we should know?'
+        ));
+    }
 }
 
 if (!$userIsLoggedIn) {

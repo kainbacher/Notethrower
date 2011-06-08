@@ -1,2 +1,5 @@
-
 AddHandler php5-script .php
+
+<FilesMatch "\.(README|txt|git|gitignore)$">
+deny from all
+</FilesMatch>

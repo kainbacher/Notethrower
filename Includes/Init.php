@@ -9,7 +9,7 @@ ini_set('date.timezone', 'UTC');
 include_once('../Includes/Logger.php');
 
 $logger = new Logger(basename($_SERVER['PHP_SELF'], '.php'));
-$logger->set_debug_level();
+$logger->set_info_level();
 
 // FIXME - remove that because it logs passwords
 if (count($_GET)  > 0) $logger->info('GET params : ' . print_r($_GET, true));

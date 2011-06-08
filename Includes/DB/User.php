@@ -33,6 +33,7 @@ class User {
         global $logger;
 
         if (isset($_COOKIE[$GLOBALS['COOKIE_NAME_AUTHENTICATION']])) {
+            $logger->info('auth cookie found');
             $val = $_COOKIE[$GLOBALS['COOKIE_NAME_AUTHENTICATION']];
             //$separator_pos    = strpos($val, '#');
             //$password_md5     = substr($val, 0, $separator_pos);
@@ -317,19 +318,19 @@ class User {
     function refreshLastActivityTimestamp() {
         global $logger;
         $logger->info('refreshing activity timestamp by setting cookie with value: ' . $this->password_md5 . '#' . $this->id . '#' . time());
-        setcookie($GLOBALS['COOKIE_NAME_AUTHENTICATION'], $this->passwordMd5 . '#' . $this->id . '#' . time(), 0, '/'); // TODO - make this more secure - a brute force attack could be used to break md5 encryption of short passwords
+        setcookie($GLOBALS['COOKIE_NAME_AUTHENTICATION'], $this->password_md5 . '#' . $this->id . '#' . time(), 0, $GLOBALS['WEBAPP_BASE']); // TODO - make this more secure - a brute force attack could be used to break md5 encryption of short passwords
     }
 
     function doLogin() {
         global $logger;
-        $logger->info('setting cookie with value: ' . $this->password_md5 . '#' . $this->id . '#' . time());
-        setcookie($GLOBALS['COOKIE_NAME_AUTHENTICATION'], $this->password_md5 . '#' . $this->id . '#' . time(), 0, '/' . $GLOBALS['WEBAPP_BASE']);
+        $logger->info('setting "' . $GLOBALS['COOKIE_NAME_AUTHENTICATION'] . '" cookie with value: ' . $this->password_md5 . '#' . $this->id . '#' . time());
+        setcookie($GLOBALS['COOKIE_NAME_AUTHENTICATION'], $this->password_md5 . '#' . $this->id . '#' . time(), 0, $GLOBALS['WEBAPP_BASE']);
     }
 
     function doLogout() {
         global $logger;
         $logger->info('setting cookie with no value and time: ' . (time() - 3600));
-        setcookie($GLOBALS['COOKIE_NAME_AUTHENTICATION'], '', time() - 3600, '/' . $GLOBALS['WEBAPP_BASE']);
+        setcookie($GLOBALS['COOKIE_NAME_AUTHENTICATION'], '', time() - 3600, $GLOBALS['WEBAPP_BASE']);
     }
 
     function save() {

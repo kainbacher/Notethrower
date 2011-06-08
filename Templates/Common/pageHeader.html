@@ -2,11 +2,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:fb="http://www.facebook.com/2008/fbml">
   <head>
-    <title>OneLoudr.com - ${pageTitleSuffix}</title>
-    <link rel="stylesheet" href="../Styles/buttons.css" type="text/css">
-    <link rel="stylesheet" href="../Styles/main.css" type="text/css"> <!-- FIXME - this is the old stylesheet, maybe create a new one -->
+  
+    <title>${pageTitleSuffix} - ONELOUDR.COM</title>
+    
+    <link rel="stylesheet" href="../Styles/bp-print.css" type="text/css" media="print" /> 
+    <link rel="stylesheet" href="../Styles/bp-screen.css" type="text/css" media="screen, projection" /> 
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="../Styles/bp-ie.css" type="text/css" media="screen, projection" />
+    <![endif]--> 
+
+    <link rel="stylesheet" href="../Styles/buttons.css" type="text/css" /> 
+    <link rel="stylesheet" href="../Styles/main.css" type="text/css" />
+    
     ${Common/jPlayerStylesheet}
     <script type="text/javascript" src="../Javascripts/jquery-1.4.min.js"></script>
     ${Common/jQueryMainScript}
     ${Common/jPlayerScript}
+  
   <head>

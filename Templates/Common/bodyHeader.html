@@ -1,2 +1,65 @@
-<h1>OneLoudr.com</h1>
-<br />
+
+<div id="pageHeaderWrapper"> 
+    <div id="pageHeader"> 
+ 
+        <div id="logo">
+            ONELOUDR <span class="blue">BETA</span>
+        </div>
+        
+        <div id="signUpTeaser">
+            <a href="createUser.php">...</a>
+        </div> 
+    
+        <div id="loginWrapper"> 
+            <div id="loginStatusDiv"> 
+ 
+ 
+                <div class="topMenuItem"> 
+                    <a href="createUser.php">Sign up for free</a> 
+                </div>  
+                
+                <div class="topMenuItem"> 
+                    <a href="javascript:showLogin();">Log in</a> 
+                    <div class="topMenuSub topMenuSubLogin"> 
+                        <form name="loginForm" action="index.php" method="POST"> 
+                            <input type="hidden" name="action" value="login"> 
+                            <input id="loginUsername" type="text" name="username" value=""> 
+                            <span class="loginFormLabel">Username</span><br/> 
+                            <input id="loginPassword" type="password" name="password" value=""> 
+                            <span class="loginFormLabel">Password</span><br/> 
+                            <input class="button blue small" type="submit" value="login"> 
+                        </form> 
+                    </div> 
+                </div> 
+                <div class="topMenuItemSearch"> 
+                    <div class="topSearch"> 
+                        <form action="search.php" method="get"> 
+                            <input name="s" id="topSearchInput" onclick="ClearInput(this.id);" type="text" value="Search" class="field" maxlength="50" /> 
+                            <input type="submit" value="" id="topSearchSubmit" /> 
+                        </form> 
+                    </div> 
+                </div> 
+            </div> 
+        </div> <!-- loginWrapper --> 
+    </div> <!-- pageHeader --> 
+</div><!-- pageHeaderWrapper -->
+
+
+
+
+<div id="mainMenuWrapper"> 
+    <div id="mainMenu"> 
+    	<ul> 
+    		<li><a href="indexNew.php">Artists</a></li> 
+    		<li><a href="blogNew.php">Blog</a></li> 
+    		<li><a href="featuresNew.php">Features</a></li> 
+    		<li><a href="indexNew.php">Pricing</a></li> 
+    		<li><a href="indexNew.php">Store</a></li> 
+    		<li><a href="indexNew.php">Log In</a></li> 
+    		<!-- 
+    		<li><a href="index.php">Genre</a></li>
+    		<li><a href="/">Community</a></li> 
+    		--> 
+    	</ul> 
+    </div> 
+</div> <!-- mainMenuWrapper -->

@@ -18,7 +18,6 @@ orange  #4BA8E0
 }
 
 body {
-    background-color: #f2f2f2;
 	font-family: Arial, Sans-Serif;
 	font-size: 16px;
     color: #444444;
@@ -35,10 +34,11 @@ p {
 }
 
 h1 {
-    color: #444444;
-    font-size: 24px;
+    color: #7DB72F;
+    font-size: 21px;
     font-weight: bold;
     line-height: 32px;
+    text-transform: uppercase;
 }
 
 h2 {
@@ -55,6 +55,14 @@ h3 {
     font-weight: bold;
     line-height: 18px;
     text-transform: uppercase;
+}
+
+h4 {
+    color: #444444;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 24px;
+    margin-bottom: 0px;
 }
 
 /*
@@ -731,10 +739,13 @@ a.nohighlight:hover {
 	padding-left: 0px;
 	padding-right: 20px;
 	padding-top: 10px;
+	text-decoration: none;
+	text-shadow: white 0px 1px 1px;
 }
 
 #mainMenu a:hover {
 	color: #4BA8E0;
+	text-shadow: white 0px 1px 1px;
 }
 
 /* !contentTop */

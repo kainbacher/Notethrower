@@ -3,8 +3,9 @@
     	<ul>
     		<li><a href="indexNew.php">Artists</a></li>
     		<li><a href="blogNew.php">Blog</a></li>
-    		<li><a href="indexNew.php">Features</a></li>
+    		<li><a href="featuresNew.php">Features</a></li>
     		<li><a href="indexNew.php">Pricing</a></li>
+    		<li><a href="indexNew.php">Store</a></li>
     		<li><a href="indexNew.php">Log In</a></li>
     		<!-- 
     		<li><a href="index.php">Genre</a></li>

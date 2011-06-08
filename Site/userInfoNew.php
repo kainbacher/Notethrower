@@ -183,7 +183,7 @@ for ($i = 0; $i < $rows; $i++) {
 }
 
 processAndPrintTpl('UserInfo/index.html', array(
-    '${Common/pageHeader}'                              => buildPageHeader('User Info', false, true, $showMobileVersion),
+    '${Common/pageHeader}'                              => buildPageHeader('User Info', false, $showMobileVersion),
     '${Common/bodyHeader}'                              => buildBodyHeader($showMobileVersion),
     '${userId}'                                         => $user->id,
     '${userName}'                                       => escape($user->name),

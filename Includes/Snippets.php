@@ -42,7 +42,7 @@ function setGenreCookie($genre) {
     setcookie($GLOBALS['COOKIE_NAME_GENRE'], $genre, time() + 60 * 60 * 24 * 365 * 100, '/' . $GLOBALS['WEBAPP_BASE']);
 }
 
-function buildPageHeader($titleSuffix, $includeJPlayerStuff = false, $includeJQueryMainScript = false, $useMobileVersion = false) {
+function buildPageHeader($titleSuffix, $includeJPlayerStuff = false, $useMobileVersion = false) {
     $jplayerStylesheet = '';
     $jplayerScript     = '';
     if ($includeJPlayerStuff) {
@@ -50,16 +50,10 @@ function buildPageHeader($titleSuffix, $includeJPlayerStuff = false, $includeJQu
         $jplayerScript     = processTpl('Common/jPlayerScript.html', array(), $useMobileVersion);
     }
 
-    $jQueryMainScript = '';
-    if ($includeJQueryMainScript) {
-        $jQueryMainScript = processTpl('Common/jQueryMainScript.html', array(), $useMobileVersion);
-    }
-
     return processTpl('Common/pageHeader.html', array(
         '${pageTitleSuffix}'   => escape($titleSuffix),
         '${Common/jPlayerStylesheet}' => $jplayerStylesheet,
-        '${Common/jPlayerScript}'     => $jplayerScript,
-        '${Common/jQueryMainScript}'  => $jQueryMainScript
+        '${Common/jPlayerScript}'     => $jplayerScript
     ), $useMobileVersion);
 }
 

@@ -47,7 +47,7 @@ if ($leftTrack)  $leftTrackId  = $leftTrack->id;
 if ($rightTrack) $rightTrackId = $rightTrack->id;
 
 processAndPrintTpl('Startpage/index.html', array(
-    '${Common/pageHeader}'                    => buildPageHeader('Start', true, false),
+    '${Common/pageHeader}'                    => buildPageHeader('Start', true),
     '${Common/bodyHeader}'                    => buildBodyHeader(),
     '${Startpage/login_optional}'             => $loginBlock,
     '${Startpage/loggedInUserInfo_optional}'  => $loggedInUserInfoBlock,

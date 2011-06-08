@@ -71,7 +71,7 @@ foreach ($latestTracks as $track) {
 if (!$topTracksList) $topTracksList = 'No tracks found.';
 
 processAndPrintTpl('Index/index.html', array(
-    '${Common/pageHeader}'                     => buildPageHeader('Start', true, true),
+    '${Common/pageHeader}'                     => buildPageHeader('Start', true),
     '${Common/bodyHeader}'                     => buildBodyHeader(),
     '${Index/trackListItem_latestTracks_list}' => $latestTracksList,
     '${Index/trackListItem_topTracks_list}'    => $topTracksList,

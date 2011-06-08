@@ -340,7 +340,7 @@ if (!$userIsLoggedIn) {
 }
 
 processAndPrintTpl('Account/index.html', array(
-    '${Common/pageHeader}'                    => buildPageHeader('Account', true, false),
+    '${Common/pageHeader}'                    => buildPageHeader('Account'),
     '${Common/bodyHeader}'                    => buildBodyHeader(),
     '${headline}'                             => $headline,
     '${Common/message_choice_list}'           => $messageList,

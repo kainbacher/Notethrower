@@ -2,46 +2,56 @@ ${Common/pageHeader}
 
 <body>
 
-  ${Common/bodyHeader}
+    ${Common/bodyHeader}
 
-  <h1>${userName}</h1>
+    <div class="container">
+       
+        <div  class="span-16">
+            
+            <div class="span-6 box-grey">
+                <h2>My songs</h2>
+                <div class="">
+                    ${UserInfo/trackListElement_list_mySongs}
+                </div>
+            </div>
+            
+            <div class="span-6 box-grey">
+                <h2>My remixes</h2>
+                <div class="">
+                    ${UserInfo/trackListElement_list_myRemixes}
+                </div>
+            </div>
+            
+            <div class="span-6 last box-grey">
+                <h2>Remixed from other artists</h2>
+                <div class="">
+                    ${UserInfo/trackListElement_list_remixedByOthers}
+                </div>
+            </div>
+            
+            <div id="sendMessageOverlay">
+                <div id="sendMessageWrapper"></div>
+            </div>
+        
+        </div>
 
-  <img src="${userImgUrl}" width="200" /><br />
-  <br />
+        <div  class="span-8 last">
+            <div  class="box-grey">
 
-  ${Common/externalWebLink_optional}
-  ${UserInfo/sendMessage_optional}
-  ${UserInfo/artistInfo_optional}
-  ${UserInfo/additionalInfo_optional}
+                <img src="${userImgUrl}" width="200" />
+                
+                <h1>${userName}</h1>
+                ${Common/externalWebLink_optional}
+                ${UserInfo/sendMessage_optional}
+                ${UserInfo/artistInfo_optional}
+                ${UserInfo/additionalInfo_optional}
+            
+            </div>
+        </div>
 
-  <div class="trackInfoColumn">
-    <div class="trackInfoTitle">My songs</div>
-    <div class="trackInfoContent">
-      ${UserInfo/trackListElement_list_mySongs}
     </div>
-  </div>
-
-  <div class="trackInfoColumn">
-    <div class="trackInfoTitle">My remixes</div>
-  	<div class="trackInfoContent">
-  	  ${UserInfo/trackListElement_list_myRemixes}
-    </div>
-  </div>
-
-  <div class="trackInfoColumn last">
-    <div class="trackInfoTitle">Remixed from other artists</div>
-    <div class="trackInfoContent">
-      ${UserInfo/trackListElement_list_remixedByOthers}
-    </div>
-  </div>
-
-  <div style="clear:both" />
-
-  <div id="sendMessageOverlay">
-    <div id="sendMessageWrapper"></div>
-  </div>
-
-  ${Common/bodyFooter}
+    
+    ${Common/bodyFooter}
 
 </body>
 

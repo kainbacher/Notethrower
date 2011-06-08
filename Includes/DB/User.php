@@ -18,7 +18,7 @@ class User {
     var $paypal_account;
     var $activity_points;
     var $is_artist; // if true, the user is both a fan and an artist, if false the user is only a fan
-    var $is_pro_user;
+    var $is_pro; // a pro user pays for some extra services and has more features available than a regular user
     var $status; // active, inactive (account created but not confirmed), banned
     var $entry_date;
 

@@ -39,6 +39,7 @@ function getFormFieldForParams($params) {
     $cols                     = array_key_exists('cols', $params)                     ? $params['cols']                     : 30;
     $disabled                 = array_key_exists('disabled', $params)                 ? $params['disabled']                 : false;
     $recaptchaPublicKey       = array_key_exists('recaptchaPublicKey', $params)       ? $params['recaptchaPublicKey']       : '';
+    $objValueOverride         = array_key_exists('objValueOverride', $params)         ? $params['objValueOverride']         : null;
 
     // label
     $label = processTpl('Common/formElementLabel_' . ($mandatory ? 'mandatory' : 'optional') . '.html', array(
@@ -126,6 +127,7 @@ function getFormFieldForParams($params) {
         eval('if ($obj) $value = $obj->' . $propName . ';');
         eval('if ($unpersistedObj) $unpersistedValue = $unpersistedObj->' . $propName . ';');
         $objValue = $workWithUnpersistedObj ? $unpersistedValue : $value;
+        if ($objValueOverride) $objValue = $objValueOverride;
 
         $inputField = processTpl('Common/formElementInputField_checkbox.html', array(
             '${id}'                        => $propName,

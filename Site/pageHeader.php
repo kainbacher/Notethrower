@@ -38,7 +38,7 @@ if (!$userIsLoggedIn) { // this can either mean that the user is not logged in o
 echo '<div id="logo">ONELOUDR <span class="blue">BETA</span></div>';
 
 if (!$userIsLoggedIn) {
-    echo '<div id="signUpTeaser"><a href="createUser.php">...</a></div>' . "\n";
+    echo '<div id="signUpTeaser"><a href="account.php">...</a></div>' . "\n";
 }
 
 ?>
@@ -77,10 +77,10 @@ if ($userIsLoggedIn) {
 
 
 	echo '<div class="topMenuItem">' . "\n";
-	echo '<a href="createUser.php">Settings</a>' . "\n";
+	echo '<a href="account.php">Settings</a>' . "\n";
 	echo '<div class="topMenuSub">' . "\n";
 	echo '<div class="topMenuSubItem">' . "\n";
-	echo '<a href="createUser.php">Profile</a>' . "\n";
+	echo '<a href="account.php">Profile</a>' . "\n";
 	echo '</div>' . "\n";
 	echo '</div>' . "\n";
 	echo '</div>' . "\n";
@@ -104,7 +104,7 @@ echo '</div>' . "\n";
 
 
     echo '<div class="topMenuItem">' . "\n";
-    echo '<a href="createUser.php">Sign up for free</a>' . "\n";
+    echo '<a href="account.php">Sign up for free</a>' . "\n";
     echo '</div>' . "\n";
     echo '<div class="topMenuItem">' . "\n";
     echo '<a href="javascript:showLogin();">Log in</a>' . "\n";

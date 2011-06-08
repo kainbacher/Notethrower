@@ -68,7 +68,7 @@ class Nonce {
             '(' .
             'nonce_str           varchar(255) not null, ' .
             'creation_date       datetime     not null, ' .
-            'primary key (nonce_str) ' .
+            'primary key (nonce_str), ' .
             'key date (creation_date)' .
             ') default charset=utf8'
         );

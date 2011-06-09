@@ -1,93 +1,48 @@
 
-<div id="pageHeaderWrapper"> 
-    <div id="pageHeader"> 
- 
+<div id="pageHeaderWrapper">
+    <div id="pageHeader">
+
         <div id="logo">
             ONELOUDR <span class="blue">BETA</span>
         </div>
-        
+
         <div id="signUpTeaser">
             <a href="account.php">...</a>
-        </div> 
-    
-        <div id="loginWrapper"> 
-            <div id="loginStatusDiv"> 
- 
- 
-                <div class="topMenuItem"> 
-                    <a href="account.php">Sign up for free</a> 
+        </div>
+
+        <div id="loginWrapper">
+            <div id="loginStatusDiv">
+
+                ${Common/signUpAndLoginMenuItems_optional}${Common/loggedInUserMenuItems_optional}
+
+                <div class="topMenuItemSearch">
+                    <div class="topSearch">
+                        <form action="search.php" method="get">
+                            <input name="s" id="topSearchInput" onclick="ClearInput(this.id);" type="text" value="Search" class="field" maxlength="50" />
+                            <input type="submit" value="" id="topSearchSubmit" />
+                        </form>
+                    </div>
                 </div>
-
-                <div class="topMenuItem">
-                    <a href="trackList.php">Me</a>
-                	<div class="topMenuSub">
-
-                	    <div class="topMenuSubItem">
-                	        <a href="userInfo.php?aid=xx">Artistpage</a>
-                	    </div>
-
-                	    <div class="topMenuSubItem">
-                	        <a href="trackList.php">My tracks</a>
-                	    </div>
-
-                	    <div class="topMenuSubItem">
-                	        <a href="collaboration.php">Collaboration</a>
-                	    </div>
-
-                	</div>
-                </div>
-
-
-                <div class="topMenuItem">
-                    <a href="account.php">Settings</a>
-                	<div class="topMenuSub">
-                	    <div class="topMenuSubItem">
-                	        <a href="account.php">Profile</a>
-                	    </div>
-                	</div>
-                </div>
-
-                <div class="topMenuItem"> 
-                    <a href="javascript:showLogin();">Log in</a> 
-                    <div class="topMenuSub topMenuSubLogin"> 
-                        <form name="loginForm" action="index.php" method="POST"> 
-                            <input type="hidden" name="action" value="login"> 
-                            <input id="loginUsername" type="text" name="username" value=""> 
-                            <span class="loginFormLabel">Username</span><br/> 
-                            <input id="loginPassword" type="password" name="password" value=""> 
-                            <span class="loginFormLabel">Password</span><br/> 
-                            <input class="button blue small" type="submit" value="login"> 
-                        </form> 
-                    </div> 
-                </div> 
-                <div class="topMenuItemSearch"> 
-                    <div class="topSearch"> 
-                        <form action="search.php" method="get"> 
-                            <input name="s" id="topSearchInput" onclick="ClearInput(this.id);" type="text" value="Search" class="field" maxlength="50" /> 
-                            <input type="submit" value="" id="topSearchSubmit" /> 
-                        </form> 
-                    </div> 
-                </div> 
-            </div> 
-        </div> <!-- loginWrapper --> 
-    </div> <!-- pageHeader --> 
+            </div>
+        </div> <!-- loginWrapper -->
+    </div> <!-- pageHeader -->
 </div><!-- pageHeaderWrapper -->
 
 
 
 
-<div id="mainMenuWrapper"> 
-    <div id="mainMenu"> 
-    	<ul> 
-    		<li><a href="index.php">Artists</a></li> 
-    		<li><a href="blog.php">Blog</a></li> 
-    		<li><a href="featuresNew.php">Features</a></li> 
-    		<li><a href="pricing.php">Pricing</a></li> 
+<div id="mainMenuWrapper">
+    <div id="mainMenu">
+    	<ul>
+    		<li><a href="index.php">Artists</a></li>
+    		<li><a href="blog.php">Blog</a></li>
+    		<li><a href="featuresNew.php">Features</a></li>
+    		<li><a href="pricing.php">Pricing</a></li>
     		<li><a href="store.php">Store</a></li>
-    		<!-- 
+    		<!--
     		<li><a href="index.php">Genre</a></li>
-    		<li><a href="/">Community</a></li> 
-    		--> 
-    	</ul> 
-    </div> 
+    		<li><a href="/">Community</a></li>
+    		-->
+    	</ul>
+    </div>
 </div> <!-- mainMenuWrapper -->

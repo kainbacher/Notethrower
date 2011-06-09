@@ -23,7 +23,7 @@ if ($user) {
 
 processAndPrintTpl('Index/index.html', array( // ################## hier ordner anpassen!
     '${Common/pageHeader}'                     => buildPageHeader('FIXME', true),
-    '${Common/bodyHeader}'                     => buildBodyHeader(),
+    '${Common/bodyHeader}'                     => buildBodyHeader($user),
     '${Common/bodyFooter}'                     => buildBodyFooter(),
     '${Common/pageFooter}'                     => buildPageFooter()
 ));

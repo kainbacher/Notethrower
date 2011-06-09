@@ -12,15 +12,7 @@ include_once('../Includes/DB/User.php');
 
 $messages = '';
 
-$user = handleAuthentication($messages);
-
-$loggedInUserInfoBlock = '';
-$loginBlock = '';
-if ($user) {
-    $loggedInUserInfoBlock = buildLoggedInUserInfoBlock($user);
-} else {
-    $loginBlock = buildLoginBlock();
-}
+$user = User::new_from_cookie();
 
 $genre = null;
 handleCurrentGenreSelection($genre);
@@ -48,9 +40,7 @@ if ($rightTrack) $rightTrackId = $rightTrack->id;
 
 processAndPrintTpl('Startpage/index.html', array(
     '${Common/pageHeader}'                    => buildPageHeader('Start', true),
-    '${Common/bodyHeader}'                    => buildBodyHeader(),
-    '${Startpage/login_optional}'             => $loginBlock,
-    '${Startpage/loggedInUserInfo_optional}'  => $loggedInUserInfoBlock,
+    '${Common/bodyHeader}'                    => buildBodyHeader($user),
     '${selectedGenre}'                        => $genre,
     '${Startpage/genreSelectionElement_list}' => buildGenreSelectionList(),
     '${Common/message_choice_list}'           => $messages,
@@ -67,96 +57,6 @@ processAndPrintTpl('Startpage/index.html', array(
 
 // functions
 // -----------------------------------------------------------------------------
-function handleAuthentication(&$messages) {
-    global $logger;
-
-    // check if user is logged in
-    $user = User::new_from_cookie();
-    if ($user) {
-        $logger->info('user cookie found');
-        return $user; // nothing more to do here, the user is logged in.
-    }
-
-    // check if user is about to login (the regular way)
-    if (get_param('action') == 'login') {
-        $logger->info('login request received');
-        if (get_param('user') && get_param('password')) {
-            $user = User::fetch_for_username_password(get_param('user'), get_param('password'));
-            if ($user && $user->status == 'active') {
-                $user->doLogin();
-                $logger->info('login successful, reloading page to set cookie');
-                header('Location: ' . $_SERVER['PHP_SELF']);
-                exit;
-
-            } else {
-                $messages .= processTpl('Common/message_error.html', array(
-                    '${msg}' => 'Login failed! Please try again.'
-                ));
-                $logger->info('login failed');
-                return null;
-            }
-
-        } else {
-            $messages .= processTpl('Common/message_error.html', array(
-                '${msg}' => 'Please provide a username and password!'
-            ));
-            $logger->info('username and/or password missing');
-            return null;
-        }
-    }
-
-    // check if user data can be fetched from facebook
-    if (get_param('access_token')) {
-        $logger->info('access_token param received');
-        $resp = sendGetRequest('https://graph.facebook.com/me?access_token=' . get_param('access_token'), 15);
-        if ($resp['result'] == 'SUCCESS') {
-            $fbUserData = json_decode($resp['responseBody']);
-            $logger->debug(print_r($fbUserData, true));
-
-            // if user data complete, log user in
-            $user = User::fetch_for_email_address($fbUserData->email); // ####### FIXME there are some duplicated emails in the NT database!
-            if ($user) {
-                $user->doLogin();
-                $logger->info('facebook login successful, reloading page to set cookie');
-                redirectTo($_SERVER['PHP_SELF']);
-
-            } else { // user not found -> this either means the user doesn't exist here yet or he was not found with the facebook email address
-                // the only thing we can do here is redirect the user to the signup page
-                // FIXME - which page mode? fan or artist or shall we redirect to the selection page (as soon as we have one)?
-                redirectTo('account.php?email_address=' . urlencode($fbUserData->email) . '&username=' . urlencode($fbUserData->email));
-            }
-
-        } else {
-            $messages .= processTpl('Common/message_error.html', array(
-                '${msg}' => 'Failed to get user information from facebook! Please try again later.'
-            ));
-            $logger->error('failed to get user information from facebook: ' . $resp['error']);
-        }
-    }
-
-    return null;
-}
-
-function buildLoginBlock() {
-    global $logger;
-
-    $loginBlock = processTpl('Startpage/login.html', array(
-        '${facebookAppId}' => $GLOBALS['FACEBOOK_APP_ID'],
-    ));
-
-    return $loginBlock;
-}
-
-function buildLoggedInUserInfoBlock(&$user) {
-    global $logger;
-
-    $block = processTpl('Startpage/loggedInUserInfo.html', array(
-        '${userName}' => ($user->name ? $user->name : $user->username)
-    ));
-
-    return $block;
-}
-
 function getNonceAndTimestamp(&$user) {
     list($us, $s) = explode(' ', microtime());
     $timestamp = ($s . ($us * 1000000));

@@ -341,7 +341,7 @@ if (!$userIsLoggedIn) {
 
 processAndPrintTpl('Account/index.html', array(
     '${Common/pageHeader}'                    => buildPageHeader('Account'),
-    '${Common/bodyHeader}'                    => buildBodyHeader(),
+    '${Common/bodyHeader}'                    => buildBodyHeader($userIsLoggedIn ? $user : null),
     '${headline}'                             => $headline,
     '${Common/message_choice_list}'           => $messageList,
     '${formAction}'                           => $_SERVER['PHP_SELF'],

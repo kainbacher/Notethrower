@@ -1,0 +1,18 @@
+<div class="topMenuItem">
+    <a href="account.php">Sign up for free</a>
+</div>
+
+<div class="topMenuItem">
+    <a href="javascript:showLogin();">Sign in</a>
+    <div class="topMenuSub topMenuSubLogin">
+        <form name="loginForm" action="index.php" method="POST">
+            <input type="hidden" name="action" value="login">
+            <input id="loginUsername" type="text" name="username" value="">
+            <span class="loginFormLabel">Username</span><br/>
+            <input id="loginPassword" type="password" name="password" value="">
+            <span class="loginFormLabel">Password</span><br/>
+            <input class="button blue small" type="submit" value="Sign in">
+        </form>
+        <a href="${facebookLoginUrl}">Sign in via Facebook</a>
+    </div>
+</div> 

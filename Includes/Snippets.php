@@ -57,8 +57,28 @@ function buildPageHeader($titleSuffix, $includeJPlayerStuff = false, $useMobileV
     ), $useMobileVersion);
 }
 
-function buildBodyHeader($useMobileVersion = false) {
-    return processTpl('Common/bodyHeader.html', array(), $useMobileVersion);
+function buildBodyHeader($loggedInUser, $useMobileVersion = false) {
+    $loginBlock = '';
+    $loggedInUserInfoBlock = '';
+
+    if (!$loggedInUser) {
+        $fbLoginUrl = $GLOBALS['STAGING_ENV'] == 'dev' ? 'fbDummy.php' : 'fb.php';
+        $fbLoginUrl .= '?destUrl=' . urlencode($_SERVER['PHP_SELF']);
+
+        $loginBlock = processTpl('Common/signUpAndLoginMenuItems.html', array(
+            '${facebookLoginUrl}' => $fbLoginUrl
+        ), $useMobileVersion);
+
+    } else {
+        $loggedInUserInfoBlock = processTpl('Common/loggedInUserMenuItems.html', array(
+            '${userId}' => $loggedInUser->id
+        ), $useMobileVersion);
+    }
+
+    return processTpl('Common/bodyHeader.html', array(
+        '${Common/signUpAndLoginMenuItems_optional}' => $loginBlock,
+        '${Common/loggedInUserMenuItems_optional}'   => $loggedInUserInfoBlock,
+    ), $useMobileVersion);
 }
 
 function buildBodyFooter($useMobileVersion = false) {

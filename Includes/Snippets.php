@@ -67,7 +67,9 @@ function buildBodyHeader($loggedInUser, $useMobileVersion = false) {
         ), $useMobileVersion);
 
     } else {
-        $loggedInUserInfoBlock = processTpl('Common/loggedInUserMenuItems.html', array(), $useMobileVersion);
+        $loggedInUserInfoBlock = processTpl('Common/loggedInUserMenuItems.html', array(
+            '${userId}' => $loggedInUser->id
+        ), $useMobileVersion);
     }
 
     return processTpl('Common/bodyHeader.html', array(

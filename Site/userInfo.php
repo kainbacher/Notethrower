@@ -32,20 +32,7 @@ if (!$user) {
 }
 
 // user image
-$userImgUrl = null;
-if ($user->image_filename) {
-    $userImg    = $GLOBALS['USER_IMAGE_BASE_PATH'] . $user->image_filename;
-    $userImgUrl = $GLOBALS['USER_IMAGE_BASE_URL']  . $user->image_filename;
-
-    $logger->info('user img: ' . $userImg);
-
-    if (!file_exists($userImg)) {
-  	    $userImgUrl = $GLOBALS['BASE_URL'] . 'Images/no_artist_image.png';
-    }
-
-} else {
-    $userImgUrl = $GLOBALS['BASE_URL'] . 'Images/no_artist_image.png';
-}
+$userImgUrl = getUserImageUri($userImageFilename, 'regular');
 
 // webpage url
 $webpageLink = '';

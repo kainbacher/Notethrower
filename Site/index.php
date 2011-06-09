@@ -29,8 +29,9 @@ $latestTracks = AudioTrack::fetch_newest_from_to(0, 5, false, false, $visitorUse
 
 foreach ($latestTracks as $track) {
     $latestTracksList .= processTpl('Index/trackListItem.html', array(
-        '${artistName}' => escape($track->user_name),
-        '${trackTitle}' => escape($track->title),
+        '${artistImgUrl}' => getUserImageUri($track->user_img_filename, 'tiny'),
+        '${artistName}'   => escape($track->user_name),
+        '${trackTitle}'   => escape($track->title),
     ));
 }
 
@@ -41,8 +42,9 @@ $topTracks = AudioTrack::fetch_most_downloaded_from_to(0, 5, false, false, $visi
 
 foreach ($latestTracks as $track) {
     $topTracksList .= processTpl('Index/trackListItem.html', array(
-        '${artistName}' => escape($track->user_name),
-        '${trackTitle}' => escape($track->title),
+        '${artistImgUrl}' => getUserImageUri($track->user_img_filename, 'tiny'),
+        '${artistName}'   => escape($track->user_name),
+        '${trackTitle}'   => escape($track->title),
     ));
 }
 

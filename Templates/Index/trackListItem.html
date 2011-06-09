@@ -1,6 +1,6 @@
 <div class="span-16 trackListItem">
     <div class="span-2">
-        <img src="../Images/no_artist_image.png" height="25" />
+        <img src="${artistImgUrl}" height="25" />
     </div>
     <div class="span-6">
         ${artistName}
@@ -9,7 +9,7 @@
         ${trackTitle}
     </div>
     <div class="span-2 last">
-        <a href="#" class="trackListButton trackListPlay">&nbsp;</a>
+        <a href="playTrack(${trackId});" class="trackListButton trackListPlay">&nbsp;</a>
         <a href="#" class="trackListButton trackListStar">&nbsp;</a>
     </div>
 </div>

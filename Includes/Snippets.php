@@ -127,19 +127,32 @@ function writeGoogleAnalyticsStuff() {
 function getUserImageHtml($userImageFilename, $userName, $size) {
     global $logger;
 
+    $userImgUrl = getUserImageUri($userImageFilename, $size);
+
+    return '<img title="' . escape($userName) . '" src="' . $userImgUrl . '"' . ($size == 'tiny' ? ' height="30"' : '') . '>';
+}
+
+function getUserImageUri($userImageFilename, $size) {
+    global $logger;
+
+    $userImgUri = null;
     if ($userImageFilename) {
         if ($size == 'thumb' || $size == 'tiny') $userImageFilename = str_replace('.jpg', '_thumb.jpg', $userImageFilename);
 
         $userImg    = $GLOBALS['USER_IMAGE_BASE_PATH'] . $userImageFilename;
-        $userImgUrl = $GLOBALS['USER_IMAGE_BASE_URL']  . $userImageFilename;
+        $userImgUri = $GLOBALS['USER_IMAGE_BASE_URL']  . $userImageFilename;
 
         $logger->debug('user img: ' . $userImg);
 
-        return '<img title="' . escape($userName) . '" src="' . $userImgUrl . '"' . ($size == 'tiny' ? ' height="30"' : '') . '>';
+        if (!file_exists($userImg)) {
+      	    $userImgUri = $GLOBALS['BASE_URL'] . 'Images/no_artist_image.png';
+        }
 
     } else {
-        return '<img title="' . escape($userName) . '" src="' . $GLOBALS['BASE_URL'] . 'Images/no_artist_image.png"' . ($size == 'tiny' ? ' height="30"' : '') . '>';
+        $userImgUri = $GLOBALS['BASE_URL'] . 'Images/no_artist_image.png';
     }
+
+    return $userImgUri;
 }
 
 function isParamSet($name) {

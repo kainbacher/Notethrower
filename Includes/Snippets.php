@@ -62,8 +62,11 @@ function buildBodyHeader($loggedInUser, $useMobileVersion = false) {
     $loggedInUserInfoBlock = '';
 
     if (!$loggedInUser) {
+        $fbLoginUrl = $GLOBALS['STAGING_ENV'] == 'dev' ? 'fbDummy.php' : 'fb.php';
+        $fbLoginUrl .= '?destUrl=' . urlencode($_SERVER['PHP_SELF']);
+
         $loginBlock = processTpl('Common/signUpAndLoginMenuItems.html', array(
-            '${facebookAppId}' => $GLOBALS['FACEBOOK_APP_ID'], // TODO - use this
+            '${facebookLoginUrl}' => $fbLoginUrl
         ), $useMobileVersion);
 
     } else {

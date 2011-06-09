@@ -31,6 +31,7 @@ foreach ($latestTracks as $track) {
     $latestTracksList .= processTpl('Index/trackListItem.html', array(
         '${artistImgUrl}' => getUserImageUri($track->user_img_filename, 'tiny'),
         '${artistName}'   => escape($track->user_name),
+        '${trackId}'      => $track->id,
         '${trackTitle}'   => escape($track->title),
     ));
 }
@@ -44,6 +45,7 @@ foreach ($latestTracks as $track) {
     $topTracksList .= processTpl('Index/trackListItem.html', array(
         '${artistImgUrl}' => getUserImageUri($track->user_img_filename, 'tiny'),
         '${artistName}'   => escape($track->user_name),
+        '${trackId}'      => $track->id,
         '${trackTitle}'   => escape($track->title),
     ));
 }

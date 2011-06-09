@@ -22,6 +22,8 @@ if ($GLOBALS['STAGING_ENV'] == 'dev') {
         }
 
     } else {
+        echo 'FACEBOOK SIGN IN DUMMY<br><br>' . "\n";
+
         $users = User::fetch_all_from_to(0, 999, false, false);
         foreach ($users as $user) {
             echo '<a href="' . $_SERVER['PHP_SELF'] . '?uid=' . $user->id . '">Sign in as user "' . escape($user->username) . '"</a><br>' . "\n";

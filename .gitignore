@@ -10,6 +10,7 @@
 
 Includes/Config_local.php
 Log/*.log
+Content/
 
 .DS_Store
 *.bak

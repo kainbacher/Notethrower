@@ -8,13 +8,11 @@ include_once('../Includes/DB/User.php');
 
 $visitorUserId = -1;
 
-$userIsLoggedIn = false;
 $user = User::new_from_cookie();
 if ($user) {
     $visitorUserId = $user->id;
     $logger->info('visitor user id: ' . $visitorUserId);
 
-    $userIsLoggedIn = true;
     $logger->info('user is logged in');
 
 } else {
@@ -23,7 +21,7 @@ if ($user) {
 
 processAndPrintTpl('Pricing/index.html', array( // ################## hier ordner anpassen!
     '${Common/pageHeader}'                     => buildPageHeader('FIXME', true),
-    '${Common/bodyHeader}'                     => buildBodyHeader(),
+    '${Common/bodyHeader}'                     => buildBodyHeader($user),
     '${Common/bodyFooter}'                     => buildBodyFooter(),
     '${Common/pageFooter}'                     => buildPageFooter()
 ));

@@ -57,8 +57,23 @@ function buildPageHeader($titleSuffix, $includeJPlayerStuff = false, $useMobileV
     ), $useMobileVersion);
 }
 
-function buildBodyHeader($useMobileVersion = false) {
-    return processTpl('Common/bodyHeader.html', array(), $useMobileVersion);
+function buildBodyHeader($loggedInUser, $useMobileVersion = false) {
+    $loginBlock = '';
+    $loggedInUserInfoBlock = '';
+
+    if (!$loggedInUser) {
+        $loginBlock = processTpl('Common/signUpAndLoginMenuItems.html', array(
+            '${facebookAppId}' => $GLOBALS['FACEBOOK_APP_ID'], // TODO - use this
+        ), $useMobileVersion);
+
+    } else {
+        $loggedInUserInfoBlock = processTpl('Common/loggedInUserMenuItems.html', array(), $useMobileVersion);
+    }
+
+    return processTpl('Common/bodyHeader.html', array(
+        '${Common/signUpAndLoginMenuItems_optional}' => $loginBlock,
+        '${Common/loggedInUserMenuItems_optional}'   => $loggedInUserInfoBlock,
+    ), $useMobileVersion);
 }
 
 function buildBodyFooter($useMobileVersion = false) {

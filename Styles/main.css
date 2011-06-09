@@ -537,19 +537,7 @@ a.nohighlight:hover {
 /* ---------------------------------------------------------------------- */
 
 #pageHeaderWrapper {
-    /* background-color: #333; */
-    /* blue
-    background: #0095cd;
-    background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));
-    background: -moz-linear-gradient(top,  #00adee,  #0078a5);
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
-    */
-
-    background: #64991e;
-    background: -webkit-gradient(linear, left top, left bottom, from(#7db72f), to(#4e7d0e));
-    background: -moz-linear-gradient(top,  #7db72f,  #4e7d0e);
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#7db72f', endColorstr='#4e7d0e');
-
+    background-color: #333;
     width: 100%;
 }
 
@@ -622,7 +610,7 @@ a.nohighlight:hover {
 .topMenuSub {
 	/* background-color: #333333; */
 	/* background-color: #0078a5; */
-	background-color: #4E7D0E;
+	background-color: #333;
 	display: none;
 	padding-bottom: 3px;
 	padding-top: 1px;
@@ -705,21 +693,20 @@ a.nohighlight:hover {
 /* ---------------------------------------------------------------------- */
 
 #mainMenuWrapper {
-/*
-	background-image: url(../Images/main_menu_background.png);
-	background-repeat: repeat-x;
-    background-color: #888888;
-	border-bottom: 1px solid #999999;
-	border-top: 1px solid #999999;
-*/
+    background: #f3f3f3;
+    /* blue
+    background: #0095cd;
+    background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));
+    background: -moz-linear-gradient(top,  #00adee,  #0078a5);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
+    */
 
-    background: #ffffff;
-    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dddddd));
-    background: -moz-linear-gradient(top,  #ffffff,  #dddddd);
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dddddd');
+    background: #64991e;
+    background: -webkit-gradient(linear, left top, left bottom, from(#7db72f), to(#4e7d0e));
+    background: -moz-linear-gradient(top,  #7db72f,  #4e7d0e);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#7db72f', endColorstr='#4e7d0e');
 
     border-bottom: 1px solid #eee;
-
 	height: 36px;
 	margin-bottom: 30px;
 }
@@ -742,7 +729,7 @@ a.nohighlight:hover {
 
 #mainMenu a {
 	display: block;
-	color: #222;
+	color: #ffffff;
 	font-size: 18px;
 	font-weight: bold;
 	height: 26px;
@@ -750,11 +737,11 @@ a.nohighlight:hover {
 	padding-right: 20px;
 	padding-top: 10px;
 	text-decoration: none;
-	text-shadow: white 0px 1px 1px;
+	text-shadow: #222 0px 1px 1px;
 }
 
 #mainMenu a:hover {
-	color: #4BA8E0;
+	color: #222;
 	text-shadow: white 0px 1px 1px;
 }
 
@@ -1173,6 +1160,7 @@ a.nohighlight:hover {
 
 .trackList {
     border-top: 1px solid #ccc;
+    margin-bottom: 18px;
 }
 
 .trackListItem {

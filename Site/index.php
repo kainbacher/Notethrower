@@ -9,8 +9,9 @@ include_once('../Includes/DB/AudioTrack.php');
 //include_once('../Includes/DB/News.php');
 include_once('../Includes/DB/User.php');
 
-$visitorUserId = -1;
+$logger->set_debug_level();
 
+$visitorUserId = -1;
 $user = handleAuthentication();
 
 if ($user) {

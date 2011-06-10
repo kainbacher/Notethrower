@@ -170,7 +170,16 @@ $(document).ready(function(){
         showCounter: false,
         autoplay: true
     });
-  
+ 
+
+    /* !  */
+    /* ---------------------------------------------------------------------- */
+    $('.trackListItem').hover(function() {
+        $(this).css('background-color', '#eee');
+    }, function() {
+        $(this).css('background-color', 'transparent');
+    });
+
 });
 
 

@@ -18,7 +18,7 @@ label       { font-weight: bold; }
 fieldset    { padding:0px; margin: 0px; border: 0px; }
 legend      { font-weight: bold; font-size:1.2em; margin-top:-0.2em; margin-bottom:1em; }
 
-fieldset, #IE8#HACK { padding-top:1.4em; } 
+fieldset, #IE8#HACK { padding-top:0px; } 
 legend, #IE8#HACK { margin-top:0; margin-bottom:0; }
 
 /* Form fields

@@ -140,7 +140,7 @@ writePageDoctype();
     <link rel="stylesheet" href="../Styles/datatables.css" type="text/css">
     
     
-    <script type="text/javascript" src="../Javascripts/jquery-1.3.2.min.js"></script>
+    <script type="text/javascript" src="../Javascripts/jquery-1.6.1.min.js"></script>
     <script type="text/javascript" src="../Javascripts/jquery.main.js"></script>
     <script type="text/javascript" src="../Javascripts/jquery.dataTables.js"></script>
 

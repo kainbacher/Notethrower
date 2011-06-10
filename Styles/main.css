@@ -32,7 +32,7 @@ p {
 }
 
 h1 {
-    color: #7DB72F;
+    color: #444444;
     font-size: 21px;
     font-weight: bold;
     line-height: 32px;
@@ -209,6 +209,39 @@ textarea {
     border: 3px solid #C6D880;
     padding: 18px;
     margin-bottom: 18px;
+}
+
+
+/* ! tabs */
+/* ---------------------------------------------------------------------- */
+
+.tabs {
+    border-bottom: 2px solid #7DB72F;
+    list-style: none;
+    list-style-type: none;
+    padding: 0px;
+    padding-left: 10px;
+    margin: 0px;
+    margin-bottom: 24px;
+    height: 34px;
+}
+
+.tabsItem {
+    background-color: #f9f9f9;
+    float: left;
+    border: 2px solid #ccc;
+    border-bottom-width: 0;
+    margin: 0;
+    margin-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.tabsItem a {
+    color: #7DB72F;
+    text-align: center;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 
@@ -1075,11 +1108,11 @@ a.nohighlight:hover {
 
 .footerMenu li {
     padding-right: 20px;
-    border-bottom: 1px dotted #666666;
+    border-bottom: 1px dotted #aaa;
 }
 
 .footerMenu a {
-    color: #cccccc;
+    color: #aaa;
     display: block;
     text-decoration: none;
 }
@@ -1598,5 +1631,39 @@ a.nohighlight:hover {
     margin-left: 20px;
 }
 
+/* ! priceChart */
+/* ---------------------------------------------------------------------- */
 
+#priceChart {
+
+}
+
+#priceChart th,
+#priceChart td {
+    border-right: 1px solid white;
+}
+
+.table-col-0 {
+    text-align: center;
+}
+
+#priceChart .even .table-col-0 {
+    background-color: #CBE1AB;
+}
+
+#priceChart .odd .table-col-0 {
+    background-color: #E4F0D5;
+}
+
+.table-col-1 {
+    text-align: center;
+}
+
+#priceChart .even .table-col-1 {
+    background-color: #d3e5f1;
+}
+
+#priceChart .odd .table-col-1 {
+    background-color: #EEF9FF;
+}
 

@@ -204,69 +204,116 @@ $(document).ready(function(){
         	<div class="container">
 
 
-                <div class="span-16">
+                <div class="span-24 last">
     
-            		<div class="span-5">
-                        <img src="http://dummyimage.com/158x120/ccc/fff.png" height="120" width="158" />
+            		<div class="span-6">
+                        <img src="http://dummyimage.com/242x120/ccc/fff.png" height="120" width="242" />
                         <h4>Bandpage</h4>
-                        <p>asdfadsf</p>
+                        <p>
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                        </p>
             		</div>
 
-            		<div class="span-5">
-                        <img src="http://dummyimage.com/158x120/ccc/fff.png" height="120" width="158" />
+            		<div class="span-6">
+                        <img src="http://dummyimage.com/242x120/ccc/fff.png" height="120" width="242" />
                         <h4>Ticketing</h4>
-                        <p>asdfadsf</p>
+                        <p>
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                        </p>
             		</div>
 
-            		<div class="span-5 last">
-                        <img src="http://dummyimage.com/158x120/ccc/fff.png" height="120" width="158" />
+            		<div class="span-6">
+                        <img src="http://dummyimage.com/242x120/ccc/fff.png" height="120" width="242" />
                         <h4>Media</h4>
-                        <p>asdfadsf</p>
+                        <p>
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                        </p>
             		</div>
 
-            		<div class="span-5">
-                        <img src="http://dummyimage.com/158x120/ccc/fff.png" height="120" width="158" />
-                        <h4>Widgets</h4>
-                        <p>asdfadsf</p>
+            		<div class="span-6 last">
+                        <img src="http://dummyimage.com/242x120/ccc/fff.png" height="120" width="242" />
+                        <h4>Widget</h4>
+                        <p>
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                        </p>
             		</div>
 
-            		<div class="span-5">
-                        <img src="http://dummyimage.com/158x120/ccc/fff.png" height="120" width="158" />
+            		<div class="span-6">
+                        <img src="http://dummyimage.com/242x120/ccc/fff.png" height="120" width="242" />
                         <h4>Mobile Version</h4>
-                        <p>asdfadsf</p>
+                        <p>
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                        </p>
             		</div>
 
-            		<div class="span-5 last">
-                        <img src="http://dummyimage.com/158x120/ccc/fff.png" height="120" width="158" />
-                        <h4>Music Store</h4>
-                        <p>asdfadsf</p>
+            		<div class="span-6">
+                        <img src="http://dummyimage.com/242x120/ccc/fff.png" height="120" width="242" />
+                        <h4>xxxxx</h4>
+                        <p>
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                        </p>
             		</div>
 
-                    <div class="span-15 last">
-                        <h1>Text</h1>
-                        <p><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Etiam sit amet elit vitae arcu interdum ullamcorper. Nullam ultrices, nisi quis scelerisque convallis, augue neque tempor enim, et mattis justo nibh eu elit. Quisque ultrices gravida pede. Mauris accumsan vulputate tellus. Phasellus condimentum bibendum dolor. Mauris sed ipsum. Phasellus in diam. Nam sapien ligula, consectetuer id, hendrerit in, cursus sed, leo. Nam tincidunt rhoncus urna. Aliquam id massa ut nibh bibendum imperdiet. Curabitur neque mauris, porta vel, lacinia quis, placerat ultrices, orci.</p>
+            		<div class="span-6">
+                        <img src="http://dummyimage.com/242x120/ccc/fff.png" height="120" width="242" />
+                        <h4>xxxxx</h4>
+                        <p>
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                        </p>
+            		</div>
 
-</p>
+            		<div class="span-6 last">
+                        <img src="http://dummyimage.com/242x120/ccc/fff.png" height="120" width="242" />
+                        <h4>xxxxx</h4>
+                        <p>
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                            asdfadsf asdf sdf asdf asdf asd asdf asdf asdf 
+                        </p>
+            		</div>
+
+                    <div class="span-24 last">
+                        <div class="span-12">
+                            <h1>Text</h1>
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. 
+                            Etiam sit amet elit vitae arcu interdum ullamcorper. 
+                            Nullam ultrices, nisi quis scelerisque convallis, augue neque tempor enim, et mattis 
+                            justo nibh eu elit. Quisque ultrices gravida pede. Mauris accumsan vulputate tellus. 
+                            Phasellus condimentum bibendum dolor. Mauris sed ipsum. Phasellus in diam. Nam sapien ligula, 
+                            consectetuer id, hendrerit in, cursus sed, leo. Nam tincidunt rhoncus urna. Aliquam id massa ut 
+                            nibh bibendum imperdiet. Curabitur neque mauris, porta vel, lacinia quis, placerat ultrices, orci.
+                            </p>
+                        </div>
+
+                        <div class="span-12 last">
+                            <h1>Text</h1>
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. 
+                            Etiam sit amet elit vitae arcu interdum ullamcorper. 
+                            Nullam ultrices, nisi quis scelerisque convallis, augue neque tempor enim, et mattis 
+                            justo nibh eu elit. Quisque ultrices gravida pede. Mauris accumsan vulputate tellus. 
+                            Phasellus condimentum bibendum dolor. Mauris sed ipsum. Phasellus in diam. Nam sapien ligula, 
+                            consectetuer id, hendrerit in, cursus sed, leo. Nam tincidunt rhoncus urna. Aliquam id massa ut 
+                            nibh bibendum imperdiet. Curabitur neque mauris, porta vel, lacinia quis, placerat ultrices, orci.
+                            </p>
+                        </div>
                     </div>
     
           		</div>
 
-
-                <div class="span-8 last">
-                    <div class="box-grey">
-                        <h2>Features</h2>
-                        <ul>
-                            <li><a href="#">Overview</a></li>
-                            <li><a href="#">Bandpage</a></li>
-                            <li><a href="#">Ticketing</a></li>
-                            <li><a href="#">Media</a></li>
-                            <li><a href="#">Widget</a></li>
-                            <li><a href="#">Mobile Version</a></li>
-                            <li><a href="#">Music Store</a></li>
-                        </ul>
-                    </div>
-                    
-                </div>
             
             </div>
 

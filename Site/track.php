@@ -320,7 +320,7 @@ writePageDoctype();
     <link rel="stylesheet" href="../Styles/bp-screen.css" type="text/css">
     <link rel="stylesheet" href="../Styles/buttons.css" type="text/css">
 
-    <script type="text/javascript" src="../Javascripts/jquery-1.3.2.min.js"></script>
+    <script type="text/javascript" src="../Javascripts/jquery-1.6.1.min.js"></script>
     <script type="text/javascript" src="../Javascripts/jquery.main.js"></script>
 
     <script type="text/javascript" src="../Javascripts/Snippets.js"></script>

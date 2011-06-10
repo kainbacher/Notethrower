@@ -1,22 +1,26 @@
+
 <div class="topMenuItem">
-    <a href="trackList.php">Me</a>
+    <a href="dashboard.php?aid=${userId}">Dashboard</a>
+</div>
+
+<div class="topMenuItem">
+    <a href="userInfo.php?aid=${userId}">Me</a>
 	<div class="topMenuSub">
 
 	    <div class="topMenuSubItem">
-	        <a href="userInfo.php?aid=${userId}">Artistpage</a>
+	        <a href="userInfo.php?aid=${userId}">My Artistpage</a>
 	    </div>
 
 	    <div class="topMenuSubItem">
-	        <a href="trackList.php">My tracks</a>
-	    </div>
-
-	    <div class="topMenuSubItem">
-	        <a href="collaboration.php">Collaboration</a>
+	        <a href="trackList.php">My Tracks</a>
 	    </div>
 
 	</div>
 </div>
 
+<div class="topMenuItem">
+    <a href="account.php">Upload</a>
+</div>
 
 <div class="topMenuItem">
     <a href="account.php">Settings</a>
@@ -25,4 +29,8 @@
 	        <a href="account.php">Profile</a>
 	    </div>
 	</div>
+</div>
+
+<div class="topMenuItem">
+    <a href="logout.php">Logout</a>
 </div>

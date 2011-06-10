@@ -553,20 +553,23 @@ a.nohighlight:hover {
     color: #ffffff;
     font-size: 18px;
     float: left;
-    width: 365px;
+    width: 170px;
     height: 26px;
     margin-top: 8px;
     cursor: pointer;
 }
 
+#logo a {
+    color: #fff;
+    text-decoration: none;
+}
 
 /* !loginbox */
 /* ---------------------------------------------------------------------- */
 
 #loginWrapper {
 	float: right;
-    /* margin-top: 6px; */
-	width: 585px;
+	width: 650px;
 }
 
 #signUpTeaser {
@@ -626,13 +629,11 @@ a.nohighlight:hover {
 }
 
 .topMenuSubLogin {
-    padding-bottom: 12px;
-    padding-left: 10px;
-    width: 215px;
+    width: 260px;
 }
 
 .topMenuSubItem {
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #444;
     margin-left: 0px;
     margin-right: 0px; 
 }
@@ -641,6 +642,24 @@ a.nohighlight:hover {
     height: 20px;
     padding-top: 6px;
     padding-bottom: 6px; 
+}
+
+.topMenuSubLoginItem {
+    padding: 10px;
+}
+
+.topMenuLoginWrapper {
+    margin-bottom: 5px;
+}
+
+.topMenuLoginLabel {
+    float: left;
+    width: 100px;
+}
+
+.topMenuLoginInput {
+    float: left;
+    width: 130px;
 }
 
 
@@ -1447,13 +1466,16 @@ a.nohighlight:hover {
 
 .topSearch {
     background-color: #ffffff;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
     height: 16px;
     margin: 5px;
     margin-top: 6px;
-    padding: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 #topSearchInput {
@@ -1461,7 +1483,7 @@ a.nohighlight:hover {
     color: #666666;
     float: left;
     padding: 0px;
-    width: 140px;
+    width: 130px;
     outline: none;
 }
 

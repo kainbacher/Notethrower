@@ -8,6 +8,7 @@ New Pages
 /notethrower/Site/userInfoNew.php?aid=3
 /notethrower/Site/account.php
 
+/notethrower/Site/dashboard.php
 
 
 

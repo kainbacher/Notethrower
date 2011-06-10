@@ -317,6 +317,8 @@ writePageDoctype();
     <?php writePageMetaTags(); ?>
     <title><?php writePageTitle(); ?></title>
     <link rel="stylesheet" href="../Styles/main.css" type="text/css">
+    <link rel="stylesheet" href="../Styles/bp-screen.css" type="text/css">
+    <link rel="stylesheet" href="../Styles/buttons.css" type="text/css">
 
     <script type="text/javascript" src="../Javascripts/jquery-1.3.2.min.js"></script>
     <script type="text/javascript" src="../Javascripts/jquery.main.js"></script>
@@ -348,15 +350,9 @@ function showSelectFriendsPopup() {
         <? include ("pageHeader.php"); ?>
         <? include ("mainMenu.php"); ?>
 
-    <div id="pageMainContent">
+    <div class="container">
+    <div class="span-16 last">
 
-
-        <div class="horizontalMenu">
-            <ul>
-                <li><a href="index.php">Startpage</a></li>
-                <li><a href="trackList.php">Track List</a></li>
-            </ul>
-        </div>
 
             <div id="trackFormDivStart"></div>
             <div id="trackFormDiv"><div id="container">
@@ -517,7 +513,7 @@ if ($message) {
 }
 
 ?>
-                <input class="submitButton buttonSave" type="submit" value="">
+                <input class="button blue" type="submit" value="send">
 
                 </td>
               </tr>
@@ -532,8 +528,8 @@ if ($message) {
       </div></div>
       <div id="trackFormDivEnd"></div>
 
-
-    </div> <!-- pageMainContent -->
+    </div>
+    </div>
 
     <? include ("footer.php"); ?>
 

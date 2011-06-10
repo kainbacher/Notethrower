@@ -1,3 +1,4 @@
+
 <div class="topMenuItem">
     <a href="account.php">Sign up for free</a>
 </div>
@@ -5,14 +6,54 @@
 <div class="topMenuItem">
     <a href="javascript:showLogin();">Sign in</a>
     <div class="topMenuSub topMenuSubLogin">
-        <form name="loginForm" action="index.php" method="POST">
-            <input type="hidden" name="action" value="login">
-            <input id="loginUsername" type="text" name="username" value="">
-            <span class="loginFormLabel">Username</span><br/>
-            <input id="loginPassword" type="password" name="password" value="">
-            <span class="loginFormLabel">Password</span><br/>
-            <input class="button blue small" type="submit" value="Sign in">
-        </form>
-        <a href="${facebookLoginUrl}">Sign in via Facebook</a>
+        <div class="topMenuSubItem">
+            <div  class="topMenuSubLoginItem">
+            
+                <form name="loginForm" action="index.php" method="POST">
+                    <input type="hidden" name="action" value="login">
+                    
+                    <div  class="topMenuLoginWrapper">
+                        <div  class="topMenuLoginLabel">
+                            <label class="loginFormLabel">Username:</label>
+                        </div>
+                        <div  class="topMenuLoginInput">
+                            <input id="loginUsername" type="text" name="username" value="">
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div  class="topMenuLoginWrapper">
+                        <div  class="topMenuLoginLabel">
+                            <label for="loginPassword" class="loginFormLabel">Password:</label>
+                        </div>
+                        <div  class="topMenuLoginInput">
+                            <input id="loginPassword" type="password" name="password" value="">
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div  class="topMenuLoginWrapper">
+                        <div  class="topMenuLoginLabel">
+                            &nbsp;
+                        </div>
+                        <div  class="topMenuLoginInput">
+                            <input class="button blue small" type="submit" value="Sign in">
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    
+                </form>
+            
+            </div>
+        </div>
+        
+        <div  class="topMenuSubItem">
+            <a href="${facebookLoginUrl}">
+                <img src="../Images/icons/facebook.png" width="24" height="24" alt="Facebook">
+                Sign in via Facebook
+            </a>
+        </div>
+
     </div>
+
 </div> 

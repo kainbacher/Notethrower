@@ -150,7 +150,27 @@ $(document).ready(function(){
         }); 
 */   
     
-   
+
+
+    /* ! galleria */
+    /* ---------------------------------------------------------------------- */
+    // Load the classic theme
+    Galleria.loadTheme('/notethrower/Javascripts/themes/classic/galleria.classic.js');
+    
+    // Initialize Galleria
+    $('#galleria').galleria({
+        width:662,
+        height:250,
+        transition: "fade",
+        transitionSpeed: 800,
+        thumbCrop: true,
+        thumbnails: "empty",
+        showInfo: false,
+        clicknext: true,
+        showCounter: false,
+        autoplay: true
+    });
+  
 });
 
 

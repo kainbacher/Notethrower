@@ -63,13 +63,6 @@ h4 {
     margin-bottom: 0px;
 }
 
-/*
-hr {
-    border: 0;
-    width: 100%;
-    height: 1px;
-}*/
-
 a {
     color: #4BA8E0;
 }
@@ -118,11 +111,12 @@ textarea {
     clear: both;
 }
 
-.prealoader {
-    display: none;
+.small {
+    color: #999;
 }
 
-.fertigo {
+.prealoader {
+    display: none;
 }
 
 .weblink {
@@ -238,12 +232,24 @@ textarea {
 }
 
 .tabsItem a {
-    color: #7DB72F;
+    color: #999;
     text-align: center;
     padding-left: 10px;
     padding-right: 10px;
 }
 
+.tabsAct {
+    /*color: #4BA8E0;*/
+    color: #7DB72F !important;
+}
+
+.tabcontent-1 { display: none; }
+.tabcontent-2 { display: none; }
+.tabcontent-3 { display: none; }
+.tabcontent-4 { display: none; }
+.tabcontent-5 { display: none; }
+
+.tabcontentAct { display: block !important; }
 
 /* ! forms */
 /* ---------------------------------------------------------------------- */
@@ -758,9 +764,10 @@ a.nohighlight:hover {
     background: -moz-linear-gradient(top,  #7db72f,  #4e7d0e);
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#7db72f', endColorstr='#4e7d0e');
 
-    border-bottom: 1px solid #eee;
+    border-top: 1px solid #8cd305;
+    border-bottom: 1px solid #436b02;
 	height: 36px;
-	margin-bottom: 30px;
+	margin-bottom: 54px;
 }
 
 #mainMenu {
@@ -789,11 +796,12 @@ a.nohighlight:hover {
 	padding-right: 20px;
 	padding-top: 10px;
 	text-decoration: none;
-	text-shadow: #222 0px 1px 1px;
+	text-shadow: #2a4301 0px 1px 1px;
 }
 
 #mainMenu a:hover {
 	color: #222;
+	color: #2a4301;
 	text-shadow: white 0px 1px 1px;
 }
 
@@ -1218,6 +1226,10 @@ a.nohighlight:hover {
 .trackListItem {
     border-bottom: 1px solid #ccc;
     padding-top: 5px; 
+}
+
+.trackListItemHover {
+    background-color: #eef9ff;
 }
 
 .trackListButton {

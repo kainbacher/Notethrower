@@ -158,10 +158,10 @@ $(document).ready(function(){
     Galleria.loadTheme('/notethrower/Javascripts/themes/classic/galleria.classic.js');
     
     // Initialize Galleria
-    $('#galleria').galleria({
+    $('#galleria, .galleria').galleria({
         width:662,
         height:250,
-        transition: "fade",
+        transition: "slide",
         transitionSpeed: 800,
         thumbCrop: true,
         thumbnails: "empty",
@@ -175,9 +175,51 @@ $(document).ready(function(){
     /* !  */
     /* ---------------------------------------------------------------------- */
     $('.trackListItem').hover(function() {
-        $(this).css('background-color', '#eee');
+        $(this).addClass('trackListItemHover');
     }, function() {
-        $(this).css('background-color', 'transparent');
+        $(this).removeClass('trackListItemHover');
+    });
+
+    /* ! tabs */
+    /* ---------------------------------------------------------------------- */
+    $('.tab-1').click(function() {
+        $('*').find('.tabsAct').removeClass('tabsAct');
+        $(this).addClass('tabsAct');
+        $('*').find('.tabcontentAct').removeClass('tabcontentAct');
+        $('.tabcontent-1').addClass('tabcontentAct');
+        return false;
+    });
+
+    $('.tab-2').click(function() {
+        $('*').find('.tabsAct').removeClass('tabsAct');
+        $(this).addClass('tabsAct');
+        $('*').find('.tabcontentAct').removeClass('tabcontentAct');
+        $('.tabcontent-2').addClass('tabcontentAct');
+        return false;
+    });
+
+    $('.tab-3').click(function() {
+        $('*').find('.tabsAct').removeClass('tabsAct');
+        $(this).addClass('tabsAct');
+        $('*').find('.tabcontentAct').removeClass('tabcontentAct');
+        $('.tabcontent-3').addClass('tabcontentAct');
+        return false;
+    });
+
+    $('.tab-4').click(function() {
+        $('*').find('.tabsAct').removeClass('tabsAct');
+        $(this).addClass('tabsAct');
+        $('*').find('.tabcontentAct').removeClass('tabcontentAct');
+        $('.tabcontent-4').addClass('tabcontentAct');
+        return false;
+    });
+
+    $('.tab-5').click(function() {
+        $('*').find('.tabsAct').removeClass('tabsAct');
+        $(this).addClass('tabsAct');
+        $('*').find('.tabcontentAct').removeClass('tabcontentAct');
+        $('.tabcontent-5').addClass('tabcontentAct');
+        return false;
     });
 
 });

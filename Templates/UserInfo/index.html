@@ -7,24 +7,29 @@ ${Common/pageHeader}
     <div class="container">
        
         <div  class="span-16">
-            
+
             <div class="span-16 last">
-                <h1>My songs</h1>
-                <div class="span-16 last trackList">
+                <ul class="tabs">
+                    <li class="tabsItem"><a href="#" class="tab-1 tabsAct">My Tracks</a></li>
+                    <li class="tabsItem"><a href="#" class="tab-2">My Remixes</a></li>
+                    <li class="tabsItem"><a href="#" class="tab-3">Remixed by others</a></li>
+                </ul>
+            </div>
+         
+            <div class="span-16 last tabcontent-1 tabcontentAct">
+                <div class="trackList">
                     ${UserInfo/trackListElement_list_mySongs}
                 </div>
             </div>
             
-            <div class="span-16 last span-16 last">
-                <h1>My remixes</h1>
-                <div class="">
+            <div class="span-16 last tabcontent-2">
+                <div class="trackList">
                     ${UserInfo/trackListElement_list_myRemixes}
                 </div>
             </div>
             
-            <div class="span-16 last span-16 last">
-                <h1>Remixed from other artists</h1>
-                <div class="">
+            <div class="span-16 last tabcontent-3">
+                <div class="trackList">
                     ${UserInfo/trackListElement_list_remixedByOthers}
                 </div>
             </div>

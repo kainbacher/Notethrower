@@ -1,0 +1,9 @@
+<div class="span-16 trackListItem">
+    <div class="span-8">
+        <a href="#">${trackTitle}</a>
+    </div>
+    <div class="span-2 last">
+        <a href="track.php?action=edit&tid=${trackId}">Edit track</a>
+        <a href="javascript:askForConfirmationAndRedirect('Do you really want to delete this track?', '${trackTitleEscaped}', 'track.php?action=delete&tid=${trackId}');">Delete track</a>
+    </div>
+</div>

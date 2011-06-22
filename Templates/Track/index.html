@@ -1,0 +1,52 @@
+${Common/pageHeader}
+
+<script type="text/javascript">
+
+// currently hidden, but maybe a candidate for pro users
+//function visibilityHasChanged(elt) {
+//    if (document.getElementById('associated_users_row')) {
+//        var sel = elt.options[elt.selectedIndex].value;
+//        if (sel == 'private') {
+//            document.getElementById('associated_users_row').style.display = '';
+//        } else {
+//            document.getElementById('associated_users_row').style.display = 'none';
+//        }
+//    }
+//}
+
+function showSelectFriendsPopup() {
+    window.open('selectFriends.php?tid=${trackId}', 'NT_SELECT_FRIENDS', 'scrollbars=yes,resizable=yes,status=0,width=400,height=600');
+}
+
+</script>
+
+<body>
+
+${Common/bodyHeader}
+
+<div class="container">
+
+    <div class="span-16 last box-grey">
+        <h1>${headline}</h1>
+        <br />
+
+        ${Common/message_choice_list}
+
+        <form action="${formAction}" method="POST">
+            <input type="hidden" name="action" value="save">
+            <input type="hidden" name="tid" value="${trackId}">
+            <input type="hidden" name="type" value="${type}">
+            ${Common/formElement_list}
+
+            <div class="prepend-6 span-6 last">
+                <input class="button blue" type="submit" value="${submitButtonValue}">
+            </div>
+        </form>
+    </div>
+</div>
+
+${Common/bodyFooter}
+
+</body>
+
+${Common/pageFooter}

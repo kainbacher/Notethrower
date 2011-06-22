@@ -34,7 +34,7 @@ function getFormFieldForParams($params) {
     $infoText                 = array_key_exists('infoText', $params)                 ? $params['infoText']                 : null;
     $onChangeCallback         = array_key_exists('onChangeCallback', $params)         ? $params['onChangeCallback']         : null;
     $customStyleForInputField = array_key_exists('customStyleForInputField', $params) ? $params['customStyleForInputField'] : null;
-    $hideRow                  = array_key_exists('hideRow', $params)                  ? $params['hideRow']                  : false;
+    $hide                     = array_key_exists('hide', $params)                     ? $params['hide']                     : false;
     $rows                     = array_key_exists('rows', $params)                     ? $params['rows']                     : 3;
     $cols                     = array_key_exists('cols', $params)                     ? $params['cols']                     : 30;
     $disabled                 = array_key_exists('disabled', $params)                 ? $params['disabled']                 : false;
@@ -346,7 +346,7 @@ function getFormFieldForParams($params) {
     return processTpl('Common/formElement.html', array(
         '${id}'                                  => 'formElt_' . $propName,
         '${classAddon}'                          => (isset($errorFields[$propName]) ? ' formEltWithProblem' : ''),
-        '${hidden_optional}'                     => ($hideRow ? ' style="display:none"' : ''),
+        '${hidden_optional}'                     => ($hide ? ' style="display:none"' : ''),
         '${Common/formElementLabel_choice}'      => $label,
         '${prefix}'                              => ($inputFieldGroupPrefix ? escape($inputFieldGroupPrefix) . '&nbsp;' : ''),
         '${Common/formElementInputField_choice}' => $inputField,

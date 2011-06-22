@@ -46,7 +46,7 @@ foreach ($remixedTracks as $t) {
         '${trackId}'           => $t->id,
         '${trackTitle}'        => escape($t->title),
         '${trackTitleEscaped}' => escape_and_rewrite_single_quotes($t->title)
-        // FIXME - later - visibility? facebook sharing?
+        // FIXME - later - visibility? facebook sharing? (see old script)
     ));
 }
 

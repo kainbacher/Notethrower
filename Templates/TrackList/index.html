@@ -12,20 +12,24 @@ ${Common/bodyHeader}
 
                     <h1>My Tracks</h1>
                     ${Common/message_choice_optional}
+
                     
-                    <div>
-                        <a href="track.php?action=create" class="button small blue">Create new track</a>
+                    <div class="span-16 last">
+                        <ul class="tabs">
+                            <li class="tabsItem"><a href="#" class="tab-1 tabsAct">My Tracks</a></li>
+                            <li class="tabsItem"><a href="#" class="tab-2">My Remixes</a></li>
+                        </ul>
                     </div>
                     
-                    <h2>Original tracks:</h2>
-                    <div class="trackList">
-                        ${TrackList/trackListItem_originals_list}
+                    <div class="span-16 last tabcontent-1 tabcontentAct">
+                        <div class="trackList">
+                            ${TrackList/trackListItem_originals_list}
+                        </div>
                     </div>
-                    
-                    
-                    <h2>My remixes:</h2>
-                    <div class="trackList">
-                        ${TrackList/trackListItem_remixes_list}
+                    <div class="span-16 last tabcontent-2 tabcontentAct">
+                        <div class="trackList">
+                            ${TrackList/trackListItem_remixes_list}
+                        </div>
                     </div>
 
                 </div>
@@ -33,7 +37,7 @@ ${Common/bodyHeader}
                 <div class="span-8 last">
 
                     <div class="box-grey">
-                        <a href="#" class="button blue">
+                        <a href="track.php?action=create" class="button blue">
                             Upload new Track
                         </a>
                     </div>

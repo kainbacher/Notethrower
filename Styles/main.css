@@ -649,6 +649,10 @@ a.nohighlight:hover {
 	text-shadow: rgba(0, 0, 0, 0.246094) 0px -1px 1px;
 }
 
+.topMenuItem a:hover {
+    background-color: #444;
+}
+
 .topMenuSub {
 	/* background-color: #333333; */
 	/* background-color: #0078a5; */
@@ -1692,17 +1696,17 @@ a.nohighlight:hover {
 
 .dashboardList li {
     float: left;
-    height: 150px;
-    width: 150px;
+    height: 160px;
     margin-bottom: 10px;
     margin-right: 10px;
+    width: 150px;
 }
 
 .dashboardList a {
     background-color: #F9F9F9;
     border: 3px solid #EEE;
     display: block;
-    height: 150px;
+    height: 160px;
     text-align: center;
 }
 

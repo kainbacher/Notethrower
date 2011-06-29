@@ -95,7 +95,7 @@ if ($passwordSent) {
 }
 
 processAndPrintTpl('GenerateNewPassword/index.html', array(
-    '${Common/pageHeader}'                               => buildPageHeader('My tracks'),
+    '${Common/pageHeader}'                               => buildPageHeader('Reset password'),
     '${Common/bodyHeader}'                               => buildBodyHeader($user),
     '${Common/message_choice_list}'                      => $messageList,
     '${GenerateNewPassword/newPasswordWasSent_optional}' => $newPasswordWasSentBlock,

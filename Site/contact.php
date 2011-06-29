@@ -1,60 +1,18 @@
 <?php
 
-include_once('../Includes/Init.php');
+include_once('../Includes/Init.php');  // must be included first
+include_once('../Includes/Config.php');
 include_once('../Includes/Snippets.php');
+include_once('../Includes/TemplateUtil.php');
+include_once('../Includes/DB/User.php');
 
-writePageDoctype();
+$user = User::new_from_cookie();
 
-?>
-<html>
-  <head>
-    <? include ("headerData.php"); ?>
-  </head>
-  <body>
+processAndPrintTpl('Contact/index.html', array(
+    '${Common/pageHeader}'                    => buildPageHeader('Contact'),
+    '${Common/bodyHeader}'                    => buildBodyHeader($user),
+    '${Common/bodyFooter}'                    => buildBodyFooter(),
+    '${Common/pageFooter}'                    => buildPageFooter()
+));
 
-	<div id="bodyWrapper">
-        <? include ("pageHeader.php"); ?>
-        <? include ("mainMenu.php"); ?>
-
-		<div id="pageMainContent">
-
-		<div id="mainColumnLeft">
-
-
-
-      <div id="standardInfoDiv">
-        <div id="container">
-      
- 
-        
-        
-        <br><br>
-
-        <h1>Contact</h1>
-        <iframe src="http://spreadsheets.google.com/embeddedform?key=thN79U430lcxoxd1CUsvqyw" width="610" height="791" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
-        <br>
-
-      </div>
-      
-      </div> <!-- standrardInfoDiv -->
-      
-           
-      
-        </div> <!-- mainColumnLeft -->
-
-		<div id="mainColumnRight">
-            <? include ("sidebar.php"); ?>
-		</div> <!-- mainColumnRight -->
-		
-      	<div style="clear:both"></div>
-    
-
-	</div> <!-- pageMainContent -->
-
-
-	<? include ("footer.php"); ?>
-
-
-	</div> <!-- bodyWrapper -->
-  </body>
-</html>
+// END

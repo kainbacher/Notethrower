@@ -12,14 +12,21 @@ ${Common/bodyHeader}
 
                     <h1>My Tracks</h1>
                     ${Common/message_choice_optional}
-                    <br />
-                    <a href="track.php?action=create">Create new track</a>
-                    <br /><br />
-                    My original tracks:<br />
-                    ${TrackList/trackListItem_originals_list}
-                    <br /><br />
-                    My remixes:<br />
-                    ${TrackList/trackListItem_remixes_list}
+                    
+                    <div>
+                        <a href="track.php?action=create" class="button small blue">Create new track</a>
+                    </div>
+                    
+                    <h2>Original tracks:</h2>
+                    <div class="trackList">
+                        ${TrackList/trackListItem_originals_list}
+                    </div>
+                    
+                    
+                    <h2>My remixes:</h2>
+                    <div class="trackList">
+                        ${TrackList/trackListItem_remixes_list}
+                    </div>
 
                 </div>
 

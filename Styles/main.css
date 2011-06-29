@@ -809,6 +809,10 @@ a.nohighlight:hover {
 	text-shadow: white 0px 1px 1px;
 }
 
+#pageContent {
+    min-height: 700px;
+}
+
 /* !contentTop */
 /* ---------------------------------------------------------------------- */
 

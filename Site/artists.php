@@ -21,9 +21,21 @@ if ($user) {
     $logger->info('user is NOT logged in');
 }
 
-processAndPrintTpl('Artists/index.html', array( // ################## hier ordner anpassen!
-    '${Common/pageHeader}'                     => buildPageHeader('FIXME', true),
+$artistList = '';
+$artists = User::fetch_all_from_to(0, 999999, false, false, false); // FIXME - paging?
+foreach ($artists as $a) {
+    $artistList .= processTpl('Artists/artistListItem.html', array(
+        '${artistImgUrl}' => getUserImageUri($a->image_filename, 'tiny'),
+        '${userId}'       => $a->id,
+        '${artistName}'   => escape($a->name)
+    ));
+}
+
+processAndPrintTpl('Artists/index.html', array(
+    '${Common/pageHeader}'                     => buildPageHeader('Artists', true),
     '${Common/bodyHeader}'                     => buildBodyHeader($user),
+    '${Artists/artistListItem_list}'           => $artistList,
+    '${Common/newsletterSubscription}'         => processTpl('Common/newsletterSubscription.html', array()),
     '${Common/bodyFooter}'                     => buildBodyFooter(),
     '${Common/pageFooter}'                     => buildPageFooter()
 ));

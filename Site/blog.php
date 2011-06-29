@@ -6,6 +6,8 @@ include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/News.php');
 
+// FIXME - templateisieren und news-datum mit anzeigen!
+
 $loginErrorMsg = '';
 
 $visitorUserId = -1;
@@ -55,15 +57,15 @@ writePageDoctype();
 <html>
   <head>
     <? include ("headerData.php"); ?>
-    
+
     <link rel="stylesheet" href="../Styles/ajaxpagination.css" type="text/css">
-        
+
     <script type="text/javascript">
-        
+
 // the track id, if it a tid is specified as query parameter
 // (deep link to load a song in the widget)
 // we need the track id and the user id to load the widget
-// so one have to use ?tid=<trackid>&taid=<arstistIdOfTheTrack> 
+// so one have to use ?tid=<trackid>&taid=<arstistIdOfTheTrack>
 // to load the specific track in the widget
 var tid  = -1;
 var taid = -1;
@@ -72,7 +74,7 @@ var results = regex.exec(window.location.href);
 if( results != null ) {
     tid = results[0].substring(results[0].lastIndexOf("=")+1);
 }
-// the id of the composer of the track 
+// the id of the composer of the track
 regex = new RegExp("[\\?&]taid=([^&#]*)");
 results = regex.exec(window.location.href);
 if( results != null ) {
@@ -185,12 +187,12 @@ function showLogin() {
 /* ---------------------------------------------------------------------- */
 
 $(document).ready(function(){
-    
+
     if (tid != -1 && taid != -1) {
         featuredTrackClicked(tid);
         reloadDataInWidget(tid, taid);
     }
-    
+
 });
 
 
@@ -205,11 +207,11 @@ $(document).ready(function(){
 
 
                 <div class="span-16">
-    
-            		
+
+
             		<div id="container"></div>
-            		
-    
+
+
     				<div id="newsPagination"> </div>
           			<script type="text/javascript">
           				var newsCount = <?php echo $newsCount; ?>;
@@ -220,7 +222,7 @@ $(document).ready(function(){
           			 	}
           		   		var newsPagingInstance=new ajaxpageclass.createBook(newsLinks, "container", ["newsPagination"]);
           			</script>
-    
+
           		</div>
 
 
@@ -242,7 +244,7 @@ $(document).ready(function(){
                     </div>
                     <? include ("sidebar.php"); ?>
                 </div>
-            
+
             </div>
 
         	<? include ("footer.php"); ?>

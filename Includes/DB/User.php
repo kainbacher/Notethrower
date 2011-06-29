@@ -74,7 +74,7 @@ class User {
         }
     }
 
-    function fetch_all_from_to($from, $to, $show_inactive_items, $include_unknown_artist) {
+    function fetch_all_from_to($from, $to, $show_inactive_items, $include_unknown_artist, $include_fans = false) {
         $objs = array();
 
         $result = _mysql_query(
@@ -82,6 +82,7 @@ class User {
             'from pp_user ' .
             ($show_inactive_items ? 'where 1 = 1 ' : 'where status = "active" ') .
             ($include_unknown_artist ? '' : 'and id >= 0 ') .
+            ($include_fans ? '' : 'and is_artist = 1 ') .
             'order by name ' .
             'limit ' . $from . ', ' . ($to - $from + 1)
         );

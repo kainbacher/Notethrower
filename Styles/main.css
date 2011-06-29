@@ -1679,3 +1679,40 @@ a.nohighlight:hover {
     background-color: #EEF9FF;
 }
 
+
+/* !dashboard */
+/* ---------------------------------------------------------------------- */
+
+.dashboardList {
+    display: inline-block;
+    padding: 0px;
+    list-style-type: none;
+    margin: 0px;
+}
+
+.dashboardList li {
+    float: left;
+    height: 150px;
+    width: 150px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+.dashboardList a {
+    background-color: #F9F9F9;
+    border: 3px solid #EEE;
+    display: block;
+    height: 150px;
+    text-align: center;
+}
+
+.dashboardList a:hover {
+    background-color: #EEF9FF;
+}
+
+.dashboardList img {
+    margin-top: 30px;
+}
+
+
+

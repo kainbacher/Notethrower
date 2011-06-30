@@ -26,7 +26,7 @@ ajaxpageclass.connect=function(pageurl, divId){
 	else if (window.ActiveXObject){ // if IE6 or below
 		try {
 		page_request = new ActiveXObject("Msxml2.XMLHTTP")
-		} 
+		}
 		catch (e){
 			try{
 			page_request = new ActiveXObject("Microsoft.XMLHTTP")
@@ -50,7 +50,7 @@ ajaxpageclass.loadpage=function(page_request, divId){
 	}
 }
 
-ajaxpageclass.getCookie=function(Name){ 
+ajaxpageclass.getCookie=function(Name){
 	var re=new RegExp(Name+"=[^;]+", "i"); //construct RE to search for target name/value pair
 	if (document.cookie.match(re)) //if cookie found
 		return document.cookie.match(re)[0].split("=")[1] //return its value

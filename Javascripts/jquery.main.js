@@ -18,7 +18,7 @@ function position(){
 
 /* !clearInputField */
 /* ---------------------------------------------------------------------- */
-function ClearInput(id){ 
+function ClearInput(id){
     var input = document.getElementById(id);
     input.value = '';
 }
@@ -55,7 +55,7 @@ $(document).ready(function(){
     	$(this).hide();
     });
 
-    
+
 
 
 
@@ -64,7 +64,7 @@ $(document).ready(function(){
     /* ---------------------------------------------------------------------- */
     $('#startpageButtonTour a').bind('click',function(){
         $('.contentTopStartInner').animate({left:'-1450'}, 1000);
-        return false;      
+        return false;
     });
 
     $('#startpagePaginatorBack a').bind('click',function(){
@@ -81,34 +81,34 @@ $(document).ready(function(){
         $('.contentTopStartInner').animate({left:'-2900'}, 1000);
         return false;
     });
-    
+
     $('#startpagePaginator3 a').bind('click',function(){
         $('.contentTopStartInner').animate({left:'-4350'}, 1000);
         return false;
-    });        
+    });
 
     $('#startpagePaginatorWrapper a').bind('click',function(){
         return false;
-    }); 
+    });
 
 
     /* !userInfo sendMessage */
     /* ---------------------------------------------------------------------- */
 /*
     $('.sendMessageLink a').bind('click', function(){
-        
-        $('#sendMessageOverlay').css('display','block');            
-        
+
+        $('#sendMessageOverlay').css('display','block');
+
         var link = $(this).attr("href");
-        $("#sendMessageWrapper").load(link + " div#sendMessageInner", function(){ 
+        $("#sendMessageWrapper").load(link + " div#sendMessageInner", function(){
 
             $('#senMessageClose').bind('click', function(){
                 $('#sendMessageOverlay').css('display','none');
             });
 
         });
-        
-        
+
+
         return false;
     });
 */
@@ -120,15 +120,15 @@ $(document).ready(function(){
     /* !toolTip */
     /* ---------------------------------------------------------------------- */
 
-    
-    
+
+
     $('.toolTip').hover(
         function(){
             $(this).next().show();
         }, function(){
             $(this).next().hide();
         }
-        
+
     );
 
     $('.toolTipContent').hover(
@@ -137,26 +137,26 @@ $(document).ready(function(){
         }, function(){
             $(this).hide();
         }
-        
+
     );
 
 
 /*
         var tipContent = $(this).next().text();
-    
-        $('.toolTip').simpletip({      
+
+        $('.toolTip').simpletip({
             content: tipContent,
             fixed: false
-        }); 
-*/   
-    
+        });
+*/
+
 
 
     /* ! galleria */
     /* ---------------------------------------------------------------------- */
     // Load the classic theme
-    Galleria.loadTheme('/notethrower/Javascripts/themes/classic/galleria.classic.js');
-    
+    Galleria.loadTheme('../Javascripts/themes/classic/galleria.classic.js');
+
     // Initialize Galleria
     $('#galleria, .galleria').galleria({
         width:662,
@@ -170,7 +170,7 @@ $(document).ready(function(){
         showCounter: false,
         autoplay: true
     });
- 
+
 
     /* !  */
     /* ---------------------------------------------------------------------- */

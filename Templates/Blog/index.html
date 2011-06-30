@@ -1,0 +1,45 @@
+${Common/pageHeader}
+
+<body>
+
+    ${Common/bodyHeader}
+
+    <div class="container">
+      <div class="span-16">
+        <div id="newsContainer"></div>
+        <div id="newsPagination"> </div>
+        <script type="text/javascript">
+      	        var newsCount = ${newsCount};
+      	        var newsPageCount = Math.ceil(newsCount / ${newsPerPage});
+      	        var newsLinks = {pages: [], selectedpage: 0};
+       	        for (var i=0; i < newsPageCount; i++) {
+       	        	newsLinks.pages[i] = 'newsSnippet.php?page=' + (i+1);
+       	        }
+        		var newsPagingInstance=new ajaxpageclass.createBook(newsLinks, "newsContainer", ["newsPagination"]);
+        </script>
+      </div>
+
+      <div class="span-8 last">
+          <div class="box-grey">
+              <h2>Tags</h2>
+              <ul>
+                  <li><a href="#">Tags</a></li>
+                  <li><a href="#">Tags</a></li>
+                  <li><a href="#">Tags</a></li>
+                  <li><a href="#">Tags</a></li>
+              </ul>
+              <h2>Archive</h2>
+              <ul>
+                  <li><a href="#">June 2011</a></li>
+                  <li><a href="#">July 2011</a></li>
+                  <li><a href="#">August 2011</a></li>
+              </ul>
+          </div>
+      </div>
+    </div>
+
+    ${Common/bodyFooter}
+
+</body>
+
+${Common/pageFooter}

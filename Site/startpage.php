@@ -39,7 +39,7 @@ if ($leftTrack)  $leftTrackId  = $leftTrack->id;
 if ($rightTrack) $rightTrackId = $rightTrack->id;
 
 processAndPrintTpl('Startpage/index.html', array(
-    '${Common/pageHeader}'                    => buildPageHeader('Start', true),
+    '${Common/pageHeader}'                    => buildPageHeader('Start', true, false),
     '${Common/bodyHeader}'                    => buildBodyHeader($user),
     '${selectedGenre}'                        => $genre,
     '${Startpage/genreSelectionElement_list}' => buildGenreSelectionList(),

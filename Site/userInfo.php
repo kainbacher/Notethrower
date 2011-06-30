@@ -170,7 +170,7 @@ for ($i = 0; $i < $rows; $i++) {
 }
 
 processAndPrintTpl('UserInfo/index.html', array(
-    '${Common/pageHeader}'                              => buildPageHeader('User Info', false, $showMobileVersion),
+    '${Common/pageHeader}'                              => buildPageHeader('User Info', false, false, $showMobileVersion),
     '${Common/bodyHeader}'                              => buildBodyHeader($visitorUser, $showMobileVersion),
     '${userId}'                                         => $user->id,
     '${userName}'                                       => escape($user->name),

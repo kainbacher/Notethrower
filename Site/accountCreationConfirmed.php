@@ -1,7 +1,9 @@
 <?php
 
-include_once('../Includes/Init.php');
+include_once('../Includes/Init.php'); // must be included first
+
 include_once('../Includes/Snippets.php');
+include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/User.php');
 
 if (isset($_GET['x']) && isset($_GET['c']) && md5('TheSparrowsAreFlyingAgain!' . $_GET['x']) == $_GET['c']) {
@@ -25,60 +27,15 @@ if (isset($_GET['x']) && isset($_GET['c']) && md5('TheSparrowsAreFlyingAgain!' .
     exit;
 }
 
-writePageDoctype();
+$user = User::new_from_cookie();
 
-?>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <?php writePageMetaTags(); ?>
-        <title><?php writePageTitle(); ?></title>
-        <link rel="stylesheet" href="../Styles/main.css" type="text/css">
+processAndPrintTpl('AccountCreated/index.html', array(
+    '${Common/pageHeader}' => buildPageHeader('Account created'),
+    '${Common/bodyHeader}' => buildBodyHeader($user),
+    '${Common/bodyFooter}' => buildBodyFooter(),
+    '${Common/pageFooter}' => buildPageFooter()
+));
 
-        <script type="text/javascript" src="../Javascripts/jquery-1.6.1.min.js"></script>
-        <script type="text/javascript" src="../Javascripts/jquery.main.js"></script>     
-    
-    </head>
-    <body>
+// END
 
-        <div id="bodyWrapper">
-
-            <? include ("pageHeader.php"); ?>
-            <? include ("mainMenu.php"); ?>
-            
-            <div id="pageMainContent">
-            
-                <div class="horizontalMenu">
-                    <ul>
-                        <li><a href="index.php">Startpage</a></li>
-                    </ul>
-                </div>
-            
-            
-                <div id="standardInfoDivStart"></div>
-                <div id="standardInfoDiv">
-                    <div id="container">
-                        <br>
-                        <h1>Welcome to Notethrower</h1>
-                        <br/>
-                        <h2>You're done!</h2>
-                        <br>
-                        You just successfully activated your account. Please log in on the start page now.<br>
-                        <br>
-                        <a href="index.php">Proceed to start page</a>
-                    </div>
-                </div>
-            
-                <div id="standardInfoDivEnd"></div>
-            
-                <br/>
-            </div> <!-- pageMainContent -->
-            
-            <? include ("footer.php"); ?>
-
-        </div> <!-- bodyWrapper -->
-
-        <?php writeGoogleAnalyticsStuff(); ?>
-
-    </body>
-</html>
+?>                    

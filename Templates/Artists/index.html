@@ -25,28 +25,21 @@ ${Common/bodyHeader}
 
                 <div class="span-16 last">
                     <ul class="tabs">
-                        <li class="tabsItem"><a href="#" class="tab-1 tabsAct">Featured Artist</a></li>
-                        <li class="tabsItem"><a href="#" class="tab-2">Latest Artist</a></li>
+                        <li class="tabsItem"><a href="#" class="tab-1 tabsAct">Top artists</a></li>
+                        <li class="tabsItem"><a href="#" class="tab-2">Latest artists</a></li>
                     </ul>
                 </div>
 
                 <div class="span-16 last tabcontent-1 tabcontentAct">
-                    <div  class="trackList">
-
-                        ${Artists/artistListItem_list}
-
-                    </div>
-                    <div class="span-16 last">
-                        <a href="#">Paginator goes here</a>
+                    <div class="trackList">
+                        ${Artists/artistListItem_top_list}
                     </div>
                 </div>
 
                 <div class="span-16 last tabcontent-2">
-                    latest artists
-                </div>
-
-                <div class="span-16 last tabcontent-3">
-                    genre
+                    <div class="trackList">
+                        ${Artists/artistListItem_latest_list}
+                    </div>
                 </div>
 
             </div>
@@ -66,7 +59,7 @@ ${Common/bodyHeader}
             </div>
 
             <div class="box-grey">
-                <h2>Discover new music support the artists and be a fan.</h2>
+                <h2>Discover new music, support the artists and be a fan.</h2>
 
                 <p>
                     <strong>browse by genre:</strong><br />

@@ -74,16 +74,57 @@ class User {
         }
     }
 
-    function fetch_all_from_to($from, $to, $show_inactive_items, $include_unknown_artist, $include_fans = false) {
+    function fetch_all_from_to($from, $to, $show_inactive_items, $include_unknown_artist, $include_fans = false,
+            $orderByClause = 'order by u.name asc') {
+
+        $objs = array();
+
+        $constraints = array();
+        if (!$show_inactive_items) {
+            $constraints[] = 'u.status = "active"';
+        }
+        if (!$include_unknown_artist) {
+            $constraints[] = 'u.id >= 0';
+        }
+        if (!$include_fans) {
+            $constraints[] = 'u.is_artist = 1';
+        }
+
+        $whereClause = join(' and ', $constraints);
+        if ($whereClause) $whereClause = 'where ' . $whereClause;
+
+        $result = _mysql_query(
+            'select u.* ' .
+            'from pp_user u ' .
+            $whereClause . ' ' .
+            $orderByClause . ' ' .
+            'limit ' . $from . ', ' . ($to - $from + 1)
+        );
+
+        $ind = 0;
+
+        while ($row = mysql_fetch_array($result)) {
+            $a = new User();
+            $a = User::_read_row($a, $row);
+
+            $objs[$ind] = $a;
+            $ind++;
+        }
+
+        mysql_free_result($result);
+
+        return $objs;
+    }
+
+    function fetch_most_listened_artists_from_to($from, $to) {
         $objs = array();
 
         $result = _mysql_query(
-            'select * ' .
-            'from pp_user ' .
-            ($show_inactive_items ? 'where 1 = 1 ' : 'where status = "active" ') .
-            ($include_unknown_artist ? '' : 'and id >= 0 ') .
-            ($include_fans ? '' : 'and is_artist = 1 ') .
-            'order by name ' .
+            'select u.*, sum(t.playback_count) as pb_count ' .
+            'from pp_user u, pp_audio_track t ' .
+            'where u.id = t.user_id ' .
+            'group by u.id ' .
+            'order by pb_count desc ' .
             'limit ' . $from . ', ' . ($to - $from + 1)
         );
 
@@ -140,7 +181,6 @@ class User {
         }
     }
 
-
     function fetch_all_for_name_like($search_string, $limit) {
         $objs = array();
 
@@ -166,7 +206,6 @@ class User {
 
         return $objs;
     }
-
 
     function fetch_for_username_password($username, $password) {
         $result = _mysql_query(

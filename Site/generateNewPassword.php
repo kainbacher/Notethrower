@@ -3,7 +3,6 @@
 include_once('../Includes/Init.php');
 
 include_once('../Includes/Config.php');
-//include_once('../Includes/recaptchalib.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/User.php');

@@ -7,8 +7,6 @@ include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/News.php');
 
-// FIXME - news-datum mit anzeigen!
-
 $user = User::new_from_cookie();
 
 $newsCount = News::count_all();

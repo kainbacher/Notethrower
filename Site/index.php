@@ -6,7 +6,6 @@ include_once('../Includes/RemoteSystemCommunicationUtil.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/AudioTrack.php');
-//include_once('../Includes/DB/News.php');
 include_once('../Includes/DB/User.php');
 
 $logger->set_debug_level();
@@ -18,11 +17,6 @@ if ($user) {
     $visitorUserId = $user->id;
     $logger->info('visitor user id: ' . $visitorUserId);
 }
-
-//$trackCount = AudioTrack::count_all(false, false, $visitorUserId);
-//$logger->info('track count: ' . $trackCount);
-
-//$newsCount = News::count_all();
 
 $latestTracksList = '';
 $latestTracks = AudioTrack::fetch_newest_from_to(0, 5, false, false, $visitorUserId);

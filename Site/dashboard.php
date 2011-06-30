@@ -21,8 +21,8 @@ if ($user) {
     $logger->info('user is NOT logged in');
 }
 
-processAndPrintTpl('Dashboard/index.html', array( // ################## hier ordner anpassen!
-    '${Common/pageHeader}'                     => buildPageHeader('FIXME', true, false),
+processAndPrintTpl('Dashboard/index.html', array(
+    '${Common/pageHeader}'                     => buildPageHeader('Dashboard', true, false),
     '${Common/bodyHeader}'                     => buildBodyHeader($user),
     '${Common/bodyFooter}'                     => buildBodyFooter(),
     '${Common/pageFooter}'                     => buildPageFooter()

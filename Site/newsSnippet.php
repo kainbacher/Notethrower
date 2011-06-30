@@ -18,11 +18,12 @@ foreach ($news as $n) {
     if ($newsIdx > 0) {
         echo '<div class="newsSpacer"></div>';
     }
+
     echo '<div class="newsEntry">';
     echo '<h1>' . $n->headline . '</h1>';
     echo $n->html;
-    echo '<br /><br />';
-    echo '<small>' . date('M d, Y', strtotime($n->entry_date)) . '</small>';
+    echo '<br />';
+    echo '<div class="newsDate">[ ' . date('M d, Y', strtotime($n->entry_date)) . ' ]</div>';
     echo '</div>';
 
     $newsIdx++;

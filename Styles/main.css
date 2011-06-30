@@ -621,7 +621,7 @@ a.nohighlight:hover {
 #loginStatusDiv {
 	color: #cccccc;
 	float: right;
-	height: 36px;  
+	height: 36px;
     position: relative;
 	text-align: center;
 }
@@ -666,7 +666,7 @@ a.nohighlight:hover {
 
     -moz-border-radius-bottomright: 5px;
     border-bottom-right-radius: 5px;
-    
+
     -moz-border-radius-bottomleft: 5px;
     border-bottom-left-radius: 5px;
 }
@@ -678,13 +678,13 @@ a.nohighlight:hover {
 .topMenuSubItem {
     border-top: 1px solid #444;
     margin-left: 0px;
-    margin-right: 0px; 
+    margin-right: 0px;
 }
 
 .topMenuSubItem a {
     height: 20px;
     padding-top: 6px;
-    padding-bottom: 6px; 
+    padding-bottom: 6px;
 }
 
 .topMenuSubLoginItem {
@@ -816,7 +816,7 @@ a.nohighlight:hover {
 /* !contentTop */
 /* ---------------------------------------------------------------------- */
 
-#contentTop {	
+#contentTop {
 	margin-left: auto;
 	margin-right: auto;
 	overflow: hidden;
@@ -896,7 +896,7 @@ a.nohighlight:hover {
     text-shadow: 0 -1px 1px #222;
     border-bottom: 1px solid #222;
     position: relative;
-    
+
     -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
     -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
     text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
@@ -916,7 +916,7 @@ a.nohighlight:hover {
 
 #chosenTrackHeadline {
     font-size: 20px;
-    font-weight: normal;   
+    font-weight: normal;
     float: left;
     margin-top: 30px;
     padding-left: 10px;
@@ -1165,6 +1165,10 @@ a.nohighlight:hover {
 	height: 18px;
 }
 
+.newsDate {
+    font-size: 70%;
+}
+
 
 /* !sidebar */
 /* ---------------------------------------------------------------------- */
@@ -1233,7 +1237,7 @@ a.nohighlight:hover {
 
 .trackListItem {
     border-bottom: 1px solid #ccc;
-    padding-top: 5px; 
+    padding-top: 5px;
 }
 
 .trackListItemHover {
@@ -1340,7 +1344,7 @@ a.nohighlight:hover {
 
 .trackInfoTitle {
 	border-bottom: 1px solid #cccccc;
-	margin-bottom: 16px;	
+	margin-bottom: 16px;
 }
 
 /* !horizontalMenu */
@@ -1348,7 +1352,7 @@ a.nohighlight:hover {
 
 .horizontalMenu {
     background-color: #ffffff;
- 
+
     /* Mozilla: */
     background: -moz-linear-gradient(top, #ffffff, #e1e1e1);
     /* Chrome, Safari:*/
@@ -1363,7 +1367,7 @@ a.nohighlight:hover {
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
-    
+
     height: 36px;
     margin-bottom: 18px;
 }
@@ -1454,7 +1458,7 @@ a.nohighlight:hover {
 */
 
 #startpageButtonStart {
-    float: left;   
+    float: left;
 }
 
 /*

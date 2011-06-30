@@ -20,10 +20,11 @@ foreach ($news as $n) {
     }
     echo '<div class="newsEntry">';
     echo '<h1>' . $n->headline . '</h1>';
-    //echo '<br>';
-    //echo '<small>' . $n->entry_date . '</small>'; // FIXME - timezone? 
     echo $n->html;
+    echo '<br /><br />';
+    echo '<small>' . date('M d, Y', strtotime($n->entry_date)) . '</small>';
     echo '</div>';
+
     $newsIdx++;
 }
 

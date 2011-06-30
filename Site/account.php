@@ -146,7 +146,7 @@ $formElementsSection1 .= getFormFieldForParams(array(
     'unpersistedObj'         => $unpersistedUser,
     'errorFields'            => $errorFields,
     'workWithUnpersistedObj' => $problemOccured,
-    'infoText'               => 'This is your username for logging in to Notethrower.' . ($pageMode == 'artist' ? '<br>If you want to provide a different name than your artist profile, you may do so.' : '')
+    'infoHtml'               => 'This is your username for logging in to Notethrower.' . ($pageMode == 'artist' ? '<br>If you want to provide a different name than your artist profile, you may do so.' : '')
 ));
 
 $formElementsSection1 .= getFormFieldForParams(array(
@@ -158,7 +158,7 @@ $formElementsSection1 .= getFormFieldForParams(array(
     'unpersistedObj'         => $unpersistedUser,
     'errorFields'            => $errorFields,
     'workWithUnpersistedObj' => $problemOccured,
-    'infoText'               => 'We will send you a verification link to this address to login. If another user sends you a message, a notification will also be sent here.<br>We will never give out your email or spam you. Aren\'t we nice?'
+    'infoHtml'               => 'We will send you a verification link to this address to login. If another user sends you a message, a notification will also be sent here.<br>We will never give out your email or spam you. Aren\'t we nice?'
 ));
 
 if ($userIsLoggedIn) { // it's an update
@@ -184,7 +184,7 @@ if ($userIsLoggedIn) { // it's an update
             'unpersistedObj'         => $unpersistedUser,
             'errorFields'            => $errorFields,
             'workWithUnpersistedObj' => $problemOccured,
-            'infoText'               => 'This is where your earnings will be sent. <a href="http://www.paypal.com" target="_blank">Get a PayPal account!</a><br>You can always add this later, but we need it in order to pay you.  We\'ve made it extremely easy for you to get paid for licensing your work. If someone has remixed your work and made it available in their widget, You get paid 50% of the earnings from the sale of that work. Now imagine if there are hundreds of remixed versions of your track all available for licensing. Many more opportunities to get paid for your initial work.'
+            'infoHtml'               => 'This is where your earnings will be sent. <a href="http://www.paypal.com" target="_blank">Get a PayPal account!</a><br>You can always add this later, but we need it in order to pay you.  We\'ve made it extremely easy for you to get paid for licensing your work. If someone has remixed your work and made it available in their widget, You get paid 50% of the earnings from the sale of that work. Now imagine if there are hundreds of remixed versions of your track all available for licensing. Many more opportunities to get paid for your initial work.'
         ));
     }
 }
@@ -322,7 +322,7 @@ if (!$userIsLoggedIn) {
             'errorFields'            => $errorFields,
             'workWithUnpersistedObj' => $problemOccured,
             'objValueOverride'       => get_param('terms_accepted'), // since this field is not stored in the user obj, we need an override
-            'infoText'               => 'I\'ve read and agree to <a href="javascript:showTermsAndConditions();">Notethrower\'s Artist Agreement</a>.'
+            'infoHtml'               => 'I\'ve read and agree to <a href="javascript:showTermsAndConditions();">Notethrower\'s Artist Agreement</a>.' // FIXME - html display
         ));
     }
 

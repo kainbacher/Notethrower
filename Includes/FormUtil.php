@@ -32,6 +32,7 @@ function getFormFieldForParams($params) {
     $selectOptions            = array_key_exists('selectOptions', $params)            ? $params['selectOptions']            : array();
     $objValues                = array_key_exists('objValues', $params)                ? $params['objValues']                : null;
     $infoText                 = array_key_exists('infoText', $params)                 ? $params['infoText']                 : null;
+    $infoHtml                 = array_key_exists('infoHtml', $params)                 ? $params['infoHtml']                 : null;
     $onChangeCallback         = array_key_exists('onChangeCallback', $params)         ? $params['onChangeCallback']         : null;
     $customStyleForInputField = array_key_exists('customStyleForInputField', $params) ? $params['customStyleForInputField'] : null;
     $hide                     = array_key_exists('hide', $params)                     ? $params['hide']                     : false;
@@ -328,9 +329,9 @@ function getFormFieldForParams($params) {
 
     // info text
     $help = '';
-    if ($infoText) {
+    if ($infoText || $infoHtml) {
         $help = processTpl('Common/formElementHelp.html', array(
-            '${text}' => escape($infoText)
+            '${text}' => $infoHtml ? $infoHtml : escape($infoText)
         ));
     }
 

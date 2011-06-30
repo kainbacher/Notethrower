@@ -9,7 +9,7 @@ $user = User::new_from_cookie();
 if ($user) {
     $logger->info('user is logged in');
 } else {
-    show_fatal_error_and_exit('access denied for not-logged-in user');
+    show_fatal_error_and_exit('access denied for not-logged-in user'); // don't redirect to pleaseLogin page because this page is loaded in a popup
 }
 
 $trackId = get_numeric_param('tid');

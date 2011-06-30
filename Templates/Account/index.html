@@ -10,18 +10,18 @@ ${Common/bodyHeader}
     <div class="span-16 last box-grey">
         <h1>${headline}</h1>
         <br />
-    
+
         ${Common/message_choice_list}
-    
+
         <form action="${formAction}" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="action" value="save">
             <input type="hidden" name="signupAs" value="${signupAs}">
             ${Common/formElement_section1_list}
-    
+
             ${userImage_choice}<br />
-    
+
             ${Common/formElement_section2_list}
-            
+
             <div class="prepend-6 span-6 last">
                 <input class="${submitButtonClass} button blue" type="submit" value="${submitButtonValue}">
             </div>
@@ -34,9 +34,11 @@ ${Common/bodyFooter}
 </body>
 
 <script type="text/javascript">
+
 function showTermsAndConditions() {
     window.open('termsAndConditions.php','TERMS_AND_CONDITIONS','scrollbars=yes,resizable=yes,status=0,width=1100,height=600');
 }
+
 </script>
 
 ${Common/pageFooter}

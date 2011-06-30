@@ -8,6 +8,8 @@ include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/User.php');
 
+// FIXME - voting system, players, etc. need to be made dynamic. try not to reload the entire page when voting happens. player code is in startpage.php.
+
 $logger->set_debug_level();
 
 $visitorUserId = -1;
@@ -35,7 +37,7 @@ if (!$latestTracksList) $latestTracksList = 'No tracks found.';
 $topTracksList = '';
 $topTracks = AudioTrack::fetch_most_downloaded_from_to(0, 5, false, false, $visitorUserId);
 
-foreach ($latestTracks as $track) {
+foreach ($topTracks as $track) {
     $topTracksList .= processTpl('Index/trackListItem.html', array(
         '${artistImgUrl}' => getUserImageUri($track->user_img_filename, 'tiny'),
         '${artistName}'   => escape($track->user_name),

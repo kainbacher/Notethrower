@@ -19,8 +19,8 @@ if ($user) {
     $logger->info('user is NOT logged in');
 }
 
-processAndPrintTpl('Pricing/index.html', array( // ################## hier ordner anpassen!
-    '${Common/pageHeader}'                     => buildPageHeader('FIXME', true, false),
+processAndPrintTpl('Pricing/index.html', array(
+    '${Common/pageHeader}'                     => buildPageHeader('Pricing'),
     '${Common/bodyHeader}'                     => buildBodyHeader($user),
     '${Common/bodyFooter}'                     => buildBodyFooter(),
     '${Common/pageFooter}'                     => buildPageFooter()

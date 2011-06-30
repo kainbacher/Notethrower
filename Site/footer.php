@@ -4,7 +4,6 @@
         <div class="span-6">
             <h3>About</h3>
             <ul class="footerMenu">
-                <!--<li><a href="termsofuse.php">Terms of use</a></li>-->
                 <li><a href="faq.php" target="_blank">Help and Feedback</a></li>
                 <li><a href="faq.php">FAQ</a></li>
                 <li><a href="about.php">About Page</a></li>

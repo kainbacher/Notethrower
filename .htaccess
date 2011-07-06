@@ -1,5 +1,9 @@
 AddHandler php5-script .php
 
-<FilesMatch "\.(README|txt|doc|docx|xls|xlsx|git|gitignore)$">
+<FilesMatch "README$">
+deny from all
+</FilesMatch>
+
+<FilesMatch "\.(txt|doc|docx|xls|xlsx|git|gitignore)$">
 deny from all
 </FilesMatch>

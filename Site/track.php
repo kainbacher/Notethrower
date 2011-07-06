@@ -54,7 +54,7 @@ if (get_param('action') == 'create') {
     // create a visibility record for this user
     $atav = new AudioTrackUserVisibility();
     $atav->user_id = $user->id;
-    $atav->track_id  = $track->id;
+    $atav->track_id = $track->id;
     $atav->save();
 
 } else if (get_param('action') == 'edit') {
@@ -84,15 +84,15 @@ if (get_param('action') == 'create') {
         $track->save();
 
         // if the track is private, make sure that the owner can see it
-//        if ($track->visibility == 'private') {
-//            $atav = AudioTrackUserVisibility::fetch_for_user_id_track_id($user->id, $track->id);
-//            if (!$atav) {
-//                $atav = new AudioTrackUserVisibility();
-//                $atav->user_id = $user->id;
-//                $atav->track_id = $track->id;
-//                $atav->save();
-//            }
-//        }
+        if ($track->visibility == 'private') {
+            $atav = AudioTrackUserVisibility::fetch_for_user_id_track_id($user->id, $track->id);
+            if (!$atav) {
+                $atav = new AudioTrackUserVisibility();
+                $atav->user_id = $user->id;
+                $atav->track_id = $track->id;
+                $atav->save();
+            }
+        }
 
         $messageList .= processTpl('Common/message_success.html', array(
             '${msg}' => 'Successfully saved track data.'
@@ -107,7 +107,9 @@ if (get_param('action') == 'create') {
             $track->status = 'inactive';
             $track->save();
             $messageList .= processTpl('Common/message_notice.html', array(
-                '${msg}' => 'WARNING: No MP3 track file was uploaded! The widget can only play the track when an MP3 file was uploaded. Please make sure it is of high quality, at least 128kbps at 44.1kHz'
+                '${msg}' => 'Please upload an MP3 file to make sure your song or track is activated.<br />' .
+                            'Without an MP3 file the song will not be visible for other users.<br />' .
+                            'Please make sure the file is of high quality, at least 128kbps at 44.1kHz'
             ));
         }
 
@@ -155,7 +157,9 @@ if (get_param('action') == 'create') {
         if ($mp3Count > 0) {
             $track->status = 'active';
         } else {
-            $msg = 'The track status cannot be set to \'Active\' because no MP3 track file was uploaded! The widget can only play the track when an MP3 file was uploaded. Please make sure it is of high quality, at least 128kbps at 44.1kHz';
+            $msg = 'The track status cannot be set to \'Active\' because no MP3 file was uploaded yet! ' .
+                   'Without an MP3 file the song will not be visible for other users. ' .
+                   'Please make sure the file is of high quality, at least 128kbps at 44.1kHz';
         }
     }
 
@@ -208,7 +212,9 @@ if (get_param('action') == 'create') {
         $track->status = 'inactive';
         $track->save();
         $messageList .= processTpl('Common/message_notice.html', array(
-            '${msg}' => 'WARNING: No MP3 track file was uploaded! The widget can only play the track when an MP3 file was uploaded. Please make sure it is of high quality, at least 128kbps at 44.1kHz'
+            '${msg}' => 'Please upload an MP3 file to make sure your song or track is activated.<br />' .
+                        'Without an MP3 file the song will not be visible for other users.<br />' .
+                        'Please make sure the file is of high quality, at least 128kbps at 44.1kHz'
         ));
     }
 }
@@ -344,6 +350,7 @@ processAndPrintTpl('Track/index.html', array(
     '${type}'                                   => get_param('type') == 'remix' ? 'remix' : 'original',
     '${submitButtonValue}'                      => 'Save',
     '${Common/formElement_list}'                => $formElementsList,
+    '${uploadedFiles}'                          => getUploadedFilesSection($track && $track->id ? $track->id : null),
     '${Common/bodyFooter}'                      => buildBodyFooter(),
     '${Common/pageFooter}'                      => buildPageFooter()
 ));
@@ -365,33 +372,49 @@ exit;
 
 // FIXME - put this list of track files on the upload page as discussed:
 
-//$existingFiles = AudioTrackFile::fetch_all_for_track_id($track->id, true);
-//echo '<table class="trackFilesTable">' . "\n";
-//echo '<tr>' . "\n";
-//echo '<td class="tableHeading"><b>Filename</b></td>' .
-//     '<td class="tableHeading"><b>Type</b></td>' .
-//     //'<td class="tableHeading"><b>Status</b></td>' .
-//     '<td class="tableHeading"><b>Action</b></td>' . "\n";
-//echo '</tr>' . "\n";
-//
-//$i = 0;
-//foreach ($existingFiles as $file) {
-//    $i++;
-//    echo '<tr class="standardRow' . ($i % 2 + 1) . '" onmouseover="this.className=\'highlightedRow\';" onmouseout="this.className=\'standardRow' . ($i % 2 + 1) . '\';">' . "\n";
-//    echo '<td><b>' . escape($file->orig_filename) . '</b></td>' .
-//         '<td>' . $file->type . '</td>' .
-//         //'<td><a href="track.php?tid=' . $track->id . '&action=toggleFileState&fid=' . $file->id . '">' . ($file->status == 'active' ? 'Active' : 'Inactive') . '</a></td>' .
-//         '<td><a href="javascript:askForConfirmationAndRedirect(\'Do you really want to delete this track file?\', \'' .
-//            escape_and_rewrite_single_quotes($file->orig_filename) . '\', \'track.php?tid=' . $track->id . '&action=deleteTrackFile&fid=' . $file->id . '\');">Delete</a></td>' . "\n";
-//    echo '</tr>' . "\n";
-//}
-//
-//if (count($existingFiles) == 0) {
-//    echo '<tr>' . "\n";
-//    echo '<td>No files uploaded yet. You need to upload at least an MP3 version of your track.</td>' . "\n";
-//    echo '</tr>' . "\n";
-//}
+function getUploadedFilesSection($trackId) {
+    global $logger;
 
+    $html = '';
+
+    $existingFiles = array();
+    if ($trackId) {
+        $existingFiles = AudioTrackFile::fetch_all_for_track_id($trackId, true);
+    }
+
+    $html .= '<table class="trackFilesTable">' . "\n";
+
+    $colspan = 3;
+
+    $html .= '<tr>' . "\n";
+    $html .= '<td class="tableHeading"><b>Filename</b></td>' . "\n";
+    $html .= '<td class="tableHeading"><b>Type</b></td>' . "\n";
+    //$html .= '<td class="tableHeading"><b>Status</b></td>' . "\n";
+    $html .= '<td class="tableHeading"><b>Action</b></td>' . "\n";
+    $html .= '</tr>' . "\n";
+
+    $i = 0;
+    foreach ($existingFiles as $file) {
+        $i++;
+        $html .= '<tr class="standardRow' . ($i % 2 + 1) . '" onmouseover="this.className=\'highlightedRow\';" onmouseout="this.className=\'standardRow' . ($i % 2 + 1) . '\';">' . "\n";
+        $html .= '<td><b>' . escape($file->orig_filename) . '</b></td>' .
+                 '<td>' . $file->type . '</td>' .
+                 //'<td><a href="track.php?tid=' . $trackId . '&action=toggleFileState&fid=' . $file->id . '">' . ($file->status == 'active' ? 'Active' : 'Inactive') . '</a></td>' .
+                 '<td><a href="javascript:askForConfirmationAndRedirect(\'Do you really want to delete this track file?\', \'' .
+                 escape_and_rewrite_single_quotes($file->orig_filename) . '\', \'track.php?tid=' . $trackId . '&action=deleteTrackFile&fid=' . $file->id . '\');">Delete</a></td>' . "\n";
+        $html .= '</tr>' . "\n";
+    }
+
+    if (count($existingFiles) == 0) {
+        $html .= '<tr>' . "\n";
+        $html .= '<td colspan="' . $colspan . '">No files uploaded yet. You need to upload at least a high quality MP3 version of your track.</td>' . "\n";
+        $html .= '</tr>' . "\n";
+    }
+
+    $html .= '</table>';
+
+    return $html;
+}
 
 
 

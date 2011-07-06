@@ -27,7 +27,7 @@ class AudioTrackFile {
             'from pp_audio_track_file ' .
             'where track_id = ' . n($tid) . ' ' .
             ($show_inactive_items ? 'and status in ("active", "inactive") ' : 'and status = "active" ') .
-            'order by filename asc'
+            'order by is_master desc, filename asc'
         );
 
         $ind = 0;
@@ -45,12 +45,35 @@ class AudioTrackFile {
         return $objs;
     }
 
-    function fetch_all_for_track_id_and_type($tid, $type) {
+    function fetch_master_file_for_track_id($tid, $show_inactive_items = false) {
         $result = _mysql_query(
             'select * ' .
             'from pp_audio_track_file ' .
             'where track_id = ' . n($tid) . ' ' .
-            'and type = ' . qq($type)
+            ($show_inactive_items ? 'and status in ("active", "inactive") ' : 'and status = "active" ') .
+            'and is_master = 1'
+        );
+
+        $f = null;
+
+        if ($row = mysql_fetch_array($result)) {
+            $f = new AudioTrackFile();
+            $f = AudioTrackFile::_read_row($f, $row);
+        }
+
+        mysql_free_result($result);
+
+        return $f;
+    }
+
+    function fetch_all_stems_for_track_id($tid, $show_inactive_items = false) {
+        $result = _mysql_query(
+            'select * ' .
+            'from pp_audio_track_file ' .
+            'where track_id = ' . n($tid) . ' ' .
+            ($show_inactive_items ? 'and status in ("active", "inactive") ' : 'and status = "active" ') .
+            'and is_master = 0 ' .
+            'order by filename asc'
         );
 
         $objs = array();

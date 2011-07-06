@@ -32,7 +32,7 @@ ${Common/bodyHeader}
 
         ${Common/message_choice_list}
 
-        <form action="${formAction}" method="POST">
+        <form name="trackForm" action="${formAction}" method="POST">
             <input type="hidden" name="action" value="save">
             <input type="hidden" name="tid" value="${trackId}">
             <input type="hidden" name="type" value="${type}">
@@ -42,10 +42,7 @@ ${Common/bodyHeader}
                 <input class="button blue" type="submit" value="${submitButtonValue}">
             </div>
 
-            <div class="span-12 last">
-                <br />
-                ${uploadedFiles}
-            </div>
+            ${Track/uploadedFilesSection}
 
             <div class="span-12 last">
                 <br />
@@ -58,5 +55,19 @@ ${Common/bodyHeader}
 ${Common/bodyFooter}
 
 </body>
+
+<script type="text/javascript" src="../Javascripts/Snippets.js"></script>
+
+<script type="text/javascript">
+
+function checkDeleteResponseAndSubmitForm(deleteWasOk, data) {
+    if (deleteWasOk) {
+        document.trackForm.submit();
+    } else {
+        alert('File deletion failed: ' + data.error);
+    }
+}
+
+</script>
 
 ${Common/pageFooter}

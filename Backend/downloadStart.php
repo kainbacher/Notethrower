@@ -225,7 +225,7 @@ var fileSelected = false;
 
     $files = AudioTrackFile::fetch_all_for_track_id($track->id, false);
     foreach ($files as $file) {
-        echo '<input type="radio" name="atfid" value="' . $file->id . '" onClick="fileSelected=true; checkInputs();">&nbsp;' . escape($file->orig_filename . ' (' . $file->type . ')') . '<br>' . "\n";
+        echo '<input type="radio" name="atfid" value="' . $file->id . '" onClick="fileSelected=true; checkInputs();">&nbsp;' . escape($file->orig_filename . ' (' . $file->type . ($file->is_master ? ', Master file' : ', Stem') . ')') . '<br>' . "\n";
     }
 
 ?>

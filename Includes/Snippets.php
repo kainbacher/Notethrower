@@ -11,6 +11,17 @@ for($i = 128; $i < 256; $i++){
 }
 
 // functions
+function sendJsonResponseAndExit(&$jsonResponse) {
+    global $logger;
+
+    $logger->debug('json response: ' . print_r($jsonResponse, true));
+    $jsonResponse = json_encode($jsonResponse);
+    header('Content-type: text/plain');
+    header('Content-length: ' . strlen($jsonResponse));
+    echo $jsonResponse;
+    exit;
+}
+
 function redirectTo($uri) {
     global $logger;
 

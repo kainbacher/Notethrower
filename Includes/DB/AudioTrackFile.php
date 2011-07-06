@@ -10,6 +10,7 @@ class AudioTrackFile {
     var $filename;
     var $orig_filename;
     var $type;
+    var $is_master;
     var $status;
     var $entry_date;
 
@@ -44,7 +45,7 @@ class AudioTrackFile {
         return $objs;
     }
 
-    function fetch_for_track_id_and_type($tid, $type) {
+    function fetch_all_for_track_id_and_type($tid, $type) {
         $result = _mysql_query(
             'select * ' .
             'from pp_audio_track_file ' .
@@ -52,15 +53,17 @@ class AudioTrackFile {
             'and type = ' . qq($type)
         );
 
-        $f = null;
-        if ($row = mysql_fetch_array($result)) {
+        $objs = array();
+
+        while ($row = mysql_fetch_array($result)) {
             $f = new AudioTrackFile();
             $f = AudioTrackFile::_read_row($f, $row);
+            $objs[] = $f;
         }
 
         mysql_free_result($result);
 
-        return $f;
+        return $objs;
     }
 
     function fetch_for_id($id) {
@@ -87,6 +90,7 @@ class AudioTrackFile {
         $f->filename              = $row['filename'];
         $f->orig_filename         = $row['orig_filename'];
         $f->type                  = $row['type'];
+        $f->is_master             = $row['is_master'];
         $f->status                = $row['status'];
         $f->entry_date            = reformat_sql_date($row['entry_date']);
 
@@ -104,6 +108,7 @@ class AudioTrackFile {
             'filename              varchar(255) not null, ' .
             'orig_filename         varchar(255) not null, ' .
             'type                  varchar(50)  not null, ' .
+            'is_master             tinyint(1)   not null, ' .
             'status                varchar(20)  not null, ' .
             'entry_date            datetime     not null default "1970-01-01 00:00:00", ' .
             'primary key (id), ' .
@@ -144,6 +149,21 @@ class AudioTrackFile {
         mysql_free_result($result);
 
         return $count;
+    }
+
+    function master_file_found_for_track_id($tid, $count_inactive_items = false) {
+        $result = _mysql_query(
+            'select count(*) as cnt ' .
+            'from pp_audio_track_file ' .
+            'where track_id = ' . n($tid) . ' ' .
+            'and is_master = 1 ' .
+            ($count_inactive_items ? 'and status in ("active", "inactive")' : 'and status = "active"')
+        );
+
+        $row = mysql_fetch_array($result);
+        mysql_free_result($result);
+
+        return $row['cnt'] > 0; // there can only be 1 or 0
     }
 
     function delete_all_with_track_id($tid) {
@@ -208,13 +228,14 @@ class AudioTrackFile {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_audio_track_file ' .
-            '(track_id, filename, orig_filename, type, ' .
+            '(track_id, filename, orig_filename, type, is_master, ' .
             'status, entry_date) ' .
             'values (' .
             n($this->track_id)               . ', ' .
             qq($this->filename)              . ', ' .
             qq($this->orig_filename)         . ', ' .
             qq($this->type)                  . ', ' .
+            b($this->is_master)              . ', ' .
             qq($this->status)                . ', ' .
             'now()'                          .
             ')'
@@ -236,6 +257,7 @@ class AudioTrackFile {
             'filename = '      . qq($this->filename)      . ', ' .
             'orig_filename = ' . qq($this->orig_filename) . ', ' .
             'type = '          . qq($this->type)          . ', ' .
+            'is_master = '     . qq($this->is_master)     . ', ' .
             'status = '        . qq($this->status)        . ' ' .
             // entry_date intentionally not set here
             'where id = '      . n($this->id)

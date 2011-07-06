@@ -18,13 +18,20 @@ if (!$track || !$track->id) {
     exit;
 }
 
+$atFile = AudioTrackFile::fetch_for_id(get_numeric_param('atfid'));
+if (!$atFile || !$atFile->id || $atFile->track_id != $track->id) {
+    $logger->warn('track not found!');
+    echo 'FILE NOT FOUND!';
+    exit;
+}
+
 if (get_param('mode') == 'purchase') {
     //check_authorization(); // deactivated, because it does not make sense to check. the content is free for private use anyway.
 }
 
 increment_download_count();
 
-deliver_file();
+deliver_file($atFile);
 
 exit;
 
@@ -62,20 +69,13 @@ function increment_download_count() {
     $track->save();
 }
 
-function deliver_file() {
+function deliver_file(&$atFile) {
     global $logger;
     global $track;
 
     $logger->info('delivering content ...');
 
-    $file = AudioTrackFile::fetch_for_track_id_and_type($track->id, get_param('format'));
-    if (!$file) {
-        $logger->warn('file format not defined in audio track!');
-        echo 'FORMAT NOT FOUND!';
-        exit;
-    }
-
-    $filename = $file->filename;
+    $filename = $atFile->filename;
     if (!$filename) { // should never happen
         $logger->warn('filename not defined in AudioTrackFile object!');
         echo 'FILENAME MISSING!';
@@ -89,15 +89,14 @@ function deliver_file() {
         exit;
     }
 
-    header('Content-Disposition: attachment; filename="' . $file->orig_filename . '"');
-    header('Content-Type: ' . get_mime_type());
+    header('Content-Disposition: attachment; filename="' . $atFile->orig_filename . '"');
+    header('Content-Type: ' . get_mime_type($atFile->type));
     header('Content-Length: ' . filesize($filepath));
 
     readfile_chunked($filepath);
 }
 
-function get_mime_type() {
-    $fmt = get_param('format');
+function get_mime_type($fmt) {
     if ($fmt == 'HQMP3') {
         return 'audio/mp3';
     } else if ($fmt == 'AIFF') {

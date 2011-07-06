@@ -464,11 +464,7 @@ function handleNewFileUpload(&$track, &$user, $uploaderParams) {
         //do_upload($upload_dir, 'newfilename', $upload_filename);
         do_solmetra_upload($GLOBALS['TMP_UPLOAD_PATH'] . $filename, $upload_dir, $upload_filename, true);
 
-        $newTrackFile = AudioTrackFile::fetch_for_track_id_and_type($track->id, $newFileType);
-        if (!$newTrackFile) {
-            $newTrackFile = new AudioTrackFile();
-        }
-
+        $newTrackFile = new AudioTrackFile();
         $newTrackFile->track_id = $track->id;
         $newTrackFile->filename = $userSubdir . '/' . $upload_filename;
         //$newTrackFile->orig_filename = $_FILES['newfilename']['name'];

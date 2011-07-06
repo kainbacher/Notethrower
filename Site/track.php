@@ -98,8 +98,8 @@ if (get_param('action') == 'create') {
             '${msg}' => 'Successfully saved track data.'
         ));
 
-        $mp3Count = AudioTrackFile::count_all_hqmp3_files_for_track_id($track->id, false);
-        if ($mp3Count > 0) {
+        $masterFound = AudioTrackFile::master_file_found_for_track_id($track->id);
+        if ($masterFound) {
             $track->status = 'active';
             $track->save();
 
@@ -107,8 +107,8 @@ if (get_param('action') == 'create') {
             $track->status = 'inactive';
             $track->save();
             $messageList .= processTpl('Common/message_notice.html', array(
-                '${msg}' => 'Please upload an MP3 file to make sure your song or track is activated.<br />' .
-                            'Without an MP3 file the song will not be visible for other users.<br />' .
+                '${msg}' => 'Please upload a master MP3 file to make sure your song or track is activated.<br />' .
+                            'Without a maser MP3 file the song will not be visible for other users.<br />' .
                             'Please make sure the file is of high quality, at least 128kbps at 44.1kHz'
             ));
         }
@@ -153,12 +153,13 @@ if (get_param('action') == 'create') {
         $track->status = 'inactive';
 
     } else {
-        $mp3Count = AudioTrackFile::count_all_hqmp3_files_for_track_id($track->id, false);
-        if ($mp3Count > 0) {
+        $masterFound = AudioTrackFile::master_file_found_for_track_id($track->id);
+        if ($masterFound) {
             $track->status = 'active';
+
         } else {
-            $msg = 'The track status cannot be set to \'Active\' because no MP3 file was uploaded yet! ' .
-                   'Without an MP3 file the song will not be visible for other users. ' .
+            $msg = 'The track status cannot be set to \'Active\' because no master MP3 file was uploaded yet! ' .
+                   'Without a master MP3 file the song will not be visible for other users. ' .
                    'Please make sure the file is of high quality, at least 128kbps at 44.1kHz';
         }
     }
@@ -203,8 +204,8 @@ if (get_param('action') == 'create') {
 
     AudioTrackFile::delete_with_id(get_numeric_param('fid'));
 
-    $mp3Count = AudioTrackFile::count_all_hqmp3_files_for_track_id($track->id, false);
-    if ($mp3Count > 0) {
+    $masterFound = AudioTrackFile::master_file_found_for_track_id($track->id);
+    if ($masterFound) {
         $track->status = 'active';
         $track->save();
 
@@ -212,8 +213,8 @@ if (get_param('action') == 'create') {
         $track->status = 'inactive';
         $track->save();
         $messageList .= processTpl('Common/message_notice.html', array(
-            '${msg}' => 'Please upload an MP3 file to make sure your song or track is activated.<br />' .
-                        'Without an MP3 file the song will not be visible for other users.<br />' .
+            '${msg}' => 'Please upload a master MP3 file to make sure your song or track is activated.<br />' .
+                        'Without a master MP3 file the song will not be visible for other users.<br />' .
                         'Please make sure the file is of high quality, at least 128kbps at 44.1kHz'
         ));
     }
@@ -396,8 +397,9 @@ function getUploadedFilesSection($trackId) {
     $i = 0;
     foreach ($existingFiles as $file) {
         $i++;
+
         $html .= '<tr class="standardRow' . ($i % 2 + 1) . '" onmouseover="this.className=\'highlightedRow\';" onmouseout="this.className=\'standardRow' . ($i % 2 + 1) . '\';">' . "\n";
-        $html .= '<td><b>' . escape($file->orig_filename) . '</b></td>' .
+        $html .= '<td><b>' . escape($file->orig_filename) . ($file->is_master ? ' (Master file)' : ' (Stem)') . '</b></td>' .
                  '<td>' . $file->type . '</td>' .
                  //'<td><a href="track.php?tid=' . $trackId . '&action=toggleFileState&fid=' . $file->id . '">' . ($file->status == 'active' ? 'Active' : 'Inactive') . '</a></td>' .
                  '<td><a href="javascript:askForConfirmationAndRedirect(\'Do you really want to delete this track file?\', \'' .
@@ -407,7 +409,7 @@ function getUploadedFilesSection($trackId) {
 
     if (count($existingFiles) == 0) {
         $html .= '<tr>' . "\n";
-        $html .= '<td colspan="' . $colspan . '">No files uploaded yet. You need to upload at least a high quality MP3 version of your track.</td>' . "\n";
+        $html .= '<td colspan="' . $colspan . '">No files uploaded yet. You need to upload at least a high quality MP3 master file.</td>' . "\n";
         $html .= '</tr>' . "\n";
     }
 

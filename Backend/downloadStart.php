@@ -34,7 +34,7 @@ if (!$track || !$track->id) {
 if (get_param('mode') == 'purchase') {
     start_paypal_flow();
 } else {
-    show_format_selection(true);
+    show_file_selection(true);
 }
 
 exit;
@@ -80,7 +80,7 @@ function start_paypal_flow() {
                 if ($create_tx) {
                     create_paypal_tx();
                 }
-                show_format_selection(false);
+                show_file_selection(false);
 
             } else if (strcmp ($res, "INVALID") == 0) {
                 // log for manual investigation
@@ -162,11 +162,11 @@ function create_paypal_tx() {
     $p->insert();
 }
 
-function show_format_selection($isFreeDownload) {
+function show_file_selection($isFreeDownload) {
     global $logger;
     global $track;
 
-    $logger->info('showing format selection ...');
+    $logger->info('showing file selection ...');
 
     $user = User::fetch_for_id($track->user_id);
     if (!$user || !$user->id) {
@@ -175,7 +175,7 @@ function show_format_selection($isFreeDownload) {
         exit;
     }
 
-    // display list of different formats for download
+    // display list of different files for download
 
     writePageDoctype();
 ?>
@@ -187,7 +187,7 @@ function show_format_selection($isFreeDownload) {
     <link rel="stylesheet" href="../Styles/main.css" type="text/css">
     <script type="text/javascript">
 
-var formatSelected = false;
+var fileSelected = false;
 
     </script>
   </head>
@@ -214,8 +214,8 @@ var formatSelected = false;
       </div>
 
       <div id="selection">
-        <span class="subsubheadline">Please select content format:</span><br><br>
-        <form name="formatSelectionFrm" action="downloadFile.php" method="POST">
+        <span class="subsubheadline">Please select download file:</span><br><br>
+        <form name="fileSelectionFrm" action="downloadFile.php" method="POST">
           <input type="hidden" name="mode" value="<?php echo get_param('mode'); ?>">
           <input type="hidden" name="transactionId" value="<?php echo get_param('txn_id'); ?>">
           <input type="hidden" name="track_id" value="<?php echo $track->id; ?>">
@@ -225,12 +225,7 @@ var formatSelected = false;
 
     $files = AudioTrackFile::fetch_all_for_track_id($track->id, false);
     foreach ($files as $file) {
-        if      ($file->type == 'HQMP3')       echo '<input type="radio" name="format" value="HQMP3"       onClick="formatSelected=true; checkInputs();">&nbsp;HQ MP3<br>'                    . "\n";
-        else if ($file->type == 'AIFF')        echo '<input type="radio" name="format" value="AIFF"        onClick="formatSelected=true; checkInputs();">&nbsp;AIFF<br>'                      . "\n";
-        else if ($file->type == 'FLAC')        echo '<input type="radio" name="format" value="FLAC"        onClick="formatSelected=true; checkInputs();">&nbsp;FLAC<br>'                      . "\n";
-        else if ($file->type == 'OGG')         echo '<input type="radio" name="format" value="OGG"         onClick="formatSelected=true; checkInputs();">&nbsp;OGG<br>'                       . "\n";
-        else if ($file->type == 'WAV')         echo '<input type="radio" name="format" value="WAV"         onClick="formatSelected=true; checkInputs();">&nbsp;WAV<br>'                       . "\n";
-        else if ($file->type == 'ZIP')         echo '<input type="radio" name="format" value="ZIP"         onClick="formatSelected=true; checkInputs();">&nbsp;Zipped files<br>'              . "\n";
+        echo '<input type="radio" name="atfid" value="' . $file->id . '" onClick="fileSelected=true; checkInputs();">&nbsp;' . escape($file->orig_filename . ' (' . $file->type . ')') . '<br>' . "\n";
     }
 
 ?>
@@ -239,7 +234,7 @@ var formatSelected = false;
 <?php
 
     if (count($files) == 0) {
-        echo '<i>Whoops, no format is available for download!</i>';
+        echo '<i>Whoops, no files are available for download!</i>';
 
     } else {
         echo '<input type="submit" id="dld" value="&nbsp;Download&nbsp;" disabled="true">';
@@ -277,7 +272,7 @@ This agreement "Agreement" sets forth the terms under which Notethrower authoriz
 
 Media:  any recording or distribution medium, now existing or later developed in any format or version.
 
-New Master:   the sound recording based on the Original Master created by New Artist by sampling, modifying, or adding instrumental or vocal tracks to the Original Master.   
+New Master:   the sound recording based on the Original Master created by New Artist by sampling, modifying, or adding instrumental or vocal tracks to the Original Master.
 
 New Composition:  the musical composition that is a derivative version of the Original Composition and that is embodied in the New Master.
 
@@ -303,11 +298,11 @@ b.	License to Notethrower.   New Artist will promptly upload the New Master, and
 
 c.	Trademarks and Right of Publicity.  New Artist hereby grants Notethrower and Original Artist a non-exclusive, assignable and sub-licensable license to reproduce and display New Artists trademarks, service marks, logos, and any elements associated with the identity of New Artist including, but not limited to New Artists name, likeness, or signature, for the purpose of identifying the New Artist or any portion thereof in connection with (a) the promotion and marketing of the New Song in any Media and  (b) the promotion of the Notethrower website and business.
 
-d.	Original Song.  For the avoidance of doubt, New Artist acknowledges that this Agreement grants New Artist no rights in, and creates no obligations with respect to, the Original Song or any derivative work based on the Original Song other than the rights needed to create and exploit the New Master and New Composition pursuant to this Agreement.  
-	
+d.	Original Song.  For the avoidance of doubt, New Artist acknowledges that this Agreement grants New Artist no rights in, and creates no obligations with respect to, the Original Song or any derivative work based on the Original Song other than the rights needed to create and exploit the New Master and New Composition pursuant to this Agreement.
+
 4.	 Exploitation of the New Song
 
-a.	Notethrower Royalties.  Notethrower will divide all money payable pursuant to the Notethrower Artist Agreement <LINK>, which is hereby incorporated by reference, pertaining to the New Song evenly (50/50) between New Artist and Original Artist. 
+a.	Notethrower Royalties.  Notethrower will divide all money payable pursuant to the Notethrower Artist Agreement <LINK>, which is hereby incorporated by reference, pertaining to the New Song evenly (50/50) between New Artist and Original Artist.
 
 b.	Other Revenue.  Unless otherwise agreed by the New Artist and Original Artist, the New Artist agrees to pay the Original Artist 50% of all gross income from commercial exploitation of the New Song.  For the avoidance of doubt, Original Artist has agreed to a reciprocal obligation to New Artist pursuant to the Notethrower Artist Agreement <LINK>, which is hereby incorporated by reference.  Unless otherwise agreed by the New Artist and Original Artist, each will bear its own expenses, taxes, and other costs associated with creating and exploiting the New Song.
 
@@ -325,7 +320,7 @@ d.	Remedies.  With respect to any breach of warranty provided under this Section
 
 6.	INDEMNIFICATION
 
-a.	Indemnity.  New Artist agrees to defend, indemnify, and hold Notethrower and the Original Artist harmless against any loss, cost, liability, and expense (including reasonable attorneys' fees) arising from any breach of the representations and warranties set forth in Section 5. 
+a.	Indemnity.  New Artist agrees to defend, indemnify, and hold Notethrower and the Original Artist harmless against any loss, cost, liability, and expense (including reasonable attorneys' fees) arising from any breach of the representations and warranties set forth in Section 5.
 
 b.	Settlement.  New Artist shall not, without the prior written consent of Notethrower, settle, compromise or consent to the entry of any judgment with respect to any pending or threatened claim covered by the indemnity provided in this Section unless the settlement, compromise or consent provides for and includes an express, unconditional release of all claims, damages, liabilities, costs and expenses, including reasonable legal fees and expenses, against Notethrower.
 
@@ -333,7 +328,7 @@ b.	Settlement.  New Artist shall not, without the prior written consent of Notet
 
 UNDER NO CIRCUMSTANCES WILL NOTETHROWER BE LIABLE FOR CONSEQUENTIAL, INDIRECT, SPECIAL, PUNITIVE OR INCIDENTAL DAMAGES OR LOST PROFITS, WHETHER FORESEEABLE OR UNFORESEEABLE, BASED ON CLAIMS ARISING OUT OF BREACH OR FAILURE OF EXPRESS OR IMPLIED WARRANTY, BREACH OF CONTRACT, MISREPRESENTATION, NEGLIGENCE, STRICT LIABILITY IN TORT OR OTHERWISE.  IN NO EVENT WILL THE AGGREGATE LIABILITY THAT NOTETHROWER MAY INCUR IN ANY ACTION OR PROCEEDING EXCEED THE LESSER OF $100 OR THE TOTAL AMOUNT OF ROYALTIES PAID BY NOTETHROWER DURING THE PAST YEAR OF THE CURRENT TERM.  THE LIMITATIONS, EXCLUSIONS AND DISCLAIMERS SET FORTH IN THIS SECTION 7 WILL NOT APPLY ONLY IF AND TO THE EXTENT THAT THE LAW OR A COURT OF COMPETENT JURISDICTION REQUIRES LIABILITY UNDER APPLICABLE LAW BEYOND AND DESPITE THESE LIMITATIONS, EXCLUSIONS AND DISCLAIMERS.
 
-8.	TERM AND TERMINATION 
+8.	TERM AND TERMINATION
 
 This Agreement will become effective as of the Effective Date, and will remain in effect for a one year term.  After each then-current Term, the Agreement shall automatically renew for successive Terms unless either party provides at least thirty (30) days written notice of non-renewal prior to the end of the then-current Term.
 
@@ -351,7 +346,7 @@ All notices and requests in connection with this Agreement shall be deemed given
 
 12.	ASSIGNMENT
 
-New Artist may not assign, delegate, sub-contract or otherwise transfer this Agreement or any of its rights or obligations hereunder without the express written permission of Notethrower. Any assignment in violation of this Section shall be void and unenforceable.  Notethrower may assign, delegate, sub-contract or transfer this Agreement or any of its rights or obligations hereunder.   New Artist hereby consents in advance to any such assignment, subcontract, or transfer. 
+New Artist may not assign, delegate, sub-contract or otherwise transfer this Agreement or any of its rights or obligations hereunder without the express written permission of Notethrower. Any assignment in violation of this Section shall be void and unenforceable.  Notethrower may assign, delegate, sub-contract or transfer this Agreement or any of its rights or obligations hereunder.   New Artist hereby consents in advance to any such assignment, subcontract, or transfer.
 
 13.	THIRD PARTY BENEFICIARY
 
@@ -364,7 +359,7 @@ Any controversy or claim arising out of or relating to this contract, or the bre
 15.	GENERAL
 
 This Agreement will be governed by and interpreted in accordance with the laws of Tennessee, excluding its conflict of law principles.  The parties hereby submit to the jurisdiction of the state or federal courts located in Nashville, Tennessee, waiving any objection to forum non conveniens.  This Agreement constitutes the complete and entire statement of all terms, conditions and representations of the agreement between New Artist and Notethrower with respect to its subject matter and supersedes all prior writings or understanding. Except as otherwise provided above, any waiver, amendment or other modification of this Agreement will not be effective unless in writing and signed by the party against whom enforcement is sought. If any provision of this Agreement is held to be unenforceable, in whole or in part, such holding will not affect the validity of the other provisions of this Agreement.  No provision of this Agreement, nor any ambiguities that may be contained herein, shall be construed against any party on the ground that such party or its counsel drafted the provision at issue or that the provision at issue contains a covenant, representation or warranty of such party.  All rights and remedies of the parties set forth in this Agreement shall be cumulative, and none shall exclude any other right or remedy allowed by applicable law.
- 
+
 
 
 
@@ -387,16 +382,16 @@ This Agreement will be governed by and interpreted in accordance with the laws o
   <script type="text/javascript">
 
 function checkInputs() {
-    var dldBtnEnabled = formatSelected;
+    var dldBtnEnabled = fileSelected;
     if (document.getElementById('legalTermsCheckbox')) {
         if (!document.getElementById('legalTermsCheckbox').checked) {
             dldBtnEnabled = false;
         }
     }
     if (dldBtnEnabled) {
-        document.formatSelectionFrm.dld.disabled = false;
+        document.fileSelectionFrm.dld.disabled = false;
     } else {
-        document.formatSelectionFrm.dld.disabled = true;
+        document.fileSelectionFrm.dld.disabled = true;
     }
 }
 
@@ -404,7 +399,7 @@ function checkInputs() {
 </html>
 <?php
 
-} // end of function show_format_selection()
+} // end of function show_file_selection()
 
 ?>
 

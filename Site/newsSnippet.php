@@ -19,11 +19,12 @@ foreach ($news as $n) {
         echo '<div class="newsSpacer"></div>';
     }
 
+
     echo '<div class="newsEntry">';
+    echo '<div class="newsDate">' . date('M d, Y', strtotime($n->entry_date)) . '</div>';
     echo '<h1>' . $n->headline . '</h1>';
     echo $n->html;
     echo '<br />';
-    echo '<div class="newsDate">[ ' . date('M d, Y', strtotime($n->entry_date)) . ' ]</div>';
     echo '</div>';
 
     $newsIdx++;

@@ -56,7 +56,11 @@ $(document).ready(function(){
     });
 
 
-
+/*
+if ($("...").is(":focus")) {
+  ...
+}
+*/
 
 
 

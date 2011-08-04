@@ -22,6 +22,8 @@ if (isset($_GET['x']) && isset($_GET['c']) && md5('TheSparrowsAreFlyingAgain!' .
     $user->status = 'active';
     $user->save();
 
+    $logger->info('activated user account');
+
 } else {
     $logger->warn('Invalid confirmation request: ' . $_SERVER['QUERY_STRING']);
     exit;
@@ -29,8 +31,8 @@ if (isset($_GET['x']) && isset($_GET['c']) && md5('TheSparrowsAreFlyingAgain!' .
 
 $user = User::new_from_cookie();
 
-processAndPrintTpl('AccountCreated/index.html', array(
-    '${Common/pageHeader}' => buildPageHeader('Account created'),
+processAndPrintTpl('AccountCreationConfirmed/index.html', array(
+    '${Common/pageHeader}' => buildPageHeader('Account creation confirmed'),
     '${Common/bodyHeader}' => buildBodyHeader($user),
     '${Common/bodyFooter}' => buildBodyFooter(),
     '${Common/pageFooter}' => buildPageFooter()

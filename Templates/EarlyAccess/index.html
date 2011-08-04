@@ -1,0 +1,33 @@
+${Common/pageHeader}
+
+<body>
+
+    <div class="container">
+
+        <div class="span-16">
+            <br />
+            <br />
+            <img src="http://oneloudr.com/images/logo.png" border="0"><br />
+            <h2>Private Beta</h2><br />
+            <br />
+            <b>Join the Band!</b><br />
+            <br />
+            We're in an invite-only beta period.<br />
+            Reserve your username, and get early access!<br />
+            <br />
+            <form name="frm" action="${phpSelf}" method="POST">
+              <b>oneloudr.com/user/<input type="text" name="username" value="${username}" /></b><br />
+              <br />
+              Email*&nbsp;<input type="text" name="email" value="${email}" />&nbsp;&nbsp;
+              <input class="button blue" type="submit" value="Submit">
+            </form>
+            <br />
+            ${message}
+            <br />
+        </div>
+
+    </div>
+
+</body>
+
+${Common/pageFooter}

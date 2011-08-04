@@ -4,7 +4,7 @@ include_once('../Includes/Init.php'); // must be included first
 
 include_once('../Includes/Config.php');
 include_once('../Includes/FormUtil.php');
-include_once('../Includes/recaptchalib.php');
+//include_once('../Includes/recaptchalib.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/User.php');
@@ -137,17 +137,17 @@ if ($pageMode == 'artist') {
     ));
 }
 
-$formElementsSection1 .= getFormFieldForParams(array(
-    'propName'               => 'username',
-    'label'                  => 'Username',
-    'mandatory'              => true,
-    'maxlength'              => 255,
-    'obj'                    => $user,
-    'unpersistedObj'         => $unpersistedUser,
-    'errorFields'            => $errorFields,
-    'workWithUnpersistedObj' => $problemOccured,
-    'infoHtml'               => 'This is your username for logging in to Notethrower.' . ($pageMode == 'artist' ? '<br>If you want to provide a different name than your artist profile, you may do so.' : '')
-));
+//$formElementsSection1 .= getFormFieldForParams(array(
+//    'propName'               => 'username',
+//    'label'                  => 'Username',
+//    'mandatory'              => true,
+//    'maxlength'              => 255,
+//    'obj'                    => $user,
+//    'unpersistedObj'         => $unpersistedUser,
+//    'errorFields'            => $errorFields,
+//    'workWithUnpersistedObj' => $problemOccured,
+//    'infoHtml'               => 'This is your username for logging in to Notethrower.' . ($pageMode == 'artist' ? '<br>If you want to provide a different name than your artist profile, you may do so.' : '')
+//));
 
 $formElementsSection1 .= getFormFieldForParams(array(
     'propName'               => 'email_address',
@@ -241,18 +241,18 @@ if ($userIsLoggedIn) { // it's an update
         'infoText'               => 'Enter your new password here if you want to change it.'
     ));
 
-    $formElementsSection2 .= getFormFieldForParams(array(
-        'inputType'              => 'password',
-        'propName'               => 'password2',
-        'label'                  => 'Password verification',
-        'mandatory'              => false,
-        'maxlength'              => 255,
-        'obj'                    => $user,
-        'unpersistedObj'         => $unpersistedUser,
-        'errorFields'            => $errorFields,
-        'workWithUnpersistedObj' => $problemOccured,
-        'infoText'               => 'Enter your new password again, for verification.'
-    ));
+//    $formElementsSection2 .= getFormFieldForParams(array(
+//        'inputType'              => 'password',
+//        'propName'               => 'password2',
+//        'label'                  => 'Password verification',
+//        'mandatory'              => false,
+//        'maxlength'              => 255,
+//        'obj'                    => $user,
+//        'unpersistedObj'         => $unpersistedUser,
+//        'errorFields'            => $errorFields,
+//        'workWithUnpersistedObj' => $problemOccured,
+//        'infoText'               => 'Enter your new password again, for verification.'
+//    ));
 
 } else { // it's an insert
     $formElementsSection2 .= getFormFieldForParams(array(
@@ -268,18 +268,18 @@ if ($userIsLoggedIn) { // it's an update
         'infoText'               => 'Create your own password and use this for logging in. If you ever forget it, we can email you a new one or you can change it in the future.'
     ));
 
-    $formElementsSection2 .= getFormFieldForParams(array(
-        'inputType'              => 'password',
-        'propName'               => 'password2',
-        'label'                  => 'Password verification',
-        'mandatory'              => true,
-        'maxlength'              => 255,
-        'obj'                    => $user,
-        'unpersistedObj'         => $unpersistedUser,
-        'errorFields'            => $errorFields,
-        'workWithUnpersistedObj' => $problemOccured,
-        'infoText'               => 'This should be pretty easy. Do you remember the password you just created? Type it here.'
-    ));
+//    $formElementsSection2 .= getFormFieldForParams(array(
+//        'inputType'              => 'password',
+//        'propName'               => 'password2',
+//        'label'                  => 'Password verification',
+//        'mandatory'              => true,
+//        'maxlength'              => 255,
+//        'obj'                    => $user,
+//        'unpersistedObj'         => $unpersistedUser,
+//        'errorFields'            => $errorFields,
+//        'workWithUnpersistedObj' => $problemOccured,
+//        'infoText'               => 'This should be pretty easy. Do you remember the password you just created? Type it here.'
+//    ));
 }
 
 if ($userIsLoggedIn) { // it's an update
@@ -326,18 +326,18 @@ if (!$userIsLoggedIn) {
         ));
     }
 
-    $formElementsSection2 .= getFormFieldForParams(array(
-        'inputType'              => 'recaptcha',
-        'propName'               => 'captcha',
-        'label'                  => 'Verification',
-        'recaptchaPublicKey'     => $GLOBALS['RECAPTCHA_PUBLIC_KEY'],
-        'mandatory'              => true,
-        'obj'                    => $user,
-        'unpersistedObj'         => $unpersistedUser,
-        'errorFields'            => $errorFields,
-        'workWithUnpersistedObj' => $problemOccured,
-        'infoText'               => 'Show us that you are human. After you create your account, check your email for a verification link to sign in.'
-    ));
+//    $formElementsSection2 .= getFormFieldForParams(array(
+//        'inputType'              => 'recaptcha',
+//        'propName'               => 'captcha',
+//        'label'                  => 'Verification',
+//        'recaptchaPublicKey'     => $GLOBALS['RECAPTCHA_PUBLIC_KEY'],
+//        'mandatory'              => true,
+//        'obj'                    => $user,
+//        'unpersistedObj'         => $unpersistedUser,
+//        'errorFields'            => $errorFields,
+//        'workWithUnpersistedObj' => $problemOccured,
+//        'infoText'               => 'Show us that you are human. After you create your account, check your email for a verification link to sign in.'
+//    ));
 }
 
 processAndPrintTpl('Account/index.html', array(
@@ -368,7 +368,7 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
     $result = true;
 
     $pwd    = get_param('password');
-    $pwd2   = get_param('password2');
+    //$pwd2   = get_param('password2');
     $oldPwd = get_param('old_password');
 
     if ($userIsLoggedIn) { // update operation - user has to specify old password -> update: currently not desired
@@ -383,21 +383,30 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
     }
 
     if ($userIsLoggedIn) { // update operation - user *can* change the password
-        if (!$pwd && !$pwd2) {
+//        if (!$pwd && !$pwd2) {
+//            // noop
+//
+//        } else if (!$pwd || !$pwd2) { // one of the pwds is missing
+//            $errorFields['password']  = 'Password or password verification is missing!';
+//            $errorFields['password2'] = 'Password or password verification is missing!';
+//            $result = false;
+//
+//        } else { // both pwds are present
+//            if ($pwd != $pwd2) {
+//                $errorFields['password']  = 'Passwords do not match!';
+//                $errorFields['password2'] = 'Passwords do not match!';
+//                $result = false;
+//            }
+//
+//            if (!$oldPwd) {
+//                $errorFields['old_password'] = 'Please enter your current password!';
+//                $result = false;
+//            }
+//        }
+        if (!$pwd) {
             // noop
 
-        } else if (!$pwd || !$pwd2) { // one of the pwds is missing
-            $errorFields['password']  = 'Password or password verification is missing!';
-            $errorFields['password2'] = 'Password or password verification is missing!';
-            $result = false;
-
-        } else { // both pwds are present
-            if ($pwd != $pwd2) {
-                $errorFields['password']  = 'Passwords do not match!';
-                $errorFields['password2'] = 'Passwords do not match!';
-                $result = false;
-            }
-
+        } else { // pwd is present
             if (!$oldPwd) {
                 $errorFields['old_password'] = 'Please enter your current password!';
                 $result = false;
@@ -405,21 +414,28 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
         }
 
     } else { // insert operation
-        if (!$pwd || !$pwd2) {
-            $errorFields['password']  = 'Password or password verification is missing!';
-            $errorFields['password2'] = 'Password or password verification is missing!';
+//        if (!$pwd || !$pwd2) {
+//            $errorFields['password']  = 'Password or password verification is missing!';
+//            $errorFields['password2'] = 'Password or password verification is missing!';
+//            $result = false;
+//
+//        } else {
+//            if ($pwd != $pwd2) {
+//                $errorFields['password']  = 'Passwords do not match!';
+//                $errorFields['password2'] = 'Passwords do not match!';
+//                $result = false;
+//            }
+//        }
+        if (!$pwd) {
+            $errorFields['password']  = 'Password is missing!';
             $result = false;
-
-        } else {
-            if ($pwd != $pwd2) {
-                $errorFields['password']  = 'Passwords do not match!';
-                $errorFields['password2'] = 'Passwords do not match!';
-                $result = false;
-            }
         }
     }
 
-    // check (artist) name
+    // check artist name and username
+    $usernameParam = get_param('username');
+    if (!$usernameParam) $usernameParam = get_param('email_address');
+
     if ($pageMode == 'artist') {
         if (strlen(get_param('name')) < 1) {
             $errorFields['name'] = 'Name is missing!';
@@ -442,16 +458,16 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
         }
 
     } else { // fan mode
-        // if the user signs up as a fan only, the username is used as the (artist) name, too.
-        if (strlen(get_param('username')) > 0) {
-            $checkUser = User::fetch_for_name(get_param('username'));
+        // if the user signs up as a fan only, the username is used as the artist name, too.
+        if (strlen($usernameParam) > 0) {
+            $checkUser = User::fetch_for_name($usernameParam);
             if ($checkUser) {
                 if (!$userIsLoggedIn) { // if user is created from scratch
                     $errorFields['username'] = 'Name already in use! Please choose a different one.';
                     $result = false;
 
                 } else { // user data update
-                    if ($user->name != get_param('username')) { // display an error only if the name was changed in the update process
+                    if ($user->name != $usernameParam) { // display an error only if the name was changed in the update process
                         $errorFields['username'] = 'Name already in use! Please choose a different one.';
                         $result = false;
                     }
@@ -460,19 +476,19 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
         }
     }
 
-    if (strlen(get_param('username')) < 1) {
+    if (strlen($usernameParam) < 1) {
         $errorFields['username'] = 'Username is missing!';
         $result = false;
     }
 
-    $checkUser = User::fetch_for_username(get_param('username'));
+    $checkUser = User::fetch_for_username($usernameParam);
     if ($checkUser) {
         if (!$userIsLoggedIn) { // if user is created from scratch
             $errorFields['username'] = 'Name already in use! Please choose a different one.';
             $result = false;
 
         } else { // user data update
-            if ($user->username != get_param('username')) { // display an error only if the name was changed in the update process
+            if ($user->username != $usernameParam) { // display an error only if the name was changed in the update process
                 $errorFields['username'] = 'Name already in use! Please choose a different one.';
                 $result = false;
             }
@@ -517,20 +533,20 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
         }
     }
 
-    // check captcha input
-    if (!$userIsLoggedIn && ($GLOBALS['STAGING_ENV'] == 'test' || $GLOBALS['STAGING_ENV'] == 'live')) {
-        $privatekey = '6LcNIgoAAAAAACwnTjRcKFmzPy8G02o_n5AT_PX_';
-        $resp = recaptcha_check_answer($privatekey,
-                                       $_SERVER["REMOTE_ADDR"],
-                                       $_POST["recaptcha_challenge_field"],
-                                       $_POST["recaptcha_response_field"]);
-
-        if (!$resp->is_valid) {
-            $errorFields['captcha'] = 'The reCAPTCHA wasn\'t entered correctly.';
-            $logger->warn('captcha check failed: ' . $resp->error);
-            $result = false;
-        }
-    }
+//    // check captcha input
+//    if (!$userIsLoggedIn && ($GLOBALS['STAGING_ENV'] == 'test' || $GLOBALS['STAGING_ENV'] == 'live')) {
+//        $privatekey = '6LcNIgoAAAAAACwnTjRcKFmzPy8G02o_n5AT_PX_';
+//        $resp = recaptcha_check_answer($privatekey,
+//                                       $_SERVER["REMOTE_ADDR"],
+//                                       $_POST["recaptcha_challenge_field"],
+//                                       $_POST["recaptcha_response_field"]);
+//
+//        if (!$resp->is_valid) {
+//            $errorFields['captcha'] = 'The reCAPTCHA wasn\'t entered correctly.';
+//            $logger->warn('captcha check failed: ' . $resp->error);
+//            $result = false;
+//        }
+//    }
 
     return $result;
 }
@@ -540,8 +556,10 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
 
     $pageMode = getPageMode($userIsLoggedIn, $user);
 
-    $user->username        = get_param('username');
     $user->email_address   = get_param('email_address');
+    $user->username        = get_param('username');
+
+    if (!$user->username) $user->username = $user->email_address;
 
     if ($pageMode == 'artist') {
         $user->is_artist       = true;
@@ -554,6 +572,8 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
     } else {
         $user->is_artist       = false;
         $user->name            = get_param('username'); // use the username as (artist) name as long as the user is just a fan
+
+        if (!$user->name) $user->name = $user->email_address;
     }
 
     if (get_param('password')) { // this can be empty when an account is updated without a password change. we musst not save an empty password then.

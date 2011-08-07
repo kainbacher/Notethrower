@@ -12,76 +12,106 @@ ${Common/bodyHeader}
 
             <h1>Dashboard</h1>
                     
-                <div class="dashboardListWrapper">
-                    <ul class="dashboardList">
-                        <li>
-                            <a href="userInfo.php?aid=7">
-                                <img src="../Images/icons-dashboard/guitar.png" alt="guitar" width="80" height="83" /><br />
-                            Artistpage
-                            </a>
-                        </li>
-                        <li>
-                            <a href="trackList.php">
-                                <img src="../Images/icons-dashboard/wave.png" alt="guitar" width="80" height="83" /><br />
-                            My Tracks
-                            </a>
-                        </li>
-                        <li>
-                            <a href="account.php">
-                                <img src="../Images/icons-dashboard/micro.png" alt="guitar" width="80" height="83" /><br />
-                            Upload
-                            </a>
-                        </li>
-                        <li>
-                            <a href="account.php">
-                                <img src="../Images/icons-dashboard/settings.png" alt="guitar" width="80" height="83" /><br />
-                            Settings
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
+            <div class="dashboardListWrapper">
+                <ul class="dashboardList">
+                    <li>
+                        <a href="userInfo.php?aid=7">
+                            <img src="../Images/icons-dashboard/guitar.png" alt="guitar" width="80" height="83" /><br />
+                            My Artistpage
+                        </a>
+                    </li>
+                    <li>
+                        <a href="trackList.php">
+                            <img src="../Images/icons-dashboard/wave.png" alt="guitar" width="80" height="83" /><br />
+                            My Projects
+                        </a>
+                    </li>
+                    <li>
+                        <a href="trackList.php">
+                            <img src="../Images/icons-dashboard/wave.png" alt="guitar" width="80" height="83" /><br />
+                            Find Artists
+                        </a>
+                    </li>
+                    <li>
+                        <a href="account.php">
+                            <img src="../Images/icons-dashboard/micro.png" alt="guitar" width="80" height="83" /><br />
+                            Create a Project
+                        </a>
+                    </li>
+                    <li>
+                        <a href="account.php">
+                            <img src="../Images/icons-dashboard/settings.png" alt="guitar" width="80" height="83" /><br />
+                        Settings
+                        </a>
+                    </li>
+                </ul>
             </div>
 
-            <div class="span-8 last">
+            <div class="span-16 last">
+                <br/>
 
-                <div class="box-grey">
-                    <a href="#" class="button blue">
-                        Upload new Track
-                    </a>
+                <div class="span-16 last">
+                    <ul class="tabs">
+                        <li class="tabsItem"><a href="#" class="tab-1 tabsAct">Projects you my like</a></li>
+                        <li class="tabsItem"><a href="#" class="tab-2">Artists you may like</a></li>
+                    </ul>
                 </div>
 
-                <div class="box-blue">
-                    <h2>Featured Artists</h2>
+                <div class="span-16 last tabcontent-1 tabcontentAct">
+                    <div class="trackList">
+                        ${Artists/artistListItem_top_list}
+                    </div>
+                </div>
 
-                    <ul class="fanList">
-                        <li>
-                             <img src="../Images/no_artist_image.png" height="25" />
-                             Joe Benso
-                        </li>
-                        <li>
-                             <img src="../Images/no_artist_image.png" height="25" />
-                             Franz Ferdinant
-                        </li>
-                        <li>
-                             <img src="../Images/no_artist_image.png" height="25" />
-                             Napoleon Ponaparte
-                        </li>
-                        <li>
-                             <img src="../Images/no_artist_image.png" height="25" />
-                             Max Mustermann
-                        </li>
-                        <li>
-                             <img src="../Images/no_artist_image.png" height="25" />
-                             Indiana Jones
-                        </li>
-                    </ul>
-
+                <div class="span-16 last tabcontent-2">
+                    <div class="trackList">
+                        ${Artists/artistListItem_latest_list}
+                    </div>
                 </div>
 
             </div>
 
         </div>
+
+        <div class="span-8 last">
+
+            <div class="box-grey">
+                <a href="#" class="button blue">
+                    Upload new Track
+                </a>
+            </div>
+
+            <div class="box-blue">
+                <h2>Featured Artists</h2>
+
+                <ul class="fanList">
+                    <li>
+                         <img src="../Images/no_artist_image.png" height="25" />
+                         Joe Benso
+                    </li>
+                    <li>
+                         <img src="../Images/no_artist_image.png" height="25" />
+                         Franz Ferdinant
+                    </li>
+                    <li>
+                         <img src="../Images/no_artist_image.png" height="25" />
+                         Napoleon Ponaparte
+                    </li>
+                    <li>
+                         <img src="../Images/no_artist_image.png" height="25" />
+                         Max Mustermann
+                    </li>
+                    <li>
+                         <img src="../Images/no_artist_image.png" height="25" />
+                         Indiana Jones
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
 
 
 

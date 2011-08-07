@@ -5,67 +5,68 @@ ${Common/pageHeader}
 ${Common/bodyHeader}
 
 <div id="pageContent">
+    <div class="container">
 
-  <div class="container">
+        <div class="span-16">
 
-                <div class="span-16">
+            <h1>My Projects</h1>
+            ${Common/message_choice_optional}
 
-                    <h1>My Tracks</h1>
-                    ${Common/message_choice_optional}
-
+            <div class="span-16 last">
+                <ul class="tabs">
+                    <li class="tabsItem"><a href="#" class="tab-1 tabsAct">Open Projects</a></li>
+                    <li class="tabsItem"><a href="#" class="tab-2">Finished Projects</a></li>
+                    <li class="tabsItem"><a href="#" class="tab-3">Published Projects</a></li>
+                </ul>
+            </div>
                     
-                    <div class="span-16 last">
-                        <ul class="tabs">
-                            <li class="tabsItem"><a href="#" class="tab-1 tabsAct">My Tracks</a></li>
-                            <li class="tabsItem"><a href="#" class="tab-2">My Remixes</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="span-16 last tabcontent-1 tabcontentAct">
-                        <div class="trackList">
-                            ${TrackList/trackListItem_originals_list}
-                        </div>
-                    </div>
-                    <div class="span-16 last tabcontent-2 tabcontentAct">
-                        <div class="trackList">
-                            ${TrackList/trackListItem_remixes_list}
-                        </div>
-                    </div>
-
+            <div class="span-16 last tabcontent-1 tabcontentAct">
+                <div class="trackList">
+                    ${TrackList/trackListItem_originals_list}
                 </div>
-
-                <div class="span-8 last">
-
-                    <div class="box-grey">
-                        <a href="track.php?action=create" class="button blue">
-                            Upload new Track
-                        </a>
-                    </div>
-
+            </div>
+            <div class="span-16 last tabcontent-2 tabcontentAct">
+                <div class="trackList">
+                    ${TrackList/trackListItem_remixes_list}
                 </div>
-
+            </div>
+            <div class="span-16 last tabcontent-3 tabcontentAct">
+                <div class="trackList">
+                    ${TrackList/trackListItem_remixes_list}
+                </div>
             </div>
 
+        </div>
 
+        <div class="span-8 last">
+
+            <div class="box-grey">
+                <a href="track.php?action=create" class="button blue">
+                    Upload new Track
+                </a>
+            </div>
+
+        </div>
+    </div>
 </div>
 
-		<script type="text/javascript">
- 		    function callPublish(msg, attachment, action_link) {
- 		        FB.ensureInit(function () {
- 		            FB.Connect.streamPublish('', attachment, action_link);
- 		        });
- 		    }
- 		</script>
- 		<!-- Facebook stuff end -->
+<script type="text/javascript">
+    function callPublish(msg, attachment, action_link) {
+	   FB.ensureInit(function () {
+    	   FB.Connect.streamPublish('', attachment, action_link);
+	   });
+    }
+</script>
+<!-- Facebook stuff end -->
 
- 		<script type="text/javascript">
+<script type="text/javascript">
 
- 		    function share(tid, aid) {
- 		        var href = 'http://www.notethrower.com/NT/Site/index.php?tid=' + tid + '&taid=' + aid;
- 		        callPublish('',{'name':'I uploaded a new Song','href':href,'description':'I just uploaded a new Song to NoteThrower.  Listen for free, or collaborate with me on new tracks and even license our music together!','media':[{'type':'image','src':'http://profile.ak.fbcdn.net/object2/1043/112/q170458041694_1270.jpg','href':href}]},[{'text':'play the song','href':href}])
- 		    }
+    function share(tid, aid) {
+        var href = 'http://www.notethrower.com/NT/Site/index.php?tid=' + tid + '&taid=' + aid;
+        callPublish('',{'name':'I uploaded a new Song','href':href,'description':'I just uploaded a new Song to NoteThrower.  Listen for free, or collaborate with me on new tracks and even license our music together!','media':[{'type':'image','src':'http://profile.ak.fbcdn.net/object2/1043/112/q170458041694_1270.jpg','href':href}]},[{'text':'play the song','href':href}])
+    }
 
- 		</script>
+</script>
 
 ${Common/bodyFooter}
 

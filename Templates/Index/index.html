@@ -34,149 +34,30 @@ ${Common/bodyHeader}
                 <br />
             </div>
 
-
-            <!-- player -->
             <div class="span-16 last">
-
-                <div id="songCompetition" style="width:662px;background-color:#555">
-                    <div id="leftPlayer" style="float:left;background-color:#FFFFFF;margin:5px;padding:5px; width:310px;">
-                      <script type="text/javascript">
-                $(document).ready(function(){
-
-                	$("#jquery_jplayer_1").jPlayer({
-                		ready: function () {
-                			$(this).jPlayer("setMedia", {
-                				mp3: "http://localhost:8888/notethrower/Backend/preview.php?song=35bcbd79ef6af7e77b95cc9e54b055dd/7_HQMP3.mp3"
-                			});
-                		},
-                		swfPath: "../Javascripts",
-                		supplied: "mp3",
-                		cssSelectorAncestor: "#jp_interface_1",
-                		preload: 'auto'
-                	})
-                	.bind($.jPlayer.event.play, function() { // Using a jPlayer event to avoid both jPlayers playing together.
-                			$(this).jPlayer("pauseOthers");
-                	});
-
-                });
-                </script>
-
-
-                <div id="jquery_jplayer_1" class="jp-jplayer" style="background-color: rgb(0, 0, 0); "><img id="jp_poster_0" style="width: 0px; height: 0px; display: none; "><audio id="jp_audio_0" preload="auto" src="http://localhost:8888/notethrower/Backend/preview.php?song=35bcbd79ef6af7e77b95cc9e54b055dd/7_HQMP3.mp3"></audio></div>
-                <div class="jp-audio" style="width:310px;">
-                  <div class="jp-type-single">
-                    <div id="jp_interface_1" class="jp-interface">
-                      <ul class="jp-controls">
-                        <li><a href="#" class="jp-play" tabindex="1">play</a></li>
-                        <li><a href="#" class="jp-pause" tabindex="1" style="display: none; ">pause</a></li>
-                        <li><a href="#" class="jp-stop" tabindex="1">stop</a></li>
-
-                        <li><a href="#" class="jp-mute" tabindex="1">mute</a></li> <li><a href="#" class="jp-unmute"
-                        tabindex="1" style="display: none; ">unmute</a></li> </ul> <div class="jp-progress"> <div
-                        class="jp-seek-bar" style="width: 0%; "> <div class="jp-play-bar" style="width: 0%; "></div>
-                        </div> </div>
-                        
-                         <div class="jp-volume-bar"> <div class="jp-volume-bar-value" style="width: 80%; "></div>
-                        </div> <div class="jp-current-time">00:00</div> <div class="jp-duration">00:00</div> </div>
-                        <div id="jp_playlist_1" class="jp-playlist"> <ul> <li>test this out track 1</li> </ul> </div>
-                        </div> </div>
-
-                    </div>
-
-                    <div id="rightPlayer" style="float:right;background-color:#FFFFFF;margin:5px;padding:5px; width:310px;">
-                      <script type="text/javascript">
-                $(document).ready(function(){
-
-                	$("#jquery_jplayer_2").jPlayer({
-                		ready: function () {
-                			$(this).jPlayer("setMedia", {
-                				mp3: "http://localhost:8888/notethrower/Backend/preview.php?song=629577753e58463e673d5725468b0803/6_HQMP3.mp3"
-                			});
-                		},
-                		swfPath: "../Javascripts",
-                		supplied: "mp3",
-                		cssSelectorAncestor: "#jp_interface_2",
-                		preload: 'auto'
-                	})
-                	.bind($.jPlayer.event.play, function() { // Using a jPlayer event to avoid both jPlayers playing together.
-                			$(this).jPlayer("pauseOthers");
-                	});
-
-                });
-                </script>
-
-                <div id="jquery_jplayer_2" class="jp-jplayer" style="background-color: rgb(0, 0, 0); ">
-                    <img id="jp_poster_1" style="width: 0px; height: 0px; display: none; ">
-                    <audio id="jp_audio_1" preload="auto" src="http://localhost:8888/notethrower/Backend/preview.php?song=629577753e58463e673d5725468b0803/6_HQMP3.mp3">
-                        
-                    </audio>
+                <div class="box-blue">
+                    <h1>Find your Band Mate and create your song together.</h1>
+                    <p>
+                        Create a Project, upload your Part of a Song, eg. a Drumsession and find some Mates who 
+                        likes your Part. Every User can download this parts and add some more Parts. 
+                        Collaborate and finish your Song together. 
+                        Afterwards you can publish song using a creative commens license and sell it or give it to the
+                        audience for free.<br />
+                        <br />
+                        Have fun with Oneloudr.com !
+                    </p>
                 </div>
-                <div class="jp-audio" style="width:310px;">
-                    <div class="jp-type-single">
-                        <div id="jp_interface_2" class="jp-interface">
-                            <ul class="jp-controls">
-                                <li><a href="#" class="jp-play" tabindex="1">play</a></li>
-                                <li><a href="#" class="jp-pause" tabindex="1" style="display: none;">pause</a></li>
-                                <li><a href="#" class="jp-stop" tabindex="1">stop</a></li>
-                                <li><a href="#" class="jp-mute" tabindex="1">mute</a></li>
-                                <li><a href="#" class="jp-unmute" tabindex="1" style="display: none; ">unmute</a></li>
-                            </ul>
-                            <div class="jp-progress">
-                                <div class="jp-seek-bar" style="width: 0%; ">
-                                    <div class="jp-play-bar" style="width: 0%; "></div>
-                                </div>
-                            </div>
-
-                      <div class="jp-volume-bar">
-                        <div class="jp-volume-bar-value" style="width: 80%; "></div>
-                      </div>
-                      <div class="jp-current-time">00:00</div>
-                      <div class="jp-duration">00:00</div>
-                    </div>
-                    <div id="jp_playlist_2" class="jp-playlist">
-                      <ul>
-                        <li>audioooo</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-
-                    </div>
-
-                    <div style="clear:both">
-                  </div>
-
-                  <div id="votingArea" style="width:662px;background-color:#444;">
-                    <table id="votingTable" style="margin:5px;width:662px">
-                      <tbody><tr>
-                        <td align="left" style="text-align:left;">
-                            <a href="/notethrower/Site/startpage.php?vt=7&amp;lt=7&amp;rt=6&amp;n=8a383b1d8506e00a882f1aadfc11f298&amp;t=1307711611463458" class="button button-small blue">I like this song better</a>
-                        </td>
-                        <td align="center" style="text-align:center;">
-                            <a href="/notethrower/Site/startpage.php" class="button button-small blue">
-                                Both songs are awful
-                            </a>
-                        </td>
-                        <td align="right" style="text-align:right;">
-                            <a href="/notethrower/Site/startpage.php?vt=6&amp;lt=7&amp;rt=6&amp;n=8a383b1d8506e00a882f1aadfc11f298&amp;t=1307711611463458" class="button button-small blue">I like this song better</a>
-                        </td>
-                      </tr>
-                    </tbody></table>
-                  </div>
-                </div>
-                <br />
-                <br />
             </div>
 
             
             <div  class="span-16 last">
-                <h1>Latest Tracks</h1>
+                <h1>Latest Projects</h1>
                 <div class="trackList">
                     ${Index/trackListItem_latestTracks_list}
                 </div>
                 <div class="prepend-13 span-3 last">
                     <br />
-                    <a href="#" class="button button-small blue">more Tracks</a>
+                    <a href="#" class="button button-small blue">more Projects</a>
                 </div>
             </div>
      
@@ -187,7 +68,7 @@ ${Common/bodyHeader}
                     ${Index/trackListItem_latestTracks_list}
                 </div>
                 <div class="prepend-13 span-3 last">
-                    <a href="#" class="button button-small blue">more Tracks</a>
+                    <a href="#" class="button button-small blue">more Artists</a>
                 </div>
             </div>
       

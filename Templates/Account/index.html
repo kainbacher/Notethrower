@@ -7,7 +7,7 @@ ${Common/bodyHeader}
 
 <div class="container">
 
-    <div class="span-16 last box-grey">
+    <div class="span-24 last box-grey">
         <h1>${headline}</h1>
         <br />
 
@@ -18,7 +18,13 @@ ${Common/bodyHeader}
             <input type="hidden" name="signupAs" value="${signupAs}">
             ${Common/formElement_section1_list}
 
-            ${userImage_choice}<br />
+            
+            <div id="{id}" class=" formElement span-15 last">
+                <div class="span-6">Image:</div>
+                <div class="span-8">
+                    ${userImage_choice}
+                </div>
+            </div>
 
             ${Common/formElement_section2_list}
 

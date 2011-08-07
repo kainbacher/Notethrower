@@ -1726,5 +1726,12 @@ a.nohighlight:hover {
     margin-top: 30px;
 }
 
+/* !termsandconditions */
+/* ---------------------------------------------------------------------- */
 
-
+.termsContent ol {
+    list-style-type: decimal;
+}
+.termsContent li {
+    margin-bottom: 18px;
+}

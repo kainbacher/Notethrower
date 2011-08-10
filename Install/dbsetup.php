@@ -10,11 +10,11 @@ include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/AudioTrackUserVisibility.php');
 include_once('../Includes/DB/AudioTrackAttribute.php');
 include_once('../Includes/DB/AudioTrackAudioTrackAttribute.php');
-include_once('../Includes/DB/AudioTrackFile.php');
 include_once('../Includes/DB/Message.php');
 include_once('../Includes/DB/News.php');
 include_once('../Includes/DB/Nonce.php');
 include_once('../Includes/DB/PayPalTx.php');
+include_once('../Includes/DB/ProjectFile.php');
 include_once('../Includes/DB/Stats.php');
 
 header('Content-type: text/plain');
@@ -24,11 +24,11 @@ AudioTrack::create_table();
 AudioTrackUserVisibility::create_table();
 AudioTrackAttribute::createTable();
 AudioTrackAudioTrackAttribute::createTable();
-AudioTrackFile::create_table();
 Message::create_table();
 News::create_table();
 Nonce::create_table();
 PayPalTx::create_table();
+ProjectFile::create_table();
 Stats::create_table();
 
 echo 'creation done.' . "\n";

@@ -6,7 +6,6 @@ include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/AudioTrackUserVisibility.php');
-include_once('../Includes/DB/AudioTrackFile.php');
 include_once('../Includes/DB/AudioTrackAttribute.php');
 include_once('../Includes/DB/AudioTrackAudioTrackAttribute.php');
 include_once('../Uploader/SolmetraUploader.php');
@@ -30,11 +29,11 @@ $offerSent = false;
 
 if (get_param('action') == 'send') {
     if (!inputDataOk($errorFields, $offer)) {
-        $problemOccured = true; 
+        $problemOccured = true;
     } else {
         // send offer as email
         $text = $offer->email . ' made an offer for your song "' . $track->title . '" on Notethrower.' . "\n" .
-                'Usage for your song: ' . $offer->usage . "\n" . 
+                'Usage for your song: ' . $offer->usage . "\n" .
                 'Category: ' . $offer->usageCategory . "\n" .
                 'Offer in $: ' . $offer->price . "\n" . "\n" .
                 'Your Notethrower Team';
@@ -43,15 +42,15 @@ if (get_param('action') == 'send') {
         $offerSent = true;
     }
 } else if (get_param('action') == 'checkout') {
-    
+
     if (!inputDataOkForArtistOffer($errorFields, $offer)) {
         $problemOccured = true;
     } else {
         // send an email with the checkout info
         $text = 'Someone (email: ' . $offer->emailArtistOffer . ') has accepted your offer for track "' . $track->title . '" on Notethrower.' . "\n" .
-                'Usage for your song: ' . $offer->usageArtistOffer . "\n" . 
+                'Usage for your song: ' . $offer->usageArtistOffer . "\n" .
                 'Category: ' . $offer->usageCategoryArtistOffer . "\n" .
-                'Once the user finishes the paypal transaction, you should receive from paypal a message about the purchase' . "\n\n" . 
+                'Once the user finishes the paypal transaction, you should receive from paypal a message about the purchase' . "\n\n" .
                 'Your Notethrower Team';
         send_email($user->email_address, 'Song checkout on Notethrower', $text);
         send_email($GLOBALS['SELLER_EMAIL'], 'Song checkout on Notethrower', $text);
@@ -75,13 +74,13 @@ writePageDoctype();
 <html>
     <? include ("headerData.php"); ?>
     <script type="text/javascript">
-        
+
         var termsAccepted = false;
-        
+
         function acceptTerms() {
             termsAccepted = true;
         }
-        
+
         function showCommercialLicenseeTerms() {
             window.open('commercialLicenseeTerms.php','TERMS_AND_CONDITIONS','scrollbars=yes,resizable=yes,status=0,width=1100,height=600');
         }
@@ -103,30 +102,30 @@ writePageDoctype();
             </ul>
         </div>
 
-<?php 
+<?php
 
 // display the form only if the offer is not sent yet:
 if (!$offerSent) {
-    
-    if ($track->price > 0) {
-        
 
-        
+    if ($track->price > 0) {
+
+
+
 ?>
-           
+
             <div id="trackFormDiv">
                 <div id="container">
 
                 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
                    <input type="hidden" name="action" value="checkout">
                    <input type="hidden" name="tid" value="<?php echo $track->id; ?>">
-                    
+
                     <br/>
                     <h1>Artists Offer:</h1>
-                    
+
                     <br/>
                     <br/>
-                    
+
                     <div class="makeAnOfferWrapper">
                         <div class="makeAnOfferLeft">
                             <p>Artist Name</p>
@@ -169,18 +168,18 @@ if (!$offerSent) {
         $value = $offer->emailArtistOffer;
         echo ($preconfiguredValue && !$value ? escape($preconfiguredValue) : escape($value));
         echo '">' . "\n";
-        
+
 ?>
 
                         </div>
                         <div class="makeAnOfferInfo">
-                            <p>Please specify your email address, so that we can contact you.</p>                        
+                            <p>Please specify your email address, so that we can contact you.</p>
                         </div>
                         <div class="clear"></div>
                     </div>
-    
-    
-    
+
+
+
                     <div class="makeAnOfferWrapper">
                         <div class="makeAnOfferLeft">
                             <p>Song usage</p>
@@ -196,7 +195,7 @@ if (!$offerSent) {
             echo '<option value="' . $optVal . '"' . $selected . '>' . escape($optVal) . '</option>' . "\n";
         }
         echo '</select>' . "\n";
-        
+
         echo '<textarea class="' . (isset($errorFields['usageArtistOffer']) ? 'inputTextFieldWithProblem' : 'inputTextField') . '" name="usageArtistOffer" rows="6" cols="40">';
         $value = $offer->usageArtistOffer;
         echo escape($value);
@@ -205,19 +204,19 @@ if (!$offerSent) {
 
                         </div>
                         <div class="makeAnOfferInfo">
-                            <p>Please describe the use (the "Use") you wish to make of the song. 
-                                Please choose one of the following options and then type a brief description of your plans, 
-                                including a description of the work (the "Work"). 
-                                Please note that your choice and description of your Use and Work are important because we 
-                                only license the song to you for a single Use in a particular Work. 
+                            <p>Please describe the use (the "Use") you wish to make of the song.
+                                Please choose one of the following options and then type a brief description of your plans,
+                                including a description of the work (the "Work").
+                                Please note that your choice and description of your Use and Work are important because we
+                                only license the song to you for a single Use in a particular Work.
                                 Additional Works require new licenses.
-                            </p>                        
+                            </p>
                         </div>
                         <div class="clear"></div>
                     </div>
-                    
- 
-                    
+
+
+
                     <div class="makeAnOfferWrapper">
                         <div class="makeAnOfferLeft">
                             <p>Secure chekout</p>
@@ -226,7 +225,7 @@ if (!$offerSent) {
                             <img src="../Images/paypal_logo.gif" alt="paypal_logo" width="114" height="31" />
                         </div>
                         <div class="clear"></div>
-                    </div>                    
+                    </div>
 
 
                     <div class="makeAnOfferWrapper">
@@ -238,39 +237,39 @@ if (!$offerSent) {
                             <input type="submit" class="button" value="Accept this Offer and pay now">
                         </div>
                         <div class="clear"></div>
-                    </div>                      
+                    </div>
 
                     <br/>
-                    
-                    
 
-                    
+
+
+
                     </form>
                 </div> <!-- container -->
             </div> <!-- trackFormDiv -->
 
         <br/>
-        
+
         <?php
-        
-    } // if ($track->price > 0) 
-    
+
+    } // if ($track->price > 0)
+
     ?>
-    
-    
+
+
         <div id="trackFormDiv">
             <div id="container">
 
                 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
                    <input type="hidden" name="action" value="send">
                    <input type="hidden" name="tid" value="<?php echo $track->id; ?>">
-                    
+
                     <br/>
                     <h1>Make <?php if ($track->price > 0) { echo 'a different ';} else { echo 'an '; } ?>Offer:</h1>
-                    
+
                     <br/>
                     <br/>
-                    
+
                     <div class="makeAnOfferWrapper">
                         <div class="makeAnOfferBroad">
                             <p>Thank you for your interest in licensing the song <b><?php echo $track->title; ?></b>.
@@ -278,7 +277,7 @@ if (!$offerSent) {
                         </div>
                         <div class="clear"></div>
                     </div>
-    
+
                     <div class="makeAnOfferWrapper">
                         <div class="makeAnOfferLeft">
                             <p>Your Email</p>
@@ -291,18 +290,18 @@ if (!$offerSent) {
         $value = $offer->email;
         echo ($preconfiguredValue && !$value ? escape($preconfiguredValue) : escape($value));
         echo '">' . "\n";
-        
+
 ?>
 
                         </div>
                         <div class="makeAnOfferInfo">
-                            <p>Please specify your email address, so that we can contact you.</p>                        
+                            <p>Please specify your email address, so that we can contact you.</p>
                         </div>
                         <div class="clear"></div>
                     </div>
-    
-    
-    
+
+
+
                     <div class="makeAnOfferWrapper">
                         <div class="makeAnOfferLeft">
                             <p>Song usage</p>
@@ -318,7 +317,7 @@ if (!$offerSent) {
             echo '<option value="' . $optVal . '"' . $selected . '>' . escape($optVal) . '</option>' . "\n";
         }
         echo '</select>' . "\n";
-        
+
         echo '<textarea class="' . (isset($errorFields['usage']) ? 'inputTextFieldWithProblem' : 'inputTextField') . '" name="usage" rows="6" cols="40">';
         $value = $offer->usage;
         echo escape($value);
@@ -327,19 +326,19 @@ if (!$offerSent) {
 
                         </div>
                         <div class="makeAnOfferInfo">
-                            <p>Please describe the use (the "Use") you wish to make of the song. 
-                                Please choose one of the following options and then type a brief description of your plans, 
-                                including a description of the work (the "Work"). 
-                                Please note that your choice and description of your Use and Work are important because we 
-                                only license the song to you for a single Use in a particular Work. 
+                            <p>Please describe the use (the "Use") you wish to make of the song.
+                                Please choose one of the following options and then type a brief description of your plans,
+                                including a description of the work (the "Work").
+                                Please note that your choice and description of your Use and Work are important because we
+                                only license the song to you for a single Use in a particular Work.
                                 Additional Works require new licenses.
-                            </p>                        
+                            </p>
                         </div>
                         <div class="clear"></div>
                     </div>
-                    
-                    
-                    
+
+
+
                     <div class="makeAnOfferWrapper">
                         <div class="makeAnOfferLeft">
                             <p>Your Offer</p>
@@ -352,29 +351,29 @@ if (!$offerSent) {
         $value = $offer->price;
         echo (escape($value));
         echo '">' . "\n";
-        
+
 ?>
 
                         </div>
                         <div class="makeAnOfferInfo">
-                            <p>What price are you offering $</p>                        
+                            <p>What price are you offering $</p>
                         </div>
                         <div class="clear"></div>
                     </div>
-    
- 
- 
+
+
+
                      <div class="makeAnOfferWrapper">
                         <div class="makeAnOfferBroad">
                             <p>These are the terms pursuant to which Notethrower ("Notethower" or "we") licenses the Song to you.
-                               You must pay the required fees and comply with all terms, conditions, notices and disclaimers set out on the following screens ("Terms"). 
-                               If you agree with what you read, check the "I have read and understand the license agreement" checkbox below. If you do not agree with what you read below, 
+                               You must pay the required fees and comply with all terms, conditions, notices and disclaimers set out on the following screens ("Terms").
+                               If you agree with what you read, check the "I have read and understand the license agreement" checkbox below. If you do not agree with what you read below,
                                then click the "I DO NOT ACCEPT" link and do not proceed any further.
                              </p>
                         </div>
                         <div class="clear"></div>
-                    </div>   
-             
+                    </div>
+
                     <div class="makeAnOfferWrapper">
                         <div class="makeAnOfferBroad">
              <p>
@@ -421,7 +420,7 @@ a. Intellectual Property Rights. All intellectual property rights (including, bu
 
 b. Use. Licensee may use Notethrower's trademarks and the Artist's trademarks, identity and persona exclusively in connection with the advertisement and promotion of the Work and the attribution of the Song. From time to time and upon request of Notethrower, Licensee will deliver representative samples of any marketing or promotional materials created by or for Licensee that bear a Notethrower trademark.
 
-5. NO CONSEQUENTIAL DAMAGES; LIMITATION ON LIABILITY 
+5. NO CONSEQUENTIAL DAMAGES; LIMITATION ON LIABILITY
 
 UNDER NO CIRCUMSTANCES WILL NOTETHROWER BE LIABLE FOR CONSEQUENTIAL, INDIRECT, SPECIAL, PUNITIVE OR INCIDENTAL DAMAGES OR LOST PROFITS, WHETHER FORESEEABLE OR UNFORESEEABLE, BASED ON CLAIMS ARISING OUT OF BREACH OR FAILURE OF EXPRESS OR IMPLIED WARRANTY, BREACH OF CONTRACT, MISREPRESENTATION, NEGLIGENCE, STRICT LIABILITY IN TORT OR OTHERWISE. IN NO EVENT WILL THE AGGREGATE LIABILITY THAT NOTETHROWER MAY INCUR IN ANY ACTION OR PROCEEDING EXCEED THE TOTAL AMOUNT OF LICENSING FEES PAID BY LICENSEE TO NOTETHROWER FOR THE SONG. THE LIMITATIONS, EXCLUSIONS AND DISCLAIMERS SET FORTH IN THIS SECTION 5WILL NOT APPLY ONLY IF AND TO THE EXTENT THAT THE LAW OR A COURT OF COMPETENT JURISDICTION REQUIRES LIABILITY UNDER APPLICABLE LAW BEYOND AND DESPITE THESE LIMITATIONS, EXCLUSIONS AND DISCLAIMERS.
 
@@ -432,7 +431,7 @@ THE SONG IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMP
 7. INDEPENDENT PARTIES
 
 Licensee and Notethrower are independent parties. Nothing in this Agreement will be construed to make either party an agent, employee, franchisee, joint venturer or legal representative of the other party. Except as otherwise provided in this Agreement, neither party will have nor represent itself to have any authority to bind the other party or act on its behalf.
- 
+
 8. NOTICES
 
 All notices and requests in connection with this Agreement shall be deemed given as of the day they are received either by receipted, nationwide overnight delivery service, or in the U.S. mails, postage prepaid, certified or registered, return receipt requested, to the address specified in the License Purchase Terms to the attention of the Licensee representative and to the attention of the Notethrower representative designated in this Agreement or to any other address that may be designated by prior notice.
@@ -453,31 +452,31 @@ This Agreement will be governed by and interpreted in accordance with the laws o
                  </div>
                <div class="clear"></div>
             </div>
-            
+
             <div class="makeAnOfferWrapper">
                 <div class="makeAnOfferLeft">
                   I have read and understand the license agreement
                 </div>
                 <div class="makeAnOfferRight">
-                    
-<?php       echo '<input class="' . (isset($errorFields['accepted']) ? 'inputTextFieldWithProblem' : 'inputTextField') . '" type="checkbox" name="accepted" value="yes">'; 
-           
+
+<?php       echo '<input class="' . (isset($errorFields['accepted']) ? 'inputTextFieldWithProblem' : 'inputTextField') . '" type="checkbox" name="accepted" value="yes">';
+
             if (isset($errorFields['accepted'])) {
                 echo '<p class="problemMessage">' .$errorFields['accepted'] . '</p>';
             }
 
 ?>
 
-   
+
         </div>
             <div class="clear"></div>
             </div>
-            
+
             <div class="makeAnOfferWrapper">
                   <div class="makeAnOfferLeft">
                      <input class="button" type="submit" value="send my offer">
                   </div>
-                  <div class="makeAnOfferRight"> 
+                  <div class="makeAnOfferRight">
                     <a href="startPage.php" class="button">I DO NOT ACCEPT</a>
                   </div>
                   <div class="clear"></div>
@@ -485,7 +484,7 @@ This Agreement will be governed by and interpreted in accordance with the laws o
 
 
                </div>
-              
+
                </form>
              </div> <!-- container -->
          </div> <!-- trackFormDiv -->
@@ -494,9 +493,9 @@ This Agreement will be governed by and interpreted in accordance with the laws o
 
 <?php
 
-} // end if (!$offerSent) 
+} // end if (!$offerSent)
 else {
-    echo 'Thank you for making an offer. We will get back to you as soon as possible!'; 
+    echo 'Thank you for making an offer. We will get back to you as soon as possible!';
     echo '<p>&nbsp;</p>';
 }
 
@@ -516,13 +515,13 @@ else {
 function inputDataOk(&$errorFields, &$offer) {
     global $logger;
     $result = true;
-    
+
     $offer->usage = get_param('usage');
     $offer->price = get_param('price');
     $offer->accepted = get_param('accepted');
     $offer->email = get_param('email');
     $offer->usageCategory = get_param('usageCategory');
-    
+
     if (!$offer->email) {
         $result = false;
         $errorFields['email'] = 'Please specify your email address!';
@@ -539,19 +538,19 @@ function inputDataOk(&$errorFields, &$offer) {
         $result = false;
         $errorFields['accepted'] = 'Please accept the terms!';
     }
-    
+
     return $result;
-        
+
 }
 
 function inputDataOkForArtistOffer(&$errorFields, &$offer) {
     global $logger;
     $result = true;
-    
+
     $offer->usageArtistOffer = get_param('usageArtistOffer');
     $offer->emailArtistOffer = get_param('emailArtistOffer');
     $offer->usageCategoryArtistOffer = get_param('usageCategoryArtistOffer');
-    
+
     if (!$offer->emailArtistOffer) {
         $result = false;
         $errorFields['emailArtistOffer'] = 'Please specify your email address!';
@@ -560,9 +559,9 @@ function inputDataOkForArtistOffer(&$errorFields, &$offer) {
         $result = false;
         $errorFields['usageArtistOffer'] = 'Please describe the use you wish to make of the song and select an usage from the list!';
     }
-    
+
     return $result;
-        
+
 }
 
 ?>

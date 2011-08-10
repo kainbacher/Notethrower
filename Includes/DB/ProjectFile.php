@@ -3,38 +3,37 @@
 include_once('../Includes/DbConnect.php');
 include_once('../Includes/Snippets.php');
 
-// dao for pp_audio_track_file table
-class AudioTrackFile {
+// dao for pp_project_file table
+class ProjectFile {
     var $id;
     var $track_id;
     var $filename;
     var $orig_filename;
-    var $type;
-    var $is_master;
+    var $is_master; // defines if the track file is a master/mix file (there can be more than one)
     var $status;
     var $entry_date;
 
     // constructors
     // ------------
-    function AudioTrackFile() {
+    function ProjectFile() {
     }
 
-    function fetch_all_for_track_id($tid, $show_inactive_items) {
+    function fetch_all_for_track_id($tid, $show_inactive_items = false) {
         $objs = array();
 
         $result = _mysql_query(
             'select * ' .
-            'from pp_audio_track_file ' .
+            'from pp_project_file ' .
             'where track_id = ' . n($tid) . ' ' .
             ($show_inactive_items ? 'and status in ("active", "inactive") ' : 'and status = "active" ') .
-            'order by is_master desc, filename asc'
+            'order by entry_date desc'
         );
 
         $ind = 0;
 
         while ($row = mysql_fetch_array($result)) {
-            $f = new AudioTrackFile();
-            $f = AudioTrackFile::_read_row($f, $row);
+            $f = new ProjectFile();
+            $f = ProjectFile::_read_row($f, $row);
 
             $objs[$ind] = $f;
             $ind++;
@@ -45,61 +44,17 @@ class AudioTrackFile {
         return $objs;
     }
 
-    function fetch_master_file_for_track_id($tid, $show_inactive_items = false) {
-        $result = _mysql_query(
-            'select * ' .
-            'from pp_audio_track_file ' .
-            'where track_id = ' . n($tid) . ' ' .
-            ($show_inactive_items ? 'and status in ("active", "inactive") ' : 'and status = "active" ') .
-            'and is_master = 1'
-        );
-
-        $f = null;
-
-        if ($row = mysql_fetch_array($result)) {
-            $f = new AudioTrackFile();
-            $f = AudioTrackFile::_read_row($f, $row);
-        }
-
-        mysql_free_result($result);
-
-        return $f;
-    }
-
-    function fetch_all_stems_for_track_id($tid, $show_inactive_items = false) {
-        $result = _mysql_query(
-            'select * ' .
-            'from pp_audio_track_file ' .
-            'where track_id = ' . n($tid) . ' ' .
-            ($show_inactive_items ? 'and status in ("active", "inactive") ' : 'and status = "active" ') .
-            'and is_master = 0 ' .
-            'order by filename asc'
-        );
-
-        $objs = array();
-
-        while ($row = mysql_fetch_array($result)) {
-            $f = new AudioTrackFile();
-            $f = AudioTrackFile::_read_row($f, $row);
-            $objs[] = $f;
-        }
-
-        mysql_free_result($result);
-
-        return $objs;
-    }
-
     function fetch_for_id($id) {
         $result = _mysql_query(
             'select * ' .
-            'from pp_audio_track_file ' .
+            'from pp_project_file ' .
             'where id = ' . n($id)
         );
 
-        $f = new AudioTrackFile();
+        $f = new ProjectFile();
 
         if ($row = mysql_fetch_array($result)) {
-            $f = AudioTrackFile::_read_row($f, $row);
+            $f = ProjectFile::_read_row($f, $row);
         }
 
         mysql_free_result($result);
@@ -112,7 +67,6 @@ class AudioTrackFile {
         $f->track_id              = $row['track_id'];
         $f->filename              = $row['filename'];
         $f->orig_filename         = $row['orig_filename'];
-        $f->type                  = $row['type'];
         $f->is_master             = $row['is_master'];
         $f->status                = $row['status'];
         $f->entry_date            = reformat_sql_date($row['entry_date']);
@@ -124,13 +78,12 @@ class AudioTrackFile {
     // ---------------
     function create_table() {
         $ok = _mysql_query(
-            'create table if not exists pp_audio_track_file ' .
+            'create table if not exists pp_project_file ' .
             '(' .
             'id                    int(10)      not null auto_increment, ' .
             'track_id              int(10)      not null, ' .
             'filename              varchar(255) not null, ' .
             'orig_filename         varchar(255) not null, ' .
-            'type                  varchar(50)  not null, ' .
             'is_master             tinyint(1)   not null, ' .
             'status                varchar(20)  not null, ' .
             'entry_date            datetime     not null default "1970-01-01 00:00:00", ' .
@@ -146,7 +99,7 @@ class AudioTrackFile {
     function count_all_for_track_id($tid, $count_inactive_items) {
         $result = _mysql_query(
             'select count(*) as cnt ' .
-            'from pp_audio_track_file ' .
+            'from pp_project_file ' .
             'where track_id = ' . n($tid) . ' ' .
             ($count_inactive_items ? 'and status in ("active", "inactive")' : 'and status = "active"')
         );
@@ -158,27 +111,12 @@ class AudioTrackFile {
         return $count;
     }
 
-    function count_all_hqmp3_files_for_track_id($tid, $count_inactive_items) {
+    function master_mp3_file_found_for_track_id($tid, $count_inactive_items = false) {
         $result = _mysql_query(
             'select count(*) as cnt ' .
-            'from pp_audio_track_file ' .
+            'from pp_project_file ' .
             'where track_id = ' . n($tid) . ' ' .
-            'and type = "HQMP3" ' .
-            ($count_inactive_items ? 'and status in ("active", "inactive")' : 'and status = "active"')
-        );
-
-        $row = mysql_fetch_array($result);
-        $count = $row['cnt'];
-        mysql_free_result($result);
-
-        return $count;
-    }
-
-    function master_file_found_for_track_id($tid, $count_inactive_items = false) {
-        $result = _mysql_query(
-            'select count(*) as cnt ' .
-            'from pp_audio_track_file ' .
-            'where track_id = ' . n($tid) . ' ' .
+            'and orig_filename like "%mp3" ' .
             'and is_master = 1 ' .
             ($count_inactive_items ? 'and status in ("active", "inactive")' : 'and status = "active"')
         );
@@ -193,12 +131,12 @@ class AudioTrackFile {
         if (!$tid) return;
 
         $result = _mysql_query(
-            'select id from pp_audio_track_file ' .
+            'select id from pp_project_file ' .
             'where track_id = ' . n($tid)
         );
 
         while ($row = mysql_fetch_array($result)) {
-            AudioTrackFile::delete_with_id($row['id']);
+            ProjectFile::delete_with_id($row['id']);
         }
 
         mysql_free_result($result);
@@ -212,7 +150,7 @@ class AudioTrackFile {
         // delete file from filesystem
         $result = _mysql_query(
             'select filename ' .
-            'from pp_audio_track_file ' .
+            'from pp_project_file ' .
             'where id = ' . n($id)
         );
 
@@ -233,7 +171,7 @@ class AudioTrackFile {
         // delete record
         $logger->info('deleting track file record with id: ' . $id);
         return _mysql_query(
-            'delete from pp_audio_track_file ' .
+            'delete from pp_project_file ' .
             'where id = ' . n($id)
         );
     }
@@ -250,14 +188,13 @@ class AudioTrackFile {
 
     function insert() {
         $ok = _mysql_query(
-            'insert into pp_audio_track_file ' .
-            '(track_id, filename, orig_filename, type, is_master, ' .
+            'insert into pp_project_file ' .
+            '(track_id, filename, orig_filename, is_master, ' .
             'status, entry_date) ' .
             'values (' .
             n($this->track_id)               . ', ' .
             qq($this->filename)              . ', ' .
             qq($this->orig_filename)         . ', ' .
-            qq($this->type)                  . ', ' .
             b($this->is_master)              . ', ' .
             qq($this->status)                . ', ' .
             'now()'                          .
@@ -275,11 +212,10 @@ class AudioTrackFile {
 
     function update() {
         $ok = _mysql_query(
-            'update pp_audio_track_file ' .
+            'update pp_project_file ' .
             'set track_id = '  . n($this->track_id)       . ', ' .
             'filename = '      . qq($this->filename)      . ', ' .
             'orig_filename = ' . qq($this->orig_filename) . ', ' .
-            'type = '          . qq($this->type)          . ', ' .
             'is_master = '     . qq($this->is_master)     . ', ' .
             'status = '        . qq($this->status)        . ' ' .
             // entry_date intentionally not set here

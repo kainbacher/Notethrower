@@ -3,36 +3,36 @@
 include_once('../Includes/Config.php');
 include_once('../Includes/DbConnect.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/AudioTrackFile.php');
 include_once('../Includes/DB/AudioTrackUserVisibility.php');
 include_once('../Includes/DB/AudioTrackAudioTrackAttribute.php');
+include_once('../Includes/DB/ProjectFile.php');
 
 // dao for pp_audio_track table
-class AudioTrack {
+class AudioTrack { // new: rename to "project"?
     var $id;
     var $user_id;
-    var $title;
-    var $preview_mp3_filename;
-    var $orig_preview_mp3_filename;
-    var $sorting;
-    var $type; // original or remix
-    var $is_full_song;
-    var $originating_user_id;
-    var $parent_track_id;
+    var $title; // new: project name
+    var $preview_mp3_filename; // new: drop this?
+    var $orig_preview_mp3_filename; // new: drop this?
+    var $sorting; // new: drop this?
+    var $type; // old: original or remix, new: drop this?
+    var $is_full_song; // new: drop this!
+    var $originating_user_id; // new: drop this!
+    var $parent_track_id; // new: drop this!
     var $price;
     var $currency;
     var $rating_count;
     var $rating_value;
     var $competition_points; // when two songs are compared and one is chosen as the better song, its comp. points are incremented by 1
-    var $genres;
-    var $visibility;
+    var $genres; // new: replace with association table entry to genre table
+    var $visibility; // new: drop this?
     var $playback_count;
     var $download_count;
-    var $originator_notified;
-    var $status; // newborn, active, inactive
+    var $originator_notified; // new: drop this!
+    var $status; // old: newborn, active, inactive - new: newborn, active, finished (watch out to change all $include_inactive_items stuff!)
     var $entry_date;
-    var $containsOthers;
-    var $needsOthers;
+    var $containsOthers; // check this if we need it here
+    var $needsOthers; // check this if we need it here
     var $additionalInfo;
 
     // non-table fields
@@ -694,7 +694,7 @@ class AudioTrack {
         if (!$id) return;
 
         AudioTrack::reset_song_associations_to_parent_track_id($id);
-        AudioTrackFile::delete_all_with_track_id($id);
+        ProjectFile::delete_all_with_track_id($id);
         AudioTrackUserVisibility::delete_all_with_track_id($id);
         AudioTrackAudioTrackAttribute::deleteForTrackId($id);
 

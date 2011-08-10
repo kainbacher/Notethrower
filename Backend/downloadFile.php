@@ -6,8 +6,8 @@ include_once('../Includes/Config.php');
 include_once('../Includes/Logger.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/AudioTrack.php');
-include_once('../Includes/DB/AudioTrackFile.php');
 include_once('../Includes/DB/PayPalTx.php');
+include_once('../Includes/DB/ProjectFile.php');
 
 // TODO - in case of error: show friendly error page with instructions for help
 
@@ -18,8 +18,8 @@ if (!$track || !$track->id) {
     exit;
 }
 
-$atFile = AudioTrackFile::fetch_for_id(get_numeric_param('atfid'));
-if (!$atFile || !$atFile->id || $atFile->track_id != $track->id) {
+$pFile = ProjectFile::fetch_for_id(get_numeric_param('atfid'));
+if (!$pFile || !$pFile->id || $pFile->track_id != $track->id) {
     $logger->warn('track not found!');
     echo 'FILE NOT FOUND!';
     exit;
@@ -31,7 +31,7 @@ if (get_param('mode') == 'purchase') {
 
 increment_download_count();
 
-deliver_file($atFile);
+deliver_file($pFile);
 
 exit;
 
@@ -69,15 +69,15 @@ function increment_download_count() {
     $track->save();
 }
 
-function deliver_file(&$atFile) {
+function deliver_file(&$pFile) {
     global $logger;
     global $track;
 
     $logger->info('delivering content ...');
 
-    $filename = $atFile->filename;
+    $filename = $pFile->filename;
     if (!$filename) { // should never happen
-        $logger->warn('filename not defined in AudioTrackFile object!');
+        $logger->warn('filename not defined in ProjectFile object!');
         echo 'FILENAME MISSING!';
         exit;
     }
@@ -89,25 +89,27 @@ function deliver_file(&$atFile) {
         exit;
     }
 
-    header('Content-Disposition: attachment; filename="' . $atFile->orig_filename . '"');
-    header('Content-Type: ' . get_mime_type($atFile->type));
+    header('Content-Disposition: attachment; filename="' . $pFile->orig_filename . '"');
+    header('Content-Type: ' . get_mime_type($pFile->orig_filename));
     header('Content-Length: ' . filesize($filepath));
 
     readfile_chunked($filepath);
 }
 
-function get_mime_type($fmt) {
-    if ($fmt == 'HQMP3') {
+function get_mime_type($filename) {
+    $filename = strtolower($filename);
+
+    if (strpos($filename, '.mp3') !== false) {
         return 'audio/mp3';
-    } else if ($fmt == 'AIFF') {
+    } else if (strpos($filename, '.aiff') !== false) {
         return 'audio/x-aiff';
-    } else if ($fmt == 'FLAC') {
+    } else if (strpos($filename, '.flac') !== false) {
         return 'audio/flac';
-    } else if ($fmt == 'OGG') {
+    } else if (strpos($filename, '.ogg') !== false) {
         return 'audio/ogg';
-    } else if ($fmt == 'WAV') {
+    } else if (strpos($filename, '.wav') !== false) {
         return 'audio/x-wav';
-    } else if ($fmt == 'ZIP') {
+    } else if (strpos($filename, '.zip') !== false) {
         return 'application/zip';
     } else {
         return 'application/octet-stream'; // using this mimetype always ensures that no browser players are opened? FIXME

@@ -6,7 +6,7 @@ include_once('../Includes/Config.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/AudioTrack.php');
-include_once('../Includes/DB/AudioTrackFile.php');
+include_once('../Includes/DB/ProjectFile.php');
 include_once('../Includes/DB/Stats.php');
 
 // let's see if the visiting user is a logged in user
@@ -91,23 +91,27 @@ function processTrack(&$xml, &$track, $remixedByOthersMode) {
     $xml .= '<name>' . xmlentities($track->title) . '</name>';
     //$xml .= '<previewMp3File>' . xmlentities($track->preview_mp3_filename) . '</previewMp3File>';
 
-    $files = AudioTrackFile::fetch_all_for_track_id($track->id, false);
+    $files = ProjectFile::fetch_all_for_track_id($track->id, false);
 
     // the HQMP3 file is also used as the prelistening file
     foreach ($files as $file) {
-        if ($file->type == 'HQMP3') {
+        $filename = strtolower($file->orig_filename);
+
+        if (strpos($filename, '.mp3') !== false) {
             $xml .= '<previewMp3File>'  . xmlentities($file->filename) . '</previewMp3File>';
             break;
         }
     }
 
     foreach ($files as $file) {
-        if      ($file->type == 'HQMP3')       $xml .= '<hqMp3File>' . xmlentities($file->filename) . '</hqMp3File>';
-        else if ($file->type == 'AIFF')        $xml .= '<aiffFile>'  . xmlentities($file->filename) . '</aiffFile>';
-        else if ($file->type == 'FLAC')        $xml .= '<flacFile>'  . xmlentities($file->filename) . '</flacFile>';
-        else if ($file->type == 'OGG')         $xml .= '<oggFile>'   . xmlentities($file->filename) . '</oggFile>';
-        else if ($file->type == 'WAV')         $xml .= '<wavFile>'   . xmlentities($file->filename) . '</wavFile>';
-        else if ($file->type == 'ZIP')         $xml .= '<zipFile>'   . xmlentities($file->filename) . '</zipFile>';
+        $filename = strtolower($file->orig_filename);
+
+        if      (strpos($filename, '.mp3')  !== false) $xml .= '<hqMp3File>' . xmlentities($file->filename) . '</hqMp3File>';
+        else if (strpos($filename, '.aiff') !== false) $xml .= '<aiffFile>'  . xmlentities($file->filename) . '</aiffFile>';
+        else if (strpos($filename, '.flac') !== false) $xml .= '<flacFile>'  . xmlentities($file->filename) . '</flacFile>';
+        else if (strpos($filename, '.ogg')  !== false) $xml .= '<oggFile>'   . xmlentities($file->filename) . '</oggFile>';
+        else if (strpos($filename, '.wav')  !== false) $xml .= '<wavFile>'   . xmlentities($file->filename) . '</wavFile>';
+        else if (strpos($filename, '.zip')  !== false) $xml .= '<zipFile>'   . xmlentities($file->filename) . '</zipFile>';
     }
 
     $xml .= '<price>' . $track->price . '</price>';

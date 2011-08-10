@@ -6,7 +6,6 @@ include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/AudioTrack.php');
-include_once('../Includes/DB/AudioTrackFile.php');
 
 $user = User::new_from_cookie();
 ensureUserIsLoggedIn($user);

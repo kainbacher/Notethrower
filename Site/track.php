@@ -9,9 +9,9 @@ include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/AudioTrackUserVisibility.php');
-include_once('../Includes/DB/AudioTrackFile.php');
 include_once('../Includes/DB/AudioTrackAttribute.php');
 include_once('../Includes/DB/AudioTrackAudioTrackAttribute.php');
+include_once('../Includes/DB/ProjectFile.php');
 
 // FIXME - use this in upload form:
 // <input type="hidden" name="MAX_FILE_SIZE" value="524288001">
@@ -98,7 +98,7 @@ if (get_param('action') == 'create') {
             '${msg}' => 'Successfully saved track data.'
         ));
 
-        $masterFound = AudioTrackFile::master_file_found_for_track_id($track->id);
+        $masterFound = ProjectFile::master_mp3_file_found_for_track_id($track->id);
         if ($masterFound) {
             $track->status = 'active';
             $track->save();
@@ -107,8 +107,8 @@ if (get_param('action') == 'create') {
             $track->status = 'inactive';
             $track->save();
             $messageList .= processTpl('Common/message_notice.html', array(
-                '${msg}' => 'Please upload a master MP3 file to make sure your song or track is activated.<br />' .
-                            'Without a master MP3 file the song will not be visible for other users.<br />' .
+                '${msg}' => 'Please upload a mix MP3 file to make sure your project is activated.<br />' .
+                            'Without a mix MP3 file the project will not be visible for other users.<br />' .
                             'Please make sure the file is of high quality, at least 128kbps at 44.1kHz'
             ));
         }
@@ -153,13 +153,13 @@ if (get_param('action') == 'create') {
         $track->status = 'inactive';
 
     } else {
-        $masterFound = AudioTrackFile::master_file_found_for_track_id($track->id);
+        $masterFound = ProjectFile::master_mp3_file_found_for_track_id($track->id);
         if ($masterFound) {
             $track->status = 'active';
 
         } else {
-            $msg = 'The track status cannot be set to \'Active\' because no master MP3 file was uploaded yet! ' .
-                   'Without a master MP3 file the song will not be visible for other users. ' .
+            $msg = 'The project status cannot be set to \'Active\' because no mix MP3 file was uploaded yet! ' .
+                   'Without a mix MP3 file the project will not be visible for other users. ' .
                    'Please make sure the file is of high quality, at least 128kbps at 44.1kHz';
         }
     }
@@ -178,7 +178,7 @@ if (get_param('action') == 'create') {
     $track = AudioTrack::fetch_for_id($trackId);
     ensureTrackBelongsToUserId($track, $user->id);
 
-    $file = AudioTrackFile::fetch_for_id(get_numeric_param('fid'));
+    $file = ProjectFile::fetch_for_id(get_numeric_param('fid'));
     if (!$file) {
         show_fatal_error_and_exit('track file not found!');
     }
@@ -202,7 +202,7 @@ if (get_param('action') == 'create') {
     $track = AudioTrack::fetch_for_id($trackId);
     ensureTrackBelongsToUserId($track, $user->id);
 
-    $file = AudioTrackFile::fetch_for_id(get_numeric_param('fid'));
+    $file = ProjectFile::fetch_for_id(get_numeric_param('fid'));
     if (!$file) {
         //show_fatal_error_and_exit('track file not found!');
         $jsonReponse = array(
@@ -212,9 +212,9 @@ if (get_param('action') == 'create') {
         sendJsonResponseAndExit($jsonReponse);
     }
 
-    AudioTrackFile::delete_with_id(get_numeric_param('fid'));
+    ProjectFile::delete_with_id(get_numeric_param('fid'));
 
-    $masterFound = AudioTrackFile::master_file_found_for_track_id($track->id);
+    $masterFound = ProjectFile::master_mp3_file_found_for_track_id($track->id);
     if ($masterFound) {
         $track->status = 'active';
         $track->save();
@@ -223,11 +223,11 @@ if (get_param('action') == 'create') {
         $track->status = 'inactive';
         $track->save();
 //        $messageList .= processTpl('Common/message_notice.html', array(
-//            '${msg}' => 'Please upload a master MP3 file to make sure your song or track is activated.<br />' .
-//                        'Without a master MP3 file the song will not be visible for other users.<br />' .
+//            '${msg}' => 'Please upload a mix MP3 file to make sure your project is activated.<br />' .
+//                        'Without a mix MP3 file the project will not be visible for other users.<br />' .
 //                        'Please make sure the file is of high quality, at least 128kbps at 44.1kHz'
 //        ));
-        $logger->info('master file was deleted');
+        $logger->info('mix file was deleted');
     }
 
     $jsonReponse = array(
@@ -393,55 +393,31 @@ function getUploadedFilesSection($trackId) {
     $masterFileFoundHtml    = '';
     $masterFileNotFoundHtml = '';
 
-    $masterFile = AudioTrackFile::fetch_master_file_for_track_id($trackId, true);
-    if ($masterFile) {
-        $masterFileFoundHtml = processTpl('Track/masterFile.html', array(
-            '${filename}'        => escape($masterFile->orig_filename),
-            '${filenameEscaped}' => escape_and_rewrite_single_quotes($masterFile->orig_filename),
-            '${type}'            => escape($masterFile->type),
-            '${status}'          => $masterFile->status == 'active' ? 'Active' : 'Inactive', // TODO - currently not used
-            '${trackId}'         => $trackId,
-            '${trackFileId}'     => $masterFile->id
-        ));
+    $trackFilesHtml         = '';
+    $trackFilesNotFoundHtml = '';
 
-    } else {
-        $masterFileNotFoundHtml = processTpl('Track/masterFileNotFound.html', array());
-    }
-
-    $stemFilesHtml         = '';
-    $stemFilesNotFoundHtml = '';
-
-    $stemFiles = array();
+    $trackFiles = array();
     if ($trackId) {
-        $stemFiles = AudioTrackFile::fetch_all_stems_for_track_id($trackId, true);
+        $trackFiles = ProjectFile::fetch_all_for_track_id($trackId, true);
     }
 
-    foreach ($stemFiles as $file) {
-        $stemFilesHtml .= processTpl('Track/stemFileElement.html', array(
+    foreach ($trackFiles as $file) {
+        $trackFilesHtml .= processTpl('Track/trackFileElement.html', array(
             '${filename}'             => escape($file->orig_filename),
             '${filenameEscaped}'      => escape_and_rewrite_single_quotes($file->orig_filename),
-            '${type}'                 => escape($file->type),
             '${status}'               => $file->status == 'active' ? 'Active' : 'Inactive', // TODO - currently not used
             '${trackId}'              => $trackId,
             '${trackFileId}'          => $file->id
         ));
-
-//        $html .= '<td><b>' . escape($file->orig_filename) . ($file->is_master ? ' (Master file)' : ' (Stem)') . '</b></td>' .
-//                 '<td>' . $file->type . '</td>' .
-//                 //'<td><a href="track.php?tid=' . $trackId . '&action=toggleFileState&fid=' . $file->id . '">' . ($file->status == 'active' ? 'Active' : 'Inactive') . '</a></td>' .
-//                 '<td><a href="javascript:askForConfirmationAndRedirect(\'Do you really want to delete this track file?\', \'' .
-//                 escape_and_rewrite_single_quotes($file->orig_filename) . '\', \'track.php?tid=' . $trackId . '&action=deleteTrackFile&fid=' . $file->id . '\');">Delete</a></td>' . "\n";
     }
 
-    if (count($stemFiles) == 0) {
-        $stemFilesNotFoundHtml = processTpl('Track/stemFilesNotFound.html', array());
+    if (count($trackFiles) == 0) {
+        $trackFilesNotFoundHtml = processTpl('Track/trackFilesNotFound.html', array());
     }
 
     return processTpl('Track/uploadedFilesSection.html', array(
-        '${Track/masterFile_optional}'         => $masterFileFoundHtml,
-        '${Track/masterFileNotFound_optional}' => $masterFileNotFoundHtml,
-        '${Track/stemFileElement_list}'        => $stemFilesHtml,
-        '${Track/stemFilesNotFound_optional}'  => $stemFilesNotFoundHtml
+        '${Track/trackFileElement_list}'        => $trackFilesHtml,
+        '${Track/trackFilesNotFound_optional}'  => $trackFilesNotFoundHtml
     ));
 }
 

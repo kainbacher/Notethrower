@@ -6,7 +6,6 @@ include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/AudioTrackAudioTrackAttribute.php');
 include_once('../Includes/DB/AudioTrackUserVisibility.php');
-include_once('../Includes/DB/AudioTrackFile.php');
 
 $visitorUserId = -1;
 $userIsLoggedIn  = false;
@@ -106,8 +105,6 @@ if ($track) { // could be empty if wrong id or not visible for logged in user
             // FIXME - add paging or scrolling for long child track lists
         }
     }
-
-    //$trackFiles = AudioTrackFile::fetch_all_for_track_id($track->id, true);
 
     if ($ownerUser->id != $user->id) {
         echo '<br><br>' . "\n";

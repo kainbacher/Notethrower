@@ -7,8 +7,8 @@ include_once('../Includes/Logger.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/AudioTrack.php');
-include_once('../Includes/DB/AudioTrackFile.php');
 include_once('../Includes/DB/PayPalTx.php');
+include_once('../Includes/DB/ProjectFile.php');
 
 $logger->info('client ip: ' . $_SERVER['REMOTE_ADDR']);
 
@@ -223,9 +223,9 @@ var fileSelected = false;
           <div id="selection_list">
 <?php
 
-    $files = AudioTrackFile::fetch_all_for_track_id($track->id, false);
+    $files = ProjectFile::fetch_all_for_track_id($track->id, false);
     foreach ($files as $file) {
-        echo '<input type="radio" name="atfid" value="' . $file->id . '" onClick="fileSelected=true; checkInputs();">&nbsp;' . escape($file->orig_filename . ' (' . $file->type . ($file->is_master ? ', Master file' : ', Stem') . ')') . '<br>' . "\n";
+        echo '<input type="radio" name="atfid" value="' . $file->id . '" onClick="fileSelected=true; checkInputs();">&nbsp;' . escape($file->orig_filename . ($file->is_master ? ' (Master/Mix file)' : '')) . '<br>' . "\n";
     }
 
 ?>

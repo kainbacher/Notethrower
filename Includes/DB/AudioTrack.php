@@ -526,12 +526,12 @@ class AudioTrack { // new: rename to "project"?
 
         $result = _mysql_query(
             'select t.*, u.name as user_name, u.image_filename as user_img_filename, f.filename as mp3_filename ' .
-            'from pp_audio_track t, pp_audio_track_file f, pp_user u ' .
+            'from pp_audio_track t, pp_project_file f, pp_user u ' .
             'where t.status = "active" ' .
             'and t.visibility = "public" ' .
             'and t.user_id = u.id ' .
             'and t.id = f.track_id ' .
-            'and f.type = "HQMP3" ' .
+            'and f.orig_filename like "%.mp3" ' .
             $whereClauseAddon .
             'order by rand() ' .
             'limit 1'

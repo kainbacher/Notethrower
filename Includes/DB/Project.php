@@ -26,7 +26,6 @@ class Project {
     var $visibility; // new: drop this?
     var $playback_count;
     var $download_count;
-    var $originator_notified; // new: drop this!
     var $status; // old: newborn, active, inactive - new: newborn, active, finished (watch out to change all $include_inactive_items stuff!)
     var $entry_date;
     var $containsOthers; // check this if we need it here
@@ -496,7 +495,6 @@ class Project {
         $a->visibility                = $row['visibility'];
         $a->playback_count            = $row['playback_count'];
         $a->download_count            = $row['download_count'];
-        $a->originator_notified       = $row['originator_notified'];
         $a->status                    = $row['status'];
         $a->containsOthers            = $row['contains_others'];
         $a->needsOthers               = $row['needs_others'];
@@ -534,7 +532,6 @@ class Project {
             'visibility                varchar(10)  not null, ' .
             'playback_count            int(10)      not null, ' .
             'download_count            int(10)      not null, ' .
-            'originator_notified       tinyint(1)   not null, ' .
             'status                    varchar(20)  not null, ' .
             'contains_others           varchar(255), ' .
             'needs_others              varchar(255), ' .
@@ -653,7 +650,7 @@ class Project {
             'insert into pp_project ' .
             '(user_id, title, preview_mp3_filename, orig_preview_mp3_filename, ' .
             'price, currency, sorting, type, originating_user_id, rating_count, ' .
-            'rating_value, competition_points, genres, visibility, playback_count, download_count, originator_notified, ' .
+            'rating_value, competition_points, genres, visibility, playback_count, download_count, ' .
             'status, contains_others, needs_others, additional_info, entry_date) ' .
             'values (' .
             n($this->user_id)                    . ', ' .
@@ -672,7 +669,6 @@ class Project {
             qq($this->visibility)                . ', ' .
             n($this->playback_count)             . ', ' .
             n($this->download_count)             . ', ' .
-            b($this->originator_notified)        . ', ' .
             qq($this->status)                    . ', ' .
             qq($this->containsOthers)            . ', ' .
             qq($this->needsOthers)               . ', ' .
@@ -709,7 +705,6 @@ class Project {
             'visibility = '                . qq($this->visibility)                . ', ' .
             'playback_count = '            . n($this->playback_count)             . ', ' .
             'download_count = '            . n($this->download_count)             . ', ' .
-            'originator_notified = '       . b($this->originator_notified)        . ', ' .
             'status = '                    . qq($this->status)                    . ', ' .
             'contains_others = '           . qq($this->containsOthers)            . ', ' .
             'needs_others = '              . qq($this->needsOthers)               . ', ' .

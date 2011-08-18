@@ -33,14 +33,12 @@ if (get_param('action') == 'create') {
     $track->title                     = 'New audio track';
     $track->type                      = 'original';
     $track->originating_user_id       = null;
-    $track->parent_track_id           = null;
     $track->price                     = 0;
     $track->currency                  = 'USD'; // TODO - take from config - check other occurences as well
     $track->genres                    = '';
     $track->visibility                = 'public';
     $track->playback_count            = 0;
     $track->download_count            = 0;
-    $track->originator_notified       = 0;
     $track->status                    = 'newborn';
     $track->sorting                   = 0;
     $track->rating_count              = 0;
@@ -482,10 +480,10 @@ function inputDataOk(&$errorFields, &$track) {
 function processParams(&$track, &$user) {
     global $logger;
 
-    $track->user_id               = $user->id;
+    $track->user_id                 = $user->id;
     $track->title                   = get_param('title');
     $track->type                    = get_param('type') == 'remix' ? 'remix' : 'original'; // this is a hidden field, popuplated with a url param
-    $track->originating_user_id   = get_numeric_param('originating_user_id');
+    $track->originating_user_id     = get_numeric_param('originating_user_id');
     $track->price                   = get_numeric_param('price');
     $track->genres                  = get_param('genres');
     //$track->visibility              = get_param('visibility'); // currently hidden, but maybe a candidate for pro users
@@ -495,31 +493,32 @@ function processParams(&$track, &$user) {
     //$track->rating_value            = 0; // read-only field on this page
     $track->additionalInfo          = get_param('additionalInfo');
 
-    if ($track->type == 'remix' && $track->originating_user_id && !$track->originator_notified) {
-        $logger->info('new remix detected, sending notification mail to originator');
-
-        $originator = User::fetch_for_id($track->originating_user_id);
-        if ($originator) {
-            // send notification mail to originator
-            $email_sent = send_email($originator->email_address, $user->name . ' has created a remix using one of your tracks',
-                    'Hey ' . $originator->name . ',' . "\n\n" .
-                    $user->name . ' has just started creating a new remix using one of your tracks.' . "\n\n" .
-                    'You may want to check out the "Remixed by others" section in your Notethrower Widget or on your public user page: ' .
-                    $GLOBALS['BASE_URL'] . 'Site/userInfo.php?aid=' . $track->originating_user_id . "\n\n" .
-                    'Please note that you might not see the new track until the remixer puts it online.');
-
-            if (!$email_sent) {
-                $logger->error('Failed to send "new remix" notification email to originator!');
-
-            } else {
-                $logger->info('marking track as "originator was modified"');
-                $track->originator_notified = true;
-            }
-
-        } else {
-            $logger->error('no originator found for user id: ' . $track->originating_user_id);
-        }
-    }
+// FIXME - make something similar to that! the originator_modified field was dropped
+//    if ($track->type == 'remix' && $track->originating_user_id && !$track->originator_notified) {
+//        $logger->info('new remix detected, sending notification mail to originator');
+//
+//        $originator = User::fetch_for_id($track->originating_user_id);
+//        if ($originator) {
+//            // send notification mail to originator
+//            $email_sent = send_email($originator->email_address, $user->name . ' has created a remix using one of your tracks',
+//                    'Hey ' . $originator->name . ',' . "\n\n" .
+//                    $user->name . ' has just started creating a new remix using one of your tracks.' . "\n\n" .
+//                    'You may want to check out the "Remixed by others" section in your Notethrower Widget or on your public user page: ' .
+//                    $GLOBALS['BASE_URL'] . 'Site/userInfo.php?aid=' . $track->originating_user_id . "\n\n" .
+//                    'Please note that you might not see the new track until the remixer puts it online.');
+//
+//            if (!$email_sent) {
+//                $logger->error('Failed to send "new remix" notification email to originator!');
+//
+//            } else {
+//                $logger->info('marking track as "originator was modified"');
+//                $track->originator_notified = true;
+//            }
+//
+//        } else {
+//            $logger->error('no originator found for user id: ' . $track->originating_user_id);
+//        }
+//    }
 
     //handle track attributes
     $containsAttributeIds = get_array_param('containsAttributIds');

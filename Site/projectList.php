@@ -27,7 +27,7 @@ $remixedTracks  = Project::fetch_all_remixes_of_user_id_from_to($user->id, 0, 99
 
 $originalTracksList = '';
 foreach ($originalTracks as $t) {
-    $originalTracksList .= processTpl('TrackList/trackListItem.html', array(
+    $originalTracksList .= processTpl('ProjectList/trackListItem.html', array(
         '${trackId}'           => $t->id,
         '${trackTitle}'        => escape($t->title),
         '${trackTitleEscaped}' => escape_and_rewrite_single_quotes($t->title)
@@ -41,7 +41,7 @@ if (count($originalTracks) == 0) {
 
 $remixedTracksList = '';
 foreach ($remixedTracks as $t) {
-    $remixedTracksList .= processTpl('TrackList/trackListItem.html', array(
+    $remixedTracksList .= processTpl('ProjectList/trackListItem.html', array(
         '${trackId}'           => $t->id,
         '${trackTitle}'        => escape($t->title),
         '${trackTitleEscaped}' => escape_and_rewrite_single_quotes($t->title)
@@ -53,12 +53,12 @@ if (count($remixedTracks) == 0) {
     $remixedTracksList = 'No tracks found';
 }
 
-processAndPrintTpl('TrackList/index.html', array(
+processAndPrintTpl('ProjectList/index.html', array(
     '${Common/pageHeader}'                      => buildPageHeader('My tracks'),
     '${Common/bodyHeader}'                      => buildBodyHeader($user),
     '${Common/message_choice_optional}'         => $message,
-    '${TrackList/trackListItem_originals_list}' => $originalTracksList,
-    '${TrackList/trackListItem_remixes_list}'   => $remixedTracksList,
+    '${ProjectList/trackListItem_originals_list}' => $originalTracksList,
+    '${ProjectList/trackListItem_remixes_list}'   => $remixedTracksList,
     '${Common/bodyFooter}'                      => buildBodyFooter(),
     '${Common/pageFooter}'                      => buildPageFooter()
 ));

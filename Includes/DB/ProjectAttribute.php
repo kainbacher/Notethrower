@@ -47,7 +47,7 @@ class ProjectAttribute {
 
         $result = _mysql_query(
             'select atata.*, ata.name as attribute_name ' .
-            'from pp_project_attribute atata, pp_audio_track_attribute ata ' .
+            'from pp_project_attribute atata, pp_attribute ata ' .
             'where atata.track_id = ' . n($track_id) . ' and ' .
             'atata.status = ' . qq($status) . ' and ' .
             'atata.attribute_id = ata.id'

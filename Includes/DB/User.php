@@ -121,7 +121,7 @@ class User {
 
         $result = _mysql_query(
             'select u.*, sum(t.playback_count) as pb_count ' .
-            'from pp_user u, pp_audio_track t ' .
+            'from pp_user u, pp_project t ' .
             'where u.id = t.user_id ' .
             'group by u.id ' .
             'order by pb_count desc ' .

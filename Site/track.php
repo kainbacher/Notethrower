@@ -30,7 +30,7 @@ $trackId = get_numeric_param('tid'); // this is only set in an update scenario
 if (get_param('action') == 'create') {
     $track = new Project();
     $track->user_id                   = $user->id;
-    $track->title                     = 'New audio track';
+    $track->title                     = '(New project)';
     $track->type                      = 'original';
     $track->originating_user_id       = null;
     $track->price                     = 0;
@@ -58,7 +58,7 @@ if (get_param('action') == 'create') {
     }
 
     $track = Project::fetch_for_id($trackId);
-    ensureTrackBelongsToUserId($track, $user->id);
+    ensureProjectBelongsToUserId($track, $user->id);
 
 } else if (get_param('action') == 'save') {
     $logger->info('attempting to save track data ...');
@@ -67,7 +67,7 @@ if (get_param('action') == 'create') {
     }
 
     $track = Project::fetch_for_id($trackId);
-    ensureTrackBelongsToUserId($track, $user->id);
+    ensureProjectBelongsToUserId($track, $user->id);
 
     if (inputDataOk($errorFields, $track)) {
         processParams($track, $user);
@@ -125,7 +125,7 @@ if (get_param('action') == 'create') {
     }
 
     $track = Project::fetch_for_id($trackId);
-    ensureTrackBelongsToUserId($track, $user->id);
+    ensureProjectBelongsToUserId($track, $user->id);
 
     Project::delete_with_id($trackId);
     ProjectAttribute::deleteForProjectId($trackId);
@@ -142,7 +142,7 @@ if (get_param('action') == 'create') {
     $msg = '';
 
     $track = Project::fetch_for_id($trackId);
-    ensureTrackBelongsToUserId($track, $user->id);
+    ensureProjectBelongsToUserId($track, $user->id);
 
     if ($track->status == 'active') {
         $track->status = 'inactive';
@@ -171,7 +171,7 @@ if (get_param('action') == 'create') {
     }
 
     $track = Project::fetch_for_id($trackId);
-    ensureTrackBelongsToUserId($track, $user->id);
+    ensureProjectBelongsToUserId($track, $user->id);
 
     $file = ProjectFile::fetch_for_id(get_numeric_param('fid'));
     if (!$file) {
@@ -195,7 +195,7 @@ if (get_param('action') == 'create') {
     }
 
     $track = Project::fetch_for_id($trackId);
-    ensureTrackBelongsToUserId($track, $user->id);
+    ensureProjectBelongsToUserId($track, $user->id);
 
     $file = ProjectFile::fetch_for_id(get_numeric_param('fid'));
     if (!$file) {

@@ -17,13 +17,13 @@ class ProjectAttribute {
     function ProjectAttribute() {
     }
 
-    function fetchAttributeIdsForProjectIdAndState($track_id, $status) {
+    function fetchAttributeIdsForProjectIdAndState($project_id, $status) {
         $objs = array();
 
         $result = _mysql_query(
             'select * ' .
             'from pp_project_attribute ' .
-            'where project_id = ' . n($track_id) . ' and ' .
+            'where project_id = ' . n($project_id) . ' and ' .
             'status = ' . qq($status)
         );
 
@@ -42,13 +42,13 @@ class ProjectAttribute {
         return $objs;
     }
 
-    function fetchAttributeNamesForProjectIdAndState($track_id, $status) {
+    function fetchAttributeNamesForProjectIdAndState($project_id, $status) {
         $objs = array();
 
         $result = _mysql_query(
             'select atata.*, ata.name as attribute_name ' .
             'from pp_project_attribute atata, pp_attribute ata ' .
-            'where atata.project_id = ' . n($track_id) . ' and ' .
+            'where atata.project_id = ' . n($project_id) . ' and ' .
             'atata.status = ' . qq($status) . ' and ' .
             'atata.attribute_id = ata.id'
         );
@@ -93,11 +93,11 @@ class ProjectAttribute {
         return $objs;
     }
 
-    function addAll($attributeIds, $trackId, $status) {
+    function addAll($attributeIds, $projectId, $status) {
         foreach ($attributeIds as $id) {
             $f = new ProjectAttribute();
             $f->attribute_id = $id;
-            $f->project_id = $trackId;
+            $f->project_id = $projectId;
             $f->status = $status;
             $f->save();
         }
@@ -131,10 +131,10 @@ class ProjectAttribute {
         return $ok;
     }
 
-    function deleteForProjectId($trackId) {
+    function deleteForProjectId($projectId) {
         return _mysql_query(
             'delete from pp_project_attribute ' .
-            'where project_id = ' . n($trackId)
+            'where project_id = ' . n($projectId)
         );
     }
 

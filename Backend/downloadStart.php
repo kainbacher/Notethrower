@@ -15,18 +15,18 @@ $logger->info('client ip: ' . $_SERVER['REMOTE_ADDR']);
 
 // TODO - in case of error: show friendly error page with instructions for help
 
-// get track info
-$track_id = get_numeric_param('tid');
+// get project info
+$project_id = get_numeric_param('tid');
 
-if (!$track_id) {
-    $logger->warn('track id param missing!');
+if (!$project_id) {
+    $logger->warn('project_id param missing!');
     echo 'INVALID REQUEST (5)';
     exit;
 }
 
-$track = Project::fetch_for_id($track_id);
-if (!$track || !$track->id) {
-    $logger->warn('track not found for id: ' . $track_id);
+$project = Project::fetch_for_id($project_id);
+if (!$project || !$project->id) {
+    $logger->warn('project not found for id: ' . $project_id);
     echo 'INVALID REQUEST (7)';
     exit;
 }
@@ -98,7 +98,7 @@ function start_paypal_flow() {
 
 function validate_request_data() {
     global $logger;
-    global $track;
+    global $project;
 
     $logger->info('validating request data ...');
 
@@ -129,12 +129,12 @@ function validate_request_data() {
     }
 
     // check price/currency
-    if ($_POST['mc_gross'] < $track->price) {
-        $logger->warn('transaction price is lower than track price!');
+    if ($_POST['mc_gross'] < $project->price) {
+        $logger->warn('transaction price is lower than project price!');
         echo 'INVALID REQUEST (8)';
         exit;
     }
-    if ($_POST['mc_currency'] != $track->currency) {
+    if ($_POST['mc_currency'] != $project->currency) {
         $logger->warn('currency mismatch!');
         echo 'INVALID REQUEST (10)';
         exit;
@@ -164,13 +164,13 @@ function create_paypal_tx() {
 
 function show_file_selection($isFreeDownload) {
     global $logger;
-    global $track;
+    global $project;
 
     $logger->info('showing file selection ...');
 
-    $user = User::fetch_for_id($track->user_id);
+    $user = User::fetch_for_id($project->user_id);
     if (!$user || !$user->id) {
-        $logger->warn('user not found for id: ' . $track->user_id);
+        $logger->warn('user not found for id: ' . $project->user_id);
         echo 'INVALID REQUEST (11)';
         exit;
     }
@@ -205,7 +205,7 @@ var fileSelected = false;
 <?php
 
     echo '<br><br>';
-    echo '<span class="subheadline">' . $track->title . '</span>';
+    echo '<span class="subheadline">' . $project->title . '</span>';
     echo '<br>';
     echo '<span class="subsubheadline">' . $user->name . '</span>';
     echo '<br><br>';
@@ -218,12 +218,12 @@ var fileSelected = false;
         <form name="fileSelectionFrm" action="downloadFile.php" method="POST">
           <input type="hidden" name="mode" value="<?php echo get_param('mode'); ?>">
           <input type="hidden" name="transactionId" value="<?php echo get_param('txn_id'); ?>">
-          <input type="hidden" name="track_id" value="<?php echo $track->id; ?>">
+          <input type="hidden" name="project_id" value="<?php echo $project->id; ?>">
 
           <div id="selection_list">
 <?php
 
-    $files = ProjectFile::fetch_all_for_project_id($track->id, false);
+    $files = ProjectFile::fetch_all_for_project_id($project->id, false);
     foreach ($files as $file) {
         echo '<input type="radio" name="atfid" value="' . $file->id . '" onClick="fileSelected=true; checkInputs();">&nbsp;' . escape($file->orig_filename . ($file->is_master ? ' (Master/Mix file)' : '')) . '<br>' . "\n";
     }

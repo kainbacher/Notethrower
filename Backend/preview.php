@@ -12,14 +12,14 @@ $logger->debug('song: ' . get_param('song'));
 $partial_delivery = false;
 
 $filepath = $GLOBALS['CONTENT_BASE_PATH'] . get_param('song');
-$track_id = get_numeric_param('tid');
+$project_id = get_numeric_param('tid');
 
-if ($track_id) {
-    $track = Project::fetch_for_id($track_id);
+if ($project_id) {
+    $track = Project::fetch_for_id($project_id);
     if ($track) {
         $track->playback_count = $track->playback_count + 1;
         $track->save();
-        $logger->info('increased playback count for track id: ' . $track_id);
+        $logger->info('increased playback count for project id: ' . $project_id);
     }
 }
 

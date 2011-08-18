@@ -17,7 +17,7 @@ if (!$trackId) {
     show_fatal_error_and_exit('tid param is missing');
 }
 
-ensureTrackIdBelongsToUserId($trackId, $user->id);
+ensureProjectIdBelongsToUserId($trackId, $user->id);
 
 writePageDoctype();
 

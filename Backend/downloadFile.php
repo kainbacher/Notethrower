@@ -11,16 +11,16 @@ include_once('../Includes/DB/ProjectFile.php');
 
 // TODO - in case of error: show friendly error page with instructions for help
 
-$track = Project::fetch_for_id(get_param('track_id'));
-if (!$track || !$track->id) {
-    $logger->warn('track not found!');
-    echo 'TRACK NOT FOUND!';
+$project = Project::fetch_for_id(get_param('project_id'));
+if (!$project || !$project->id) {
+    $logger->warn('project not found!');
+    echo 'PROJECT NOT FOUND!';
     exit;
 }
 
 $pFile = ProjectFile::fetch_for_id(get_numeric_param('atfid'));
-if (!$pFile || !$pFile->id || $pFile->project_id != $track->id) {
-    $logger->warn('track not found!');
+if (!$pFile || !$pFile->id || $pFile->project_id != $project->id) {
+    $logger->warn('project file not found!');
     echo 'FILE NOT FOUND!';
     exit;
 }
@@ -60,12 +60,12 @@ function check_authorization() {
 
 function increment_download_count() {
     global $logger;
-    global $track;
+    global $project;
 
-    $logger->info('incrementing track download count to ' . ($track->download_count + 1));
+    $logger->info('incrementing project download count to ' . ($project->download_count + 1));
 
-    $track->download_count++;
-    $track->save();
+    $project->download_count++;
+    $project->save();
 }
 
 function deliver_file(&$pFile) {

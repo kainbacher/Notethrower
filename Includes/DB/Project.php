@@ -21,7 +21,7 @@ class Project {
     var $rating_value;
     var $competition_points; // when two songs are compared and one is chosen as the better song, its comp. points are incremented by 1
     var $genres; // new: replace with association table entry to genre table
-    var $visibility; // new: drop this? maybe useful in the future (pro feature - private tracks)
+    var $visibility; // new: drop this? maybe useful in the future (pro feature - private projects)
     var $playback_count;
     var $download_count;
     var $status; // old: newborn, active and inactive (mp3 file missing) - new: newborn, active, inactive (mp3 file missing) and finished (watch out to change all $show_inactive_items stuff!)
@@ -440,10 +440,10 @@ class Project {
         return $idList;
     }
 
-    function fetchRandomPublicFinishedProject($genre = null, $excludeTrackId = null) {
+    function fetchRandomPublicFinishedProject($genre = null, $excludeProjectId = null) {
         $whereClauseAddon = '';
-        if (!is_null($excludeTrackId)) {
-            $whereClauseAddon .= 'and t.id != ' . n($excludeTrackId) . ' ';
+        if (!is_null($excludeProjectId)) {
+            $whereClauseAddon .= 'and t.id != ' . n($excludeProjectId) . ' ';
         }
         if ($genre) {
             $whereClauseAddon .= 'and t.genres like ' . qqLike($genre) . ' ';
@@ -603,7 +603,7 @@ class Project {
         ProjectUserVisibility::delete_all_with_project_id($id);
         ProjectAttribute::deleteForProjectId($id);
 
-        $logger->info('deleting track file record with id: ' . $id);
+        $logger->info('deleting project record with id: ' . $id);
 
         return _mysql_query(
             'delete from pp_project ' .

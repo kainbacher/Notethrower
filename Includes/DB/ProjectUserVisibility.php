@@ -5,7 +5,7 @@ include_once('../Includes/Snippets.php');
 
 // dao for pp_project_user_visibility table
 class ProjectUserVisibility {
-    var $track_id;
+    var $project_id;
     var $user_id;
 
     // non-table fields
@@ -42,7 +42,7 @@ class ProjectUserVisibility {
         return $objs;
     }
 
-    function fetch_all_for_track_id($tid) { // FIXME - rename
+    function fetch_all_for_project_id($tid) {
         $objs = array();
 
         $result = _mysql_query(
@@ -67,7 +67,7 @@ class ProjectUserVisibility {
         return $objs;
     }
 
-    function fetch_for_user_id_track_id($aid, $tid) { // FIXME - rename
+    function fetch_for_user_id_project_id($aid, $tid) {
         $result = _mysql_query(
             'select * ' .
             'from pp_project_user_visibility ' .
@@ -119,7 +119,7 @@ class ProjectUserVisibility {
     }
 
     function _read_row($a, $row) {
-        $a->track_id = $row['project_id'];
+        $a->project_id = $row['project_id'];
         $a->user_id    = $row['user_id'];
 
         // non-table fields
@@ -146,7 +146,7 @@ class ProjectUserVisibility {
         return $ok;
     }
 
-    function delete_all_with_track_id($tid) { // FIXME - rename
+    function delete_all_with_project_id($tid) {
         global $logger;
 
         if (!$tid) return;
@@ -159,7 +159,7 @@ class ProjectUserVisibility {
         );
     }
 
-    function delete_all_with_track_id_and_user_id_list($tid, $aids) { // FIXME - rename
+    function delete_all_with_project_id_and_user_id_list($tid, $aids) {
         global $logger;
 
         if (!$tid) return;
@@ -190,7 +190,7 @@ class ProjectUserVisibility {
             '(user_id, project_id) ' .
             'values (' .
             n($this->user_id)                  . ', ' .
-            n($this->track_id)                   .
+            n($this->project_id)               .
             ')'
         );
 

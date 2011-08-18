@@ -15,7 +15,7 @@ if ($loggedInUser) {
     show_fatal_error_and_exit('access denied for not-logged-in user');
 }
 
-$trackId         = get_numeric_param('tid');
+$trackId       = get_numeric_param('tid');
 $userIdListStr = get_param('aids');
 
 // check permissions
@@ -31,7 +31,7 @@ if (!$track) {
 }
 
 // remove the users with the specified ids (e.g. 12,13,43)
-ProjectUserVisibility::delete_all_with_track_id_and_user_id_list($trackId, explode(',', $userIdListStr));
+ProjectUserVisibility::delete_all_with_project_id_and_user_id_list($trackId, explode(',', $userIdListStr));
 
 echo 'Success';
 

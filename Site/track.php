@@ -49,7 +49,7 @@ if (get_param('action') == 'create') {
     // create a visibility record for this user
     $atav = new ProjectUserVisibility();
     $atav->user_id = $user->id;
-    $atav->track_id = $track->id;
+    $atav->project_id = $track->id;
     $atav->save();
 
 } else if (get_param('action') == 'edit') {
@@ -80,11 +80,11 @@ if (get_param('action') == 'create') {
 
         // if the track is private, make sure that the owner can see it
         if ($track->visibility == 'private') {
-            $atav = ProjectUserVisibility::fetch_for_user_id_track_id($user->id, $track->id);
+            $atav = ProjectUserVisibility::fetch_for_user_id_project_id($user->id, $track->id);
             if (!$atav) {
                 $atav = new ProjectUserVisibility();
                 $atav->user_id = $user->id;
-                $atav->track_id = $track->id;
+                $atav->project_id = $track->id;
                 $atav->save();
             }
         }
@@ -324,7 +324,7 @@ echo '<div id="associated_users_row"' . ($hidden ? ' style="display:none";' : ''
 //echo '<td>&nbsp;</td>' . "\n";
 
 //$usersWithAccessListStr = '';
-//$usersWithAccessList = ProjectUserVisibility::fetch_all_for_track_id($track->id);
+//$usersWithAccessList = ProjectUserVisibility::fetch_all_for_project_id($track->id);
 //$ac = count($usersWithAccessList);
 //if ($ac > 20) {
 //    for ($ai = 0; $ai < 20; $ai++) {

@@ -32,7 +32,7 @@ if (!$track) {
 
 // add the user to the given track
 $atav = new ProjectUserVisibility();
-$atav->track_id  = $trackId;
+$atav->project_id = $trackId;
 $atav->user_id = $userId;
 $atav->save();
 

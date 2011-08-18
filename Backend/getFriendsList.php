@@ -18,7 +18,7 @@ $userId = get_numeric_param('aid');
 $trackId  = get_numeric_param('tid');
 
 // search for the selected users
-$users = ProjectUserVisibility::fetch_all_for_track_id($trackId);
+$users = ProjectUserVisibility::fetch_all_for_project_id($trackId);
 
 $jsonService = new Services_JSON();
 echo $jsonService->encode($users);

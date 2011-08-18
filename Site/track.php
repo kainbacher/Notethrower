@@ -128,7 +128,7 @@ if (get_param('action') == 'create') {
     ensureTrackBelongsToUserId($track, $user->id);
 
     Project::delete_with_id($trackId);
-    ProjectAttribute::deleteForTrackId($trackId);
+    ProjectAttribute::deleteForProjectId($trackId);
 
     header('Location: trackList.php');
     exit;
@@ -523,7 +523,7 @@ function processParams(&$track, &$user) {
     $needsAttributeIds = get_array_param('needsAttributIds');
 
     if (!is_null($track->id)) {
-        ProjectAttribute::deleteForTrackId($track->id);
+        ProjectAttribute::deleteForProjectId($track->id);
         ProjectAttribute::addAll($containsAttributeIds, $track->id, 'contains');
         ProjectAttribute::addAll($needsAttributeIds, $track->id, 'needs');
         $track->containsOthers = get_param('containsOthers');

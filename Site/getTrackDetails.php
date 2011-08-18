@@ -37,7 +37,7 @@ writePageDoctype();
   <body>
 <?php
 
-$track = Project::fetch_track_details($tid, $visitorUserId);
+$track = Project::fetch_project_details($tid, $visitorUserId);
 
 if ($track) { // could be empty if wrong id or not visible for logged in user
     $ownerUser = User::fetch_for_id($track->user_id);

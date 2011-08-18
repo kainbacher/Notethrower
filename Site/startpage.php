@@ -144,16 +144,16 @@ function handleCurrentGenreSelection(&$genre) {
 function getLeftAndRightTrack(&$leftTrack, &$rightTrack, &$genre) {
     global $logger;
 
-    $leftTrack  = Project::fetchRandomPublicTrack($genre);
-    $rightTrack = Project::fetchRandomPublicTrack($genre, $leftTrack->id); // ensure that we have different tracks
+    $leftTrack  = Project::fetchRandomPublicFinishedProject($genre);
+    $rightTrack = Project::fetchRandomPublicFinishedProject($genre, $leftTrack->id); // ensure that we have different tracks
     $retryCount = 0;
     $trackSelectionMessage = null;
     while ((!$leftTrack || !$rightTrack) && $retryCount <= 100) { // search until we have two different tracks in the same genre
         $trackSelectionMessage = 'Sorry but we couldn\'t find two songs in the selected genre. A random genre was chosen.';
         $retryCount++;
         $genre = chooseRandomGenre();
-        $leftTrack  = Project::fetchRandomPublicTrack($genre);
-        $rightTrack = Project::fetchRandomPublicTrack($genre, $leftTrack->id); // ensure that we have different tracks
+        $leftTrack  = Project::fetchRandomPublicFinishedProject($genre);
+        $rightTrack = Project::fetchRandomPublicFinishedProject($genre, $leftTrack->id); // ensure that we have different tracks
     }
 
     if (!$leftTrack || !$rightTrack) {

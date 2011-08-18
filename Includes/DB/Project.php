@@ -272,7 +272,7 @@ class Project {
         return $objs;
     }
 
-    function fetch_track_details($tid, $visitorUserId) {
+    function fetch_project_details($tid, $visitorUserId) {
         $result = null;
 
         if ($visitorUserId >= 0) {
@@ -388,7 +388,7 @@ class Project {
         return $count;
     }
 
-    function fetch_all_private_tracks_the_user_can_access($from, $to, $aid) {
+    function fetch_all_private_projects_the_user_can_access($from, $to, $aid) {
         $objs = array();
 
         $result = _mysql_query(
@@ -419,7 +419,7 @@ class Project {
         return $objs;
     }
 
-    function fetchAllNewbornTrackIdsForUserId($aid) {
+    function fetchAllNewbornProjectIdsForUserId($aid) {
         if (!$aid) return array();
 
         $result = _mysql_query(
@@ -440,7 +440,7 @@ class Project {
         return $idList;
     }
 
-    function fetchRandomPublicTrack($genre = null, $excludeTrackId = null) {
+    function fetchRandomPublicFinishedProject($genre = null, $excludeTrackId = null) {
         $whereClauseAddon = '';
         if (!is_null($excludeTrackId)) {
             $whereClauseAddon .= 'and t.id != ' . n($excludeTrackId) . ' ';
@@ -576,7 +576,7 @@ class Project {
         return $count;
     }
 
-    function count_all_private_tracks_the_user_can_access($aid) {
+    function count_all_private_projects_the_user_can_access($aid) {
         $result = _mysql_query(
             'select count(*) as cnt ' .
             'from pp_project t, pp_project_user_visibility puv ' .
@@ -601,7 +601,7 @@ class Project {
 
         ProjectFile::delete_all_with_project_id($id);
         ProjectUserVisibility::delete_all_with_project_id($id);
-        ProjectAttribute::deleteForTrackId($id); // FIXME - rename method
+        ProjectAttribute::deleteForProjectId($id);
 
         $logger->info('deleting track file record with id: ' . $id);
 

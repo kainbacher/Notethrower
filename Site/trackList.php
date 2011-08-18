@@ -17,9 +17,9 @@ if (get_param('msg')) {
     ));
 }
 
-$newbornTrackIdList = Project::fetchAllNewbornTrackIdsForUserId($user->id);
-foreach ($newbornTrackIdList as $nbtid) {
-    Project::delete_with_id($nbtid);
+$newbornProjectIdList = Project::fetchAllNewbornProjectIdsForUserId($user->id);
+foreach ($newbornProjectIdList as $nbpid) {
+    Project::delete_with_id($nbpid);
 }
 
 $originalTracks = Project::fetch_all_originals_of_user_id_from_to($user->id, 0, 999999999, true, true, -1);

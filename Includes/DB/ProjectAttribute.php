@@ -131,7 +131,7 @@ class ProjectAttribute {
         return $ok;
     }
 
-    function deleteForTrackId($trackId) {
+    function deleteForProjectId($trackId) {
         return _mysql_query(
             'delete from pp_project_attribute ' .
             'where track_id = ' . n($trackId)

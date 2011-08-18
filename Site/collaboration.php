@@ -64,7 +64,7 @@ if ($action == 'delete') {
     }
 }
 
-$privTrackCount = Project::count_all_private_tracks_the_user_can_access($user->id);
+$privTrackCount = Project::count_all_private_projects_the_user_can_access($user->id);
 $logger->info('private track count: ' . $privTrackCount);
 
 writePageDoctype();
@@ -282,7 +282,7 @@ if (count($msgs) > 0) {
       <div id="widgetSearch">
 <?php
 
-$newestPrivateTrack = Project::fetch_all_private_tracks_the_user_can_access(0, 0, $user->id);
+$newestPrivateTrack = Project::fetch_all_private_projects_the_user_can_access(0, 0, $user->id);
 if (count($newestPrivateTrack) > 0) {
     $aidForWidget = $newestPrivateTrack[0]->user_id;
 } else {

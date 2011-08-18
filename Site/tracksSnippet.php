@@ -34,7 +34,7 @@ if (!$mode) {
 }
 
 if ($user && $mode == 'privateTracks') {
-    $tracks = Project::fetch_all_private_tracks_the_user_can_access($paginatorResp['startItem'], $paginatorResp['endItem'], $user->id);
+    $tracks = Project::fetch_all_private_projects_the_user_can_access($paginatorResp['startItem'], $paginatorResp['endItem'], $user->id);
 
 } else {
     if ($mode == 'mostRecent') {

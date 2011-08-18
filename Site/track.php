@@ -9,7 +9,7 @@ include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/Attribute.php');
 include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/AudioTrackUserVisibility.php');
-include_once('../Includes/DB/AudioTrackAudioTrackAttribute.php');
+include_once('../Includes/DB/ProjectAttribute.php');
 include_once('../Includes/DB/ProjectFile.php');
 include_once('../Includes/DB/User.php');
 
@@ -133,7 +133,7 @@ if (get_param('action') == 'create') {
     ensureTrackBelongsToUserId($track, $user->id);
 
     AudioTrack::delete_with_id($trackId);
-    AudioTrackAudioTrackAttribute::deleteForTrackId($trackId);
+    ProjectAttribute::deleteForTrackId($trackId);
 
     header('Location: trackList.php');
     exit;
@@ -248,8 +248,8 @@ foreach ($users as $a) {
 // handle track attributes
 $containsAttributes = Attribute::fetchShownFor('contains');
 $needsAttributes = Attribute::fetchShownFor('needs');
-$trackContainsAttributeIds = AudioTrackAudioTrackAttribute::fetchAttributeIdsForTrackIdAndState($track->id, 'contains');
-$trackNeedsAttributeIds = AudioTrackAudioTrackAttribute::fetchAttributeIdsForTrackIdAndState($track->id, 'needs');
+$projectContainsAttributeIds = ProjectAttribute::fetchAttributeIdsForTrackIdAndState($track->id, 'contains');
+$projectNeedsAttributeIds = ProjectAttribute::fetchAttributeIdsForTrackIdAndState($track->id, 'needs');
 
 // form fields
 $formElementsList .= getFormFieldForParams(array(
@@ -380,8 +380,8 @@ exit;
 // -----------------------------------------------------------------------------
 
 // FIXME - show the following three sections in an expandable "extended settings" area
-//showAttributesList('This track contains', 'containsAttributIds[]', $containsAttributes, $trackContainsAttributeIds, $track->containsOthers, 'containsOthers', 'Please check any box that applies to your track.  This helps artists, fans, and music supervisors find what they are looking for faster.');
-//showAttributesList('This track needs', 'needsAttributIds[]', $needsAttributes, $trackNeedsAttributeIds, $track->needsOthers, 'needsOthers', 'You can sing like Pavarotti, but can\'t play a lick of guitar.  No problem!  Let others know what you would like added to your track, and hear how your new song develops.');
+//showAttributesList('This track contains', 'containsAttributIds[]', $containsAttributes, $projectContainsAttributeIds, $track->containsOthers, 'containsOthers', 'Please check any box that applies to your track.  This helps artists, fans, and music supervisors find what they are looking for faster.');
+//showAttributesList('This track needs', 'needsAttributIds[]', $needsAttributes, $projectNeedsAttributeIds, $track->needsOthers, 'needsOthers', 'You can sing like Pavarotti, but can\'t play a lick of guitar.  No problem!  Let others know what you would like added to your track, and hear how your new song develops.');
 //
 //showFormField('Additional info',              'textarea', 'additionalInfo',      'IMPORTANT: Please include any notes about the track/song you want to add.  If you upload a .zip file of the bounced stems, please specify here what tracks are included. For example, if you included midi files, bass track, vocals, etc. You may also want to include info. on how you recorded it, what equipment, software was used, or any other important information.', false, 0,   $track, $unpersistedTrack, $problemOccured, $errorFields, null, null);
 
@@ -527,9 +527,9 @@ function processParams(&$track, &$user) {
     $needsAttributeIds = get_array_param('needsAttributIds');
 
     if (!is_null($track->id)) {
-        AudioTrackAudioTrackAttribute::deleteForTrackId($track->id);
-        AudioTrackAudioTrackAttribute::addAll($containsAttributeIds, $track->id, 'contains');
-        AudioTrackAudioTrackAttribute::addAll($needsAttributeIds, $track->id, 'needs');
+        ProjectAttribute::deleteForTrackId($track->id);
+        ProjectAttribute::addAll($containsAttributeIds, $track->id, 'contains');
+        ProjectAttribute::addAll($needsAttributeIds, $track->id, 'needs');
         $track->containsOthers = get_param('containsOthers');
         $track->needsOthers = get_param('needsOthers');
     }

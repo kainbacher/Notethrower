@@ -2,10 +2,10 @@
 
 include_once('../Includes/Init.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/AudioTrack.php');
-include_once('../Includes/DB/AudioTrackAudioTrackAttribute.php');
 include_once('../Includes/DB/AudioTrackUserVisibility.php');
+include_once('../Includes/DB/ProjectAttribute.php');
+include_once('../Includes/DB/User.php');
 
 $visitorUserId = -1;
 $userIsLoggedIn  = false;
@@ -58,8 +58,8 @@ if ($track) { // could be empty if wrong id or not visible for logged in user
     echo '</small>';
 
     // track attributes
-    $containsAttrs = AudioTrackAudioTrackAttribute::fetchAttributeNamesForTrackIdAndState($track->id, 'contains');
-    $needsAttrs    = AudioTrackAudioTrackAttribute::fetchAttributeNamesForTrackIdAndState($track->id, 'needs');
+    $containsAttrs = ProjectAttribute::fetchAttributeNamesForTrackIdAndState($track->id, 'contains');
+    $needsAttrs    = ProjectAttribute::fetchAttributeNamesForTrackIdAndState($track->id, 'needs');
 
     if (count($containsAttrs) > 0) {
         echo '<br><br><b>This track contains:</b><br>' . "\n";

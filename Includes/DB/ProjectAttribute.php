@@ -3,8 +3,8 @@
 include_once('../Includes/DbConnect.php');
 include_once('../Includes/Snippets.php');
 
-// dao for pp_audio_track_audio_track_attribute table
-class AudioTrackAudioTrackAttribute {
+// dao for pp_project_attribute table
+class ProjectAttribute {
     var $track_id;
     var $attribute_id;
     var $status;
@@ -14,7 +14,7 @@ class AudioTrackAudioTrackAttribute {
 
     // constructors
     // ------------
-    function AudioTrackAudioTrackAttribute() {
+    function ProjectAttribute() {
     }
 
     function fetchAttributeIdsForTrackIdAndState($track_id, $status) {
@@ -22,7 +22,7 @@ class AudioTrackAudioTrackAttribute {
 
         $result = _mysql_query(
             'select * ' .
-            'from pp_audio_track_audio_track_attribute ' .
+            'from pp_project_attribute ' .
             'where track_id = ' . n($track_id) . ' and ' .
             'status = ' . qq($status)
         );
@@ -30,8 +30,8 @@ class AudioTrackAudioTrackAttribute {
         $ind = 0;
 
         while ($row = mysql_fetch_array($result)) {
-            $f = new AudioTrackAudioTrackAttribute();
-            $f = AudioTrackAudioTrackAttribute::_read_row($f, $row);
+            $f = new ProjectAttribute();
+            $f = ProjectAttribute::_read_row($f, $row);
 
             $objs[$ind] = $f->attribute_id;
             $ind++;
@@ -47,7 +47,7 @@ class AudioTrackAudioTrackAttribute {
 
         $result = _mysql_query(
             'select atata.*, ata.name as attribute_name ' .
-            'from pp_audio_track_audio_track_attribute atata, pp_audio_track_attribute ata ' .
+            'from pp_project_attribute atata, pp_audio_track_attribute ata ' .
             'where atata.track_id = ' . n($track_id) . ' and ' .
             'atata.status = ' . qq($status) . ' and ' .
             'atata.attribute_id = ata.id'
@@ -56,8 +56,8 @@ class AudioTrackAudioTrackAttribute {
         $ind = 0;
 
         while ($row = mysql_fetch_array($result)) {
-            $f = new AudioTrackAudioTrackAttribute();
-            $f = AudioTrackAudioTrackAttribute::_read_row($f, $row);
+            $f = new ProjectAttribute();
+            $f = ProjectAttribute::_read_row($f, $row);
 
             $objs[$ind] = $f->attribute_name;
             $ind++;
@@ -73,7 +73,7 @@ class AudioTrackAudioTrackAttribute {
 
         $result = _mysql_query(
             'select * ' .
-            'from pp_audio_track_audio_track_attribute ' .
+            'from pp_project_attribute ' .
             'where attribute_id = ' . n($attribute_id) . ' and ' .
             'status = ' . qq($status)
         );
@@ -81,8 +81,8 @@ class AudioTrackAudioTrackAttribute {
         $ind = 0;
 
         while ($row = mysql_fetch_array($result)) {
-            $f = new AudioTrackAudioTrackAttribute();
-            $f = AudioTrackAudioTrackAttribute::_read_row($f, $row);
+            $f = new ProjectAttribute();
+            $f = ProjectAttribute::_read_row($f, $row);
 
             $objs[$ind] = $f;
             $ind++;
@@ -95,7 +95,7 @@ class AudioTrackAudioTrackAttribute {
 
     function addAll($attributeIds, $trackId, $status) {
         foreach ($attributeIds as $id) {
-            $f = new AudioTrackAudioTrackAttribute();
+            $f = new ProjectAttribute();
             $f->attribute_id = $id;
             $f->track_id = $trackId;
             $f->status = $status;
@@ -118,7 +118,7 @@ class AudioTrackAudioTrackAttribute {
     // ---------------
     function createTable() {
         $ok = _mysql_query(
-            'create table if not exists pp_audio_track_audio_track_attribute ' .
+            'create table if not exists pp_project_attribute ' .
             '(' .
             'attribute_id                  int(10) not null, ' .
             'track_id                      int(10) not null, ' .
@@ -133,7 +133,7 @@ class AudioTrackAudioTrackAttribute {
 
     function deleteForTrackId($trackId) {
         return _mysql_query(
-            'delete from pp_audio_track_audio_track_attribute ' .
+            'delete from pp_project_attribute ' .
             'where track_id = ' . n($trackId)
         );
     }
@@ -150,7 +150,7 @@ class AudioTrackAudioTrackAttribute {
 
     function insert() {
         $ok = _mysql_query(
-            'insert into pp_audio_track_audio_track_attribute ' .
+            'insert into pp_project_attribute ' .
             '(attribute_id, track_id, status) ' .
             'values (' .
             n($this->attribute_id)  . ', ' .
@@ -170,7 +170,7 @@ class AudioTrackAudioTrackAttribute {
 
     function update() {
         $ok = _mysql_query(
-            'update pp_audio_track_audio_track_attribute ' .
+            'update pp_project_attribute ' .
             'set attrubite_id = ' . n($this->attribute_id) . ', ' .
             'track_id = ' . n($this->track_id) . ', ' .
             'status = ' . qq($this->status) . ' ' .

@@ -4,7 +4,7 @@ include_once('../Includes/Config.php');
 include_once('../Includes/DbConnect.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/AudioTrackUserVisibility.php');
-include_once('../Includes/DB/AudioTrackAudioTrackAttribute.php');
+include_once('../Includes/DB/ProjectAttribute.php');
 include_once('../Includes/DB/ProjectFile.php');
 
 // dao for pp_audio_track table
@@ -696,7 +696,7 @@ class AudioTrack { // new: rename to "project"?
         AudioTrack::reset_song_associations_to_parent_track_id($id);
         ProjectFile::delete_all_with_track_id($id);
         AudioTrackUserVisibility::delete_all_with_track_id($id);
-        AudioTrackAudioTrackAttribute::deleteForTrackId($id);
+        ProjectAttribute::deleteForTrackId($id); // FIXME - rename method
 
         $logger->info('deleting track file record with id: ' . $id);
 

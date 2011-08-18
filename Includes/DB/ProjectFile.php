@@ -6,10 +6,10 @@ include_once('../Includes/Snippets.php');
 // dao for pp_project_file table
 class ProjectFile {
     var $id;
-    var $track_id;
+    var $project_id;
     var $filename;
     var $orig_filename;
-    var $is_master; // defines if the track file is a master/mix file (there can be more than one)
+    var $is_master; // defines if the project file is a master/mix file (there can be more than one)
     var $status;
     var $entry_date;
 
@@ -18,13 +18,13 @@ class ProjectFile {
     function ProjectFile() {
     }
 
-    function fetch_all_for_track_id($tid, $show_inactive_items = false) {
+    function fetch_all_for_project_id($tid, $show_inactive_items = false) {
         $objs = array();
 
         $result = _mysql_query(
             'select * ' .
             'from pp_project_file ' .
-            'where track_id = ' . n($tid) . ' ' .
+            'where project_id = ' . n($tid) . ' ' .
             ($show_inactive_items ? 'and status in ("active", "inactive") ' : 'and status = "active" ') .
             'order by entry_date desc'
         );
@@ -64,7 +64,7 @@ class ProjectFile {
 
     function _read_row($f, $row) {
         $f->id                    = $row['id'];
-        $f->track_id              = $row['track_id'];
+        $f->project_id            = $row['project_id'];
         $f->filename              = $row['filename'];
         $f->orig_filename         = $row['orig_filename'];
         $f->is_master             = $row['is_master'];
@@ -81,14 +81,14 @@ class ProjectFile {
             'create table if not exists pp_project_file ' .
             '(' .
             'id                    int(10)      not null auto_increment, ' .
-            'track_id              int(10)      not null, ' .
+            'project_id            int(10)      not null, ' .
             'filename              varchar(255) not null, ' .
             'orig_filename         varchar(255) not null, ' .
             'is_master             tinyint(1)   not null, ' .
             'status                varchar(20)  not null, ' .
             'entry_date            datetime     not null default "1970-01-01 00:00:00", ' .
             'primary key (id), ' .
-            'key track_id (track_id), ' .
+            'key project_id (project_id), ' .
             'key entry_date (entry_date) ' .
             ') default charset=utf8'
         );
@@ -96,11 +96,11 @@ class ProjectFile {
         return $ok;
     }
 
-    function count_all_for_track_id($tid, $count_inactive_items) {
+    function count_all_for_project_id($tid, $count_inactive_items) {
         $result = _mysql_query(
             'select count(*) as cnt ' .
             'from pp_project_file ' .
-            'where track_id = ' . n($tid) . ' ' .
+            'where project_id = ' . n($tid) . ' ' .
             ($count_inactive_items ? 'and status in ("active", "inactive")' : 'and status = "active"')
         );
 
@@ -111,11 +111,11 @@ class ProjectFile {
         return $count;
     }
 
-    function master_mp3_file_found_for_track_id($tid, $count_inactive_items = false) {
+    function master_mp3_file_found_for_project_id($tid, $count_inactive_items = false) {
         $result = _mysql_query(
             'select count(*) as cnt ' .
             'from pp_project_file ' .
-            'where track_id = ' . n($tid) . ' ' .
+            'where project_id = ' . n($tid) . ' ' .
             'and orig_filename like "%mp3" ' .
             'and is_master = 1 ' .
             ($count_inactive_items ? 'and status in ("active", "inactive")' : 'and status = "active"')
@@ -127,12 +127,12 @@ class ProjectFile {
         return $row['cnt'] > 0; // there can only be 1 or 0
     }
 
-    function delete_all_with_track_id($tid) {
+    function delete_all_with_project_id($tid) {
         if (!$tid) return;
 
         $result = _mysql_query(
             'select id from pp_project_file ' .
-            'where track_id = ' . n($tid)
+            'where project_id = ' . n($tid)
         );
 
         while ($row = mysql_fetch_array($result)) {
@@ -162,14 +162,14 @@ class ProjectFile {
         mysql_free_result($result);
 
         if ($f) {
-            $logger->info('deleting track file: ' . $GLOBALS['CONTENT_BASE_PATH'] . $f);
+            $logger->info('deleting project file: ' . $GLOBALS['CONTENT_BASE_PATH'] . $f);
             unlink ($GLOBALS['CONTENT_BASE_PATH'] . $f);
         } else {
-            $logger->error('unable to get filename for track file id: ' . $id);
+            $logger->error('unable to get filename for project file id: ' . $id);
         }
 
         // delete record
-        $logger->info('deleting track file record with id: ' . $id);
+        $logger->info('deleting project file record with id: ' . $id);
         return _mysql_query(
             'delete from pp_project_file ' .
             'where id = ' . n($id)
@@ -189,10 +189,10 @@ class ProjectFile {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_project_file ' .
-            '(track_id, filename, orig_filename, is_master, ' .
+            '(project_id, filename, orig_filename, is_master, ' .
             'status, entry_date) ' .
             'values (' .
-            n($this->track_id)               . ', ' .
+            n($this->project_id)             . ', ' .
             qq($this->filename)              . ', ' .
             qq($this->orig_filename)         . ', ' .
             b($this->is_master)              . ', ' .
@@ -213,13 +213,13 @@ class ProjectFile {
     function update() {
         $ok = _mysql_query(
             'update pp_project_file ' .
-            'set track_id = '  . n($this->track_id)       . ', ' .
-            'filename = '      . qq($this->filename)      . ', ' .
-            'orig_filename = ' . qq($this->orig_filename) . ', ' .
-            'is_master = '     . qq($this->is_master)     . ', ' .
-            'status = '        . qq($this->status)        . ' ' .
+            'set project_id = ' . n($this->project_id)     . ', ' .
+            'filename = '       . qq($this->filename)      . ', ' .
+            'orig_filename = '  . qq($this->orig_filename) . ', ' .
+            'is_master = '      . qq($this->is_master)     . ', ' .
+            'status = '         . qq($this->status)        . ' ' .
             // entry_date intentionally not set here
-            'where id = '      . n($this->id)
+            'where id = '       . n($this->id)
         );
 
         return $ok;

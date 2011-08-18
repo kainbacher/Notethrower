@@ -19,7 +19,7 @@ if (!$track || !$track->id) {
 }
 
 $pFile = ProjectFile::fetch_for_id(get_numeric_param('atfid'));
-if (!$pFile || !$pFile->id || $pFile->track_id != $track->id) {
+if (!$pFile || !$pFile->id || $pFile->project_id != $track->id) {
     $logger->warn('track not found!');
     echo 'FILE NOT FOUND!';
     exit;

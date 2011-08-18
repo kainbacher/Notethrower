@@ -93,7 +93,7 @@ if (get_param('action') == 'create') {
             '${msg}' => 'Successfully saved track data.'
         ));
 
-        $masterFound = ProjectFile::master_mp3_file_found_for_track_id($track->id);
+        $masterFound = ProjectFile::master_mp3_file_found_for_project_id($track->id);
         if ($masterFound) {
             $track->status = 'active';
             $track->save();
@@ -148,7 +148,7 @@ if (get_param('action') == 'create') {
         $track->status = 'inactive';
 
     } else {
-        $masterFound = ProjectFile::master_mp3_file_found_for_track_id($track->id);
+        $masterFound = ProjectFile::master_mp3_file_found_for_project_id($track->id);
         if ($masterFound) {
             $track->status = 'active';
 
@@ -209,7 +209,7 @@ if (get_param('action') == 'create') {
 
     ProjectFile::delete_with_id(get_numeric_param('fid'));
 
-    $masterFound = ProjectFile::master_mp3_file_found_for_track_id($track->id);
+    $masterFound = ProjectFile::master_mp3_file_found_for_project_id($track->id);
     if ($masterFound) {
         $track->status = 'active';
         $track->save();
@@ -393,7 +393,7 @@ function getUploadedFilesSection($trackId) {
 
     $trackFiles = array();
     if ($trackId) {
-        $trackFiles = ProjectFile::fetch_all_for_track_id($trackId, true);
+        $trackFiles = ProjectFile::fetch_all_for_project_id($trackId, true);
     }
 
     foreach ($trackFiles as $file) {

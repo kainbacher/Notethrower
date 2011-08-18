@@ -599,7 +599,7 @@ class Project {
 
         if (!$id) return;
 
-        ProjectFile::delete_all_with_track_id($id);
+        ProjectFile::delete_all_with_project_id($id);
         ProjectUserVisibility::delete_all_with_project_id($id);
         ProjectAttribute::deleteForTrackId($id); // FIXME - rename method
 

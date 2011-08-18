@@ -223,7 +223,7 @@ var fileSelected = false;
           <div id="selection_list">
 <?php
 
-    $files = ProjectFile::fetch_all_for_track_id($track->id, false);
+    $files = ProjectFile::fetch_all_for_project_id($track->id, false);
     foreach ($files as $file) {
         echo '<input type="radio" name="atfid" value="' . $file->id . '" onClick="fileSelected=true; checkInputs();">&nbsp;' . escape($file->orig_filename . ($file->is_master ? ' (Master/Mix file)' : '')) . '<br>' . "\n";
     }

@@ -92,7 +92,7 @@ function processTrack(&$xml, &$track, $remixedByOthersMode) {
     $xml .= '<name>' . xmlentities($track->title) . '</name>';
     //$xml .= '<previewMp3File>' . xmlentities($track->preview_mp3_filename) . '</previewMp3File>'; // TODO - attrib. doesn't exist anymore
 
-    $files = ProjectFile::fetch_all_for_track_id($track->id, false);
+    $files = ProjectFile::fetch_all_for_project_id($track->id, false);
 
     // the HQMP3 file is also used as the prelistening file
     foreach ($files as $file) {

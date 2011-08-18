@@ -48,11 +48,11 @@ class Project {
         if ($visitorUserId >= 0) {
             $result = _mysql_query(
                 'select distinct t.*, a.name as user_name, a.image_filename as user_img_filename ' .
-                'from pp_project t, pp_user a, pp_project_user_visibility atav ' .
+                'from pp_project t, pp_user a, pp_project_user_visibility puv ' .
                 ($show_inactive_items ? 'where t.status in ("finished", "active", "inactive") ' : 'where t.status in ("finished", "active") ') .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
                 'and t.user_id = a.id ' .
-                'and t.id = atav.track_id ' .
+                'and t.id = puv.project_id ' .
                 'order by t.entry_date desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
             );
@@ -92,11 +92,11 @@ class Project {
         if ($visitorUserId >= 0) {
             $result = _mysql_query(
                 'select distinct t.*, a.name as user_name, a.image_filename as user_img_filename ' .
-                'from pp_project t, pp_user a, pp_project_user_visibility atav ' .
+                'from pp_project t, pp_user a, pp_project_user_visibility puv ' .
                 ($show_inactive_items ? 'where t.status in ("finished", "active", "inactive") ' : 'where t.status in ("finished", "active") ') .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
                 'and t.user_id = a.id ' .
-                'and t.id = atav.track_id ' .
+                'and t.id = puv.project_id ' .
                 'order by t.download_count desc, t.entry_date desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
             );
@@ -136,13 +136,13 @@ class Project {
         if ($visitorUserId >= 0) {
             $result = _mysql_query(
                 'select distinct t.*, a.name as user_name, a.image_filename as user_img_filename ' .
-                'from pp_project t, pp_user a, pp_project_user_visibility atav ' .
+                'from pp_project t, pp_user a, pp_project_user_visibility puv ' .
                 'where t.user_id = ' . n($aid) . ' ' .
                 'and t.type = "original" ' .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
                 ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 'and t.user_id = a.id ' .
-                'and t.id = atav.track_id ' .
+                'and t.id = puv.project_id ' .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
             );
@@ -184,13 +184,13 @@ class Project {
         if ($visitorUserId >= 0) {
             $result = _mysql_query(
                 'select distinct t.* ' .
-                'from pp_project t, pp_user a, pp_project_user_visibility atav ' .
+                'from pp_project t, pp_user a, pp_project_user_visibility puv ' .
                 'where t.user_id = ' . n($aid) . ' ' .
                 'and t.type = "remix" ' .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
                 ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 'and t.originating_user_id = a.id ' .
-                'and t.id = atav.track_id ' .
+                'and t.id = puv.project_id ' .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
             );
@@ -232,13 +232,13 @@ class Project {
         if ($visitorUserId >= 0) {
             $result = _mysql_query(
                 'select distinct t.*, a.name as user_name, a.image_filename as user_img_filename ' .
-                'from pp_project t, pp_user a, pp_project_user_visibility atav ' .
+                'from pp_project t, pp_user a, pp_project_user_visibility puv ' .
                 'where t.originating_user_id = ' . n($oaid) . ' ' .
                 'and t.type = "remix" ' .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
                 ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 'and t.user_id = a.id ' .
-                'and t.id = atav.track_id ' .
+                'and t.id = puv.project_id ' .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
             );
@@ -278,11 +278,11 @@ class Project {
         if ($visitorUserId >= 0) {
             $result = _mysql_query(
                 'select distinct t.* ' .
-                'from pp_project t, pp_project_user_visibility atav ' .
+                'from pp_project t, pp_project_user_visibility puv ' .
                 'where t.id = ' . n($tid) . ' ' .
-                'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ' .
+                'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ' .
                 'and t.status in ("finished", "active") ' .
-                'and t.id = atav.track_id'
+                'and t.id = puv.project_id'
             );
 
         } else {
@@ -329,12 +329,12 @@ class Project {
         $objs = array();
         $result = _mysql_query(
                 'select distinct t.*, a.name as user_name, a.image_filename as user_img_filename ' .
-                'from pp_project t join pp_user a on t.user_id = a.id join pp_project_user_visibility atav on atav.track_id=t.id where 1=1 ' .
+                'from pp_project t join pp_user a on t.user_id = a.id join pp_project_user_visibility puv on puv.project_id=t.id where 1=1 ' .
                 ($userOrTitle == '' ? '' : 'and (a.name like ' . qqLike($userOrTitle) . ' or t.title like ' . qqLike($userOrTitle) . ') ') .
                 ($needsOthers == '' ? '' : 'and t.needs_others like ' . qqLike($needsOthers) . ' ') .
                 ($containsOthers == '' ? '' : 'and t.contains_others like ' . qqLike($containsOthers) . ' ') .
                 ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
                 ($needsAttributeIds == '' ? '' : ' and t.id=(select max(attr.track_id) from pp_project_attribute attr where attr.track_id = t.id and attr.attribute_id in (' .
                 nList($needsAttributeIds) . ') and attr.status="needs") ') .
                 ($containsAttributeIds == '' ? '' : ' and t.id=(select max(attr.track_id) from pp_project_attribute attr where attr.track_id = t.id and attr.attribute_id in (' .
@@ -365,12 +365,12 @@ class Project {
         $objs = array();
         $result = _mysql_query(
                 'select count(distinct t.id) as cnt ' .
-                'from pp_project t join pp_user a on t.user_id = a.id join pp_project_user_visibility atav on atav.track_id=t.id where 1=1 ' .
+                'from pp_project t join pp_user a on t.user_id = a.id join pp_project_user_visibility puv on puv.project_id=t.id where 1=1 ' .
                 ($userOrTitle == '' ? '' : 'and (a.name like ' . qqLike($userOrTitle) . ' or t.title like ' . qqLike($userOrTitle) . ') ') .
                 ($needsOthers == '' ? '' : 'and t.needs_others like ' . qqLike($needsOthers) . ' ') .
                 ($containsOthers == '' ? '' : 'and t.contains_others like ' . qqLike($containsOthers) . ' ') .
                 ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
                 ($needsAttributeIds == '' ? '' : ' and t.id=(select max(attr.track_id) from pp_project_attribute attr where attr.track_id = t.id and attr.attribute_id in (' .
                 nList($needsAttributeIds) . ') and attr.status="needs") ') .
                 ($containsAttributeIds == '' ? '' : ' and t.id=(select max(attr.track_id) from pp_project_attribute attr where attr.track_id = t.id and attr.attribute_id in (' .
@@ -393,9 +393,9 @@ class Project {
 
         $result = _mysql_query(
             'select t.*, a.name as user_name, a.image_filename as user_img_filename ' .
-            'from pp_project t, pp_user a, pp_project_user_visibility atav ' .
-            'where atav.user_id = ' . n($aid) . ' ' .
-            'and atav.track_id = t.id ' .
+            'from pp_project t, pp_user a, pp_project_user_visibility puv ' .
+            'where puv.user_id = ' . n($aid) . ' ' .
+            'and puv.project_id = t.id ' .
             'and t.status in ("finished", "active") ' .
             'and t.visibility = "private" ' .
             'and t.user_id != ' . n($aid) . ' ' .
@@ -544,18 +544,18 @@ class Project {
 
 //        $result = _mysql_query(
 //            'select count(*) as cnt ' .
-//            'from pp_project t, pp_project_user_visibility atav ' .
-//            'where t.id = atav.track_id ' .
-//            ($ignore_visibility ? '' : 'and (t.visibility = "public" or (t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ')) ') .
+//            'from pp_project t, pp_project_user_visibility puv ' .
+//            'where t.id = puv.project_id ' .
+//            ($ignore_visibility ? '' : 'and (t.visibility = "public" or (t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ')) ') .
 //            ($count_inactive_items ? 'and t.status in ("finished", "active", "inactive")' : 'and t.status in ("finished", "active")')
 //        );
 
         if ($visitorUserId >= 0) {
             $result = _mysql_query(
                 'select count(distinct t.id) as cnt ' .
-                'from pp_project t, pp_project_user_visibility atav ' .
-                'where t.id = atav.track_id ' .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
+                'from pp_project t, pp_project_user_visibility puv ' .
+                'where t.id = puv.project_id ' .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
                 ($count_inactive_items ? 'and t.status in ("finished", "active", "inactive")' : 'and t.status in ("finished", "active")')
             );
 
@@ -579,9 +579,9 @@ class Project {
     function count_all_private_tracks_the_user_can_access($aid) {
         $result = _mysql_query(
             'select count(*) as cnt ' .
-            'from pp_project t, pp_project_user_visibility atav ' .
-            'where atav.user_id = ' . n($aid) . ' ' .
-            'and atav.track_id = t.id ' .
+            'from pp_project t, pp_project_user_visibility puv ' .
+            'where puv.user_id = ' . n($aid) . ' ' .
+            'and puv.project_id = t.id ' .
             'and t.user_id != ' . n($aid) . ' ' .
             'and t.status in ("finished", "active") ' .
             'and t.visibility = "private"'

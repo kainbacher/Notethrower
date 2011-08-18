@@ -42,13 +42,13 @@ class ProjectUserVisibility {
         return $objs;
     }
 
-    function fetch_all_for_track_id($tid) {
+    function fetch_all_for_track_id($tid) { // FIXME - rename
         $objs = array();
 
         $result = _mysql_query(
             'select atav.*, a.name as user_name ' .
             'from pp_project_user_visibility atav, pp_user a ' .
-            'where atav.track_id = ' . n($tid) . ' ' .
+            'where atav.project_id = ' . n($tid) . ' ' .
             'and atav.user_id = a.id'
         );
 
@@ -67,12 +67,12 @@ class ProjectUserVisibility {
         return $objs;
     }
 
-    function fetch_for_user_id_track_id($aid, $tid) {
+    function fetch_for_user_id_track_id($aid, $tid) { // FIXME - rename
         $result = _mysql_query(
             'select * ' .
             'from pp_project_user_visibility ' .
             'where user_id = ' . n($aid) . ' ' .
-            'and track_id = ' . n($tid)
+            'and project_id = ' . n($tid)
         );
 
         $a = new ProjectUserVisibility();
@@ -94,9 +94,9 @@ class ProjectUserVisibility {
 
         $result = _mysql_query(
             'select distinct a.id as collaborating_user_id, a.name as user_name, a.image_filename as user_image_filename ' .
-            'from pp_audio_track t, pp_project_user_visibility atav, pp_user a ' .
+            'from pp_project t, pp_project_user_visibility atav, pp_user a ' .
             'where t.user_id = ' . n($aid) . ' ' .
-            'and t.id = atav.track_id ' .
+            'and t.id = atav.project_id ' .
             'and atav.user_id = a.id ' .
             'and a.id != ' . n($aid) . ' ' .
             'order by user_name asc ' .
@@ -119,8 +119,8 @@ class ProjectUserVisibility {
     }
 
     function _read_row($a, $row) {
-        $a->track_id    = $row['track_id'];
-        $a->user_id   = $row['user_id'];
+        $a->track_id = $row['project_id'];
+        $a->user_id    = $row['user_id'];
 
         // non-table fields
         $a->user_name             = $row['user_name'];
@@ -137,8 +137,8 @@ class ProjectUserVisibility {
             'create table if not exists pp_project_user_visibility ' .
             '(' .
             'user_id                   int(10)      not null, ' .
-            'track_id                  int(10)      not null, ' .
-            'primary key (user_id, track_id), ' .
+            'project_id                int(10)      not null, ' .
+            'primary key (user_id, project_id), ' .
             'key user_id (user_id)' .
             ') default charset=utf8'
         );
@@ -146,30 +146,30 @@ class ProjectUserVisibility {
         return $ok;
     }
 
-    function delete_all_with_track_id($tid) {
+    function delete_all_with_track_id($tid) { // FIXME - rename
         global $logger;
 
         if (!$tid) return;
 
-        $logger->info('deleting all track user visibility records with track id: ' . $tid);
+        $logger->info('deleting all project_user_visibility records with project id: ' . $tid);
 
         return _mysql_query(
             'delete from pp_project_user_visibility ' .
-            'where track_id = ' . n($tid)
+            'where project_id = ' . n($tid)
         );
     }
 
-    function delete_all_with_track_id_and_user_id_list($tid, $aids) {
+    function delete_all_with_track_id_and_user_id_list($tid, $aids) { // FIXME - rename
         global $logger;
 
         if (!$tid) return;
         if (!$aids) return;
 
-        $logger->info('deleting all track user visibility records with track id ' . $tid . ' and user id list ' . implode(',', $aids));
+        $logger->info('deleting all project_user_visibility records with project id ' . $tid . ' and user id list ' . implode(',', $aids));
 
         return _mysql_query(
             'delete from pp_project_user_visibility ' .
-            'where track_id = ' . n($tid) . ' ' .
+            'where project_id = ' . n($tid) . ' ' .
             'and user_id in (' . implode(',', $aids) . ')'
         );
     }
@@ -187,7 +187,7 @@ class ProjectUserVisibility {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_project_user_visibility ' .
-            '(user_id, track_id) ' .
+            '(user_id, project_id) ' .
             'values (' .
             n($this->user_id)                  . ', ' .
             n($this->track_id)                   .

@@ -352,7 +352,7 @@ echo '<a href="javascript:showSelectFriendsPopup();">Select the artists you want
 echo '</div>' . "\n";
 
 // FIXME - end
-processAndPrintTpl('Track/index.html', array(
+processAndPrintTpl('Project/index.html', array(
     '${Common/pageHeader}'                      => buildPageHeader($projectId ? 'Edit track' : 'Create track'),
     '${Common/bodyHeader}'                      => buildBodyHeader($user),
     '${headline}'                               => $projectId ? 'Edit track' : 'Create track',
@@ -362,7 +362,7 @@ processAndPrintTpl('Track/index.html', array(
     '${type}'                                   => get_param('type') == 'remix' ? 'remix' : 'original',
     '${submitButtonValue}'                      => 'Save',
     '${Common/formElement_list}'                => $formElementsList,
-    '${Track/uploadedFilesSection}'             => getUploadedFilesSection($project && $project->id ? $project->id : null),
+    '${Project/uploadedFilesSection}'             => getUploadedFilesSection($project && $project->id ? $project->id : null),
     '${Common/bodyFooter}'                      => buildBodyFooter(),
     '${Common/pageFooter}'                      => buildPageFooter()
 ));
@@ -397,7 +397,7 @@ function getUploadedFilesSection($projectId) {
     }
 
     foreach ($projectFiles as $file) {
-        $projectFilesHtml .= processTpl('Track/trackFileElement.html', array(
+        $projectFilesHtml .= processTpl('Project/trackFileElement.html', array(
             '${filename}'             => escape($file->orig_filename),
             '${filenameEscaped}'      => escape_and_rewrite_single_quotes($file->orig_filename),
             '${status}'               => $file->status == 'active' ? 'Active' : 'Inactive', // TODO - currently not used
@@ -407,12 +407,12 @@ function getUploadedFilesSection($projectId) {
     }
 
     if (count($projectFiles) == 0) {
-        $projectFilesNotFoundHtml = processTpl('Track/trackFilesNotFound.html', array());
+        $projectFilesNotFoundHtml = processTpl('Project/trackFilesNotFound.html', array());
     }
 
-    return processTpl('Track/uploadedFilesSection.html', array(
-        '${Track/trackFileElement_list}'        => $projectFilesHtml,
-        '${Track/trackFilesNotFound_optional}'  => $projectFilesNotFoundHtml
+    return processTpl('Project/uploadedFilesSection.html', array(
+        '${Project/trackFileElement_list}'        => $projectFilesHtml,
+        '${Project/trackFilesNotFound_optional}'  => $projectFilesNotFoundHtml
     ));
 }
 

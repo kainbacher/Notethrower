@@ -4,9 +4,9 @@ include_once('../Includes/Init.php');
 include_once('../Includes/Snippets.php');
 require_once('../Includes/mobile_device_detect.php');
 include_once('../Includes/TemplateUtil.php');
-include_once('../Includes/DB/AudioTrackUserVisibility.php');
-include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/Project.php');
+include_once('../Includes/DB/ProjectUserVisibility.php');
+include_once('../Includes/DB/User.php');
 
 // find out if the user browses with a mobile device
 $showMobileVersion = false;
@@ -73,7 +73,7 @@ if ($user->additional_info) {
 }
 
 // collaborators - FIXME - put into common template
-//    $collaborators = AudioTrackUserVisibility::fetch_all_collaboration_users_of_user_id($user->id, 10); // attention: if the limit of 10 is changed, the code below must be changed as well (row processing code and colspans)
+//    $collaborators = ProjectUserVisibility::fetch_all_collaboration_users_of_user_id($user->id, 10); // attention: if the limit of 10 is changed, the code below must be changed as well (row processing code and colspans)
 //    if (count($collaborators) > 0) {
 //        echo '<br><br><h2>' . escape($user->name) . '\'s friends:</h2>' . "\n";
 //        echo '<table>';

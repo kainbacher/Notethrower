@@ -3,8 +3,8 @@
 include_once('../Includes/Init.php');
 
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/AudioTrackUserVisibility.php');
 include_once('../Includes/DB/Project.php');
+include_once('../Includes/DB/ProjectUserVisibility.php');
 include_once('../Includes/DB/User.php');
 
 $loggedInUser = User::new_from_cookie();
@@ -31,7 +31,7 @@ if (!$track) {
 }
 
 // remove the users with the specified ids (e.g. 12,13,43)
-AudioTrackUserVisibility::delete_all_with_track_id_and_user_id_list($trackId, explode(',', $userIdListStr));
+ProjectUserVisibility::delete_all_with_track_id_and_user_id_list($trackId, explode(',', $userIdListStr));
 
 echo 'Success';
 

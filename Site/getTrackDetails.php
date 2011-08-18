@@ -3,8 +3,8 @@
 include_once('../Includes/Init.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/Project.php');
-include_once('../Includes/DB/AudioTrackUserVisibility.php');
 include_once('../Includes/DB/ProjectAttribute.php');
+include_once('../Includes/DB/ProjectUserVisibility.php');
 include_once('../Includes/DB/User.php');
 
 $visitorUserId = -1;
@@ -82,7 +82,7 @@ if ($track) { // could be empty if wrong id or not visible for logged in user
     }
 
     // collaborators
-    $collaborators = AudioTrackUserVisibility::fetch_all_collaboration_users_of_user_id($ownerUser->id, 10); // attention: if the limit of 10 is changed, the code below must be changed as well (row processing code and colspans)
+    $collaborators = ProjectUserVisibility::fetch_all_collaboration_users_of_user_id($ownerUser->id, 10); // attention: if the limit of 10 is changed, the code below must be changed as well (row processing code and colspans)
     if (count($collaborators) > 0) {
         echo '<br><br><h1>' . escape($ownerUser->name) . '\'s friends:</h1>' . "\n";
         echo '<table>';

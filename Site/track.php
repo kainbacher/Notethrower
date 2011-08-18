@@ -7,10 +7,10 @@ include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/Attribute.php');
-include_once('../Includes/DB/AudioTrackUserVisibility.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectAttribute.php');
 include_once('../Includes/DB/ProjectFile.php');
+include_once('../Includes/DB/ProjectUserVisibility.php');
 include_once('../Includes/DB/User.php');
 
 // FIXME - use this in upload form:
@@ -47,7 +47,7 @@ if (get_param('action') == 'create') {
     $track->save();
 
     // create a visibility record for this user
-    $atav = new AudioTrackUserVisibility();
+    $atav = new ProjectUserVisibility();
     $atav->user_id = $user->id;
     $atav->track_id = $track->id;
     $atav->save();
@@ -80,9 +80,9 @@ if (get_param('action') == 'create') {
 
         // if the track is private, make sure that the owner can see it
         if ($track->visibility == 'private') {
-            $atav = AudioTrackUserVisibility::fetch_for_user_id_track_id($user->id, $track->id);
+            $atav = ProjectUserVisibility::fetch_for_user_id_track_id($user->id, $track->id);
             if (!$atav) {
-                $atav = new AudioTrackUserVisibility();
+                $atav = new ProjectUserVisibility();
                 $atav->user_id = $user->id;
                 $atav->track_id = $track->id;
                 $atav->save();
@@ -324,7 +324,7 @@ echo '<div id="associated_users_row"' . ($hidden ? ' style="display:none";' : ''
 //echo '<td>&nbsp;</td>' . "\n";
 
 //$usersWithAccessListStr = '';
-//$usersWithAccessList = AudioTrackUserVisibility::fetch_all_for_track_id($track->id);
+//$usersWithAccessList = ProjectUserVisibility::fetch_all_for_track_id($track->id);
 //$ac = count($usersWithAccessList);
 //if ($ac > 20) {
 //    for ($ai = 0; $ai < 20; $ai++) {

@@ -3,7 +3,7 @@
 include_once('../Includes/Init.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/User.php');
-include_once('../Includes/DB/AudioTrackUserVisibility.php');
+include_once('../Includes/DB/ProjectUserVisibility.php');
 
 $userId = get_numeric_param('aid');
 if (!$userId) {
@@ -44,7 +44,7 @@ body {
     <table class="userListTable">
 <?php
 
-    $collaborators = AudioTrackUserVisibility::fetch_all_collaboration_users_of_user_id($userId);
+    $collaborators = ProjectUserVisibility::fetch_all_collaboration_users_of_user_id($userId);
 
     foreach ($collaborators as $collaborator) {
         echo '<tr>';

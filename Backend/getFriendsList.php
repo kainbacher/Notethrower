@@ -3,7 +3,7 @@
 include_once('../Includes/Init.php');
 include_once('../Includes/Services_JSON.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/AudioTrackUserVisibility.php');
+include_once('../Includes/DB/ProjectUserVisibility.php');
 include_once('../Includes/DB/User.php');
 
 $user = User::new_from_cookie();
@@ -18,7 +18,7 @@ $userId = get_numeric_param('aid');
 $trackId  = get_numeric_param('tid');
 
 // search for the selected users
-$users = AudioTrackUserVisibility::fetch_all_for_track_id($trackId);
+$users = ProjectUserVisibility::fetch_all_for_track_id($trackId);
 
 $jsonService = new Services_JSON();
 echo $jsonService->encode($users);

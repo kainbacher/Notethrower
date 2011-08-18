@@ -3,28 +3,28 @@
 include_once('../Includes/Config.php');
 include_once('../Includes/DbConnect.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/AudioTrackUserVisibility.php');
 include_once('../Includes/DB/ProjectAttribute.php');
 include_once('../Includes/DB/ProjectFile.php');
+include_once('../Includes/DB/ProjectUserVisibility.php');
 
 // dao for pp_project table
 class Project {
     var $id;
     var $user_id;
-    var $title; // new: project name
-    var $sorting; // new: drop this?
-    var $type; // old: original or remix, new: drop this?
-    var $originating_user_id; // new: drop this!
+    var $title; // the project name
+    var $sorting; // not used at the moment but maybe useful in the future
+    var $type; // old: original or remix, new: drop this! but only after the old live data has been successfully converted into the new projects concept!
+    var $originating_user_id; // new: drop this! but only after the old live data has been successfully converted into the new projects concept!
     var $price;
     var $currency;
     var $rating_count;
     var $rating_value;
     var $competition_points; // when two songs are compared and one is chosen as the better song, its comp. points are incremented by 1
     var $genres; // new: replace with association table entry to genre table
-    var $visibility; // new: drop this?
+    var $visibility; // new: drop this? maybe useful in the future (pro feature - private tracks)
     var $playback_count;
     var $download_count;
-    var $status; // old: newborn, active, inactive - new: newborn, active, finished (watch out to change all $include_inactive_items stuff!)
+    var $status; // old: newborn, active and inactive (mp3 file missing) - new: newborn, active, inactive (mp3 file missing) and finished (watch out to change all $show_inactive_items stuff!)
     var $entry_date;
     var $containsOthers; // check this if we need it here
     var $needsOthers; // check this if we need it here
@@ -33,7 +33,6 @@ class Project {
     // non-table fields
     var $user_name;
     var $user_img_filename;
-    var $originating_user_name;
     var $mp3_filename;
 
     // constructors
@@ -50,7 +49,7 @@ class Project {
             $result = _mysql_query(
                 'select distinct t.*, a.name as user_name, a.image_filename as user_img_filename ' .
                 'from pp_project t, pp_user a, pp_audio_track_user_visibility atav ' .
-                ($show_inactive_items ? 'where t.status in ("active", "inactive") ' : 'where t.status = "active" ') .
+                ($show_inactive_items ? 'where t.status in ("finished", "active", "inactive") ' : 'where t.status in ("finished", "active") ') .
                 ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
                 'and t.user_id = a.id ' .
                 'and t.id = atav.track_id ' .
@@ -62,7 +61,7 @@ class Project {
             $result = _mysql_query(
                 'select t.*, a.name as user_name, a.image_filename as user_img_filename ' .
                 'from pp_project t, pp_user a ' .
-                ($show_inactive_items ? 'where t.status in ("active", "inactive") ' : 'where t.status = "active" ') .
+                ($show_inactive_items ? 'where t.status in ("finished", "active", "inactive") ' : 'where t.status in ("finished", "active") ') .
                 ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
                 'and t.user_id = a.id ' .
                 'order by t.entry_date desc ' .
@@ -94,7 +93,7 @@ class Project {
             $result = _mysql_query(
                 'select distinct t.*, a.name as user_name, a.image_filename as user_img_filename ' .
                 'from pp_project t, pp_user a, pp_audio_track_user_visibility atav ' .
-                ($show_inactive_items ? 'where t.status in ("active", "inactive") ' : 'where t.status = "active" ') .
+                ($show_inactive_items ? 'where t.status in ("finished", "active", "inactive") ' : 'where t.status in ("finished", "active") ') .
                 ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
                 'and t.user_id = a.id ' .
                 'and t.id = atav.track_id ' .
@@ -106,7 +105,7 @@ class Project {
             $result = _mysql_query(
                 'select t.*, a.name as user_name, a.image_filename as user_img_filename ' .
                 'from pp_project t, pp_user a ' .
-                ($show_inactive_items ? 'where t.status in ("active", "inactive") ' : 'where t.status = "active" ') .
+                ($show_inactive_items ? 'where t.status in ("finished", "active", "inactive") ' : 'where t.status in ("finished", "active") ') .
                 ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
                 'and t.user_id = a.id ' .
                 'order by t.download_count desc, t.entry_date desc ' .
@@ -141,7 +140,7 @@ class Project {
                 'where t.user_id = ' . n($aid) . ' ' .
                 'and t.type = "original" ' .
                 ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
-                ($show_inactive_items ? 'and t.status in ("active", "inactive") ' : 'and t.status = "active" ') .
+                ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 'and t.user_id = a.id ' .
                 'and t.id = atav.track_id ' .
                 'order by t.playback_count desc ' .
@@ -155,7 +154,7 @@ class Project {
                 'where t.user_id = ' . n($aid) . ' ' .
                 'and t.type = "original" ' .
                 ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
-                ($show_inactive_items ? 'and t.status in ("active", "inactive") ' : 'and t.status = "active" ') .
+                ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 'and t.user_id = a.id ' .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
@@ -184,12 +183,12 @@ class Project {
 
         if ($visitorUserId >= 0) {
             $result = _mysql_query(
-                'select distinct t.*, a.name as originating_user_name ' .
+                'select distinct t.* ' .
                 'from pp_project t, pp_user a, pp_audio_track_user_visibility atav ' .
                 'where t.user_id = ' . n($aid) . ' ' .
                 'and t.type = "remix" ' .
                 ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
-                ($show_inactive_items ? 'and t.status in ("active", "inactive") ' : 'and t.status = "active" ') .
+                ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 'and t.originating_user_id = a.id ' .
                 'and t.id = atav.track_id ' .
                 'order by t.playback_count desc ' .
@@ -198,12 +197,12 @@ class Project {
 
         } else {
             $result = _mysql_query(
-                'select t.*, a.name as originating_user_name ' .
+                'select t.* ' .
                 'from pp_project t, pp_user a ' .
                 'where t.user_id = ' . n($aid) . ' ' .
                 'and t.type = "remix" ' .
                 ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
-                ($show_inactive_items ? 'and t.status in ("active", "inactive") ' : 'and t.status = "active" ') .
+                ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 'and t.originating_user_id = a.id ' .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
@@ -237,7 +236,7 @@ class Project {
                 'where t.originating_user_id = ' . n($oaid) . ' ' .
                 'and t.type = "remix" ' .
                 ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
-                ($show_inactive_items ? 'and t.status in ("active", "inactive") ' : 'and t.status = "active" ') .
+                ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 'and t.user_id = a.id ' .
                 'and t.id = atav.track_id ' .
                 'order by t.playback_count desc ' .
@@ -251,7 +250,7 @@ class Project {
                 'where t.originating_user_id = ' . n($oaid) . ' ' .
                 'and t.type = "remix" ' .
                 ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
-                ($show_inactive_items ? 'and t.status in ("active", "inactive") ' : 'and t.status = "active" ') .
+                ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 'and t.user_id = a.id ' .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
@@ -334,7 +333,7 @@ class Project {
                 ($userOrTitle == '' ? '' : 'and (a.name like ' . qqLike($userOrTitle) . ' or t.title like ' . qqLike($userOrTitle) . ') ') .
                 ($needsOthers == '' ? '' : 'and t.needs_others like ' . qqLike($needsOthers) . ' ') .
                 ($containsOthers == '' ? '' : 'and t.contains_others like ' . qqLike($containsOthers) . ' ') .
-                ($show_inactive_items ? 'and t.status in ("active", "inactive") ' : 'and t.status = "active" ') .
+                ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
                 ($needsAttributeIds == '' ? '' : ' and t.id=(select max(attr.track_id) from pp_project_attribute attr where attr.track_id = t.id and attr.attribute_id in (' .
                 nList($needsAttributeIds) . ') and attr.status="needs") ') .
@@ -370,7 +369,7 @@ class Project {
                 ($userOrTitle == '' ? '' : 'and (a.name like ' . qqLike($userOrTitle) . ' or t.title like ' . qqLike($userOrTitle) . ') ') .
                 ($needsOthers == '' ? '' : 'and t.needs_others like ' . qqLike($needsOthers) . ' ') .
                 ($containsOthers == '' ? '' : 'and t.contains_others like ' . qqLike($containsOthers) . ' ') .
-                ($show_inactive_items ? 'and t.status in ("active", "inactive") ' : 'and t.status = "active" ') .
+                ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
                 ($needsAttributeIds == '' ? '' : ' and t.id=(select max(attr.track_id) from pp_project_attribute attr where attr.track_id = t.id and attr.attribute_id in (' .
                 nList($needsAttributeIds) . ') and attr.status="needs") ') .
@@ -499,7 +498,6 @@ class Project {
 
         if (isset($row['user_name']))             $a->user_name             = $row['user_name'];
         if (isset($row['user_img_filename']))     $a->user_img_filename     = $row['user_img_filename'];
-        if (isset($row['originating_user_name'])) $a->originating_user_name = $row['originating_user_name'];
         if (isset($row['mp3_filename']))          $a->mp3_filename          = $row['mp3_filename'];
 
         return $a;
@@ -603,7 +601,7 @@ class Project {
         if (!$id) return;
 
         ProjectFile::delete_all_with_track_id($id);
-        AudioTrackUserVisibility::delete_all_with_track_id($id);
+        ProjectUserVisibility::delete_all_with_track_id($id);
         ProjectAttribute::deleteForTrackId($id); // FIXME - rename method
 
         $logger->info('deleting track file record with id: ' . $id);

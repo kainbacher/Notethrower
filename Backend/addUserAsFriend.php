@@ -4,8 +4,8 @@ include_once('../Includes/Init.php');
 
 include_once('../Includes/Config.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/AudioTrackUserVisibility.php');
 include_once('../Includes/DB/Project.php');
+include_once('../Includes/DB/ProjectUserVisibility.php');
 include_once('../Includes/DB/User.php');
 
 $loggedInUser = User::new_from_cookie();
@@ -31,7 +31,7 @@ if (!$track) {
 }
 
 // add the user to the given track
-$atav = new AudioTrackUserVisibility();
+$atav = new ProjectUserVisibility();
 $atav->track_id  = $trackId;
 $atav->user_id = $userId;
 $atav->save();

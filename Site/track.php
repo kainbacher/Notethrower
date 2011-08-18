@@ -32,7 +32,6 @@ if (get_param('action') == 'create') {
     $track->user_id                   = $user->id;
     $track->title                     = 'New audio track';
     $track->type                      = 'original';
-    $track->is_full_song              = true; // the old default was false
     $track->originating_user_id       = null;
     $track->parent_track_id           = null;
     $track->price                     = 0;

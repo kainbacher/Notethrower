@@ -76,36 +76,6 @@ if ($track) { // could be empty if wrong id or not visible for logged in user
         echo escape($track->additionalInfo) . "\n";
     }
 
-    // child tracks
-    if ($track->is_full_song) {
-        $childTracks = Project::fetchAllChildTracksOfFullSong($tid, false, false, $visitorUserId);
-        if (count($childTracks) > 0) {
-            echo '<br><br>' . "\n";
-            echo 'Associated tracks:<br>' . "\n";
-            echo '<table class="trackDetailsTable">' . "\n";
-            foreach ($childTracks as $ct) {
-                echo '<tr class="standardRow1" onmouseover="this.className=\'highlightedRow\';" onmouseout="this.className=\'standardRow1\';">';
-                echo '<td><a href="javascript:reloadDataInWidget(' . $ct->user_id . ', ' . $ct->id . ');">' . escape($ct->title) . '</a><br>';
-                echo '<small>';
-                if ($ct->type == 'remix') {
-                    echo 'Remix';
-                    $oa = User::fetch_for_id($ct->originating_user_id);
-                    if ($oa) {
-                        echo ' | Originating user: <a href="userInfo.php?aid=' . $oa->id . '" target="_blank">' . escape($oa->name) . '</a>' . "\n";
-                    }
-
-                } else {
-                    echo 'Original';
-                }
-                echo '</small></td>';
-                echo '</tr>' . "\n";
-            }
-            echo '</table>' . "\n";
-
-            // FIXME - add paging or scrolling for long child track lists
-        }
-    }
-
     if ($ownerUser->id != $user->id) {
         echo '<br><br>' . "\n";
         echo '<a href="javascript:showSendMessagePopup(' . $ownerUser->id . ');"><img border="0" src="../Images/Mail_Icon.png">&nbsp;Send message to ' . escape($ownerUser->name) . '&nbsp;(need to be logged in)</a>' . "\n";

@@ -16,9 +16,7 @@ class Project {
     var $orig_preview_mp3_filename; // new: drop this?
     var $sorting; // new: drop this?
     var $type; // old: original or remix, new: drop this?
-    var $is_full_song; // new: drop this!
     var $originating_user_id; // new: drop this!
-    var $parent_track_id; // new: drop this!
     var $price;
     var $currency;
     var $rating_count;
@@ -313,75 +311,6 @@ class Project {
         return $a;
     }
 
-    function fetchAllFullSongsOfUser($aid) {
-        $objs = array();
-
-        $result = _mysql_query(
-            'select * ' .
-            'from pp_project ' .
-            'where user_id = ' . n($aid) . ' ' .
-            'and is_full_song = 1 ' .
-            'and status in ("active", "inactive") ' .
-            'order by title asc'
-        );
-
-        $ind = 0;
-
-        while ($row = mysql_fetch_array($result)) {
-            $a = new Project();
-            $a = Project::_read_row($a, $row);
-
-            $objs[$ind] = $a;
-            $ind++;
-        }
-
-        mysql_free_result($result);
-
-        return $objs;
-    }
-
-    function fetchAllChildTracksOfFullSong($tid, $show_inactive_items, $ignore_visibility, $visitorUserId) {
-        $objs = array();
-
-        if ($visitorUserId >= 0) {
-            $result = _mysql_query(
-                'select distinct t.* ' .
-                'from pp_project t, pp_audio_track_user_visibility atav ' .
-                'where t.parent_track_id = ' . n($tid) . ' ' .
-                'and t.is_full_song = 0 ' .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = atav.track_id and atav.user_id = ' . n($visitorUserId) . ') ') .
-                ($show_inactive_items ? 'and t.status in ("active", "inactive") ' : 'and t.status = "active" ') .
-                'and t.id = atav.track_id ' .
-                'order by t.title asc'
-            );
-
-        } else {
-            $result = _mysql_query(
-                'select t.* ' .
-                'from pp_project t ' .
-                'where t.parent_track_id = ' . n($tid) . ' ' .
-                'and t.is_full_song = 0 ' .
-                ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
-                ($show_inactive_items ? 'and t.status in ("active", "inactive") ' : 'and t.status = "active" ') .
-                'order by t.title asc'
-            );
-        }
-
-        $ind = 0;
-
-        while ($row = mysql_fetch_array($result)) {
-            $a = new Project();
-            $a = Project::_read_row($a, $row);
-
-            $objs[$ind] = $a;
-            $ind++;
-        }
-
-        mysql_free_result($result);
-
-        return $objs;
-    }
-
     function fetch_for_id($id) {
         $result = _mysql_query(
             'select * ' .
@@ -559,9 +488,7 @@ class Project {
         $a->currency                  = $row['currency'];
         $a->sorting                   = $row['sorting'];
         $a->type                      = $row['type'];
-        $a->is_full_song              = $row['is_full_song'];
         $a->originating_user_id       = $row['originating_user_id'];
-        $a->parent_track_id           = $row['parent_track_id'];
         $a->rating_count              = $row['rating_count'];
         $a->rating_value              = $row['rating_value'];
         $a->competition_points        = $row['competition_points'];
@@ -599,9 +526,7 @@ class Project {
             'currency                  varchar(3)   not null, ' .
             'sorting                   int(5), ' .
             'type                      varchar(10)  not null, ' .
-            'is_full_song              tinyint(1)   not null, ' .
-            'originating_user_id     int(10), ' .
-            'parent_track_id           int(10), ' .
+            'originating_user_id       int(10), ' .
             'rating_count              int(10)      not null, ' .
             'rating_value              float        not null, ' .
             'competition_points        int(10)      not null, ' .
@@ -681,20 +606,11 @@ class Project {
         return $count;
     }
 
-    function reset_song_associations_to_parent_track_id($tid) {
-        _mysql_query(
-            'update pp_project ' .
-            'set parent_track_id = null ' .
-            'where parent_track_id = ' . n($tid)
-        );
-    }
-
     function delete_with_id($id) {
         global $logger;
 
         if (!$id) return;
 
-        Project::reset_song_associations_to_parent_track_id($id);
         ProjectFile::delete_all_with_track_id($id);
         AudioTrackUserVisibility::delete_all_with_track_id($id);
         ProjectAttribute::deleteForTrackId($id); // FIXME - rename method
@@ -736,7 +652,7 @@ class Project {
         $ok = _mysql_query(
             'insert into pp_project ' .
             '(user_id, title, preview_mp3_filename, orig_preview_mp3_filename, ' .
-            'price, currency, sorting, type, is_full_song, originating_user_id, parent_track_id, rating_count, ' .
+            'price, currency, sorting, type, originating_user_id, rating_count, ' .
             'rating_value, competition_points, genres, visibility, playback_count, download_count, originator_notified, ' .
             'status, contains_others, needs_others, additional_info, entry_date) ' .
             'values (' .
@@ -748,9 +664,7 @@ class Project {
             qq($this->currency)                  . ', ' .
             n($this->sorting)                    . ', ' .
             qq($this->type)                      . ', ' .
-            b($this->is_full_song)               . ', ' .
             n($this->originating_user_id)        . ', ' .
-            n($this->parent_track_id)            . ', ' .
             n($this->rating_count)               . ', ' .
             n($this->rating_value)               . ', ' .
             n($this->competition_points)         . ', ' .
@@ -787,9 +701,7 @@ class Project {
             'currency = '                  . qq($this->currency)                  . ', ' .
             'sorting = '                   . n($this->sorting)                    . ', ' .
             'type = '                      . qq($this->type)                      . ', ' .
-            'is_full_song = '              . b($this->is_full_song)               . ', ' .
             'originating_user_id = '       . n($this->originating_user_id)        . ', ' .
-            'parent_track_id = '           . n($this->parent_track_id)            . ', ' .
             'rating_count = '              . n($this->rating_count)               . ', ' .
             'rating_value = '              . n($this->rating_value)               . ', ' .
             'competition_points = '        . n($this->competition_points)         . ', ' .

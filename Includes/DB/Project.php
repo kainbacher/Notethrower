@@ -335,9 +335,9 @@ class Project {
                 ($containsOthers == '' ? '' : 'and t.contains_others like ' . qqLike($containsOthers) . ' ') .
                 ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
-                ($needsAttributeIds == '' ? '' : ' and t.id=(select max(attr.track_id) from pp_project_attribute attr where attr.track_id = t.id and attr.attribute_id in (' .
+                ($needsAttributeIds == '' ? '' : ' and t.id=(select max(attr.project_id) from pp_project_attribute attr where attr.project_id = t.id and attr.attribute_id in (' .
                 nList($needsAttributeIds) . ') and attr.status="needs") ') .
-                ($containsAttributeIds == '' ? '' : ' and t.id=(select max(attr.track_id) from pp_project_attribute attr where attr.track_id = t.id and attr.attribute_id in (' .
+                ($containsAttributeIds == '' ? '' : ' and t.id=(select max(attr.project_id) from pp_project_attribute attr where attr.project_id = t.id and attr.attribute_id in (' .
                 nList($containsAttributeIds) . ') and attr.status="contains") ') .
                 (count($genres) == 0 ? '' : ' and t.genres in (' .
                 qqList($genres) . ') ') .
@@ -371,9 +371,9 @@ class Project {
                 ($containsOthers == '' ? '' : 'and t.contains_others like ' . qqLike($containsOthers) . ' ') .
                 ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
-                ($needsAttributeIds == '' ? '' : ' and t.id=(select max(attr.track_id) from pp_project_attribute attr where attr.track_id = t.id and attr.attribute_id in (' .
+                ($needsAttributeIds == '' ? '' : ' and t.id=(select max(attr.project_id) from pp_project_attribute attr where attr.project_id = t.id and attr.attribute_id in (' .
                 nList($needsAttributeIds) . ') and attr.status="needs") ') .
-                ($containsAttributeIds == '' ? '' : ' and t.id=(select max(attr.track_id) from pp_project_attribute attr where attr.track_id = t.id and attr.attribute_id in (' .
+                ($containsAttributeIds == '' ? '' : ' and t.id=(select max(attr.project_id) from pp_project_attribute attr where attr.project_id = t.id and attr.attribute_id in (' .
                 nList($containsAttributeIds) . ') and attr.status="contains") ') .
                 (count($genres) == 0 ? '' : ' and t.genres in (' .
                 qqList($genres) . ') ') .
@@ -455,7 +455,7 @@ class Project {
             'where t.status = "finished" ' .
             'and t.visibility = "public" ' .
             'and t.user_id = u.id ' .
-            'and t.id = f.track_id ' .
+            'and t.id = f.project_id ' .
             'and f.orig_filename like "%.mp3" ' .
             $whereClauseAddon .
             'order by rand() ' .

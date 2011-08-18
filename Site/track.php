@@ -243,8 +243,8 @@ foreach ($users as $a) {
 // handle track attributes
 $containsAttributes = Attribute::fetchShownFor('contains');
 $needsAttributes = Attribute::fetchShownFor('needs');
-$projectContainsAttributeIds = ProjectAttribute::fetchAttributeIdsForTrackIdAndState($track->id, 'contains');
-$projectNeedsAttributeIds = ProjectAttribute::fetchAttributeIdsForTrackIdAndState($track->id, 'needs');
+$projectContainsAttributeIds = ProjectAttribute::fetchAttributeIdsForProjectIdAndState($track->id, 'contains');
+$projectNeedsAttributeIds    = ProjectAttribute::fetchAttributeIdsForProjectIdAndState($track->id, 'needs');
 
 // form fields
 $formElementsList .= getFormFieldForParams(array(

@@ -5,7 +5,7 @@ include_once('../Includes/Snippets.php');
 
 // dao for pp_project_attribute table
 class ProjectAttribute {
-    var $track_id;
+    var $project_id;
     var $attribute_id;
     var $status;
 
@@ -17,13 +17,13 @@ class ProjectAttribute {
     function ProjectAttribute() {
     }
 
-    function fetchAttributeIdsForTrackIdAndState($track_id, $status) {
+    function fetchAttributeIdsForProjectIdAndState($track_id, $status) {
         $objs = array();
 
         $result = _mysql_query(
             'select * ' .
             'from pp_project_attribute ' .
-            'where track_id = ' . n($track_id) . ' and ' .
+            'where project_id = ' . n($track_id) . ' and ' .
             'status = ' . qq($status)
         );
 
@@ -42,13 +42,13 @@ class ProjectAttribute {
         return $objs;
     }
 
-    function fetchAttributeNamesForTrackIdAndState($track_id, $status) {
+    function fetchAttributeNamesForProjectIdAndState($track_id, $status) {
         $objs = array();
 
         $result = _mysql_query(
             'select atata.*, ata.name as attribute_name ' .
             'from pp_project_attribute atata, pp_attribute ata ' .
-            'where atata.track_id = ' . n($track_id) . ' and ' .
+            'where atata.project_id = ' . n($track_id) . ' and ' .
             'atata.status = ' . qq($status) . ' and ' .
             'atata.attribute_id = ata.id'
         );
@@ -97,7 +97,7 @@ class ProjectAttribute {
         foreach ($attributeIds as $id) {
             $f = new ProjectAttribute();
             $f->attribute_id = $id;
-            $f->track_id = $trackId;
+            $f->project_id = $trackId;
             $f->status = $status;
             $f->save();
         }
@@ -105,7 +105,7 @@ class ProjectAttribute {
 
     function _read_row($a, $row) {
         $a->attribute_id     = $row['attribute_id'];
-        $a->track_id         = $row['track_id'];
+        $a->project_id       = $row['project_id'];
         $a->status           = $row['status'];
 
         // non-table fields
@@ -121,9 +121,9 @@ class ProjectAttribute {
             'create table if not exists pp_project_attribute ' .
             '(' .
             'attribute_id                  int(10) not null, ' .
-            'track_id                      int(10) not null, ' .
+            'project_id                    int(10) not null, ' .
             'status                        varchar(30) not null, ' .
-            'index (track_id), ' .
+            'index (project_id), ' .
             'index (attribute_id) ' .
             ') default charset=utf8'
         );
@@ -134,7 +134,7 @@ class ProjectAttribute {
     function deleteForProjectId($trackId) {
         return _mysql_query(
             'delete from pp_project_attribute ' .
-            'where track_id = ' . n($trackId)
+            'where project_id = ' . n($trackId)
         );
     }
 
@@ -151,10 +151,10 @@ class ProjectAttribute {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_project_attribute ' .
-            '(attribute_id, track_id, status) ' .
+            '(attribute_id, project_id, status) ' .
             'values (' .
             n($this->attribute_id)  . ', ' .
-            n($this->track_id)      . ', ' .
+            n($this->project_id)    . ', ' .
             qq($this->status)       .
             ')'
         );
@@ -172,9 +172,9 @@ class ProjectAttribute {
         $ok = _mysql_query(
             'update pp_project_attribute ' .
             'set attrubite_id = ' . n($this->attribute_id) . ', ' .
-            'track_id = ' . n($this->track_id) . ', ' .
-            'status = ' . qq($this->status) . ' ' .
-            'where id = ' . n($this->id)
+            'project_id = '       . n($this->project_id)   . ', ' .
+            'status = '           . qq($this->status)      . ' ' .
+            'where id = '         . n($this->id)
         );
 
         return $ok;

@@ -58,8 +58,8 @@ if ($track) { // could be empty if wrong id or not visible for logged in user
     echo '</small>';
 
     // track attributes
-    $containsAttrs = ProjectAttribute::fetchAttributeNamesForTrackIdAndState($track->id, 'contains');
-    $needsAttrs    = ProjectAttribute::fetchAttributeNamesForTrackIdAndState($track->id, 'needs');
+    $containsAttrs = ProjectAttribute::fetchAttributeNamesForProjectIdAndState($track->id, 'contains');
+    $needsAttrs    = ProjectAttribute::fetchAttributeNamesForProjectIdAndState($track->id, 'needs');
 
     if (count($containsAttrs) > 0) {
         echo '<br><br><b>This track contains:</b><br>' . "\n";

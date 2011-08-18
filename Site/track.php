@@ -43,8 +43,6 @@ if (get_param('action') == 'create') {
     $track->sorting                   = 0;
     $track->rating_count              = 0;
     $track->rating_value              = 0;
-    $track->preview_mp3_filename      = '';
-    $track->orig_preview_mp3_filename = '';
     $track->competition_points        = 0;
     $track->save();
 

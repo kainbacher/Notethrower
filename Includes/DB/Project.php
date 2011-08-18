@@ -12,8 +12,6 @@ class Project {
     var $id;
     var $user_id;
     var $title; // new: project name
-    var $preview_mp3_filename; // new: drop this?
-    var $orig_preview_mp3_filename; // new: drop this?
     var $sorting; // new: drop this?
     var $type; // old: original or remix, new: drop this?
     var $originating_user_id; // new: drop this!
@@ -481,8 +479,6 @@ class Project {
         $a->id                        = $row['id'];
         $a->user_id                   = $row['user_id'];
         $a->title                     = $row['title'];
-        $a->preview_mp3_filename      = $row['preview_mp3_filename'];
-        $a->orig_preview_mp3_filename = $row['orig_preview_mp3_filename'];
         $a->price                     = $row['price'];
         $a->currency                  = $row['currency'];
         $a->sorting                   = $row['sorting'];
@@ -518,8 +514,6 @@ class Project {
             'id                        int(10)      not null auto_increment, ' .
             'user_id                   int(10)      not null, ' .
             'title                     varchar(255) not null, ' .
-            'preview_mp3_filename      varchar(255) not null, ' .
-            'orig_preview_mp3_filename varchar(255) not null, ' .
             'price                     float        not null, ' .
             'currency                  varchar(3)   not null, ' .
             'sorting                   int(5), ' .
@@ -648,15 +642,13 @@ class Project {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_project ' .
-            '(user_id, title, preview_mp3_filename, orig_preview_mp3_filename, ' .
+            '(user_id, title, ' .
             'price, currency, sorting, type, originating_user_id, rating_count, ' .
             'rating_value, competition_points, genres, visibility, playback_count, download_count, ' .
             'status, contains_others, needs_others, additional_info, entry_date) ' .
             'values (' .
             n($this->user_id)                    . ', ' .
             qq($this->title)                     . ', ' .
-            qq($this->preview_mp3_filename)      . ', ' .
-            qq($this->orig_preview_mp3_filename) . ', ' .
             qq($this->price)                     . ', ' .
             qq($this->currency)                  . ', ' .
             n($this->sorting)                    . ', ' .
@@ -691,8 +683,6 @@ class Project {
             'update pp_project ' .
             'set user_id = '               . n($this->user_id)                    . ', ' .
             'title = '                     . qq($this->title)                     . ', ' .
-            'preview_mp3_filename = '      . qq($this->preview_mp3_filename)      . ', ' .
-            'orig_preview_mp3_filename = ' . qq($this->orig_preview_mp3_filename) . ', ' .
             'price = '                     . qq($this->price)                     . ', ' .
             'currency = '                  . qq($this->currency)                  . ', ' .
             'sorting = '                   . n($this->sorting)                    . ', ' .

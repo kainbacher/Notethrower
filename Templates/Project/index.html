@@ -15,7 +15,7 @@ ${Common/pageHeader}
 //}
 
 function showSelectFriendsPopup() {
-    window.open('selectFriends.php?tid=${trackId}', 'NT_SELECT_FRIENDS', 'scrollbars=yes,resizable=yes,status=0,width=400,height=600');
+    window.open('selectFriends.php?tid=${projectId}', 'NT_SELECT_FRIENDS', 'scrollbars=yes,resizable=yes,status=0,width=400,height=600');
 }
 
 </script>
@@ -32,9 +32,9 @@ ${Common/bodyHeader}
 
         ${Common/message_choice_list}
 
-        <form name="trackForm" action="${formAction}" method="POST">
+        <form name="projectForm" action="${formAction}" method="POST">
             <input type="hidden" name="action" value="save">
-            <input type="hidden" name="tid" value="${trackId}">
+            <input type="hidden" name="tid" value="${projectId}">
             <input type="hidden" name="type" value="${type}">
             ${Common/formElement_list}
 
@@ -62,7 +62,7 @@ ${Common/bodyFooter}
 
 function checkDeleteResponseAndSubmitForm(deleteWasOk, data) {
     if (deleteWasOk) {
-        document.trackForm.submit();
+        document.projectForm.submit();
     } else {
         alert('File deletion failed: ' + data.error);
     }

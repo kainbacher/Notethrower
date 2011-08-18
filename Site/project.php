@@ -54,16 +54,16 @@ if (get_param('action') == 'create') {
 
 } else if (get_param('action') == 'edit') {
     if (!$projectId) {
-        show_fatal_error_and_exit('cannot save without a track id!');
+        show_fatal_error_and_exit('cannot save without a project id!');
     }
 
     $project = Project::fetch_for_id($projectId);
     ensureProjectBelongsToUserId($project, $user->id);
 
 } else if (get_param('action') == 'save') {
-    $logger->info('attempting to save track data ...');
+    $logger->info('attempting to save project data ...');
     if (!$projectId) {
-        show_fatal_error_and_exit('cannot save without a track id!');
+        show_fatal_error_and_exit('cannot save without a project id!');
     }
 
     $project = Project::fetch_for_id($projectId);
@@ -78,7 +78,7 @@ if (get_param('action') == 'create') {
 
         $project->save();
 
-        // if the track is private, make sure that the owner can see it
+        // if the project is private, make sure that the owner can see it
         if ($project->visibility == 'private') {
             $atav = ProjectUserVisibility::fetch_for_user_id_project_id($user->id, $project->id);
             if (!$atav) {
@@ -90,7 +90,7 @@ if (get_param('action') == 'create') {
         }
 
         $messageList .= processTpl('Common/message_success.html', array(
-            '${msg}' => 'Successfully saved track data.'
+            '${msg}' => 'Successfully saved project data.'
         ));
 
         $masterFound = ProjectFile::master_mp3_file_found_for_project_id($project->id);
@@ -121,7 +121,7 @@ if (get_param('action') == 'create') {
 
 } else if (get_param('action') == 'delete') {
     if (!$projectId) {
-        show_fatal_error_and_exit('cannot delete without a track id!');
+        show_fatal_error_and_exit('cannot delete without a project id!');
     }
 
     $project = Project::fetch_for_id($projectId);
@@ -133,10 +133,10 @@ if (get_param('action') == 'create') {
     header('Location: projectList.php');
     exit;
 
-} else if (get_param('action') == 'toggleTrackState') { // not used currently - tracks are always active as long as at least the mp3 version was uploaded, otherwise they are inactive until this is done
-    $logger->info('changing track state ...');
+} else if (get_param('action') == 'toggleTrackState') { // not used currently - projects are always active as long as at least the mp3 version was uploaded, otherwise they are inactive until this is done
+    $logger->info('changing project state ...');
     if (!$projectId) {
-        show_fatal_error_and_exit('cannot modify track state without a track id!');
+        show_fatal_error_and_exit('cannot modify project state without a project id!');
     }
 
     $msg = '';
@@ -164,10 +164,10 @@ if (get_param('action') == 'create') {
     header('Location: projectList.php?msg=' . urlencode($msg));
     exit;
 
-} else if (get_param('action') == 'toggleFileState') { // not used currently - track files are always active
-    $logger->info('changing track file state ...');
+} else if (get_param('action') == 'toggleFileState') { // not used currently - project files are always active
+    $logger->info('changing project file state ...');
     if (!$projectId) {
-        show_fatal_error_and_exit('cannot modify file state without a track id!');
+        show_fatal_error_and_exit('cannot modify file state without a project id!');
     }
 
     $project = Project::fetch_for_id($projectId);
@@ -175,7 +175,7 @@ if (get_param('action') == 'create') {
 
     $file = ProjectFile::fetch_for_id(get_numeric_param('fid'));
     if (!$file) {
-        show_fatal_error_and_exit('track file not found!');
+        show_fatal_error_and_exit('project file not found!');
     }
 
     if ($file->status == 'active') $file->status = 'inactive';
@@ -184,12 +184,12 @@ if (get_param('action') == 'create') {
     $file->save();
 
 } else if (get_param('action') == 'deleteTrackFile') { // ajax action
-    $logger->info('deleting track file ...');
+    $logger->info('deleting project file ...');
     if (!$projectId) {
-        //show_fatal_error_and_exit('cannot delete track file without a track id!');
+        //show_fatal_error_and_exit('cannot delete project file without a project id!');
         $jsonReponse = array(
             'result' => 'ERROR',
-            'error'  => 'cannot delete track file without a track id!'
+            'error'  => 'cannot delete project file without a project id!'
         );
         sendJsonResponseAndExit($jsonReponse);
     }
@@ -199,10 +199,10 @@ if (get_param('action') == 'create') {
 
     $file = ProjectFile::fetch_for_id(get_numeric_param('fid'));
     if (!$file) {
-        //show_fatal_error_and_exit('track file not found!');
+        //show_fatal_error_and_exit('project file not found!');
         $jsonReponse = array(
             'result' => 'ERROR',
-            'error'  => 'track file not found'
+            'error'  => 'project file not found'
         );
         sendJsonResponseAndExit($jsonReponse);
     }
@@ -240,7 +240,7 @@ foreach ($users as $a) {
     }
 }
 
-// handle track attributes
+// handle project attributes
 $containsAttributes = Attribute::fetchShownFor('contains');
 $needsAttributes = Attribute::fetchShownFor('needs');
 $projectContainsAttributeIds = ProjectAttribute::fetchAttributeIdsForProjectIdAndState($project->id, 'contains');
@@ -249,7 +249,7 @@ $projectNeedsAttributeIds    = ProjectAttribute::fetchAttributeIdsForProjectIdAn
 // form fields
 $formElementsList .= getFormFieldForParams(array(
     'propName'               => 'title',
-    'label'                  => 'Track title',
+    'label'                  => 'Project title',
     'mandatory'              => true,
     'maxlength'              => 255,
     'obj'                    => $project,
@@ -320,7 +320,7 @@ $hidden = true;
 //if ($errorFields['visibility'] || ($project && $project->visibility == 'private') || ($unpersistedProject && $unpersistedProject->visibility == 'private')) $hidden = false;
 
 echo '<div id="associated_users_row"' . ($hidden ? ' style="display:none";' : '') . '>' . "\n";
-//echo '<td>Artists who have access to this track:</td>' . "\n";
+//echo '<td>Artists who have access to this project:</td>' . "\n";
 //echo '<td>&nbsp;</td>' . "\n";
 
 //$usersWithAccessListStr = '';
@@ -348,17 +348,17 @@ echo '<div id="associated_users_row"' . ($hidden ? ' style="display:none";' : ''
 //    $usersWithAccessListStr = '(none)';
 //}
 //echo '<td>' . $usersWithAccessListStr . '<br><a href="javascript:showSelectFriendsPopup();">Select artists</a></td>' . "\n";
-echo '<a href="javascript:showSelectFriendsPopup();">Select the artists you want to have access to this track</a>' . "\n";
+echo '<a href="javascript:showSelectFriendsPopup();">Select the artists you want to have access to this project</a>' . "\n";
 echo '</div>' . "\n";
 
 // FIXME - end
 processAndPrintTpl('Project/index.html', array(
-    '${Common/pageHeader}'                      => buildPageHeader($projectId ? 'Edit track' : 'Create track'),
+    '${Common/pageHeader}'                      => buildPageHeader($projectId ? 'Edit project' : 'Create project'),
     '${Common/bodyHeader}'                      => buildBodyHeader($user),
-    '${headline}'                               => $projectId ? 'Edit track' : 'Create track',
+    '${headline}'                               => $projectId ? 'Edit project' : 'Create project',
     '${Common/message_choice_list}'             => $messageList,
     '${formAction}'                             => $_SERVER['PHP_SELF'],
-    '${trackId}'                                => $project && $project->id ? $project->id : '',
+    '${projectId}'                              => $project && $project->id ? $project->id : '',
     '${type}'                                   => get_param('type') == 'remix' ? 'remix' : 'original',
     '${submitButtonValue}'                      => 'Save',
     '${Common/formElement_list}'                => $formElementsList,
@@ -375,8 +375,8 @@ exit;
 // -----------------------------------------------------------------------------
 
 // FIXME - show the following three sections in an expandable "extended settings" area
-//showAttributesList('This track contains', 'containsAttributIds[]', $containsAttributes, $projectContainsAttributeIds, $project->containsOthers, 'containsOthers', 'Please check any box that applies to your track.  This helps artists, fans, and music supervisors find what they are looking for faster.');
-//showAttributesList('This track needs', 'needsAttributIds[]', $needsAttributes, $projectNeedsAttributeIds, $project->needsOthers, 'needsOthers', 'You can sing like Pavarotti, but can\'t play a lick of guitar.  No problem!  Let others know what you would like added to your track, and hear how your new song develops.');
+//showAttributesList('This project contains', 'containsAttributIds[]', $containsAttributes, $projectContainsAttributeIds, $project->containsOthers, 'containsOthers', 'Please check any box that applies to your project.  This helps artists, fans, and music supervisors find what they are looking for faster.');
+//showAttributesList('This project needs', 'needsAttributIds[]', $needsAttributes, $projectNeedsAttributeIds, $project->needsOthers, 'needsOthers', 'You can sing like Pavarotti, but can\'t play a lick of guitar.  No problem!  Let others know what you would like added to your project, and hear how your new song develops.');
 //
 //showFormField('Additional info',              'textarea', 'additionalInfo',      'IMPORTANT: Please include any notes about the track/song you want to add.  If you upload a .zip file of the bounced stems, please specify here what tracks are included. For example, if you included midi files, bass track, vocals, etc. You may also want to include info. on how you recorded it, what equipment, software was used, or any other important information.', false, 0,   $project, $unpersistedProject, $problemOccured, $errorFields, null, null);
 
@@ -397,22 +397,22 @@ function getUploadedFilesSection($projectId) {
     }
 
     foreach ($projectFiles as $file) {
-        $projectFilesHtml .= processTpl('Project/trackFileElement.html', array(
+        $projectFilesHtml .= processTpl('Project/projectFileElement.html', array(
             '${filename}'             => escape($file->orig_filename),
             '${filenameEscaped}'      => escape_and_rewrite_single_quotes($file->orig_filename),
             '${status}'               => $file->status == 'active' ? 'Active' : 'Inactive', // TODO - currently not used
-            '${trackId}'              => $projectId,
-            '${trackFileId}'          => $file->id
+            '${projectId}'            => $projectId,
+            '${projectFileId}'        => $file->id
         ));
     }
 
     if (count($projectFiles) == 0) {
-        $projectFilesNotFoundHtml = processTpl('Project/trackFilesNotFound.html', array());
+        $projectFilesNotFoundHtml = processTpl('Project/projectFilesNotFound.html', array());
     }
 
     return processTpl('Project/uploadedFilesSection.html', array(
-        '${Project/trackFileElement_list}'        => $projectFilesHtml,
-        '${Project/trackFilesNotFound_optional}'  => $projectFilesNotFoundHtml
+        '${Project/projectFileElement_list}'        => $projectFilesHtml,
+        '${Project/projectFilesNotFound_optional}'  => $projectFilesNotFoundHtml
     ));
 }
 
@@ -518,7 +518,7 @@ function processParams(&$project, &$user) {
 //        }
 //    }
 
-    //handle track attributes
+    // handle project attributes
     $containsAttributeIds = get_array_param('containsAttributIds');
     $needsAttributeIds = get_array_param('needsAttributIds');
 
@@ -582,7 +582,7 @@ function processParams(&$project, &$user) {
 //    echo '</tr>' . "\n";
 //}
 
-function showAttributesList($label, $fieldName, &$projectAttributes, &$checkedTrackAttributeIds,  $othersValue, $othersFieldName, $helpTextHtml) {
+function showAttributesList($label, $fieldName, &$projectAttributes, &$checkedProjectAttributeIds,  $othersValue, $othersFieldName, $helpTextHtml) {
     global $logger;
 
     echo '<tr class="standardRow1"' .
@@ -598,7 +598,7 @@ function showAttributesList($label, $fieldName, &$projectAttributes, &$checkedTr
         echo '<td><input type="checkbox" name="' . $fieldName . '" value="' . $projectAttributes[$i-1]->id . '"';
 
         // checked or not?
-        if (in_array($projectAttributes[$i-1]->id, $checkedTrackAttributeIds)) {
+        if (in_array($projectAttributes[$i-1]->id, $checkedProjectAttributeIds)) {
             echo ' checked="checked"';
         }
         echo '> ' . $projectAttributes[$i-1]->name . '</td>';

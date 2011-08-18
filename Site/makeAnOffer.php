@@ -6,9 +6,6 @@ include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/AudioTrackUserVisibility.php');
-include_once('../Includes/DB/AudioTrackAttribute.php');
-include_once('../Includes/DB/AudioTrackAudioTrackAttribute.php');
-include_once('../Uploader/SolmetraUploader.php');
 
 $problemOccured = false;
 $errorFields = Array();

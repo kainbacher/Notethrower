@@ -3,8 +3,8 @@
 include_once('../Includes/DbConnect.php');
 include_once('../Includes/Snippets.php');
 
-// dao for pp_audio_track_attribute table
-class AudioTrackAttribute {
+// dao for pp_attribute table
+class Attribute {
     var $id;
     var $name;
     var $entry_date;
@@ -12,7 +12,7 @@ class AudioTrackAttribute {
 
     // constructors
     // ------------
-    function AudioTrackAttribute() {
+    function Attribute() {
     }
 
     function fetchAll() {
@@ -20,14 +20,14 @@ class AudioTrackAttribute {
 
         $result = _mysql_query(
             'select * ' .
-            'from pp_audio_track_attribute order by entry_date desc '
+            'from pp_attribute order by entry_date desc '
         );
 
         $ind = 0;
 
         while ($row = mysql_fetch_array($result)) {
-            $f = new AudioTrackAttribute();
-            $f = AudioTrackAttribute::_read_row($f, $row);
+            $f = new Attribute();
+            $f = Attribute::_read_row($f, $row);
 
             $objs[$ind] = $f;
             $ind++;
@@ -43,7 +43,7 @@ class AudioTrackAttribute {
 
         $result = _mysql_query(
             'select * ' .
-            'from pp_audio_track_attribute ' .
+            'from pp_attribute ' .
             'where shown_for = ' . qq($shownFor) . ' or shown_for = "both" ' .
             'order by entry_date asc'
         );
@@ -51,8 +51,8 @@ class AudioTrackAttribute {
         $ind = 0;
 
         while ($row = mysql_fetch_array($result)) {
-            $f = new AudioTrackAttribute();
-            $f = AudioTrackAttribute::_read_row($f, $row);
+            $f = new Attribute();
+            $f = Attribute::_read_row($f, $row);
 
             $objs[$ind] = $f;
             $ind++;
@@ -66,14 +66,14 @@ class AudioTrackAttribute {
     function fetchForId($id) {
         $result = _mysql_query(
             'select * ' .
-            'from pp_audio_track_attribute ' .
+            'from pp_attribute ' .
             'where id = ' . n($id)
         );
 
-        $a = new AudioTrackAttribute();
+        $a = new Attribute();
 
         if ($row = mysql_fetch_array($result)) {
-            $a = AudioTrackAttribute::_read_row($a, $row);
+            $a = Attribute::_read_row($a, $row);
         }
 
         mysql_free_result($result);
@@ -94,7 +94,7 @@ class AudioTrackAttribute {
     // ---------------
     function createTable() {
         $ok = _mysql_query(
-            'create table if not exists pp_audio_track_attribute ' .
+            'create table if not exists pp_attribute ' .
             '(' .
             'id                        int(10)      not null auto_increment, ' .
             'name                      varchar(255) not null, ' .
@@ -109,53 +109,53 @@ class AudioTrackAttribute {
     }
 
     function populateTable() {
-        $existingAttrs = AudioTrackAttribute::fetchAll();
+        $existingAttrs = Attribute::fetchAll();
         if (count($existingAttrs) == 0) {
-            $a = new AudioTrackAttribute();
+            $a = new Attribute();
             $a->name = 'Acoustic Guitar';
             $a->shown_for = 'both';
             $a->save();
-            $a = new AudioTrackAttribute();
+            $a = new Attribute();
             $a->name = 'Bass';
             $a->shown_for = 'both';
             $a->save();
-            $a = new AudioTrackAttribute();
+            $a = new Attribute();
             $a->name = 'Drums';
             $a->shown_for = 'both';
             $a->save();
-            $a = new AudioTrackAttribute();
+            $a = new Attribute();
             $a->name = 'Electric Guitar';
             $a->shown_for = 'both';
             $a->save();
-            $a = new AudioTrackAttribute();
+            $a = new Attribute();
             $a->name = 'Horns';
             $a->shown_for = 'both';
             $a->save();
-            $a = new AudioTrackAttribute();
+            $a = new Attribute();
             $a->name = 'Keyboard';
             $a->shown_for = 'both';
             $a->save();
-            $a = new AudioTrackAttribute();
+            $a = new Attribute();
             $a->name = 'Midi';
             $a->shown_for = 'both';
             $a->save();
-            $a = new AudioTrackAttribute();
+            $a = new Attribute();
             $a->name = 'Piano';
             $a->shown_for = 'both';
             $a->save();
-            $a = new AudioTrackAttribute();
+            $a = new Attribute();
             $a->name = 'Synth';
             $a->shown_for = 'both';
             $a->save();
-            $a = new AudioTrackAttribute();
+            $a = new Attribute();
             $a->name = 'Vinyl';
             $a->shown_for = 'both';
             $a->save();
-            $a = new AudioTrackAttribute();
+            $a = new Attribute();
             $a->name = 'Vocals';
             $a->shown_for = 'both';
             $a->save();
-            $a = new AudioTrackAttribute();
+            $a = new Attribute();
             $a->name = 'surprise me';
             $a->shown_for = 'needs';
             $a->save();
@@ -165,7 +165,7 @@ class AudioTrackAttribute {
     function countAll() {
         $result = _mysql_query(
             'select count(*) as cnt ' .
-            'from pp_audio_track_attribute'
+            'from pp_attribute'
         );
 
         $row = mysql_fetch_array($result);
@@ -178,7 +178,7 @@ class AudioTrackAttribute {
     function countAllShownFor($shownFor) {
         $result = _mysql_query(
             'select count(*) as cnt ' .
-            'from pp_audio_track_attribute where shown_for = ' . qq($shownFor) . ' or shown_for = "both" '
+            'from pp_attribute where shown_for = ' . qq($shownFor) . ' or shown_for = "both" '
         );
 
         $row = mysql_fetch_array($result);
@@ -200,7 +200,7 @@ class AudioTrackAttribute {
 
     function insert() {
         $ok = _mysql_query(
-            'insert into pp_audio_track_attribute ' .
+            'insert into pp_attribute ' .
             '(name, shown_for, entry_date) ' .
             'values (' .
             qq($this->name)      . ', ' .
@@ -220,7 +220,7 @@ class AudioTrackAttribute {
 
     function update() {
         $ok = _mysql_query(
-            'update pp_audio_track_attribute ' .
+            'update pp_attribute ' .
             'set name = ' . qq($this->name) . ', ' .
             'shown_for = ' . qq($this->shown_for) . ' ' .
             'where id = ' . n($this->id)

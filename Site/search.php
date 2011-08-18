@@ -6,7 +6,7 @@ include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/News.php');
-include_once('../Includes/DB/AudioTrackAttribute.php');
+include_once('../Includes/DB/Attribute.php');
 
 $loginErrorMsg = '';
 
@@ -46,8 +46,8 @@ if ($user) {
     }
 }
 
-$containsTrackAttributes = AudioTrackAttribute::fetchShownFor('contains');
-$needsTrackAttributes = AudioTrackAttribute::fetchShownFor('needs');
+$containsAttributes = Attribute::fetchShownFor('contains');
+$needsAttributes = Attribute::fetchShownFor('needs');
 
 
 
@@ -319,7 +319,7 @@ function showLogin() {
                     <td>Songs that need:</td>
                     <td>
                     <?php
-                        showAttributesList('needsAttributIds', $needsTrackAttributes, 'needsOthers');
+                        showAttributesList('needsAttributIds', $needsAttributes, 'needsOthers');
                     ?>
                     <td>
                 </tr>
@@ -330,7 +330,7 @@ function showLogin() {
                     <td>Songs that contain:</td>
                     <td>
                      <?php
-                        showAttributesList('containsAttributIds', $containsTrackAttributes, 'containsOthers');
+                        showAttributesList('containsAttributIds', $containsAttributes, 'containsOthers');
                     ?>
                     <td>
                 </tr>

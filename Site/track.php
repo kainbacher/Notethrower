@@ -6,12 +6,12 @@ include_once('../Includes/FormUtil.php');
 include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
-include_once('../Includes/DB/User.php');
+include_once('../Includes/DB/Attribute.php');
 include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/AudioTrackUserVisibility.php');
-include_once('../Includes/DB/AudioTrackAttribute.php');
 include_once('../Includes/DB/AudioTrackAudioTrackAttribute.php');
 include_once('../Includes/DB/ProjectFile.php');
+include_once('../Includes/DB/User.php');
 
 // FIXME - use this in upload form:
 // <input type="hidden" name="MAX_FILE_SIZE" value="524288001">
@@ -246,8 +246,8 @@ foreach ($users as $a) {
 }
 
 // handle track attributes
-$containsTrackAttributes = AudioTrackAttribute::fetchShownFor('contains');
-$needsTrackAttributes = AudioTrackAttribute::fetchShownFor('needs');
+$containsAttributes = Attribute::fetchShownFor('contains');
+$needsAttributes = Attribute::fetchShownFor('needs');
 $trackContainsAttributeIds = AudioTrackAudioTrackAttribute::fetchAttributeIdsForTrackIdAndState($track->id, 'contains');
 $trackNeedsAttributeIds = AudioTrackAudioTrackAttribute::fetchAttributeIdsForTrackIdAndState($track->id, 'needs');
 
@@ -380,8 +380,8 @@ exit;
 // -----------------------------------------------------------------------------
 
 // FIXME - show the following three sections in an expandable "extended settings" area
-//showAttributesList('This track contains', 'containsAttributIds[]', $containsTrackAttributes, $trackContainsAttributeIds, $track->containsOthers, 'containsOthers', 'Please check any box that applies to your track.  This helps artists, fans, and music supervisors find what they are looking for faster.');
-//showAttributesList('This track needs', 'needsAttributIds[]', $needsTrackAttributes, $trackNeedsAttributeIds, $track->needsOthers, 'needsOthers', 'You can sing like Pavarotti, but can\'t play a lick of guitar.  No problem!  Let others know what you would like added to your track, and hear how your new song develops.');
+//showAttributesList('This track contains', 'containsAttributIds[]', $containsAttributes, $trackContainsAttributeIds, $track->containsOthers, 'containsOthers', 'Please check any box that applies to your track.  This helps artists, fans, and music supervisors find what they are looking for faster.');
+//showAttributesList('This track needs', 'needsAttributIds[]', $needsAttributes, $trackNeedsAttributeIds, $track->needsOthers, 'needsOthers', 'You can sing like Pavarotti, but can\'t play a lick of guitar.  No problem!  Let others know what you would like added to your track, and hear how your new song develops.');
 //
 //showFormField('Additional info',              'textarea', 'additionalInfo',      'IMPORTANT: Please include any notes about the track/song you want to add.  If you upload a .zip file of the bounced stems, please specify here what tracks are included. For example, if you included midi files, bass track, vocals, etc. You may also want to include info. on how you recorded it, what equipment, software was used, or any other important information.', false, 0,   $track, $unpersistedTrack, $problemOccured, $errorFields, null, null);
 

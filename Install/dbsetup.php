@@ -6,7 +6,7 @@ include_once('../Includes/Init.php');
 
 include_once('../Includes/DbConnect.php');
 include_once('../Includes/DB/Attribute.php');
-include_once('../Includes/DB/AudioTrack.php');
+include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/AudioTrackUserVisibility.php');
 include_once('../Includes/DB/Message.php');
 include_once('../Includes/DB/News.php');
@@ -20,12 +20,12 @@ include_once('../Includes/DB/User.php');
 header('Content-type: text/plain');
 
 Attribute::createTable();
-AudioTrack::create_table();
 AudioTrackUserVisibility::create_table();
 Message::create_table();
 News::create_table();
 Nonce::create_table();
 PayPalTx::create_table();
+Project::create_table();
 ProjectAttribute::createTable();
 ProjectFile::create_table();
 Stats::create_table();

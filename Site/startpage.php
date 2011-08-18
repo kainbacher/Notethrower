@@ -6,8 +6,8 @@ include_once('../Includes/Config.php');
 include_once('../Includes/RemoteSystemCommunicationUtil.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
-include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/Nonce.php');
+include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/User.php');
 
 $messages = '';
@@ -89,7 +89,7 @@ function handleVoting(&$user, &$messages) {
 
     Nonce::invalidateNonce(get_param('n'));
 
-    $votedTrack = AudioTrack::fetch_for_id(get_numeric_param('vt'));
+    $votedTrack = Project::fetch_for_id(get_numeric_param('vt'));
     if ($votedTrack) {
         $votedTrack->competition_points = $votedTrack->competition_points + 1;
         $votedTrack->save();
@@ -144,16 +144,16 @@ function handleCurrentGenreSelection(&$genre) {
 function getLeftAndRightTrack(&$leftTrack, &$rightTrack, &$genre) {
     global $logger;
 
-    $leftTrack  = AudioTrack::fetchRandomPublicTrack($genre);
-    $rightTrack = AudioTrack::fetchRandomPublicTrack($genre, $leftTrack->id); // ensure that we have different tracks
+    $leftTrack  = Project::fetchRandomPublicTrack($genre);
+    $rightTrack = Project::fetchRandomPublicTrack($genre, $leftTrack->id); // ensure that we have different tracks
     $retryCount = 0;
     $trackSelectionMessage = null;
     while ((!$leftTrack || !$rightTrack) && $retryCount <= 100) { // search until we have two different tracks in the same genre
         $trackSelectionMessage = 'Sorry but we couldn\'t find two songs in the selected genre. A random genre was chosen.';
         $retryCount++;
         $genre = chooseRandomGenre();
-        $leftTrack  = AudioTrack::fetchRandomPublicTrack($genre);
-        $rightTrack = AudioTrack::fetchRandomPublicTrack($genre, $leftTrack->id); // ensure that we have different tracks
+        $leftTrack  = Project::fetchRandomPublicTrack($genre);
+        $rightTrack = Project::fetchRandomPublicTrack($genre, $leftTrack->id); // ensure that we have different tracks
     }
 
     if (!$leftTrack || !$rightTrack) {

@@ -3,10 +3,9 @@
 include_once('../Includes/Init.php');
 include_once('../Includes/Paginator.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/User.php');
-include_once('../Includes/DB/AudioTrack.php');
-include_once('../Includes/DB/News.php');
 include_once('../Includes/DB/Attribute.php');
+include_once('../Includes/DB/News.php');
+include_once('../Includes/DB/User.php');
 
 $loginErrorMsg = '';
 

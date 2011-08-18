@@ -2,7 +2,7 @@
 
 include_once('../Includes/Init.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/AudioTrack.php');
+include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/AudioTrackUserVisibility.php');
 include_once('../Includes/DB/ProjectAttribute.php');
 include_once('../Includes/DB/User.php');
@@ -37,7 +37,7 @@ writePageDoctype();
   <body>
 <?php
 
-$track = AudioTrack::fetch_track_details($tid, $visitorUserId);
+$track = Project::fetch_track_details($tid, $visitorUserId);
 
 if ($track) { // could be empty if wrong id or not visible for logged in user
     $ownerUser = User::fetch_for_id($track->user_id);
@@ -78,7 +78,7 @@ if ($track) { // could be empty if wrong id or not visible for logged in user
 
     // child tracks
     if ($track->is_full_song) {
-        $childTracks = AudioTrack::fetchAllChildTracksOfFullSong($tid, false, false, $visitorUserId);
+        $childTracks = Project::fetchAllChildTracksOfFullSong($tid, false, false, $visitorUserId);
         if (count($childTracks) > 0) {
             echo '<br><br>' . "\n";
             echo 'Associated tracks:<br>' . "\n";

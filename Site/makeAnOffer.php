@@ -4,7 +4,7 @@ include_once('../Includes/Init.php');
 include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/User.php');
-include_once('../Includes/DB/AudioTrack.php');
+include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/AudioTrackUserVisibility.php');
 
 $problemOccured = false;
@@ -12,7 +12,7 @@ $errorFields = Array();
 
 $trackId = get_numeric_param('tid');
 
-$track  = AudioTrack::fetch_for_id($trackId);
+$track  = Project::fetch_for_id($trackId);
 $user   = User::fetch_for_id($track->user_id);
 
 $offer->email = '';

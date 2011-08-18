@@ -5,7 +5,7 @@ include_once('../Includes/Init.php'); // must be included first
 include_once('../Includes/RemoteSystemCommunicationUtil.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
-include_once('../Includes/DB/AudioTrack.php');
+include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/User.php');
 
 // FIXME - voting system, players, etc. need to be made dynamic. try not to reload the entire page when voting happens. player code is in startpage.php.
@@ -21,7 +21,7 @@ if ($user) {
 }
 
 $latestTracksList = '';
-$latestTracks = AudioTrack::fetch_newest_from_to(0, 5, false, false, $visitorUserId);
+$latestTracks = Project::fetch_newest_from_to(0, 5, false, false, $visitorUserId);
 
 foreach ($latestTracks as $track) {
     $latestTracksList .= processTpl('Index/trackListItem.html', array(
@@ -35,7 +35,7 @@ foreach ($latestTracks as $track) {
 if (!$latestTracksList) $latestTracksList = 'No tracks found.';
 
 $topTracksList = '';
-$topTracks = AudioTrack::fetch_most_downloaded_from_to(0, 5, false, false, $visitorUserId);
+$topTracks = Project::fetch_most_downloaded_from_to(0, 5, false, false, $visitorUserId);
 
 foreach ($topTracks as $track) {
     $topTracksList .= processTpl('Index/trackListItem.html', array(

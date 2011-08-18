@@ -1,13 +1,12 @@
 <?php
 
 include_once('../Includes/Init.php');
-
 include_once('../Includes/Snippets.php');
-include_once('../Includes/TemplateUtil.php');
-include_once('../Includes/DB/User.php');
-include_once('../Includes/DB/AudioTrack.php');
-include_once('../Includes/DB/AudioTrackUserVisibility.php');
 require_once('../Includes/mobile_device_detect.php');
+include_once('../Includes/TemplateUtil.php');
+include_once('../Includes/DB/AudioTrackUserVisibility.php');
+include_once('../Includes/DB/User.php');
+include_once('../Includes/DB/Project.php');
 
 // find out if the user browses with a mobile device
 $showMobileVersion = false;
@@ -134,9 +133,9 @@ if ($user->additional_info) {
 //
 
 // track lists
-$originals         = AudioTrack::fetch_all_originals_of_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
-$remixes           = AudioTrack::fetch_all_remixes_of_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
-$remixed_by_others = AudioTrack::fetch_all_remixes_for_originating_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
+$originals         = Project::fetch_all_originals_of_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
+$remixes           = Project::fetch_all_remixes_of_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
+$remixed_by_others = Project::fetch_all_remixes_for_originating_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
 
 $rows = max(max(count($originals), count($remixes)), count($remixed_by_others));
 

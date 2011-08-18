@@ -5,17 +5,17 @@ include_once('../Includes/Init.php');
 include_once('../Includes/Config.php');
 include_once('../Includes/Logger.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/AudioTrack.php');
+include_once('../Includes/DB/Project.php');
 
 $logger->debug('song: ' . get_param('song'));
 
 $partial_delivery = false;
 
-$filepath = $CONTENT_BASE_PATH . get_param('song');
+$filepath = $GLOBALS['CONTENT_BASE_PATH'] . get_param('song');
 $track_id = get_numeric_param('tid');
 
 if ($track_id) {
-    $track = AudioTrack::fetch_for_id($track_id);
+    $track = Project::fetch_for_id($track_id);
     if ($track) {
         $track->playback_count = $track->playback_count + 1;
         $track->save();

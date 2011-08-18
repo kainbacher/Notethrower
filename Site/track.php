@@ -7,8 +7,8 @@ include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/Attribute.php');
-include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/AudioTrackUserVisibility.php');
+include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectAttribute.php');
 include_once('../Includes/DB/ProjectFile.php');
 include_once('../Includes/DB/User.php');
@@ -28,7 +28,7 @@ $errorFields = Array();
 $trackId = get_numeric_param('tid'); // this is only set in an update scenario
 
 if (get_param('action') == 'create') {
-    $track = new AudioTrack();
+    $track = new Project();
     $track->user_id                   = $user->id;
     $track->title                     = 'New audio track';
     $track->type                      = 'original';
@@ -62,7 +62,7 @@ if (get_param('action') == 'create') {
         show_fatal_error_and_exit('cannot save without a track id!');
     }
 
-    $track = AudioTrack::fetch_for_id($trackId);
+    $track = Project::fetch_for_id($trackId);
     ensureTrackBelongsToUserId($track, $user->id);
 
 } else if (get_param('action') == 'save') {
@@ -71,7 +71,7 @@ if (get_param('action') == 'create') {
         show_fatal_error_and_exit('cannot save without a track id!');
     }
 
-    $track = AudioTrack::fetch_for_id($trackId);
+    $track = Project::fetch_for_id($trackId);
     ensureTrackBelongsToUserId($track, $user->id);
 
     if (inputDataOk($errorFields, $track)) {
@@ -115,7 +115,7 @@ if (get_param('action') == 'create') {
 
     } else {
         $logger->info('input data was invalid: ' . print_r($errorFields, true));
-        $unpersistedTrack = new AudioTrack();
+        $unpersistedTrack = new Project();
         $unpersistedTrack->id = $trackId;
         processParams($unpersistedTrack, $user);
         $messageList .= processTpl('Common/message_error.html', array(
@@ -129,10 +129,10 @@ if (get_param('action') == 'create') {
         show_fatal_error_and_exit('cannot delete without a track id!');
     }
 
-    $track = AudioTrack::fetch_for_id($trackId);
+    $track = Project::fetch_for_id($trackId);
     ensureTrackBelongsToUserId($track, $user->id);
 
-    AudioTrack::delete_with_id($trackId);
+    Project::delete_with_id($trackId);
     ProjectAttribute::deleteForTrackId($trackId);
 
     header('Location: trackList.php');
@@ -146,7 +146,7 @@ if (get_param('action') == 'create') {
 
     $msg = '';
 
-    $track = AudioTrack::fetch_for_id($trackId);
+    $track = Project::fetch_for_id($trackId);
     ensureTrackBelongsToUserId($track, $user->id);
 
     if ($track->status == 'active') {
@@ -175,7 +175,7 @@ if (get_param('action') == 'create') {
         show_fatal_error_and_exit('cannot modify file state without a track id!');
     }
 
-    $track = AudioTrack::fetch_for_id($trackId);
+    $track = Project::fetch_for_id($trackId);
     ensureTrackBelongsToUserId($track, $user->id);
 
     $file = ProjectFile::fetch_for_id(get_numeric_param('fid'));
@@ -199,7 +199,7 @@ if (get_param('action') == 'create') {
         sendJsonResponseAndExit($jsonReponse);
     }
 
-    $track = AudioTrack::fetch_for_id($trackId);
+    $track = Project::fetch_for_id($trackId);
     ensureTrackBelongsToUserId($track, $user->id);
 
     $file = ProjectFile::fetch_for_id(get_numeric_param('fid'));

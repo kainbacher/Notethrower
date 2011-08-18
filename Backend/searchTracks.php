@@ -5,7 +5,7 @@ include_once('../Includes/Init.php');
 include_once('../Includes/Config.php');
 include_once('../Includes/Services_JSON.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/AudioTrack.php');
+include_once('../Includes/DB/Project.php');
 
 $jsonService = new Services_JSON();
 
@@ -23,8 +23,8 @@ $genres = get_param('genres') ? explode(',', get_param('genres')) : array();
 
 $logger->info(print_r($genres, true));
 
-$tracks = AudioTrack::fetchForSearch($from, $length, $userOrTitle, $needsAttributIds, $containsAttributIds, $needsOthers, $containsOthers, $genres, false, false, $visitorUserId);
-$filteredTracksCount = AudioTrack::fetchCountForSearch($userOrTitle, $needsAttributIds, $containsAttributIds, $needsOthers, $containsOthers, $genres, false, false, $visitorUserId);
+$tracks = Project::fetchForSearch($from, $length, $userOrTitle, $needsAttributIds, $containsAttributIds, $needsOthers, $containsOthers, $genres, false, false, $visitorUserId);
+$filteredTracksCount = Project::fetchCountForSearch($userOrTitle, $needsAttributIds, $containsAttributIds, $needsOthers, $containsOthers, $genres, false, false, $visitorUserId);
 
 $logger->info('finished db search');
 

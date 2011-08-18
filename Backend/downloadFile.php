@@ -5,13 +5,13 @@ include_once('../Includes/Init.php');
 include_once('../Includes/Config.php');
 include_once('../Includes/Logger.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/AudioTrack.php');
+include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/PayPalTx.php');
 include_once('../Includes/DB/ProjectFile.php');
 
 // TODO - in case of error: show friendly error page with instructions for help
 
-$track = AudioTrack::fetch_for_id(get_param('track_id'));
+$track = Project::fetch_for_id(get_param('track_id'));
 if (!$track || !$track->id) {
     $logger->warn('track not found!');
     echo 'TRACK NOT FOUND!';
@@ -37,8 +37,7 @@ exit;
 
 function check_authorization() {
     global $logger;
-    global $track;
-
+    
     $logger->info('checking authorization ...');
 
     // check that we have a transaction and that the consumer's ip address is still the same
@@ -71,8 +70,7 @@ function increment_download_count() {
 
 function deliver_file(&$pFile) {
     global $logger;
-    global $track;
-
+    
     $logger->info('delivering content ...');
 
     $filename = $pFile->filename;

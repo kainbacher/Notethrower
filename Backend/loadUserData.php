@@ -5,7 +5,7 @@ include_once('../Includes/Init.php');
 include_once('../Includes/Config.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/User.php');
-include_once('../Includes/DB/AudioTrack.php');
+include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectFile.php');
 include_once('../Includes/DB/Stats.php');
 
@@ -39,19 +39,19 @@ $xml .= '<webpageUrl>' . xmlentities($GLOBALS['BASE_URL'] . 'Site/userInfo.php?a
 $xml .= '<tracks>';
 
 // load originals
-$tracks = AudioTrack::fetch_all_originals_of_user_id_from_to($uid, 0, 9999, false, false, $visitorUserId); // FIXME - paging - use Paginator
+$tracks = Project::fetch_all_originals_of_user_id_from_to($uid, 0, 9999, false, false, $visitorUserId); // FIXME - paging - use Paginator
 foreach ($tracks as $track) {
     processTrack($xml, $track, false);
 }
 
 // load the remixes
-$tracks = AudioTrack::fetch_all_remixes_of_user_id_from_to($uid, 0, 9999, false, false, $visitorUserId); // FIXME - paging - use Paginator
+$tracks = Project::fetch_all_remixes_of_user_id_from_to($uid, 0, 9999, false, false, $visitorUserId); // FIXME - paging - use Paginator
 foreach ($tracks as $track) {
     processTrack($xml, $track, true);
 }
 
 // load the songs which were remixed by others
-$tracks = AudioTrack::fetch_all_remixes_for_originating_user_id_from_to($uid, 0, 9999, false, false, $visitorUserId); // FIXME - paging - use Paginator
+$tracks = Project::fetch_all_remixes_for_originating_user_id_from_to($uid, 0, 9999, false, false, $visitorUserId); // FIXME - paging - use Paginator
 foreach ($tracks as $track) {
     processTrack($xml, $track, true);
 }

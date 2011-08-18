@@ -4,8 +4,8 @@ include_once('../Includes/Init.php');
 
 include_once('../Includes/Config.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/AudioTrackUserVisibility.php');
+include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/User.php');
 
 $loggedInUser = User::new_from_cookie();
@@ -20,7 +20,7 @@ $userId = get_numeric_param('aid');
 $trackId  = get_numeric_param('tid');
 
 // check permissions
-$track = AudioTrack::fetch_for_id($trackId);
+$track = Project::fetch_for_id($trackId);
 if (!$track) {
     show_fatal_error_and_exit('no track found for id: ' . $trackId);
 

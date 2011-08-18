@@ -1,7 +1,7 @@
 <?php
 
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/AudioTrack.php');
+include_once('../Includes/DB/Project.php');
 
 function ensureUserIsLoggedIn($user) {
     global $logger;
@@ -21,7 +21,7 @@ function ensureTrackIdBelongsToUserId($trackId, $userId) {
         show_fatal_error_and_exit('Track ID not specified!');
     }
 
-    $track = AudioTrack::fetch_for_id($trackId);
+    $track = Project::fetch_for_id($trackId);
 
     if (!$track || !$track->id) {
         show_fatal_error_and_exit('Track with ID ' . $trackId . ' not found!');

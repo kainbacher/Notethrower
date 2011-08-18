@@ -3,9 +3,9 @@
 include_once('../Includes/Init.php');
 include_once('../Includes/Paginator.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/User.php');
-include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/News.php');
+include_once('../Includes/DB/Project.php');
+include_once('../Includes/DB/User.php');
 
 $loginErrorMsg = '';
 
@@ -23,7 +23,7 @@ if ($user) {
 
 $pageNum = get_numeric_param('page');
 
-$trackCount = AudioTrack::count_all(false, false, $visitorUserId);
+$trackCount = Project::count_all(false, false, $visitorUserId);
 $logger->info('track count: ' . $trackCount);
 
 $paginatorResp = paginator_get_start_and_end_item_for_page($trackCount, 16, $pageNum);
@@ -34,13 +34,13 @@ if (!$mode) {
 }
 
 if ($user && $mode == 'privateTracks') {
-    $tracks = AudioTrack::fetch_all_private_tracks_the_user_can_access($paginatorResp['startItem'], $paginatorResp['endItem'], $user->id);
+    $tracks = Project::fetch_all_private_tracks_the_user_can_access($paginatorResp['startItem'], $paginatorResp['endItem'], $user->id);
 
 } else {
     if ($mode == 'mostRecent') {
-        $tracks = AudioTrack::fetch_newest_from_to($paginatorResp['startItem'], $paginatorResp['endItem'], false, false, $visitorUserId);
+        $tracks = Project::fetch_newest_from_to($paginatorResp['startItem'], $paginatorResp['endItem'], false, false, $visitorUserId);
     } else { // mostDownloaded
-        $tracks = AudioTrack::fetch_most_downloaded_from_to($paginatorResp['startItem'], $paginatorResp['endItem'], false, false, $visitorUserId);
+        $tracks = Project::fetch_most_downloaded_from_to($paginatorResp['startItem'], $paginatorResp['endItem'], false, false, $visitorUserId);
     }
 }
 

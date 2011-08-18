@@ -6,8 +6,8 @@ include_once('../Includes/Config.php');
 include_once('../Includes/Logger.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/User.php');
-include_once('../Includes/DB/AudioTrack.php');
 include_once('../Includes/DB/PayPalTx.php');
+include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectFile.php');
 
 $logger->info('client ip: ' . $_SERVER['REMOTE_ADDR']);
@@ -24,7 +24,7 @@ if (!$track_id) {
     exit;
 }
 
-$track = AudioTrack::fetch_for_id($track_id);
+$track = Project::fetch_for_id($track_id);
 if (!$track || !$track->id) {
     $logger->warn('track not found for id: ' . $track_id);
     echo 'INVALID REQUEST (7)';

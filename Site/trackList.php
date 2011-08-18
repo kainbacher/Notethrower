@@ -4,8 +4,8 @@ include_once('../Includes/Init.php');
 include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
+include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/User.php');
-include_once('../Includes/DB/AudioTrack.php');
 
 $user = User::new_from_cookie();
 ensureUserIsLoggedIn($user);
@@ -17,13 +17,13 @@ if (get_param('msg')) {
     ));
 }
 
-$newbornTrackIdList = AudioTrack::fetchAllNewbornTrackIdsForUserId($user->id);
+$newbornTrackIdList = Project::fetchAllNewbornTrackIdsForUserId($user->id);
 foreach ($newbornTrackIdList as $nbtid) {
-    AudioTrack::delete_with_id($nbtid);
+    Project::delete_with_id($nbtid);
 }
 
-$originalTracks = AudioTrack::fetch_all_originals_of_user_id_from_to($user->id, 0, 999999999, true, true, -1);
-$remixedTracks  = AudioTrack::fetch_all_remixes_of_user_id_from_to($user->id, 0, 999999999, true, true, -1);
+$originalTracks = Project::fetch_all_originals_of_user_id_from_to($user->id, 0, 999999999, true, true, -1);
+$remixedTracks  = Project::fetch_all_remixes_of_user_id_from_to($user->id, 0, 999999999, true, true, -1);
 
 $originalTracksList = '';
 foreach ($originalTracks as $t) {

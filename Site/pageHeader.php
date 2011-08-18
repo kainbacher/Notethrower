@@ -57,7 +57,7 @@ if ($userIsLoggedIn) {
     }
 
 	echo '<div class="topMenuItem">' . "\n";
-	echo '<a href="trackList.php">Me</a>' . "\n";
+	echo '<a href="projectList.php">Me</a>' . "\n";
 	echo '<div class="topMenuSub">' . "\n";
 
 	echo '<div class="topMenuSubItem">' . "\n";
@@ -65,7 +65,7 @@ if ($userIsLoggedIn) {
 	echo '</div>' . "\n";
 
 	echo '<div class="topMenuSubItem">' . "\n";
-	echo '<a href="trackList.php">My tracks</a>' . "\n";
+	echo '<a href="projectList.php">My projects</a>' . "\n";
 	echo '</div>' . "\n";
 
 	echo '<div class="topMenuSubItem">' . "\n";

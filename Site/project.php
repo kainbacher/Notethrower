@@ -130,7 +130,7 @@ if (get_param('action') == 'create') {
     Project::delete_with_id($projectId);
     ProjectAttribute::deleteForProjectId($projectId);
 
-    header('Location: trackList.php');
+    header('Location: projectList.php');
     exit;
 
 } else if (get_param('action') == 'toggleTrackState') { // not used currently - tracks are always active as long as at least the mp3 version was uploaded, otherwise they are inactive until this is done
@@ -161,7 +161,7 @@ if (get_param('action') == 'create') {
 
     $project->save();
 
-    header('Location: trackList.php?msg=' . urlencode($msg));
+    header('Location: projectList.php?msg=' . urlencode($msg));
     exit;
 
 } else if (get_param('action') == 'toggleFileState') { // not used currently - track files are always active

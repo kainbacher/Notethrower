@@ -22,45 +22,45 @@ foreach ($newbornProjectIdList as $nbpid) {
     Project::delete_with_id($nbpid);
 }
 
-$originalTracks = Project::fetch_all_originals_of_user_id_from_to($user->id, 0, 999999999, true, true, -1);
-$remixedTracks  = Project::fetch_all_remixes_of_user_id_from_to($user->id, 0, 999999999, true, true, -1);
+$originalProjects = Project::fetch_all_originals_of_user_id_from_to($user->id, 0, 999999999, true, true, -1);
+$remixedProjects  = Project::fetch_all_remixes_of_user_id_from_to($user->id, 0, 999999999, true, true, -1); // FIXME - this should go away, right?
 
-$originalTracksList = '';
-foreach ($originalTracks as $t) {
-    $originalTracksList .= processTpl('ProjectList/trackListItem.html', array(
-        '${trackId}'           => $t->id,
-        '${trackTitle}'        => escape($t->title),
-        '${trackTitleEscaped}' => escape_and_rewrite_single_quotes($t->title)
+$originalProjectsList = '';
+foreach ($originalProjects as $t) {
+    $originalProjectsList .= processTpl('ProjectList/projectListItem.html', array(
+        '${projectId}'           => $t->id,
+        '${projectTitle}'        => escape($t->title),
+        '${projectTitleEscaped}' => escape_and_rewrite_single_quotes($t->title)
         // FIXME - later - visibility? facebook sharing?
     ));
 }
 
-if (count($originalTracks) == 0) {
-    $originalTracksList = 'No tracks found';
+if (count($originalProjects) == 0) {
+    $originalProjectsList = 'No projects found';
 }
 
-$remixedTracksList = '';
-foreach ($remixedTracks as $t) {
-    $remixedTracksList .= processTpl('ProjectList/trackListItem.html', array(
-        '${trackId}'           => $t->id,
-        '${trackTitle}'        => escape($t->title),
-        '${trackTitleEscaped}' => escape_and_rewrite_single_quotes($t->title)
+$remixedProjectsList = '';
+foreach ($remixedProjects as $t) {
+    $remixedProjectsList .= processTpl('ProjectList/projectListItem.html', array(
+        '${projectId}'           => $t->id,
+        '${projectTitle}'        => escape($t->title),
+        '${projectTitleEscaped}' => escape_and_rewrite_single_quotes($t->title)
         // FIXME - later - visibility? facebook sharing? (see old script)
     ));
 }
 
-if (count($remixedTracks) == 0) {
-    $remixedTracksList = 'No tracks found';
+if (count($remixedProjects) == 0) {
+    $remixedProjectsList = 'No projects found';
 }
 
 processAndPrintTpl('ProjectList/index.html', array(
-    '${Common/pageHeader}'                      => buildPageHeader('My tracks'),
-    '${Common/bodyHeader}'                      => buildBodyHeader($user),
-    '${Common/message_choice_optional}'         => $message,
-    '${ProjectList/trackListItem_originals_list}' => $originalTracksList,
-    '${ProjectList/trackListItem_remixes_list}'   => $remixedTracksList,
-    '${Common/bodyFooter}'                      => buildBodyFooter(),
-    '${Common/pageFooter}'                      => buildPageFooter()
+    '${Common/pageHeader}'                          => buildPageHeader('My projects'),
+    '${Common/bodyHeader}'                          => buildBodyHeader($user),
+    '${Common/message_choice_optional}'             => $message,
+    '${ProjectList/projectListItem_originals_list}' => $originalProjectsList,
+    '${ProjectList/projectListItem_remixes_list}'   => $remixedProjectsList,
+    '${Common/bodyFooter}'                          => buildBodyFooter(),
+    '${Common/pageFooter}'                          => buildPageFooter()
 ));
 
 // END

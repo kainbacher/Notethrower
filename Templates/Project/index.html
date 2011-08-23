@@ -72,7 +72,6 @@ function checkDeleteResponseAndRefreshFileList(deleteWasOk, data) {
 }
 
 function refreshProjectFilesSection(projectId) {
-    alert('refreshing');
     $.ajax({
         type: 'GET',
         url: 'project.php',

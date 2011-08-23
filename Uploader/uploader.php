@@ -134,7 +134,7 @@ if ($singleFileOnly) {
 			UploadProgress: function(up, file) {
 				// this seems to be called twice at the end of the queued uploads,
 				// so we do an extra check to avoid refreshing the opener twice.
-				if (!uploadComplete) {
+				//if (!uploadComplete) {
     				if (up.total.queued == 0) { // queue was processed completely
     				    uploadComplete = true;
     				    if (up.total.failed > 0) {
@@ -148,7 +148,7 @@ if ($singleFileOnly) {
                             }
     				    }
     				}
-    			}
+    			//}
 			}
         }
 	});

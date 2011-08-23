@@ -94,21 +94,6 @@ if (get_param('action') == 'create') {
             '${msg}' => 'Successfully saved project data.'
         ));
 
-        $masterFound = ProjectFile::master_mp3_file_found_for_project_id($project->id);
-        if ($masterFound) {
-            $project->status = 'active';
-            $project->save();
-
-        } else {
-            $project->status = 'inactive';
-            $project->save();
-            $projectFilesMessageList .= processTpl('Common/message_notice.html', array(
-                '${msg}' => 'Please upload a mix MP3 file to make sure your project is activated.<br />' .
-                            'Without a mix MP3 file the project will not be visible for other users.<br />' .
-                            'Please make sure the file is of high quality, at least 128kbps at 44.1kHz'
-            ));
-        }
-
     } else {
         $logger->info('input data was invalid: ' . print_r($errorFields, true));
         $unpersistedProject = new Project();
@@ -210,22 +195,6 @@ if (get_param('action') == 'create') {
 
     ProjectFile::delete_with_id(get_numeric_param('fid'));
 
-    $masterFound = ProjectFile::master_mp3_file_found_for_project_id($project->id);
-    if ($masterFound) {
-        $project->status = 'active';
-        $project->save();
-
-    } else {
-        $project->status = 'inactive';
-        $project->save();
-        $projectFilesMessageList .= processTpl('Common/message_notice.html', array(
-            '${msg}' => 'Please upload a mix MP3 file to make sure your project is activated.<br />' .
-                        'Without a mix MP3 file the project will not be visible for other users.<br />' .
-                        'Please make sure the file is of high quality, at least 128kbps at 44.1kHz'
-        ));
-        $logger->info('mix file was deleted');
-    }
-
     $jsonReponse = array(
         'result'    => 'OK',
         'projectId' => $projectId
@@ -240,16 +209,7 @@ if (get_param('action') == 'create') {
     $project = Project::fetch_for_id($projectId);
     ensureProjectBelongsToUserId($project, $user->id);
     
-    $masterFound = ProjectFile::master_mp3_file_found_for_project_id($project->id);
-    if (!$masterFound) {
-        $projectFilesMessageList .= processTpl('Common/message_notice.html', array(
-            '${msg}' => 'Please upload a mix MP3 file to make sure your project is activated.<br />' .
-                        'Without a mix MP3 file the project will not be visible for other users.<br />' .
-                        'Please make sure the file is of high quality, at least 128kbps at 44.1kHz'
-        ));
-    }
-    
-    echo getUploadedFilesSection($projectId, $projectFilesMessageList);    
+    echo getUploadedFilesSection($project, $projectFilesMessageList);    
     exit;
 }
 
@@ -384,7 +344,7 @@ processAndPrintTpl('Project/index.html', array(
     '${type}'                                   => get_param('type') == 'remix' ? 'remix' : 'original',
     '${submitButtonValue}'                      => 'Save',
     '${Common/formElement_list}'                => $formElementsList,
-    '${Project/uploadedFilesSection}'           => getUploadedFilesSection($project->id, $projectFilesMessageList),
+    '${Project/uploadedFilesSection}'           => getUploadedFilesSection($project, $projectFilesMessageList),
     '${Common/bodyFooter}'                      => buildBodyFooter(),
     '${Common/pageFooter}'                      => buildPageFooter()
 ));
@@ -404,8 +364,23 @@ exit;
 
 
 
-function getUploadedFilesSection($projectId, $messageList) {
+function getUploadedFilesSection(&$project, $messageList) {
     global $logger;
+    
+    $masterFound = ProjectFile::master_mp3_file_found_for_project_id($project->id);
+    if ($masterFound) {
+        $project->status = 'active';
+        $project->save();
+
+    } else {
+        $project->status = 'inactive';
+        $project->save();
+        $messageList .= processTpl('Common/message_notice.html', array(
+            '${msg}' => 'Please upload a mix MP3 file to make sure your project is activated.<br />' .
+                        'Without a mix MP3 file the project will not be visible for other users.<br />' .
+                        'Please make sure the file is of high quality, at least 128kbps at 44.1kHz'
+        ));
+    }
 
     $masterFileFoundHtml    = '';
     $masterFileNotFoundHtml = '';
@@ -413,7 +388,7 @@ function getUploadedFilesSection($projectId, $messageList) {
     $projectFilesHtml         = '';
     $projectFilesNotFoundHtml = '';
 
-    $projectFiles = ProjectFile::fetch_all_for_project_id($projectId, true);
+    $projectFiles = ProjectFile::fetch_all_for_project_id($project->id, true);
     
     $logger->info(count($projectFiles) . ' project files found');
 
@@ -423,9 +398,9 @@ function getUploadedFilesSection($projectId, $messageList) {
         $projectFilesHtml .= processTpl('Project/projectFileElement.html', array(
             '${filename}'             => escape($file->orig_filename),
             '${filenameEscaped}'      => escape_and_rewrite_single_quotes($file->orig_filename),
-            '${fileDownloadUrl}'      => '../Backend/downloadFile.php?mode=download&project_id=' . $projectId . '&atfid=' . $file->id,
+            '${fileDownloadUrl}'      => '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $file->id,
             '${status}'               => $file->status == 'active' ? 'Active' : 'Inactive', // TODO - currently not used
-            '${projectId}'            => $projectId,
+            '${projectId}'            => $project->id,
             '${projectFileId}'        => $file->id,
             '${uploadedByName}'       => $file->userName,
             '${uploaderUserImg}'      => $uploaderUserImg
@@ -442,7 +417,7 @@ function getUploadedFilesSection($projectId, $messageList) {
         '${Common/message_choice_list}'             => $messageList,
         '${Project/projectFileElement_list}'        => $projectFilesHtml,
         '${Project/projectFilesNotFound_optional}'  => $projectFilesNotFoundHtml,
-        '${projectId}'                              => $projectId
+        '${projectId}'                              => $project->id
     ));
 }
 

@@ -34,7 +34,7 @@ ${Common/bodyHeader}
 
         <form name="projectForm" action="${formAction}" method="POST">
             <input type="hidden" name="action" value="save">
-            <input type="hidden" name="tid" value="${projectId}">
+            <input type="hidden" name="pid" value="${projectId}">
             <input type="hidden" name="type" value="${type}">
             ${Common/formElement_list}
 
@@ -43,7 +43,7 @@ ${Common/bodyHeader}
             </div>
         </form>
 
-        <div id="projectFilesSection">
+        <div>
             ${Project/uploadedFilesSection}
 
             <div class="span-12 last">
@@ -62,18 +62,39 @@ ${Common/bodyFooter}
 
 <script type="text/javascript">
 
-function checkDeleteResponseAndSubmitForm(deleteWasOk, data) {
+function checkDeleteResponseAndRefreshFileList(deleteWasOk, data) {
     if (deleteWasOk) {
-        document.projectForm.submit();
+        //document.projectForm.submit();
+        refreshProjectFilesSection(data.projectId);
     } else {
         alert('File deletion failed: ' + data.error);
     }
 }
 
-function testAlert() {
-    alert('huhu!');
+function refreshProjectFilesSection(projectId) {
+    $.ajax({
+        type: 'GET',
+        url: 'project.php',
+        data: 'action=getProjectFilesHtml' +
+              '&pid=' + projectId,
+        dataType: 'html',
+        cache: false,
+        timeout: 15000, // 15 seconds
+        error: function(xmlHttpRequest, textStatus, errorThrown) {
+            alert('ERROR: ' + textStatus + ' - ' + errorThrown);
+        },
+        success: function(data, textStatus, dummy) {
+            $('#projectFilesSection').html(data);
+        }
+    });
 }
 
+</script>
+
+<script type="text/javascript">
+    function openUploaderPopup() {
+        window.open('../Uploader/uploader.php?sf=0&pid=${projectId}','ONELOUDR_UPLOADER','scrollbars=0,status=0,width=640,height=350');
+    }
 </script>
 
 ${Common/pageFooter}

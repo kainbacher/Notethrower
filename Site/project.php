@@ -21,11 +21,12 @@ ensureUserIsLoggedIn($user);
 
 $project = null;
 $unpersistedProject = null;
-$messageList = '';
+$generalMessageList = '';
+$projectFilesMessageList = '';
 $problemOccured = false;
 $errorFields = Array();
 
-$projectId = get_numeric_param('tid'); // this is only set in an update scenario
+$projectId = get_numeric_param('pid'); // this is only set in an update scenario
 
 if (get_param('action') == 'create') {
     $project = new Project();
@@ -89,7 +90,7 @@ if (get_param('action') == 'create') {
             }
         }
 
-        $messageList .= processTpl('Common/message_success.html', array(
+        $generalMessageList .= processTpl('Common/message_success.html', array(
             '${msg}' => 'Successfully saved project data.'
         ));
 
@@ -101,7 +102,7 @@ if (get_param('action') == 'create') {
         } else {
             $project->status = 'inactive';
             $project->save();
-            $messageList .= processTpl('Common/message_notice.html', array(
+            $projectFilesMessageList .= processTpl('Common/message_notice.html', array(
                 '${msg}' => 'Please upload a mix MP3 file to make sure your project is activated.<br />' .
                             'Without a mix MP3 file the project will not be visible for other users.<br />' .
                             'Please make sure the file is of high quality, at least 128kbps at 44.1kHz'
@@ -113,7 +114,7 @@ if (get_param('action') == 'create') {
         $unpersistedProject = new Project();
         $unpersistedProject->id = $projectId;
         processParams($unpersistedProject, $user);
-        $messageList .= processTpl('Common/message_error.html', array(
+        $generalMessageList .= processTpl('Common/message_error.html', array(
             '${msg}' => 'Please correct the highlighted problems!'
         ));
         $problemOccured = true;
@@ -217,18 +218,39 @@ if (get_param('action') == 'create') {
     } else {
         $project->status = 'inactive';
         $project->save();
-//        $messageList .= processTpl('Common/message_notice.html', array(
-//            '${msg}' => 'Please upload a mix MP3 file to make sure your project is activated.<br />' .
-//                        'Without a mix MP3 file the project will not be visible for other users.<br />' .
-//                        'Please make sure the file is of high quality, at least 128kbps at 44.1kHz'
-//        ));
+        $projectFilesMessageList .= processTpl('Common/message_notice.html', array(
+            '${msg}' => 'Please upload a mix MP3 file to make sure your project is activated.<br />' .
+                        'Without a mix MP3 file the project will not be visible for other users.<br />' .
+                        'Please make sure the file is of high quality, at least 128kbps at 44.1kHz'
+        ));
         $logger->info('mix file was deleted');
     }
 
     $jsonReponse = array(
-        'result' => 'OK'
+        'result'    => 'OK',
+        'projectId' => $projectId
     );
     sendJsonResponseAndExit($jsonReponse);
+
+} else if (get_param('action') == 'getProjectFilesHtml') {
+    if (!$projectId) {
+        show_fatal_error_and_exit('pid param is missing!');
+    }
+
+    $project = Project::fetch_for_id($projectId);
+    ensureProjectBelongsToUserId($project, $user->id);
+    
+    $masterFound = ProjectFile::master_mp3_file_found_for_project_id($project->id);
+    if (!$masterFound) {
+        $projectFilesMessageList .= processTpl('Common/message_notice.html', array(
+            '${msg}' => 'Please upload a mix MP3 file to make sure your project is activated.<br />' .
+                        'Without a mix MP3 file the project will not be visible for other users.<br />' .
+                        'Please make sure the file is of high quality, at least 128kbps at 44.1kHz'
+        ));
+    }
+    
+    echo getUploadedFilesSection($projectId, $projectFilesMessageList);    
+    exit;
 }
 
 $userSelectionArray = array();
@@ -356,13 +378,13 @@ processAndPrintTpl('Project/index.html', array(
     '${Common/pageHeader}'                      => buildPageHeader($projectId ? 'Edit project' : 'Create project'),
     '${Common/bodyHeader}'                      => buildBodyHeader($user),
     '${headline}'                               => $projectId ? 'Edit project' : 'Create project',
-    '${Common/message_choice_list}'             => $messageList,
+    '${Common/message_choice_list}'             => $generalMessageList,
     '${formAction}'                             => $_SERVER['PHP_SELF'],
     '${projectId}'                              => $project && $project->id ? $project->id : '',
     '${type}'                                   => get_param('type') == 'remix' ? 'remix' : 'original',
     '${submitButtonValue}'                      => 'Save',
     '${Common/formElement_list}'                => $formElementsList,
-    '${Project/uploadedFilesSection}'           => getUploadedFilesSection($project->id),
+    '${Project/uploadedFilesSection}'           => getUploadedFilesSection($project->id, $projectFilesMessageList),
     '${Common/bodyFooter}'                      => buildBodyFooter(),
     '${Common/pageFooter}'                      => buildPageFooter()
 ));
@@ -382,7 +404,7 @@ exit;
 
 
 
-function getUploadedFilesSection($projectId) {
+function getUploadedFilesSection($projectId, $messageList) {
     global $logger;
 
     $masterFileFoundHtml    = '';
@@ -406,6 +428,8 @@ function getUploadedFilesSection($projectId) {
             '${uploadedByName}'       => $file->userName,
             '${uploaderUserImg}'      => $uploaderUserImg
         ));
+        
+        // FIXME - download links absichern, damit man nicht beliebige files von beliebigen projekten runterladen kann? ist das überhaupt nötig?
     }
 
     if (count($projectFiles) == 0) {
@@ -413,8 +437,10 @@ function getUploadedFilesSection($projectId) {
     }
 
     return processTpl('Project/uploadedFilesSection.html', array(
+        '${Common/message_choice_list}'             => $messageList,
         '${Project/projectFileElement_list}'        => $projectFilesHtml,
-        '${Project/projectFilesNotFound_optional}'  => $projectFilesNotFoundHtml
+        '${Project/projectFilesNotFound_optional}'  => $projectFilesNotFoundHtml,
+        '${projectId}'                              => $projectId
     ));
 }
 

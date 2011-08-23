@@ -118,6 +118,8 @@ if (strpos($contentType, "multipart") !== false) {
 		die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
 }
 
+//chmod($targetDir . DIRECTORY_SEPARATOR . $fileName, 0666);
+
 // Return JSON-RPC response
 die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
 

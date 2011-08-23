@@ -1,14 +1,11 @@
-<div class="span-12 last">
+<div id="projectFilesSection" class="span-12 last">
     <br />
     <b>Files:</b><br />
-    ${Project/projectFileElement_list}
-    ${Project/projectFilesNotFound_optional}
+    ${Common/message_choice_list}
+    <div>
+      ${Project/projectFileElement_list}
+      ${Project/projectFilesNotFound_optional}
+    </div>
     <br />
     <input class="button blue" type="submit" value="Upload files" onClick="openUploaderPopup();">
 </div>
-
-<script type="text/javascript">
-    function openUploaderPopup() {
-        window.open('../Uploader/uploader.php?sf=0','ONELOUDR_UPLOADER','scrollbars=0,status=0,width=640,height=350');
-    }
-</script>

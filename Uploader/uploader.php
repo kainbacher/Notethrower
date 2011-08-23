@@ -4,7 +4,12 @@ include_once('../Includes/Init.php');
 
 include_once('../Includes/Snippets.php');
 
+$projectId      = get_numeric_param('pid');
 $singleFileOnly = get_numeric_param('sf');
+
+if (!$projectId) {
+    show_fatal_error_and_exit('pid param is missing!');
+}
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -39,9 +44,11 @@ $singleFileOnly = get_numeric_param('sf');
 </head>
 <body>
 
-<div id="uploader">
-	<p>You browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</p>
-</div>
+<form action="upload.php">
+  <div id="uploader">
+    <p>You browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</p>
+  </div>
+</form>
 
 <script type="text/javascript">
 var uploadComplete = false;
@@ -50,7 +57,7 @@ var uploadComplete = false;
 $(function() {
 	$("#uploader").plupload({
 		// General settings
-		runtimes : 'browserplus,silverlight,gears,flash,html5,html4',
+		runtimes : 'browserplus,silverlight,gears,flash,html5,html4', // TODO - test all runtimes (html 4 makes problems in chrome)
 		url : 'upload.php',
 		max_file_size : '500mb',
 		max_file_count: 20, // user can add no more then 20 files at a time
@@ -67,7 +74,7 @@ $(function() {
 
 		// Specify what files to browse for
 		filters : [
-			{title : "Audio files and ZIP archives", extensions : "mp3,wav,zip"}
+			{title : "Audio files and ZIP archives", extensions : "mp3,wav,aiff,flac,zip"}
 		],
 
 		// Flash settings
@@ -116,23 +123,28 @@ if ($singleFileOnly) {
 
 ?>
             },
+            
+            FileUploaded: function(up, file, info) {
+                // when a single file is uploaded completely, move the file to the final location and persist the info in the database (done in an ajax action)
+			    if (file.status == plupload.DONE) {
+			        processSingleUploadedFile(file.target_name, file.name);
+			    }
+            },
 
 			UploadProgress: function(up, file) {
-			    // FIXME - add processing of single files here
-			    // when a single file is uploaded completely, persist the info in the database (ajax call)
-
 				// this seems to be called twice at the end of the queued uploads,
 				// so we do an extra check to avoid refreshing the opener twice.
 				if (!uploadComplete) {
     				if (up.total.queued == 0) { // queue was processed completely
     				    uploadComplete = true;
     				    if (up.total.failed > 0) {
-    				        alert('Sorry, but something went wrong in your upload!'); // FIXME
+    				        alert('Sorry, but something went wrong in your upload!');
 
     				    } else {
     				        var projectFilesSectionDiv = window.opener.jQuery("#projectFilesSection");
                             if (projectFilesSectionDiv != null) {
-                                projectFilesSectionDiv.html("Updated!");
+                                window.opener.refreshProjectFilesSection(<?= $projectId ?>);
+                                window.close();
                             }
     				    }
     				}
@@ -162,6 +174,26 @@ if ($singleFileOnly) {
 			e.preventDefault();
 		}
 	});
+	
+	function processSingleUploadedFile(filename, origFilename) {
+	    $.ajax({
+            type: 'POST',
+            url: 'processUploadedFile.php',
+            data: 'action=process' +
+                  '&pid=<?= $projectId ?>' +
+                  '&filename='     + encodeURIComponent(filename) + 
+                  '&origFilename=' + encodeURIComponent(origFilename),
+            dataType: 'text',
+            cache: false,
+            timeout: 15000, // 15 seconds
+            error: function(xmlHttpRequest, textStatus, errorThrown) {
+                alert('ERROR: ' + textStatus + ' - ' + errorThrown);
+            },
+            success: function(data, textStatus) {
+                // noop
+            }
+        });
+	}
 
 });
 </script>

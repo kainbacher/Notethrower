@@ -448,34 +448,7 @@ function move_file($src, $dest, $allowOverwriting = true) {
     chmod($dest, 0666);
 }
 
-//function create_directory($dir) {
-//    global $logger;
-//
-//    if (is_dir($dir)) return;
-//
-//    $logger->info('creating directory: ' . $dir);
-//
-//    $ok = true;
-//
-//    // create dir with full access rights
-//
-//    // this doesn't work on rastaduck.org
-//    //$umask = umask(0);
-//    //$ok = mkdir($dir, 0777);
-//    //umask($umask);
-//
-//    // this also doesn't work on rastaduck.org
-//    umask(0777); // most probably ignored on windows systems
-//    $ok = mkdir($dir, 0777);
-//
-//    if (!$ok) {
-//        show_fatal_error_and_exit(
-//            'Cannot create directory: ' . $dir
-//        );
-//    }
-//}
-
-function create_directory($dir) { // copied from imagazine project
+function create_directory($dir) {
     global $logger;
 
     if (is_dir($dir)) return;

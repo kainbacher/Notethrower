@@ -1,4 +1,5 @@
 <div>
-    ${filename}<br />
-    ["change" button or link] / <a href="javascript:askForConfirmationAndExecute('Do you really want to delete this file?', '${filenameEscaped}', 'project.php?tid=${projectId}&action=deleteTrackFile&fid=${projectFileId}', 'checkDeleteResponseAndSubmitForm', false);">Delete</a>
+    <a href="${fileDownloadUrl}" target="_blank">${filename}</a>&nbsp;
+    <small>Uploaded by <b>${uploadedByName}</b>&nbsp;${uploaderUserImg}</small><br />
+    ["change" button or link?] / <a href="javascript:askForConfirmationAndExecute('Do you really want to delete this file?', '${filenameEscaped}', 'project.php?tid=${projectId}&action=deleteProjectFile&fid=${projectFileId}', 'checkDeleteResponseAndSubmitForm', false);">Delete</a>
 </div>

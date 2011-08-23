@@ -3,4 +3,12 @@
     <b>Files:</b><br />
     ${Project/projectFileElement_list}
     ${Project/projectFilesNotFound_optional}
+    <br />
+    <input class="button blue" type="submit" value="Upload files" onClick="openUploaderPopup();">
 </div>
+
+<script type="text/javascript">
+    function openUploaderPopup() {
+        window.open('../UploaderNew/uploader.php?sf=0','ONELOUDR_UPLOADER','scrollbars=0,status=0,width=640,height=350');
+    }
+</script>

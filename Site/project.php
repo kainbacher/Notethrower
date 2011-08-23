@@ -183,7 +183,7 @@ if (get_param('action') == 'create') {
 
     $file->save();
 
-} else if (get_param('action') == 'deleteTrackFile') { // ajax action
+} else if (get_param('action') == 'deleteProjectFile') { // ajax action
     $logger->info('deleting project file ...');
     if (!$projectId) {
         //show_fatal_error_and_exit('cannot delete project file without a project id!');
@@ -362,7 +362,7 @@ processAndPrintTpl('Project/index.html', array(
     '${type}'                                   => get_param('type') == 'remix' ? 'remix' : 'original',
     '${submitButtonValue}'                      => 'Save',
     '${Common/formElement_list}'                => $formElementsList,
-    '${Project/uploadedFilesSection}'             => getUploadedFilesSection($project && $project->id ? $project->id : null),
+    '${Project/uploadedFilesSection}'           => getUploadedFilesSection($project->id),
     '${Common/bodyFooter}'                      => buildBodyFooter(),
     '${Common/pageFooter}'                      => buildPageFooter()
 ));
@@ -391,18 +391,20 @@ function getUploadedFilesSection($projectId) {
     $projectFilesHtml         = '';
     $projectFilesNotFoundHtml = '';
 
-    $projectFiles = array();
-    if ($projectId) {
-        $projectFiles = ProjectFile::fetch_all_for_project_id($projectId, true);
-    }
+    $projectFiles = ProjectFile::fetch_all_for_project_id($projectId, true);
 
     foreach ($projectFiles as $file) {
+        $uploaderUserImg = getUserImageHtml($file->userImageFilename, $file->userName, 'tiny');
+
         $projectFilesHtml .= processTpl('Project/projectFileElement.html', array(
             '${filename}'             => escape($file->orig_filename),
             '${filenameEscaped}'      => escape_and_rewrite_single_quotes($file->orig_filename),
+            '${fileDownloadUrl}'      => '../Backend/downloadFile.php?mode=download&project_id=' . $projectId . '&atfid=' . $file->id,
             '${status}'               => $file->status == 'active' ? 'Active' : 'Inactive', // TODO - currently not used
             '${projectId}'            => $projectId,
-            '${projectFileId}'        => $file->id
+            '${projectFileId}'        => $file->id,
+            '${uploadedByName}'       => $file->userName,
+            '${uploaderUserImg}'      => $uploaderUserImg
         ));
     }
 
@@ -415,14 +417,6 @@ function getUploadedFilesSection($projectId) {
         '${Project/projectFilesNotFound_optional}'  => $projectFilesNotFoundHtml
     ));
 }
-
-
-
-
-
-
-
-
 
 function inputDataOk(&$errorFields, &$project) {
     global $logger;

@@ -41,14 +41,16 @@ ${Common/bodyHeader}
             <div class="prepend-6 span-6 last">
                 <input class="button blue" type="submit" value="${submitButtonValue}">
             </div>
+        </form>
 
+        <div id="projectFilesSection">
             ${Project/uploadedFilesSection}
 
             <div class="span-12 last">
                 <br />
                 <a href="projectList.php">&larr; back to project list</a>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 
@@ -66,6 +68,10 @@ function checkDeleteResponseAndSubmitForm(deleteWasOk, data) {
     } else {
         alert('File deletion failed: ' + data.error);
     }
+}
+
+function testAlert() {
+    alert('huhu!');
 }
 
 </script>

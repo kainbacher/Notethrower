@@ -13,6 +13,10 @@ class ProjectFile {
     var $status;
     var $entry_date;
 
+    // fields from referenced tables
+    var $userName;
+    var $userImageFilename;
+
     // constructors
     // ------------
     function ProjectFile() {
@@ -22,11 +26,13 @@ class ProjectFile {
         $objs = array();
 
         $result = _mysql_query(
-            'select * ' .
-            'from pp_project_file ' .
-            'where project_id = ' . n($tid) . ' ' .
-            ($show_inactive_items ? 'and status in ("active", "inactive") ' : 'and status = "active" ') .
-            'order by entry_date desc'
+            'select pf.*, u.name as user_name, u.image_filename as user_image_filename ' .
+            'from pp_project_file pf, pp_project p, pp_user u ' .
+            'where pf.project_id = ' . n($tid) . ' ' .
+            ($show_inactive_items ? 'and pf.status in ("active", "inactive") ' : 'and pf.status = "active" ') .
+            'and pf.project_id = p.id ' .
+            'and p.user_id = u.id ' .
+            'order by pf.entry_date desc'
         );
 
         $ind = 0;
@@ -70,6 +76,10 @@ class ProjectFile {
         $f->is_master             = $row['is_master'];
         $f->status                = $row['status'];
         $f->entry_date            = reformat_sql_date($row['entry_date']);
+
+        // fields from referenced tables
+        $f->userName          = $row['user_name'];
+        $f->userImageFilename = $row['user_image_filename'];
 
         return $f;
     }

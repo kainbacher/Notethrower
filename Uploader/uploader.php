@@ -143,6 +143,7 @@ if ($singleFileOnly) {
     				    } else {
     				        var projectFilesSectionDiv = window.opener.jQuery("#projectFilesSection");
                             if (projectFilesSectionDiv != null) {
+                                alert('window.opener.refreshProjectFilesSection(<?= $projectId ?>);');
                                 window.opener.refreshProjectFilesSection(<?= $projectId ?>);
                                 window.close();
                             }

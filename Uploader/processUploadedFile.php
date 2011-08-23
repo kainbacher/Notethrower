@@ -9,10 +9,7 @@ include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectFile.php');
 include_once('../Includes/DB/User.php');
 
-$logger->set_debug_level();
-
 $user = User::new_from_cookie();
-$logger->debug(print_r($user, true));
 ensureUserIsLoggedIn($user);
 
 if (get_param('action') == 'process') {

@@ -80,6 +80,7 @@ function refreshProjectFilesSection(projectId) {
         dataType: 'html',
         cache: false,
         timeout: 15000, // 15 seconds
+        asynd: false,
         error: function(xmlHttpRequest, textStatus, errorThrown) {
             alert('ERROR: ' + textStatus + ' - ' + errorThrown);
         },

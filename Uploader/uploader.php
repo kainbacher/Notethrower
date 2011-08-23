@@ -186,6 +186,7 @@ if ($singleFileOnly) {
             dataType: 'text',
             cache: false,
             timeout: 15000, // 15 seconds
+            async: false,
             error: function(xmlHttpRequest, textStatus, errorThrown) {
                 alert('ERROR: ' + textStatus + ' - ' + errorThrown);
             },

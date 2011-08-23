@@ -1,4 +1,7 @@
 <?php
+
+include_once('../Includes/Init.php');
+
 /**
  * upload.php
  *

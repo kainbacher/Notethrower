@@ -126,32 +126,23 @@ if ($singleFileOnly) {
             
             FileUploaded: function(up, file, info) {
                 // when a single file is uploaded completely, move the file to the final location and persist the info in the database (done in an ajax action)
-                alert('queued/failed: ' + up.total.queued + '/' + up.total.failed);
-			    if (file.status == plupload.DONE) {
+                if (file.status == plupload.DONE) {
 			        processSingleUploadedFile(file.target_name, file.name);
 			    }
-            },
+			    
+			    if (up.total.queued == 0) { // queue was processed completely
+				    if (up.total.failed > 0) {
+				        alert('Sorry, but something went wrong in your upload!');
 
-            // FIXME - this is called before FileUploaded! ###################################
-			UploadProgress: function(up, file) {
-				// this seems to be called twice at the end of the queued uploads,
-				// so we do an extra check to avoid refreshing the opener twice.
-				if (!uploadComplete) {
-    				if (up.total.queued == 0) { // queue was processed completely
-    				    uploadComplete = true;
-    				    if (up.total.failed > 0) {
-    				        alert('Sorry, but something went wrong in your upload!');
-
-    				    } else {
-    				        var projectFilesSectionDiv = window.opener.jQuery("#projectFilesSection");
-                            if (projectFilesSectionDiv != null) {
-                                window.opener.refreshProjectFilesSection(<?= $projectId ?>);
-                                window.close();
-                            }
-    				    }
-    				}
-    			}
-			}
+				    } else {
+				        var projectFilesSectionDiv = window.opener.jQuery("#projectFilesSection");
+                        if (projectFilesSectionDiv != null) {
+                            window.opener.refreshProjectFilesSection(<?= $projectId ?>);
+                            window.close();
+                        }
+				    }
+				}
+            }
         }
 	});
 

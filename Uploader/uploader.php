@@ -4,8 +4,6 @@ include_once('../Includes/Init.php');
 
 include_once('../Includes/Snippets.php');
 
-// FIXME - rename "examples" directory
-
 $singleFileOnly = get_numeric_param('sf');
 
 ?>
@@ -19,7 +17,7 @@ $singleFileOnly = get_numeric_param('sf');
 		font-family:Verdana, Geneva, sans-serif;
 		font-size:13px;
 		color:#333;
-		background:url(examples/bg.jpg);
+		background:url(bg.jpg);
 	}
 </style>
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" type="text/css" />
@@ -41,11 +39,10 @@ $singleFileOnly = get_numeric_param('sf');
 </head>
 <body>
 
-<form method="post" action="dump.php">
-	<div id="uploader">
-		<p>You browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</p>
-	</div>
-</form>
+<div id="uploader">
+	<p>You browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</p>
+</div>
+
 <script type="text/javascript">
 var uploadComplete = false;
 
@@ -54,7 +51,7 @@ $(function() {
 	$("#uploader").plupload({
 		// General settings
 		runtimes : 'browserplus,silverlight,gears,flash,html5,html4',
-		url : 'examples/upload.php',
+		url : 'upload.php',
 		max_file_size : '500mb',
 		max_file_count: 20, // user can add no more then 20 files at a time
 		chunk_size : '1mb',

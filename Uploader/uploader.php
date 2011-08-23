@@ -51,7 +51,6 @@ if (!$projectId) {
 </form>
 
 <script type="text/javascript">
-var uploadComplete = false;
 
 // Convert divs to queue widgets when the DOM is ready
 $(function() {
@@ -86,7 +85,6 @@ $(function() {
         // Post init events, bound after the internal events
 		init : {
             FilesAdded: function(up, files) {
-                uploadComplete = false;
 <?php
 
 if ($singleFileOnly) {
@@ -108,7 +106,6 @@ if ($singleFileOnly) {
             },
 
             FilesRemoved: function(up, files) {
-                uploadComplete = false;
 <?php
 
 if ($singleFileOnly) {

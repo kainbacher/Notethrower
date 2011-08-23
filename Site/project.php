@@ -414,6 +414,8 @@ function getUploadedFilesSection($projectId, $messageList) {
     $projectFilesNotFoundHtml = '';
 
     $projectFiles = ProjectFile::fetch_all_for_project_id($projectId, true);
+    
+    $logger->info(count($projectFiles) . ' project files found');
 
     foreach ($projectFiles as $file) {
         $uploaderUserImg = getUserImageHtml($file->userImageFilename, $file->userName, 'tiny');

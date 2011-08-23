@@ -72,6 +72,7 @@ function checkDeleteResponseAndRefreshFileList(deleteWasOk, data) {
 }
 
 function refreshProjectFilesSection(projectId) {
+    alert('refresh2 - ' + projectId);
     $.ajax({
         type: 'GET',
         url: 'project.php',
@@ -80,7 +81,7 @@ function refreshProjectFilesSection(projectId) {
         dataType: 'html',
         cache: false,
         timeout: 15000, // 15 seconds
-        asynd: false,
+        async: false,
         error: function(xmlHttpRequest, textStatus, errorThrown) {
             alert('ERROR: ' + textStatus + ' - ' + errorThrown);
         },

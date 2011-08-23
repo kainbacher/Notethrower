@@ -10,6 +10,7 @@ include_once('../Includes/DB/ProjectFile.php');
 include_once('../Includes/DB/User.php');
 
 $user = User::new_from_cookie();
+$logger->debug(print_r($user, true));
 ensureUserIsLoggedIn($user);
 
 if (get_param('action') == 'process') {

@@ -50,7 +50,7 @@ function isValidGenre($genre) {
 }
 
 function setGenreCookie($genre) {
-    setcookie($GLOBALS['COOKIE_NAME_GENRE'], $genre, time() + 60 * 60 * 24 * 365 * 100, '/' . $GLOBALS['WEBAPP_BASE']);
+    setcookie($GLOBALS['COOKIE_NAME_GENRE'], $genre, time() + 60 * 60 * 24 * 365 * 100, $GLOBALS['WEBAPP_BASE']);
 }
 
 function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagination = false, $useMobileVersion = false) {

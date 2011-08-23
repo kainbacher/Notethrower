@@ -11,9 +11,18 @@ include_once('../Includes/Logger.php');
 $logger = new Logger(basename($_SERVER['PHP_SELF'], '.php'));
 $logger->set_info_level();
 
-// FIXME - remove that because it logs passwords
-if (count($_GET)  > 0) $logger->info('GET params : ' . print_r($_GET, true));
-if (count($_POST) > 0) $logger->info('POST params: ' . print_r($_POST, true));
+if (count($_GET) > 0) {
+    $logger->info('GET params:');
+    foreach($_GET as $key => $val) {
+        if ($key != 'password' && $key != 'pwd' && $key != 'pass') $logger->info('  ' . $key . ' = ' . $val);
+    }
+}
+if (count($_POST) > 0) {
+    $logger->info('POST params:');
+    foreach($_POST as $key => $val) {
+        if ($key != 'password' && $key != 'pwd' && $key != 'pass') $logger->info('  ' . $key . ' = ' . $val);
+    }
+}
 
 header('Content-type: text/html; charset=UTF-8');
 

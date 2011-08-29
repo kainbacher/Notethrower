@@ -13,6 +13,7 @@ class User {
     var $name;
     var $artist_info;
     var $additional_info;
+    var $influences;
     var $image_filename;
     var $webpage_url;
     var $paypal_account;
@@ -22,6 +23,7 @@ class User {
     var $status; // active, inactive (account created but not confirmed), banned
     var $entry_date;
 
+    // non-table fields
     var $loggedIn;
 
     // constructors
@@ -273,6 +275,7 @@ class User {
         $a->name            = $row['name'];
         $a->artist_info     = $row['artist_info'];
         $a->additional_info = $row['additional_info'];
+        $a->influences      = $row['influences'];
         $a->image_filename  = $row['image_filename'];
         $a->webpage_url     = $row['webpage_url'];
         $a->paypal_account  = $row['paypal_account'];
@@ -298,6 +301,7 @@ class User {
             'name            varchar(50)  not null, ' .
             'artist_info     text, ' .
             'additional_info text, ' .
+            'influences      text, ' .
             'image_filename  varchar(255), ' .
             'webpage_url     varchar(255), ' .
             'paypal_account  varchar(255), ' .
@@ -319,9 +323,9 @@ class User {
             $test_record = User::fetch_for_id(-1);
             if (!$test_record || !$test_record->id) {
                 $ok = _mysql_query(
-                    'insert into pp_user (id, username, password_md5, email_address, name, artist_info, additional_info, ' .
+                    'insert into pp_user (id, username, password_md5, email_address, name, artist_info, additional_info, influences,' .
                     'image_filename, webpage_url, paypal_account, activity_points, is_artist, is_pro, status, entry_date) ' .
-                    'values (-1, "_unknown_artist", "' . md5('dummyPwd') . '", "", "Unknown Artist", "", "", "", "", "", 0, 1, 0, "active", now())'
+                    'values (-1, "_unknown_artist", "' . md5('dummyPwd') . '", "", "Unknown Artist", "", "", "", "", "", "", 0, 1, 0, "active", now())'
                 );
             }
         }
@@ -384,7 +388,7 @@ class User {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_user ' .
-            '(username, password_md5, email_address, name, artist_info, additional_info, image_filename, ' .
+            '(username, password_md5, email_address, name, artist_info, additional_info, influences, image_filename, ' .
             'webpage_url, paypal_account, activity_points, is_artist, is_pro, status, entry_date) ' .
             'values (' .
             qq($this->username)        . ', ' .
@@ -393,6 +397,7 @@ class User {
             qq($this->name)            . ', ' .
             qq($this->artist_info)     . ', ' .
             qq($this->additional_info) . ', ' .
+            qq($this->influences)      . ', ' .
             qq($this->image_filename)  . ', ' .
             qq($this->webpage_url)     . ', ' .
             qq($this->paypal_account)  . ', ' .
@@ -422,6 +427,7 @@ class User {
             'name = '              . qq($this->name)            . ', ' .
             'artist_info = '       . qq($this->artist_info)     . ', ' .
             'additional_info = '   . qq($this->additional_info) . ', ' .
+            'influences = '        . qq($this->influences)      . ', ' .
             'image_filename = '    . qq($this->image_filename)  . ', ' .
             'webpage_url = '       . qq($this->webpage_url)     . ', ' .
             'paypal_account = '    . qq($this->paypal_account)  . ', ' .

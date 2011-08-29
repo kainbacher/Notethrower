@@ -53,7 +53,7 @@ function setGenreCookie($genre) {
     setcookie($GLOBALS['COOKIE_NAME_GENRE'], $genre, time() + 60 * 60 * 24 * 365 * 100, $GLOBALS['WEBAPP_BASE']);
 }
 
-function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagination = false, $useMobileVersion = false) {
+function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagination = false, $includeChosenStuff = false, $useMobileVersion = false) {
     $jplayerStylesheet = '';
     $jplayerScript     = '';
     if ($includeJPlayerStuff) {
@@ -68,12 +68,21 @@ function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagin
         $ajaxPaginationScript     = processTpl('Common/ajaxPaginationScript.html', array(), $useMobileVersion);
     }
 
+    $chosenStylesheet = '';
+    $chosenScript     = '';
+    if ($includeChosenStuff) {
+        $chosenStylesheet = processTpl('Common/chosenStylesheet.html', array(), $useMobileVersion);
+        $chosenScript     = processTpl('Common/chosenScript.html', array(), $useMobileVersion);
+    }
+
     return processTpl('Common/pageHeader.html', array(
         '${pageTitle}'                                => escape($title),
         '${Common/jPlayerStylesheet_optional}'        => $jplayerStylesheet,
         '${Common/jPlayerScript_optional}'            => $jplayerScript,
         '${Common/ajaxPaginationStylesheet_optional}' => $ajaxPaginationStylesheet,
-        '${Common/ajaxPaginationScript_optional}'     => $ajaxPaginationScript
+        '${Common/ajaxPaginationScript_optional}'     => $ajaxPaginationScript,
+        '${Common/chosenStylesheet_optional}'         => $chosenStylesheet,
+        '${Common/chosenScript_optional}'             => $chosenScript
     ), $useMobileVersion);
 }
 

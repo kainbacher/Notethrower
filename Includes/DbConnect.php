@@ -21,7 +21,7 @@ function _mysql_query($sql) {
 
     if (!$resp) {
         show_fatal_error_and_exit(
-            'SQL operation failed: ' . mysql_error()
+            'SQL operation failed: ' . mysql_error() . ' [STMT: ' . $sql . ']'
         );
     }
 

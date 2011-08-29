@@ -16,6 +16,7 @@ include_once('../Includes/DB/ProjectFile.php');
 include_once('../Includes/DB/ProjectUserVisibility.php');
 include_once('../Includes/DB/Stats.php');
 include_once('../Includes/DB/User.php');
+include_once('../Includes/DB/UserAttribute.php');
 
 header('Content-type: text/plain');
 
@@ -30,6 +31,7 @@ ProjectFile::create_table();
 ProjectUserVisibility::create_table();
 Stats::create_table();
 User::create_table();
+UserAttribute::createTable();
 
 echo 'creation done.' . "\n";
 

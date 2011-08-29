@@ -41,6 +41,7 @@ function getFormFieldForParams($params) {
     $disabled                 = array_key_exists('disabled', $params)                 ? $params['disabled']                 : false;
     $recaptchaPublicKey       = array_key_exists('recaptchaPublicKey', $params)       ? $params['recaptchaPublicKey']       : '';
     $objValueOverride         = array_key_exists('objValueOverride', $params)         ? $params['objValueOverride']         : null;
+    $cssClassSuffix           = array_key_exists('cssClassSuffix', $params)           ? $params['cssClassSuffix']           : null;
 
     // label
     $label = processTpl('Common/formElementLabel_' . ($mandatory ? 'mandatory' : 'optional') . '.html', array(
@@ -75,7 +76,8 @@ function getFormFieldForParams($params) {
             '${multiple_optional}'                               => '',
             '${disabled_optional}'                               => ($disabled ? ' disabled' : ''),
             '${onChangeCallback_optional}'                       => ($onChangeCallback ? ' onChange="' . $onChangeCallback . '"' : ''),
-            '${Common/formElementInputField_select_option_list}' => $options
+            '${Common/formElementInputField_select_option_list}' => $options,
+            '${cssClassSuffix}'                                  => ($cssClassSuffix ? ' ' . $cssClassSuffix : '')
         ));
 
     } else if (
@@ -119,7 +121,8 @@ function getFormFieldForParams($params) {
             '${multiple_optional}'                               => ' multiple',
             '${disabled_optional}'                               => ($disabled ? ' disabled' : ''),
             '${onChangeCallback_optional}'                       => ($onChangeCallback ? ' onChange="' . $onChangeCallback . '"' : ''),
-            '${Common/formElementInputField_select_option_list}' => $options
+            '${Common/formElementInputField_select_option_list}' => $options,
+            '${cssClassSuffix}'                                  => ($cssClassSuffix ? ' ' . $cssClassSuffix : '')
         ));
 
     } else if ($inputType == 'checkbox') {

@@ -7,7 +7,9 @@ include_once('../Includes/FormUtil.php');
 //include_once('../Includes/recaptchalib.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
+include_once('../Includes/DB/Attribute.php');
 include_once('../Includes/DB/User.php');
+include_once('../Includes/DB/UserAttribute.php');
 
 $user = null;
 $unpersistedUser = null;
@@ -307,6 +309,39 @@ if ($userIsLoggedIn) { // it's an update
             'workWithUnpersistedObj' => $problemOccured,
             'infoText'               => 'Anything else we should know?'
         ));
+
+        $formElementsSection2 .= getFormFieldForParams(array(
+            'inputType'              => 'textarea',
+            'propName'               => 'influences',
+            'label'                  => 'Influences',
+            'mandatory'              => false,
+            'obj'                    => $user,
+            'unpersistedObj'         => $unpersistedUser,
+            'errorFields'            => $errorFields,
+            'workWithUnpersistedObj' => $problemOccured,
+            'infoText'               => 'List the artists here which influenced you.'
+        ));
+
+        $selectOptions = array();
+        $aList = Attribute::fetchShownFor('contains');
+        foreach ($aList as $a) {
+            $selectOptions[$a->id] = escape($a->name);
+        }
+
+        $formElementsSection2 .= getFormFieldForParams(array(
+            'inputType'              => 'multiselect2',
+            'propName'               => 'attributes',
+            'label'                  => 'Skills',
+            'mandatory'              => false,
+            'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
+            'obj'                    => $user,
+            'unpersistedObj'         => $unpersistedUser,
+            'selectOptions'          => $selectOptions,
+            'objValues'              => UserAttribute::fetchAttributeIdsForUserIdAndState($user->id, 'offers'),
+            'errorFields'            => $errorFields,
+            'workWithUnpersistedObj' => $problemOccured,
+            'infoText'               => 'List your skills here.'
+        ));
     }
 }
 
@@ -341,7 +376,7 @@ if (!$userIsLoggedIn) {
 }
 
 processAndPrintTpl('Account/index.html', array(
-    '${Common/pageHeader}'                    => buildPageHeader('Account'),
+    '${Common/pageHeader}'                    => buildPageHeader('Account', false, false, true),
     '${Common/bodyHeader}'                    => buildBodyHeader($userIsLoggedIn ? $user : null),
     '${headline}'                             => $headline,
     '${Common/message_choice_list}'           => $messageList,
@@ -531,6 +566,13 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
             $errorFields['terms_accepted'] = 'You need to agree to Notethrower\'s Artist Agreement in order to sign up.';
             $result = false;
         }
+
+        if ($userIsLoggedIn) {
+            if (preg_match('/[^0-9,]/', get_param('userAttributesList'))) {
+                $errorFields['attributes'] = 'Invalid attributes list'; // can only happen when someone plays around with the post data
+                $result = false;
+            }
+        }
     }
 
 //    // check captcha input
@@ -567,7 +609,23 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
         $user->name            = get_param('name');
         $user->artist_info     = get_param('artist_info');
         $user->additional_info = get_param('additional_info');
+        $user->influences      = get_param('influences');
         $user->paypal_account  = get_param('paypal_account');
+
+        if ($userIsLoggedIn) {
+            UserAttribute::deleteForUserId($user->id); // first, delete all existing
+            // then save the selected attributes
+            $attrs = explode(',', get_param('userAttributesList'));
+            foreach ($attrs as $aid) {
+                if ($aid) {
+                    $ua = new UserAttribute();
+                    $ua->user_id      = $user->id;
+                    $ua->attribute_id = $aid;
+                    $ua->status       = 'offers';
+                    $ua->insert();
+                }
+            }
+        }
 
     } else {
         $user->is_artist       = false;

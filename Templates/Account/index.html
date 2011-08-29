@@ -13,12 +13,13 @@ ${Common/bodyHeader}
 
         ${Common/message_choice_list}
 
-        <form action="${formAction}" method="POST" enctype="multipart/form-data">
+        <form action="${formAction}" name="userForm" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="action" value="save">
             <input type="hidden" name="signupAs" value="${signupAs}">
+            <input type="hidden" name="userAttributesList" id="userAttributesList" value="">
             ${Common/formElement_section1_list}
 
-            
+
             <div id="{id}" class=" formElement span-15 last">
                 <div class="span-6">Image:</div>
                 <div class="span-8">
@@ -29,7 +30,7 @@ ${Common/bodyHeader}
             ${Common/formElement_section2_list}
 
             <div class="prepend-6 span-6 last">
-                <input class="${submitButtonClass} button blue" type="submit" value="${submitButtonValue}">
+                <input type="submit" class="${submitButtonClass} button blue" value="${submitButtonValue}" onClick="buildUserAttributesList();">
             </div>
         </form>
     </div>
@@ -44,6 +45,14 @@ ${Common/bodyFooter}
 function showTermsAndConditions() {
     window.open('termsAndConditions.php','TERMS_AND_CONDITIONS','scrollbars=yes,resizable=yes,status=0,width=1100,height=600');
 }
+
+function buildUserAttributesList() {
+    var aList = $('#attributes').val().join(','); // create comma separated list string ...
+    $('#userAttributesList').val(aList); // ... and save the string in the hidden field
+}
+
+// convert all select fields with special class to chosen thingies
+$(".chzn-select").chosen();
 
 </script>
 

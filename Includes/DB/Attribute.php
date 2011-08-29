@@ -8,7 +8,7 @@ class Attribute {
     var $id;
     var $name;
     var $entry_date;
-    var $shown_for; // valid values are "contains", "needs" and "both"
+    var $shown_for; // valid values are "contains" (also means "provides" or "offers" in the user/attribute context), "needs" and "both"
 
     // constructors
     // ------------
@@ -20,7 +20,7 @@ class Attribute {
 
         $result = _mysql_query(
             'select * ' .
-            'from pp_attribute order by entry_date desc '
+            'from pp_attribute order by name asc '
         );
 
         $ind = 0;

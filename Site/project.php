@@ -208,8 +208,8 @@ if (get_param('action') == 'create') {
 
     $project = Project::fetch_for_id($projectId);
     ensureProjectBelongsToUserId($project, $user->id);
-    
-    echo getUploadedFilesSection($project, $projectFilesMessageList);    
+
+    echo getUploadedFilesSection($project, $projectFilesMessageList);
     exit;
 }
 
@@ -221,12 +221,6 @@ foreach ($users as $a) {
         $userSelectionArray[$a->id] = $a->name;
     }
 }
-
-// handle project attributes
-$containsAttributes = Attribute::fetchShownFor('contains');
-$needsAttributes = Attribute::fetchShownFor('needs');
-$projectContainsAttributeIds = ProjectAttribute::fetchAttributeIdsForProjectIdAndState($project->id, 'contains');
-$projectNeedsAttributeIds    = ProjectAttribute::fetchAttributeIdsForProjectIdAndState($project->id, 'needs');
 
 // form fields
 $formElementsList .= getFormFieldForParams(array(
@@ -281,6 +275,34 @@ $formElementsList .= getFormFieldForParams(array(
     'workWithUnpersistedObj' => $problemOccured
 ));
 
+// project attributes
+$formElementsList .= getFormFieldForParams(array(
+    'inputType'              => 'multiselect2',
+    'propName'               => 'attributes',
+    'label'                  => 'This project needs',
+    'mandatory'              => true,
+    'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
+    'obj'                    => $project,
+    'unpersistedObj'         => $unpersistedProject,
+    'selectOptions'          => Attribute::getIdNameMapShownFor('needs'),
+    'objValues'              => ProjectAttribute::fetchAttributeIdsForProjectIdAndState($project->id, 'needs'),
+    'errorFields'            => $errorFields,
+    'workWithUnpersistedObj' => $problemOccured,
+    'infoText'               => 'Make a list of what\'s needed for this project to be finished. Other artists will find your project based on this information.'
+));
+
+$formElementsList .= getFormFieldForParams(array(
+    'inputType'              => 'textarea',
+    'propName'               => 'additionalInfo',
+    'label'                  => 'Additional info',
+    'mandatory'              => false,
+    'obj'                    => $project,
+    'unpersistedObj'         => $unpersistedProject,
+    'errorFields'            => $errorFields,
+    'workWithUnpersistedObj' => $problemOccured,
+    'infoText'               => 'Add comments, etc. about this project here.'
+));
+
 // currently hidden, but maybe a candidate for pro users
 //$formElementsList .= getFormFieldForParams(array(
 //    'inputType'              => 'select',
@@ -332,10 +354,10 @@ echo '<div id="associated_users_row"' . ($hidden ? ' style="display:none";' : ''
 //echo '<td>' . $usersWithAccessListStr . '<br><a href="javascript:showSelectFriendsPopup();">Select artists</a></td>' . "\n";
 echo '<a href="javascript:showSelectFriendsPopup();">Select the artists you want to have access to this project</a>' . "\n";
 echo '</div>' . "\n";
-
 // FIXME - end
+
 processAndPrintTpl('Project/index.html', array(
-    '${Common/pageHeader}'                      => buildPageHeader($projectId ? 'Edit project' : 'Create project'),
+    '${Common/pageHeader}'                      => buildPageHeader(($projectId ? 'Edit project' : 'Create project'), false, false, true),
     '${Common/bodyHeader}'                      => buildBodyHeader($user),
     '${headline}'                               => $projectId ? 'Edit project' : 'Create project',
     '${Common/message_choice_list}'             => $generalMessageList,
@@ -355,18 +377,9 @@ exit;
 
 // functions
 // -----------------------------------------------------------------------------
-
-// FIXME - show the following three sections in an expandable "extended settings" area
-//showAttributesList('This project contains', 'containsAttributIds[]', $containsAttributes, $projectContainsAttributeIds, $project->containsOthers, 'containsOthers', 'Please check any box that applies to your project.  This helps artists, fans, and music supervisors find what they are looking for faster.');
-//showAttributesList('This project needs', 'needsAttributIds[]', $needsAttributes, $projectNeedsAttributeIds, $project->needsOthers, 'needsOthers', 'You can sing like Pavarotti, but can\'t play a lick of guitar.  No problem!  Let others know what you would like added to your project, and hear how your new song develops.');
-//
-//showFormField('Additional info',              'textarea', 'additionalInfo',      'IMPORTANT: Please include any notes about the track/song you want to add.  If you upload a .zip file of the bounced stems, please specify here what tracks are included. For example, if you included midi files, bass track, vocals, etc. You may also want to include info. on how you recorded it, what equipment, software was used, or any other important information.', false, 0,   $project, $unpersistedProject, $problemOccured, $errorFields, null, null);
-
-
-
 function getUploadedFilesSection(&$project, $messageList) {
     global $logger;
-    
+
     $masterFound = ProjectFile::master_mp3_file_found_for_project_id($project->id);
     if ($masterFound) {
         $project->status = 'active';
@@ -389,7 +402,7 @@ function getUploadedFilesSection(&$project, $messageList) {
     $projectFilesNotFoundHtml = '';
 
     $projectFiles = ProjectFile::fetch_all_for_project_id($project->id, true);
-    
+
     $logger->info(count($projectFiles) . ' project files found');
 
     foreach ($projectFiles as $file) {
@@ -405,7 +418,7 @@ function getUploadedFilesSection(&$project, $messageList) {
             '${uploadedByName}'       => $file->userName,
             '${uploaderUserImg}'      => $uploaderUserImg
         ));
-        
+
         // FIXME - download links absichern, damit man nicht beliebige files von beliebigen projekten runterladen kann? ist das überhaupt nötig?
     }
 
@@ -469,6 +482,15 @@ function inputDataOk(&$errorFields, &$project) {
 //        $result = false;
 //    }
 
+    if (strlen(get_param('projectAttributesList')) < 1) {
+        $errorFields['attributes'] = 'Please choose at least one element here!';
+        $result = false;
+
+    } else if (preg_match('/[^0-9,]/', get_param('projectAttributesList'))) {
+        $errorFields['attributes'] = 'Invalid attributes list'; // can only happen when someone plays around with the post data
+        $result = false;
+    }
+
     return $result;
 }
 
@@ -516,15 +538,11 @@ function processParams(&$project, &$user) {
 //    }
 
     // handle project attributes
-    $containsAttributeIds = get_array_param('containsAttributIds');
-    $needsAttributeIds = get_array_param('needsAttributIds');
-
     if (!is_null($project->id)) {
-        ProjectAttribute::deleteForProjectId($project->id);
-        ProjectAttribute::addAll($containsAttributeIds, $project->id, 'contains');
-        ProjectAttribute::addAll($needsAttributeIds, $project->id, 'needs');
-        $project->containsOthers = get_param('containsOthers');
-        $project->needsOthers = get_param('needsOthers');
+        ProjectAttribute::deleteForProjectId($project->id); // first, delete all existing attributes
+        ProjectAttribute::addAll(explode(',', get_param('projectAttributesList')), $project->id, 'needs'); // then save the selected attributes
+//        $project->containsOthers = get_param('containsOthers');
+//        $project->needsOthers = get_param('needsOthers');
     }
 }
 
@@ -578,61 +596,5 @@ function processParams(&$project, &$user) {
 //
 //    echo '</tr>' . "\n";
 //}
-
-function showAttributesList($label, $fieldName, &$projectAttributes, &$checkedProjectAttributeIds,  $othersValue, $othersFieldName, $helpTextHtml) {
-    global $logger;
-
-    echo '<tr class="standardRow1"' .
-         ' onmouseover="this.className=\'highlightedRow\';" onmouseout="this.className=\'standardRow1\';"' .
-         '>' . "\n";
-
-    echo '<td class="formLeftCol" valign="top">' . $label . ':</td>' . "\n";
-
-    echo '<td class="formMiddleCol optionalFormField">';
-
-    echo '<table><tr>';
-    for($i = 1; $i <= sizeof($projectAttributes); $i++) {
-        echo '<td><input type="checkbox" name="' . $fieldName . '" value="' . $projectAttributes[$i-1]->id . '"';
-
-        // checked or not?
-        if (in_array($projectAttributes[$i-1]->id, $checkedProjectAttributeIds)) {
-            echo ' checked="checked"';
-        }
-        echo '> ' . $projectAttributes[$i-1]->name . '</td>';
-
-        // end of the row?
-        if ((($i % 3) == 0) && ($i > 0)) {
-            echo '</tr>';
-        }
-        // do we have to make a new row?
-        if ((($i % 3) == 0) && ($i < sizeof($projectAttributes))) {
-            echo '<tr>';
-        }
-    }
-
-    // handle the case where we have to add emty cells to complete the last row
-    if (((sizeof($projectAttributes)) % 3) != 0) {
-        $rest = 3 - ((sizeof($projectAttributes)) % 3);
-        for ($i = 0; $i < $rest; ++$i) {
-            echo '<td>&nbsp;</td>';
-        }
-        echo '</tr>';
-    }
-
-    // display the "others" field in a own row, with only one td
-    echo '<tr><td colspan="3">Others: ';
-    echo '<input type="text" name="' . $othersFieldName . '" value="' . $othersValue . '"></td></tr>';
-
-    echo '</table>';
-
-    echo '</td>';
-
-    // help text cell
-    echo '<td style="vertical-align:top">';
-    echo '<span style="font-size:11px">' . $helpTextHtml . '</span>';
-    echo '</td>';
-
-    echo '</tr>';
-}
 
 ?>

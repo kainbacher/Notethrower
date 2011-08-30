@@ -614,17 +614,7 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
 
         if ($userIsLoggedIn) {
             UserAttribute::deleteForUserId($user->id); // first, delete all existing
-            // then save the selected attributes
-            $attrs = explode(',', get_param('userAttributesList'));
-            foreach ($attrs as $aid) {
-                if ($aid) {
-                    $ua = new UserAttribute();
-                    $ua->user_id      = $user->id;
-                    $ua->attribute_id = $aid;
-                    $ua->status       = 'offers';
-                    $ua->insert();
-                }
-            }
+            ProjectAttribute::addAll(explode(',', get_param('userAttributesList')), $user->id, 'offers'); // then save the selected attributes
         }
 
     } else {

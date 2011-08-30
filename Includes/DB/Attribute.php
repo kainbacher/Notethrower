@@ -20,17 +20,15 @@ class Attribute {
 
         $result = _mysql_query(
             'select * ' .
-            'from pp_attribute order by name asc '
+            'from pp_attribute ' .
+            'order by name asc '
         );
-
-        $ind = 0;
 
         while ($row = mysql_fetch_array($result)) {
             $f = new Attribute();
             $f = Attribute::_read_row($f, $row);
 
-            $objs[$ind] = $f;
-            $ind++;
+            $objs[] = $f;
         }
 
         mysql_free_result($result);
@@ -45,17 +43,14 @@ class Attribute {
             'select * ' .
             'from pp_attribute ' .
             'where shown_for = ' . qq($shownFor) . ' or shown_for = "both" ' .
-            'order by entry_date asc'
+            'order by name asc'
         );
-
-        $ind = 0;
 
         while ($row = mysql_fetch_array($result)) {
             $f = new Attribute();
             $f = Attribute::_read_row($f, $row);
 
-            $objs[$ind] = $f;
-            $ind++;
+            $objs[] = $f;
         }
 
         mysql_free_result($result);
@@ -106,6 +101,25 @@ class Attribute {
         );
 
         return $ok;
+    }
+
+    function getIdNameMapShownFor($shownFor) {
+        $map = array();
+
+        $result = _mysql_query(
+            'select id, name ' .
+            'from pp_attribute ' .
+            'where shown_for = ' . qq($shownFor) . ' or shown_for = "both" ' .
+            'order by name asc'
+        );
+
+        while ($row = mysql_fetch_array($result)) {
+            $map[$row['id']] = $row['name'];
+        }
+
+        mysql_free_result($result);
+
+        return $map;
     }
 
     function populateTable() {

@@ -86,11 +86,13 @@ class ProjectAttribute {
 
     function addAll($attributeIds, $projectId, $status) {
         foreach ($attributeIds as $id) {
-            $f = new ProjectAttribute();
-            $f->project_id   = $projectId;
-            $f->attribute_id = $id;
-            $f->status       = $status;
-            $f->save();
+            if ($id) {
+                $pa = new ProjectAttribute();
+                $pa->project_id   = $projectId;
+                $pa->attribute_id = $id;
+                $pa->status       = $status;
+                $pa->insert();
+            }
         }
     }
 

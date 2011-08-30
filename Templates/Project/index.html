@@ -36,10 +36,11 @@ ${Common/bodyHeader}
             <input type="hidden" name="action" value="save">
             <input type="hidden" name="pid" value="${projectId}">
             <input type="hidden" name="type" value="${type}">
+            <input type="hidden" name="projectAttributesList" id="projectAttributesList" value="">
             ${Common/formElement_list}
 
             <div class="prepend-6 span-6 last">
-                <input class="button blue" type="submit" value="${submitButtonValue}">
+                <input class="button blue" type="submit" value="${submitButtonValue}" onClick="buildProjectAttributesList();">
             </div>
         </form>
 
@@ -90,12 +91,18 @@ function refreshProjectFilesSection(projectId) {
     });
 }
 
-</script>
+function openUploaderPopup() {
+    window.open('../Uploader/uploader.php?sf=0&pid=${projectId}','ONELOUDR_UPLOADER','scrollbars=0,status=0,width=640,height=350');
+}
 
-<script type="text/javascript">
-    function openUploaderPopup() {
-        window.open('../Uploader/uploader.php?sf=0&pid=${projectId}','ONELOUDR_UPLOADER','scrollbars=0,status=0,width=640,height=350');
-    }
+function buildProjectAttributesList() {
+    var aList = $('#attributes').val().join(','); // create comma separated list string ...
+    $('#projectAttributesList').val(aList); // ... and save the string in the hidden field
+}
+
+// convert all select fields with special class to chosen thingies
+$(".chzn-select").chosen();
+
 </script>
 
 ${Common/pageFooter}

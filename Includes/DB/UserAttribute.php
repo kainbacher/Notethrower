@@ -86,11 +86,13 @@ class UserAttribute {
 
     function addAll($attributeIds, $userId, $status) {
         foreach ($attributeIds as $id) {
-            $f = new UserAttribute();
-            $f->user_id      = $userId;
-            $f->attribute_id = $id;
-            $f->status       = $status;
-            $f->save();
+            if ($id) {
+                $ua = new UserAttribute();
+                $ua->user_id      = $userId;
+                $ua->attribute_id = $id;
+                $ua->status       = $status;
+                $ua->insert();
+            }
         }
     }
 

@@ -6,6 +6,7 @@ include_once('../Includes/Snippets.php');
 
 $projectId      = get_numeric_param('pid');
 $singleFileOnly = get_numeric_param('sf');
+$isMixMp3       = get_numeric_param('isMixMp3');
 
 if (!$projectId) {
     show_fatal_error_and_exit('pid param is missing!');
@@ -120,13 +121,13 @@ if ($singleFileOnly) {
 
 ?>
             },
-            
+
             FileUploaded: function(up, file, info) {
                 // when a single file is uploaded completely, move the file to the final location and persist the info in the database (done in an ajax action)
                 if (file.status == plupload.DONE) {
 			        processSingleUploadedFile(file.target_name, file.name);
 			    }
-			    
+
 			    if (up.total.queued == 0) { // queue was processed completely
 				    if (up.total.failed > 0) {
 				        alert('Sorry, but something went wrong in your upload!');
@@ -164,15 +165,16 @@ if ($singleFileOnly) {
 			e.preventDefault();
 		}
 	});
-	
+
 	function processSingleUploadedFile(filename, origFilename) {
 	    $.ajax({
             type: 'POST',
             url: 'processUploadedFile.php',
             data: 'action=process' +
                   '&pid=<?= $projectId ?>' +
-                  '&filename='     + encodeURIComponent(filename) + 
-                  '&origFilename=' + encodeURIComponent(origFilename),
+                  '&filename='     + encodeURIComponent(filename) +
+                  '&origFilename=' + encodeURIComponent(origFilename) +
+                  '&isMixMp3=' + <?= $isMixMp3 ?>,
             dataType: 'text',
             cache: false,
             timeout: 15000, // 15 seconds

@@ -28,7 +28,7 @@ class Attribute {
             $f = new Attribute();
             $f = Attribute::_read_row($f, $row);
 
-            $objs[] = $f;
+            $objs[$f->id] = $f;
         }
 
         mysql_free_result($result);

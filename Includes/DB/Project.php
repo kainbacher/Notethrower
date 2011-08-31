@@ -6,6 +6,7 @@ include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/ProjectAttribute.php');
 include_once('../Includes/DB/ProjectFile.php');
 include_once('../Includes/DB/ProjectUserVisibility.php');
+include_once('../Includes/DB/UserAttribute.php');
 
 // dao for pp_project table
 class Project {
@@ -34,6 +35,8 @@ class Project {
     var $user_name;
     var $user_img_filename;
     var $mp3_filename;
+    var $needsAttributeIdsList;
+    var $needsAttributeNamesList;
 
     // constructors
     // ------------
@@ -450,12 +453,12 @@ class Project {
         }
 
         $result = _mysql_query(
-            'select t.*, u.name as user_name, u.image_filename as user_img_filename, f.filename as mp3_filename ' .
+            'select p.*, u.name as user_name, u.image_filename as user_img_filename, f.filename as mp3_filename ' .
             'from pp_project t, pp_project_file f, pp_user u ' .
-            'where t.status = "finished" ' .
-            'and t.visibility = "public" ' .
-            'and t.user_id = u.id ' .
-            'and t.id = f.project_id ' .
+            'where p.status = "finished" ' .
+            'and p.visibility = "public" ' .
+            'and p.user_id = u.id ' .
+            'and p.id = f.project_id ' .
             'and f.orig_filename like "%.mp3" ' .
             $whereClauseAddon .
             'order by rand() ' .
@@ -471,6 +474,53 @@ class Project {
 
         mysql_free_result($result);
         return null;
+    }
+
+    function fetchAllThatNeedSkillsOfUser(&$user) {
+        $attribute_id_list = UserAttribute::fetchAttributeIdsForUserIdAndState($user->id, 'offers');
+
+        $objs = array();
+
+        if (count($attribute_id_list) > 0) {
+            $result = _mysql_query(
+                'select p.*, pa.attribute_id, a.name as attribute_name, u.name as user_name, ' .
+                'u.image_filename as user_img_filename, f.filename as mp3_filename ' .
+                'from pp_project p, pp_project_attribute pa, pp_project_file f, pp_user u, pp_attribute a ' .
+                'where pa.attribute_id in (' . implode(',', $attribute_id_list) . ') ' .
+                'and pa.status = "needs" ' .
+                'and pa.project_id = p.id ' .
+                'and p.visibility = "public" ' .
+                'and p.status != "finished" ' .
+                'and p.id = f.project_id ' .
+                'and f.orig_filename like "%.mp3" ' .
+                'and p.user_id = u.id ' .
+                'and u.status = "active" ' .
+                'and pa.attribute_id = a.id ' .
+                // FIXME - limit/paging?
+                'order by a.name asc'
+            );
+
+            $previousPid = null;
+            $p = null;
+            while ($row = mysql_fetch_array($result)) {
+                if ($previousPid != $row['id']) {
+                    $p = new Project();
+                    $p = Project::_read_row($p, $row);
+                    $p->needsAttributeIdsList   = array();
+                    $p->needsAttributeNamesList = array();
+                    $objs[] = $p;
+                }
+
+                $p->needsAttributeIdsList[]   = $row['attribute_id'];
+                $p->needsAttributeNamesList[] = $row['attribute_name'];
+
+                $previousPid = $row['id'];
+            }
+
+            mysql_free_result($result);
+        }
+
+        return $objs;
     }
 
     function _read_row($a, $row) {

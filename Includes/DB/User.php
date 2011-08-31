@@ -3,6 +3,7 @@
 include_once('../Includes/Config.php');
 include_once('../Includes/DbConnect.php');
 include_once('../Includes/Snippets.php');
+include_once('../Includes/DB/ProjectAttribute.php');
 
 // dao for pp_user table
 class User {
@@ -25,6 +26,8 @@ class User {
 
     // non-table fields
     var $loggedIn;
+    var $offersAttributeIdsList;
+    var $offersAttributeNamesList;
 
     // constructors
     // ------------
@@ -265,6 +268,53 @@ class User {
             mysql_free_result($result);
             return null;
         }
+    }
+
+    function fetchAllThatOfferSkillsForUser(&$user) {
+        $attribute_id_list = array();
+
+        // fetch all attributes of all projects of the user
+        $paList = ProjectAttribute::fetchAllWithStatusOfProjectsOfUser($user->id, 'needs');
+        foreach ($paList as $pa) {
+            $attribute_id_list[$pa->attribute_id] = $pa->attribute_id; // make distinct list of attributes
+        }
+
+        $objs = array();
+
+        if (count($attribute_id_list) > 0) {
+            $result = _mysql_query(
+                'select u.*, a.id as attribute_id, a.name as attribute_name ' .
+                'from pp_user u, pp_user_attribute ua, pp_attribute a ' .
+                'where ua.attribute_id in (' . implode(',', $attribute_id_list) . ') ' .
+                'and ua.status = "offers" ' .
+                'and ua.user_id = u.id ' .
+                'and u.status = "active" ' .
+                'and ua.attribute_id = a.id ' .
+                // FIXME - limit/paging?
+                'order by u.name asc' // FIXME - sort by rating as soon as we have one?
+            );
+
+            $previousUid = null;
+            $u = null;
+            while ($row = mysql_fetch_array($result)) {
+                if ($previousUid != $row['id']) {
+                    $u = new User();
+                    $u = User::_read_row($u, $row);
+                    $u->offersAttributeIdsList   = array();
+                    $u->offersAttributeNamesList = array();
+                    $objs[] = $u;
+                }
+
+                $u->offersAttributeIdsList[]   = $row['attribute_id'];
+                $u->offersAttributeNamesList[] = $row['attribute_name'];
+
+                $previousUid = $row['id'];
+            }
+
+            mysql_free_result($result);
+        }
+
+        return $objs;
     }
 
     function _read_row($a, $row) {

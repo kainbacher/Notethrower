@@ -408,7 +408,15 @@ function getUploadedFilesSection(&$project, $messageList) {
     foreach ($projectFiles as $file) {
         $uploaderUserImg = getUserImageHtml($file->userImageFilename, $file->userName, 'tiny');
 
+        $mixMp3OrRawFileIcon = '';
+        if ($file->is_master && strpos($file->orig_filename, '.mp3') !== false) {
+            $mixMp3OrRawFileIcon = processTpl('Project/mixMp3FileIcon.html', array());
+        } else {
+            $mixMp3OrRawFileIcon = processTpl('Project/rawFileIcon.html', array());
+        }
+
         $projectFilesHtml .= processTpl('Project/projectFileElement.html', array(
+            '${mixMp3OrRawFileIcon}'  => $mixMp3OrRawFileIcon,
             '${filename}'             => escape($file->orig_filename),
             '${filenameEscaped}'      => escape_and_rewrite_single_quotes($file->orig_filename),
             '${fileDownloadUrl}'      => '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $file->id,

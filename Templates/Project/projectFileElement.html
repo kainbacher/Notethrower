@@ -1,4 +1,5 @@
 <div>
+    ${mixMp3OrRawFileIcon}&nbsp;
     <a href="${fileDownloadUrl}" target="_blank">${filename}</a>&nbsp;
     <small>Uploaded by <b>${uploadedByName}</b>&nbsp;${uploaderUserImg}</small><br />
     <a href="javascript:askForConfirmationAndExecute('Do you really want to delete this file?', '${filenameEscaped}', 'project.php?pid=${projectId}&action=deleteProjectFile&fid=${projectFileId}', 'checkDeleteResponseAndRefreshFileList', false);">Delete</a>

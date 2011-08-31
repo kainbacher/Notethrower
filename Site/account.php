@@ -165,6 +165,28 @@ $formElementsSection1 .= getFormFieldForParams(array(
 
 if ($userIsLoggedIn) { // it's an update
     if ($pageMode == 'artist') {
+        // skills
+        $selectOptions = array();
+        $aList = Attribute::fetchShownFor('contains');
+        foreach ($aList as $a) {
+            $selectOptions[$a->id] = escape($a->name);
+        }
+
+        $formElementsSection1 .= getFormFieldForParams(array(
+            'inputType'              => 'multiselect2',
+            'propName'               => 'attributes',
+            'label'                  => 'Skills',
+            'mandatory'              => false,
+            'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
+            'obj'                    => $user,
+            'unpersistedObj'         => $unpersistedUser,
+            'selectOptions'          => $selectOptions,
+            'objValues'              => UserAttribute::fetchAttributeIdsForUserIdAndState($user->id, 'offers'),
+            'errorFields'            => $errorFields,
+            'workWithUnpersistedObj' => $problemOccured,
+            'infoText'               => 'List your skills here.'
+        ));
+
         $formElementsSection1 .= getFormFieldForParams(array(
             'propName'               => 'webpage_url',
             'label'                  => 'Webpage URL',
@@ -320,27 +342,6 @@ if ($userIsLoggedIn) { // it's an update
             'errorFields'            => $errorFields,
             'workWithUnpersistedObj' => $problemOccured,
             'infoText'               => 'List the artists here which influenced you.'
-        ));
-
-        $selectOptions = array();
-        $aList = Attribute::fetchShownFor('contains');
-        foreach ($aList as $a) {
-            $selectOptions[$a->id] = escape($a->name);
-        }
-
-        $formElementsSection2 .= getFormFieldForParams(array(
-            'inputType'              => 'multiselect2',
-            'propName'               => 'attributes',
-            'label'                  => 'Skills',
-            'mandatory'              => false,
-            'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
-            'obj'                    => $user,
-            'unpersistedObj'         => $unpersistedUser,
-            'selectOptions'          => $selectOptions,
-            'objValues'              => UserAttribute::fetchAttributeIdsForUserIdAndState($user->id, 'offers'),
-            'errorFields'            => $errorFields,
-            'workWithUnpersistedObj' => $problemOccured,
-            'infoText'               => 'List your skills here.'
         ));
     }
 }
@@ -612,10 +613,13 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
         $user->influences      = get_param('influences');
         $user->paypal_account  = get_param('paypal_account');
 
-        if ($userIsLoggedIn) {
+        if ($userIsLoggedIn && $user->id) {
             UserAttribute::deleteForUserId($user->id); // first, delete all existing
-            ProjectAttribute::addAll(explode(',', get_param('userAttributesList')), $user->id, 'offers'); // then save the selected attributes
+            UserAttribute::addAll(explode(',', get_param('userAttributesList')), $user->id, 'offers'); // then save the selected attributes
         }
+
+        // FIXME - wenn attribute angegeben werden, aber sonstige params ungültig sind, gehen die attribute verloren.
+        // -> irgendwie zwischenspeichern
 
     } else {
         $user->is_artist       = false;

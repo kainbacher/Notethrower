@@ -84,6 +84,30 @@ class ProjectAttribute {
         return $objs;
     }
 
+    function fetchAllWithStatusOfProjectsOfUser($user_id, $status) {
+        $objs = array();
+
+        $result = _mysql_query(
+            'select pa.* ' .
+            'from pp_project_attribute pa, pp_project p ' .
+            'where p.user_id = ' . n($user_id) . ' ' .
+            'and p.status != "finished" ' .
+            'and p.id = pa.project_id ' .
+            'and pa.status = ' . qq($status)
+        );
+
+        while ($row = mysql_fetch_array($result)) {
+            $f = new ProjectAttribute();
+            $f = ProjectAttribute::_read_row($f, $row);
+
+            $objs[] = $f;
+        }
+
+        mysql_free_result($result);
+
+        return $objs;
+    }
+
     function addAll($attributeIds, $projectId, $status) {
         foreach ($attributeIds as $id) {
             if ($id) {

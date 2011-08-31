@@ -4,7 +4,6 @@
     Hanno Jonas - www.rastaduck.org
     Roland Kainbacher MA - www.beautyparlour.at
 */
-
 /* !generalStyles */
 /* ---------------------------------------------------------------------- */
 
@@ -1735,3 +1734,15 @@ a.nohighlight:hover {
 .termsContent li {
     margin-bottom: 18px;
 }
+
+
+/* !popup */
+/* ---------------------------------------------------------------------- */
+
+#popupWrapper {
+    position: absolute;
+}
+
+#popupInner {}
+
+

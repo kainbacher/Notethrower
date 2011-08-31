@@ -26,6 +26,19 @@ function ClearInput(id){
 
 
 
+/* !popup */
+/* ---------------------------------------------------------------------- */
+
+function popup () {
+    $('body').append('<div id="popupWrapper"><div id="popupBox"></div></div>')
+}
+
+
+
+
+
+
+
 
 /* !documentready fuction */
 /* ---------------------------------------------------------------------- */
@@ -225,6 +238,18 @@ if ($("...").is(":focus")) {
         $('.tabcontent-5').addClass('tabcontentAct');
         return false;
     });
+
+
+
+    /* !popup opener */
+    /* ---------------------------------------------------------------------- */
+    
+    $('.popup').bind('click', function(){
+        popup();
+        return false;
+    });
+
+});
 
 
     /* ! fancybox */

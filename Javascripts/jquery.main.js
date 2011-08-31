@@ -249,7 +249,6 @@ if ($("...").is(":focus")) {
         return false;
     });
 
-});
 
 
     /* ! fancybox */

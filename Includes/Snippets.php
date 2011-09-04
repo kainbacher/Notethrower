@@ -615,6 +615,8 @@ function send_email($recipient_email, $subject, $text, $filename = '', $data = '
 }
 
 function email_syntax_ok($addr) {
+	//surpress "eregi is deprecated" Error
+	error_reporting(E_ALL & ~E_DEPRECATED);
     return eregi('([_\.0-9a-z-]+@)([0-9a-z][0-9a-z-]+\.)+([a-z]{2,3})', $addr);
 }
 

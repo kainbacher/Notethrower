@@ -254,12 +254,10 @@ if ($("...").is(":focus")) {
     /* ! fancybox */
 	var recipientid = null;
     /* ---------------------------------------------------------------------- */
-    $('body').append('<div style="display:none"><div id="sendmsg"><h1>Message</h1><a onClick="$.fancybox.close()">close</a></div></div>');
-    $("a[rel=send_msg]").fancybox({
-        'onStart' : function(el){
-            recipientid = el.attr('href');
-            alert(recipientid);
-        },
+    //$('body').append('<div style="display:none"><div id="sendmsg"><h1>Message</h1><a onClick="$.fancybox.close()">close</a></div></div>');
+   // $("a[rel=send_msg]").attr('href', $("a[rel=send_msg]").attr('href')+'&ajax=1');
+	$("a[rel=send_msg]").fancybox({
+        //'onStart' : function(el){recipientid = el.attr('href');},
         'hideOnOverlayClick' : 'false'
     });
 

@@ -1,0 +1,19 @@
+            <form name="sendMessageForm" action="sendMessage.php" method="POST">
+                <input type="hidden" name="action" value="send">
+                <input type="hidden" name="raid" value="${recipientUserId}">
+                <table>
+                    <tr>
+                        <td>Subject:&nbsp;</td>
+                        <td><input type="text" name="subject" maxlength="255" size="60"></td>
+                    </tr>
+                    <tr>
+                        <td valign="top">Text:&nbsp;</td>
+                        <td>
+                            <textarea name="text" rows="3" cols="70"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="right"><input type="submit" value="Send"></td>
+                    </tr>
+                </table>
+            </form>

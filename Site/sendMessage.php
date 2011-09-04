@@ -1,5 +1,95 @@
 <?php
 
+include_once('../Includes/Init.php'); // must be included first
+
+include_once('../Includes/PermissionsUtil.php');
+include_once('../Includes/Snippets.php');
+include_once('../Includes/TemplateUtil.php');
+include_once('../Includes/DB/User.php');
+include_once('../Includes/DB/Message.php');
+
+
+$senderUser = User::new_from_cookie();
+
+if (!$senderUser) {
+    show_fatal_error_and_exit('access denied, no user cookie found.');
+}
+
+$recipientUserId = get_numeric_param('raid');
+if (!$recipientUserId) {
+    show_fatal_error_and_exit('raid param is missing');
+}
+
+$recipientUser = User::fetch_for_id($recipientUserId);
+if (!$recipientUser || !$recipientUser->id) {
+    show_fatal_error_and_exit('recipient user not found for id: ' . $recipientUserId);
+}
+
+
+$sendMsgForm = processTpl('UserInfo/newMessageForm.html', array(
+    '${recipientUserId}' => $recipientUser->id
+), $showMobileVersion);
+
+
+$statusMessage = '';
+
+$action = get_param('action');
+if ($action == 'send') {
+    $subject = get_param('subject');
+    $text    = get_param('text');
+
+    if ($subject || $text) {
+        $msg = new Message();
+        $msg->sender_user_id    = $senderUser->id;
+        $msg->recipient_user_id = $recipientUser->id;
+        $msg->subject             = $subject;
+        $msg->text                = $text;
+        $msg->marked_as_read      = false;
+        $msg->save();
+        
+        $email_sent = send_email($recipientUser->email_address, 'Message from ' . $senderUser->name,
+                'Hey ' . $recipientUser->name . "\n" . 
+                $senderUser->name . ' has just sent you a private Message.'. "\n" .
+                'Subject: ' . $msg->subject . "\n" .
+                'Message: ' . $msg->text);
+
+        if (!$email_sent) {
+            $logger->error('Failed to send "new message" notification email!');
+        }
+
+        $statusMessage = 'Your message has been sent.';
+        $sendMsgForm = '';
+
+    } else {
+        $statusMessage = 'Your message is empty.';
+    }
+    echo $statusMessage;
+} else {
+
+    processAndPrintTpl('UserInfo/newMessage.html', array(
+        '${Common/pageHeader}'                     => buildPageHeader('User Info', false, false, false, $showMobileVersion),
+        '${Common/bodyHeader}'                     => buildBodyHeader($user),
+        '${Common/bodyFooter}'                     => buildBodyFooter(),
+        '${Common/pageFooter}'                     => buildPageFooter(),
+        '${recipientUserName}'                     => $recipientUser->name,
+        '${UserInfo/sendMessageForm_optional}'     => $sendMsgForm
+    ));
+}
+//print_r($senderUser);
+//print_r($recipientUser);
+
+
+/*
+processAndPrintTpl('Features/index.html', array(
+    '${Common/pageHeader}'                     => buildPageHeader('Features'),
+    '${Common/bodyHeader}'                     => buildBodyHeader($user),
+    '${Common/bodyFooter}'                     => buildBodyFooter(),
+    '${Common/pageFooter}'                     => buildPageFooter()
+));
+*/
+
+
+/*
 include_once('../Includes/Init.php');
 include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
@@ -152,3 +242,5 @@ if (!$statusMessage || $errorMessage) {
 
     </body>
 </html>
+*/
+

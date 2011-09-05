@@ -6,6 +6,7 @@ include_once('../Includes/Init.php');
 
 include_once('../Includes/DbConnect.php');
 include_once('../Includes/DB/Attribute.php');
+include_once('../Includes/DB/Genre.php');
 include_once('../Includes/DB/Message.php');
 include_once('../Includes/DB/News.php');
 include_once('../Includes/DB/Nonce.php');
@@ -21,6 +22,7 @@ include_once('../Includes/DB/UserAttribute.php');
 header('Content-type: text/plain');
 
 Attribute::createTable();
+Genre::createTable();
 Message::create_table();
 News::create_table();
 Nonce::create_table();
@@ -36,6 +38,7 @@ UserAttribute::createTable();
 echo 'creation done.' . "\n";
 
 Attribute::populateTable();
+Genre::populateTable();
 
 echo 'population done.' . "\n";
 

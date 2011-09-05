@@ -6,6 +6,7 @@ include_once('../Includes/Config.php');
 include_once('../Includes/RemoteSystemCommunicationUtil.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
+include_once('../Includes/DB/Genre.php');
 include_once('../Includes/DB/Nonce.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/User.php');
@@ -128,7 +129,7 @@ function handleCurrentGenreSelection(&$genre) {
     $genre = getGenreCookieValue();
 
     if ($selectedGenre = get_param('genre')) {
-        if (!isValidGenre($selectedGenre)) {
+        if (!Genre::isValidGenre($selectedGenre)) {
             show_fatal_error_and_exit('invalid genre value: ' . $selectedGenre);
         }
 
@@ -136,7 +137,7 @@ function handleCurrentGenreSelection(&$genre) {
 
     } else {
         if (!$genre) {
-            $genre = chooseRandomGenre();
+            $genre = Genre::chooseRandomGenreName();
         }
     }
 }
@@ -151,7 +152,7 @@ function getLeftAndRightTrack(&$leftTrack, &$rightTrack, &$genre) {
     while ((!$leftTrack || !$rightTrack) && $retryCount <= 100) { // search until we have two different tracks in the same genre
         $trackSelectionMessage = 'Sorry but we couldn\'t find two songs in the selected genre. A random genre was chosen.';
         $retryCount++;
-        $genre = chooseRandomGenre();
+        $genre = Genre::chooseRandomGenreName();
         $leftTrack  = Project::fetchRandomPublicFinishedProject($genre);
         $rightTrack = Project::fetchRandomPublicFinishedProject($genre, $leftTrack->id); // ensure that we have different tracks
     }
@@ -168,10 +169,11 @@ function getLeftAndRightTrack(&$leftTrack, &$rightTrack, &$genre) {
 
 function buildGenreSelectionList() {
     $genreList = '';
-    foreach ($GLOBALS['GENRES'] as $g) {
+    $genres = Genre::fetchAll();
+    foreach ($genres as $g) {
         $genreList .= processTpl('Startpage/genreSelectionElement.html', array(
-            '${genreSelectionUrl}' => $_SERVER['PHP_SELF'] . '?genre=' . urlencode($g),
-            '${genre}'             => escape($g)
+            '${genreSelectionUrl}' => $_SERVER['PHP_SELF'] . '?genre=' . urlencode($g->name), // FIXME - work with id instead of name here
+            '${genre}'             => escape($g->name)
         ));
     }
 

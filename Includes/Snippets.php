@@ -30,23 +30,12 @@ function redirectTo($uri) {
     exit;
 }
 
-function chooseRandomGenre() {
-    $keys = array_keys($GLOBALS['GENRES']);
-    shuffle($keys);
-    $firstKey = reset($keys);
-    return $GLOBALS['GENRES'][$firstKey];
-}
-
 function getGenreCookieValue() {
     if (isset($_COOKIE[$GLOBALS['COOKIE_NAME_GENRE']])) {
         return $_COOKIE[$GLOBALS['COOKIE_NAME_GENRE']];
     }
 
     return null;
-}
-
-function isValidGenre($genre) {
-    return isset($GLOBALS['GENRES'][$genre]);
 }
 
 function setGenreCookie($genre) {

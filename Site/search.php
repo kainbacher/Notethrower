@@ -4,6 +4,7 @@ include_once('../Includes/Init.php');
 include_once('../Includes/Paginator.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/Attribute.php');
+include_once('../Includes/DB/Genre.php');
 include_once('../Includes/DB/News.php');
 include_once('../Includes/DB/User.php');
 
@@ -51,7 +52,7 @@ $needsAttributes = Attribute::fetchShownFor('needs');
 
 
 function showAttributesList($fieldName, &$trackAttributes, $othersFieldName) {
-    
+
     echo '<table class="searchAttributes"><tr>';
     for($i = 1; $i <= sizeof($trackAttributes); $i++) {
         echo '<td><input type="checkbox" name="' . $fieldName . '" id="' . $fieldName . '" value="' . $trackAttributes[$i-1]->id . '"';
@@ -75,43 +76,44 @@ function showAttributesList($fieldName, &$trackAttributes, $othersFieldName) {
         }
             echo "\n" . '<tr>';
     }
-    
+
     // display the "others" field in a own row, with only one td
     echo '<tr><td colspan="3">Others: ';
     echo '<input type="text" id="' . $othersFieldName . '"></td></tr>';
-    
+
     echo '</table>';
 }
 
 function showGenreList() {
-        
+    $genres = Genre::fetchAll();
+
     echo '<table class="searchAttributes"><tr>';
     $i = 1;
-    foreach($GLOBALS['GENRES'] as $key => $value) {
-        echo '<td><input type="checkbox" name="genres" id="genres" value="' . $key . '"';
-        echo '> ' . $value . '</td>';
+    foreach($genres as $genre) {
+        echo '<td><input type="checkbox" name="genres" id="genres" value="' . $genre->name . '"'; // FIXME - work with id's here!
+        echo '> ' . $genre->name . '</td>';
 
         // end of the row?
         if ((($i % 3) == 0) && ($i > 0)) {
             echo '</tr>';
         }
         // do we have to make a new row?
-        if ((($i % 3) == 0) && ($i < sizeof($GLOBALS['GENRES']))) {
+        if ((($i % 3) == 0) && ($i < sizeof($genres))) {
             echo "\n" . '<tr>';
         }
         $i++;
     }
 
     // handle the case where we have to add emty cells to complete the last row
-    if (((sizeof($GLOBALS['GENRES'])) % 3) != 0) {
-        $rest = 3 - ((sizeof($GLOBALS['GENRES'])) % 3);
+    if (((sizeof($genres)) % 3) != 0) {
+        $rest = 3 - ((sizeof($genres)) % 3);
         for ($i = 0; $i < $rest; ++$i) {
             echo '<td>&nbsp;</td>';
         }
         echo '</tr>';
     }
-        
-    echo '</table>';    
+
+    echo '</table>';
 }
 
 $aidForWidget = null;
@@ -133,12 +135,12 @@ writePageDoctype();
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <?php writePageMetaTags(); ?>
     <title><?php writePageTitle(); ?></title>
-  
-    <link rel="stylesheet" href="../Styles/buttons.css" type="text/css">  
+
+    <link rel="stylesheet" href="../Styles/buttons.css" type="text/css">
     <link rel="stylesheet" href="../Styles/main.css" type="text/css">
     <link rel="stylesheet" href="../Styles/datatables.css" type="text/css">
-    
-    
+
+
     <script type="text/javascript" src="../Javascripts/jquery-1.6.1.min.js"></script>
     <script type="text/javascript" src="../Javascripts/jquery.main.js"></script>
     <script type="text/javascript" src="../Javascripts/jquery.dataTables.js"></script>
@@ -159,11 +161,11 @@ var dataTable;
 
 
 $(document).ready(function() {
-    
+
     // set the value of the search field to the value of userOrTitle
     // because it might be passed in as query string
     $('#userOrTitleField').val(userOrTitle);
-    
+
 	dataTable = $('#resultTable').dataTable({
 	    "bFilter": false,
 	    "bProcessing": true,
@@ -288,14 +290,14 @@ function showLogin() {
 
         <div id="searchWrapper">
             <div id="container">
-            
+
 
 
       <div id="chosenTrackHeadlineContainer" style="display:none">
         <div id="chosenTrackHeadline">
         </div>
       </div>
-  
+
 
 
       <div class="searchDetails">
@@ -310,10 +312,10 @@ function showLogin() {
                         <input type="hidden" name="visitorUserId" id="visitorUserId" value="<?php echo $visitorUserId ?>">
                     </td>
                 </tr>
-                
+
                 <tr><td colspan="3"><div class="tableSpacer"></div></td></tr>
-                
-                
+
+
                 <tr>
                     <td>Songs that need:</td>
                     <td>
@@ -322,9 +324,9 @@ function showLogin() {
                     ?>
                     <td>
                 </tr>
-                
+
                 <tr><td colspan="3"><div class="tableSpacer"></div></td></tr>
-                
+
                 <tr>
                     <td>Songs that contain:</td>
                     <td>
@@ -333,9 +335,9 @@ function showLogin() {
                     ?>
                     <td>
                 </tr>
-                
+
                 <tr><td colspan="3"><div class="tableSpacer"></div></td></tr>
-                
+
                 <tr>
                     <td>Genre:</td>
                     <td>
@@ -344,9 +346,9 @@ function showLogin() {
                     ?>
                     <td>
                 </tr>
-                
+
                 <tr><td colspan="3"><div class="tableSpacer"></div></td></tr>
-                
+
                 <tr>
                     <td>&nbsp;</td>
                     <td><input class="button blue" type="submit" value="submit" onClick="doSearch()"/>
@@ -354,7 +356,7 @@ function showLogin() {
                 </tr>
             </table>
 
- 
+
 
       </div>
 
@@ -367,7 +369,7 @@ function showLogin() {
 
         <div id="mainColumnLeft">
             <div id="trackListDiv">
-            
+
 
            <table cellpadding="0" cellspacing="0" border="0" class="display" id="resultTable">
 	           <thead>
@@ -434,7 +436,7 @@ if ($userIsLoggedIn) {
 	        <param name="bgcolor" value="#ffffff" />
 	        <embed src="../Widget/PpWidget.swf?aid=<?php echo $aidForWidget; ?>" loop="false" quality="high" wmode="transparent" bgcolor="#ffffff" width="300" height="400" name="NTWidget" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
 	      </object>
-	   
+
       </div> <!-- searchWidget -->
 
         <br/>
@@ -446,7 +448,7 @@ if ($userIsLoggedIn) {
 
     </div> <!-- mainColumnRight -->
 
-    
+
     <div class="clear"></div>
     <br/>
 

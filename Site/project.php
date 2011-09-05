@@ -7,6 +7,7 @@ include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/Attribute.php');
+include_once('../Includes/DB/Genre.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectAttribute.php');
 include_once('../Includes/DB/ProjectFile.php');
@@ -268,7 +269,7 @@ $formElementsList .= getFormFieldForParams(array(
     'propName'               => 'genres',
     'label'                  => 'Genre',
     'mandatory'              => true,
-    'selectOptions'          => array_merge(array('' => '- Please choose -'), $GLOBALS['GENRES']),
+    'selectOptions'          => array_merge(array('' => '- Please choose -'), Genre::getSelectorOptionsArray()),
     'obj'                    => $project,
     'unpersistedObj'         => $unpersistedProject,
     'errorFields'            => $errorFields,

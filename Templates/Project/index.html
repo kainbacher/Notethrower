@@ -41,7 +41,7 @@ ${Common/bodyHeader}
             ${Common/formElement_list}
 
             <div class="prepend-6 span-6 last">
-                <input class="button blue" type="submit" value="${submitButtonValue}" onClick="buildProjectAttributesList(); buildProjectSubGenresList();">
+                <input class="button blue" type="submit" value="${submitButtonValue}" onClick="buildProjectAttributesAndSubGenresList();">
             </div>
         </form>
 
@@ -100,14 +100,16 @@ function openUploaderPopup(isMixMp3File) {
     );
 }
 
-function buildProjectAttributesList() {
-    var aList = $('#attributes').val().join(','); // create comma separated list string ...
-    $('#projectAttributesList').val(aList); // ... and save the string in the hidden field
-}
+function buildProjectAttributesAndSubGenresList() {
+    if ($('#attributes').val()) {
+        var aList = $('#attributes').val().join(','); // create comma separated list string ...
+        $('#projectAttributesList').val(aList); // ... and save the string in the hidden field
+    }
 
-function buildProjectSubGenresList() {
-    var gList = $('#subGenres').val().join(','); // create comma separated list string ...
-    $('#projectSubGenresList').val(gList); // ... and save the string in the hidden field
+    if ($('#subGenres').val()) {
+        var gList = $('#subGenres').val().join(','); // create comma separated list string ...
+        $('#projectSubGenresList').val(gList); // ... and save the string in the hidden field
+    }
 }
 
 // convert all select fields with special class to chosen thingies

@@ -98,7 +98,6 @@ if (get_param('action') == 'create') {
     } else {
         $logger->info('input data was invalid: ' . print_r($errorFields, true));
         $unpersistedProject = new Project();
-        $unpersistedProject->id = $projectId;
         processParams($unpersistedProject, $user);
         $generalMessageList .= processTpl('Common/message_error.html', array(
             '${msg}' => 'Please correct the highlighted problems!'
@@ -274,7 +273,7 @@ $formElementsList .= getFormFieldForParams(array(
     'obj'                    => $project,
     'unpersistedObj'         => $unpersistedProject,
     'selectOptions'          => Genre::getSelectorOptionsArray(true),
-    'objValue'               => ProjectGenre::getMainGenreIdForProjectId($project->id),
+    'objValue'               => $problemOccured ? $unpersistedProject->unpersistedProjectMainGenre : ProjectGenre::getMainGenreIdForProjectId($project->id),
     'errorFields'            => $errorFields,
     'workWithUnpersistedObj' => $problemOccured
 ));
@@ -289,7 +288,7 @@ $formElementsList .= getFormFieldForParams(array(
     'obj'                    => $project,
     'unpersistedObj'         => $unpersistedProject,
     'selectOptions'          => Genre::getSelectorOptionsArray(),
-    'objValues'              => ProjectGenre::getSubGenreIdsForProjectId($project->id),
+    'objValues'              => $problemOccured ? $unpersistedProject->unpersistedProjectSubGenres : ProjectGenre::getSubGenreIdsForProjectId($project->id),
     'errorFields'            => $errorFields,
     'workWithUnpersistedObj' => $problemOccured
 ));
@@ -304,7 +303,7 @@ $formElementsList .= getFormFieldForParams(array(
     'obj'                    => $project,
     'unpersistedObj'         => $unpersistedProject,
     'selectOptions'          => Attribute::getIdNameMapShownFor('needs'),
-    'objValues'              => ProjectAttribute::getAttributeIdsForProjectIdAndState($project->id, 'needs'),
+    'objValues'              => $problemOccured ? $unpersistedProject->unpersistedProjectAttributes : ProjectAttribute::getAttributeIdsForProjectIdAndState($project->id, 'needs'),
     'errorFields'            => $errorFields,
     'workWithUnpersistedObj' => $problemOccured,
     'infoText'               => 'Make a list of what\'s needed for this project to be finished. Other artists will find your project based on this information.'
@@ -502,6 +501,14 @@ function inputDataOk(&$errorFields, &$project) {
         $result = false;
     }
 
+    if (get_numeric_param('mainGenre') && get_param('projectSubGenresList')) {
+        $subGenres = explode(',', get_param('projectSubGenresList'));
+        if (in_array(get_numeric_param('mainGenre'), $subGenres)) {
+            $errorFields['subGenres'] = 'Please don\'t include the main genre in the sub genres.';
+            $result = false;
+        }
+    }
+
 // currently hidden, but maybe a candidate for pro users
 //    if (strlen(get_param('visibility')) < 1) {
 //        $errorFields['visibility'] = 'Visibility is missing!';
@@ -567,18 +574,25 @@ function processParams(&$project, &$user) {
 //    }
 
     // handle project main & sub genres
-    if (!is_null($project->id)) {
+    if ($project->id) {
         ProjectGenre::deleteForProjectId($project->id); // first, delete all existing genres
         if (get_numeric_param('mainGenre')) ProjectGenre::addAll(array(get_numeric_param('mainGenre')), $project->id, 1); // then save the selected main genre
         ProjectGenre::addAll(explode(',', get_param('projectSubGenresList')), $project->id, 0); // and the selected sub genres
+
+    } else { // work with unpersisted obj
+        $project->unpersistedProjectMainGenre = get_numeric_param('mainGenre');
+        $project->unpersistedProjectSubGenres = explode(',', get_param('projectSubGenresList'));
     }
 
     // handle project attributes
-    if (!is_null($project->id)) {
+    if ($project->id) {
         ProjectAttribute::deleteForProjectId($project->id); // first, delete all existing attributes
         ProjectAttribute::addAll(explode(',', get_param('projectAttributesList')), $project->id, 'needs'); // then save the selected attributes
 //        $project->containsOthers = get_param('containsOthers');
 //        $project->needsOthers = get_param('needsOthers');
+
+    } else { // work with unpersisted obj
+        $project->unpersistedProjectAttributes = explode(',', get_param('projectAttributesList'));
     }
 }
 

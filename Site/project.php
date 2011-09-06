@@ -273,7 +273,7 @@ $formElementsList .= getFormFieldForParams(array(
     'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
     'obj'                    => $project,
     'unpersistedObj'         => $unpersistedProject,
-    'selectOptions'          => Genre::getSelectorOptionsArray(),
+    'selectOptions'          => array_merge(array('' => ''), Genre::getSelectorOptionsArray()),
     'objValue'               => ProjectGenre::getMainGenreIdForProjectId($project->id),
     'errorFields'            => $errorFields,
     'workWithUnpersistedObj' => $problemOccured

@@ -201,7 +201,8 @@ if ($userIsLoggedIn) { // it's an update
             'selectOptions'          => Genre::getSelectorOptionsArray(),
             'objValues'              => $problemOccured ? $unpersistedUser->unpersistedUserGenres : UserGenre::getGenreIdsForUserId($user->id),
             'errorFields'            => $errorFields,
-            'workWithUnpersistedObj' => $problemOccured
+            'workWithUnpersistedObj' => $problemOccured,
+            'infoText'               => 'Please choose the genres that best describe what type of musician you are. We will provide recommendations on which projects to work on based on your selections.'
         ));
 
         $formElementsSection1 .= getFormFieldForParams(array(

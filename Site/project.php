@@ -264,16 +264,32 @@ $formElementsList .= getFormFieldForParams(array(
     'infoText'               => 'Please enter the price you want others to pay to license your work.  Notethrower will take a 10% fee from the sale at this price.  If you are uploading a remix of another Notethrower artist\'s track, you will split the profit with that artist 50/50, minus the 10% fee.'
 ));
 
+// main genre
 $formElementsList .= getFormFieldForParams(array(
-    'inputType'              => 'multiselect2',
-    'propName'               => 'genres',
-    'label'                  => 'Genres',
+    'inputType'              => 'select2',
+    'propName'               => 'mainGenre',
+    'label'                  => 'Main genre',
     'mandatory'              => true,
     'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
     'obj'                    => $project,
     'unpersistedObj'         => $unpersistedProject,
     'selectOptions'          => Genre::getSelectorOptionsArray(),
-    'objValues'              => ProjectGenre::getGenreIdsForProjectId($project->id),
+    'objValue'               => ProjectGenre::getMainGenreIdForProjectId($project->id),
+    'errorFields'            => $errorFields,
+    'workWithUnpersistedObj' => $problemOccured
+));
+
+// sub genres
+$formElementsList .= getFormFieldForParams(array(
+    'inputType'              => 'multiselect2',
+    'propName'               => 'subGenres',
+    'label'                  => 'Sub genres',
+    'mandatory'              => false,
+    'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
+    'obj'                    => $project,
+    'unpersistedObj'         => $unpersistedProject,
+    'selectOptions'          => Genre::getSelectorOptionsArray(),
+    'objValues'              => ProjectGenre::getSubGenreIdsForProjectId($project->id),
     'errorFields'            => $errorFields,
     'workWithUnpersistedObj' => $problemOccured
 ));
@@ -476,12 +492,13 @@ function inputDataOk(&$errorFields, &$project) {
         }
     }
 
-    if (strlen(get_param('projectGenresList')) < 1) {
-        $errorFields['genres'] = 'Please choose at least one genre here!';
+    if (!get_numeric_param('mainGenre')) {
+        $errorFields['mainGenre'] = 'Please choose a main genre here!';
         $result = false;
+    }
 
-    } else if (preg_match('/[^0-9,]/', get_param('projectGenresList'))) {
-        $errorFields['attributes'] = 'Invalid genres list'; // can only happen when someone plays around with the post data
+    if (preg_match('/[^0-9,]/', get_param('projectSubGenresList'))) {
+        $errorFields['subGenres'] = 'Invalid genres list'; // can only happen when someone plays around with the post data
         $result = false;
     }
 
@@ -549,10 +566,11 @@ function processParams(&$project, &$user) {
 //        }
 //    }
 
-    // handle project genres
+    // handle project main & sub genres
     if (!is_null($project->id)) {
         ProjectGenre::deleteForProjectId($project->id); // first, delete all existing genres
-        ProjectGenre::addAll(explode(',', get_param('projectGenresList')), $project->id); // then save the selected genres
+        if (get_numeric_param('mainGenre')) ProjectGenre::addAll(array(get_numeric_param('mainGenre')), $project->id, 1); // then save the selected main genre
+        ProjectGenre::addAll(explode(',', get_param('projectSubGenresList')), $project->id, 0); // and the selected sub genres
     }
 
     // handle project attributes

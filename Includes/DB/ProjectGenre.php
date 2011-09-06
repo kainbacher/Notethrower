@@ -7,6 +7,7 @@ include_once('../Includes/Snippets.php');
 class ProjectGenre {
     var $project_id;
     var $genre_id;
+    var $relevance; // currently the values 1 (for main genre) and 0 (for sub genre). this is used to sort result lists by main genre matches first.
 
     // non-table fields
     var $genre_name; // currently not read/not used
@@ -39,12 +40,13 @@ class ProjectGenre {
         return $objs;
     }
 
-    function addAll($genreIds, $projectId) {
+    function addAll($genreIds, $projectId, $relevance = 0) {
         foreach ($genreIds as $id) {
             if ($id) {
                 $pg = new ProjectGenre();
                 $pg->project_id = $projectId;
                 $pg->genre_id   = $id;
+                $pg->relevance  = $relevance;
                 $pg->insert();
             }
         }
@@ -53,6 +55,7 @@ class ProjectGenre {
     function _read_row(&$pg, $row) {
         $pg->project_id = $row['project_id'];
         $pg->genre_id   = $row['genre_id'];
+        $pg->relevance  = $row['relevance'];
 
         // non-table fields
         $pg->genre_name = $row['genre_name'];
@@ -68,6 +71,7 @@ class ProjectGenre {
             '(' .
             'project_id int(10) not null, ' .
             'genre_id   int(10) not null, ' .
+            'relevance  int(1)  not null, ' .
             'primary key (project_id, genre_id), ' .
             'index (project_id), ' .
             'index (genre_id) ' .
@@ -77,13 +81,34 @@ class ProjectGenre {
         return $ok;
     }
 
-    function getGenreIdsForProjectId($project_id) {
+    function getMainGenreIdForProjectId($project_id) {
+        $id = null;
+
+        $result = _mysql_query(
+            'select * ' .
+            'from pp_project_genre ' .
+            'where project_id = ' . n($project_id) . ' ' .
+            'and relevance = 1 ' .
+            'limit 1'
+        );
+
+        if ($row = mysql_fetch_array($result)) {
+            $id = $row['genre_id'];
+        }
+
+        mysql_free_result($result);
+
+        return $id;
+    }
+
+    function getSubGenreIdsForProjectId($project_id) {
         $ids = array();
 
         $result = _mysql_query(
             'select * ' .
             'from pp_project_genre ' .
-            'where project_id = ' . n($project_id)
+            'where project_id = ' . n($project_id) . ' ' .
+            'and relevance = 0'
         );
 
         while ($row = mysql_fetch_array($result)) {
@@ -123,19 +148,39 @@ class ProjectGenre {
 
     // object methods
     // --------------
+    function save() {
+        if (isset($this->project_id) && isset($this->genre_id)) {
+            return $this->update();
+        } else {
+            return $this->insert();
+        }
+    }
+
     function insert() {
         $ok = _mysql_query(
             'insert into pp_project_genre ' .
-            '(project_id, genre_id) ' .
+            '(project_id, genre_id, relevance) ' .
             'values (' .
             n($this->project_id)    . ', ' .
-            n($this->genre_id)      .
+            n($this->genre_id)      . ', ' .
+            n($this->relevance)     .
             ')'
         );
 
         if (!$ok) {
             return false;
         }
+
+        return $ok;
+    }
+
+    function update() {
+        $ok = _mysql_query(
+            'update pp_project_genre ' .
+            'set relevance = '    . n($this->relevance)  . ', ' .
+            'where project_id = ' . n($this->project_id) . ' ' .
+            'and genre_id = '     . n($this->genre_id)
+        );
 
         return $ok;
     }

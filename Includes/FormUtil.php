@@ -30,6 +30,7 @@ function getFormFieldForParams($params) {
     $maxlength                = array_key_exists('maxlength', $params)                ? $params['maxlength']                : 0;
     $size                     = array_key_exists('size', $params)                     ? $params['size']                     : 0;
     $selectOptions            = array_key_exists('selectOptions', $params)            ? $params['selectOptions']            : array();
+    $objValue                 = array_key_exists('objValue', $params)                 ? $params['objValue']                 : null;
     $objValues                = array_key_exists('objValues', $params)                ? $params['objValues']                : null;
     $infoText                 = array_key_exists('infoText', $params)                 ? $params['infoText']                 : null;
     $infoHtml                 = array_key_exists('infoHtml', $params)                 ? $params['infoHtml']                 : null;
@@ -50,16 +51,21 @@ function getFormFieldForParams($params) {
 
     // input field
     $inputField = '';
-    if ($inputType == 'select') {
-        $val            = null;
-        $unpersistedVal = null;
-        eval('if ($obj) $val = $obj->' . $propName . ';');
-        eval('if ($unpersistedObj) $unpersistedVal = $unpersistedObj->' . $propName . ';');
-        $selectedValue = $workWithUnpersistedObj ? $unpersistedVal : $val;
+    if (
+        $inputType == 'select' ||
+        $inputType == 'select2' // when the object values should not be read from the object (ie. when they are not persisted as a comma-separated list of values but in a different table)
+    ) {
+        if ($inputType == 'select') {
+            $val            = array();
+            $unpersistedVal = array();
+            eval('if ($obj) $val = $obj->' . $propName . ';');
+            eval('if ($unpersistedObj) $unpersistedVal = $unpersistedObj->' . $propName . ';');
+            $objValue = $workWithUnpersistedObj ? $unpersistedVal : $val;
+        }
 
         $options = '';
         foreach (array_keys($selectOptions) as $optVal) {
-            $selected = ((string) $selectedValue === (string) $optVal) ? ' selected' : '';
+            $selected = ((string) $objValue === (string) $optVal) ? ' selected' : '';
             $options .= processTpl('Common/formElementInputField_select_option.html', array(
                 '${value}'             => $optVal,
                 '${selected_optional}' => $selected,

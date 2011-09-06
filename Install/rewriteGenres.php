@@ -31,6 +31,8 @@ function rewriteGenreInfo($projectId, $genreNamesStr) {
 
     $genreNames = explode(',', $genreNamesStr);
 
+    $relevance = 1; // the first will be the main genre, all remaining will be the sub genres
+
     foreach ($genreNames as $genreName) {
         $genreName = trim($genreName);
 
@@ -44,10 +46,13 @@ function rewriteGenreInfo($projectId, $genreNamesStr) {
         // insert its id into the pp_project_genre table
         $pg = new ProjectGenre();
         $pg->project_id = $projectId;
-        $pg->genre_id = $genre->id;
+        $pg->genre_id   = $genre->id;
+        $pg->relevance  = $relevance;
         $pg->insert();
 
         echo 'inserted project/genre association: ' . $projectId . '/' . $genre->id . ' ' . $genre->name . '<br>' . "\n";
+
+        $relevance = 0;
     }
 }
 

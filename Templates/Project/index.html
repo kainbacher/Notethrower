@@ -36,12 +36,12 @@ ${Common/bodyHeader}
             <input type="hidden" name="action" value="save">
             <input type="hidden" name="pid" value="${projectId}">
             <input type="hidden" name="type" value="${type}">
-            <input type="hidden" name="projectGenresList" id="projectGenresList" value="">
+            <input type="hidden" name="projectSubGenresList" id="projectSubGenresList" value="">
             <input type="hidden" name="projectAttributesList" id="projectAttributesList" value="">
             ${Common/formElement_list}
 
             <div class="prepend-6 span-6 last">
-                <input class="button blue" type="submit" value="${submitButtonValue}" onClick="buildProjectAttributesList(); buildProjectGenresList();">
+                <input class="button blue" type="submit" value="${submitButtonValue}" onClick="buildProjectAttributesList(); buildProjectSubGenresList();">
             </div>
         </form>
 
@@ -105,9 +105,9 @@ function buildProjectAttributesList() {
     $('#projectAttributesList').val(aList); // ... and save the string in the hidden field
 }
 
-function buildProjectGenresList() {
-    var gList = $('#genres').val().join(','); // create comma separated list string ...
-    $('#projectGenresList').val(gList); // ... and save the string in the hidden field
+function buildProjectSubGenresList() {
+    var gList = $('#subGenres').val().join(','); // create comma separated list string ...
+    $('#projectSubGenresList').val(gList); // ... and save the string in the hidden field
 }
 
 // convert all select fields with special class to chosen thingies

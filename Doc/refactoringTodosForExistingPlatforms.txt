@@ -68,6 +68,7 @@ create table if not exists pp_project_genre
 (
 project_id int(10) not null,
 genre_id   int(10) not null,
+relevance  int(1)  not null,
 primary key (project_id, genre_id),
 index (project_id),
 index (genre_id)

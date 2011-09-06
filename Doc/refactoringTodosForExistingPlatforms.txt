@@ -1,0 +1,112 @@
+++++ pre-launch steps:
+#### manually create a list of all remixes (and their originating artists), then delete these tracks. joe will contact them to
+explain what happens.
+
+non-unique emails on live system:
+feuerstein@gmx.at	2
+gumihere@gmail.com	4
+hjonas@gmx.at	2
+joebenso@gmail.com	22
+nver4got10@yahoo.com	2
+romac@the-groovy-toolbox.com	5
+
+--> check if we have new duplicates now
+--> make them unique and change live system so that emails have to be unique
+
+++++ launch steps:
+###### change table names and table columns on existing platforms:
+execute:
+
+rename table pp_artist to pp_user;
+rename table pp_audio_track_artist_visibility to pp_audio_track_user_visibility;
+
+alter table pp_audio_track change artist_id user_id int(10) not null;
+alter table pp_audio_track change originating_artist_id originating_user_id int(10);
+
+alter table pp_audio_track_user_visibility change artist_id user_id int(10);
+
+alter table pp_message change sender_artist_id sender_user_id int(10) not null;
+alter table pp_message change recipient_artist_id recipient_user_id int(10) not null;
+
+alter table pp_stats change artist_id user_id int(10) not null;
+
+alter table pp_user add activity_points int(10) after paypal_account;
+alter table pp_user add is_artist tinyint(1) after activity_points;
+alter table pp_user add is_pro tinyint(1) after is_artist;
+alter table pp_user add influences text after additional_info;
+
+update pp_user set is_artist=1;
+
+alter table pp_audio_track add competition_points int(10) not null after rating_value;
+
+create table if not exists pp_nonce
+(
+nonce_str           varchar(255) not null,
+creation_date       datetime     not null,
+primary key (nonce_str)
+key date (creation_date)
+);
+
+create table if not exists pp_user_attribute
+(
+user_id                    int(10) not null,
+attribute_id               int(10) not null,
+status                     varchar(6) not null,
+primary key (user_id, attribute_id),
+index (user_id),
+index (attribute_id)
+) default charset=utf8;
+
+create table if not exists pp_genre
+(
+id                        int(10)      not null auto_increment,
+name                      varchar(255) not null,
+primary key (id)
+) default charset=utf8
+
+alter table pp_audio_track_file add is_master tinyint(1) not null after type;
+update pp_audio_track_file set is_master = 1 where orig_filename like '%mp3';
+
+alter table pp_audio_track_file drop column type;
+
+rename table pp_audio_track_file to pp_project_file;
+rename table pp_audio_track_attribute to pp_attribute;
+rename table pp_audio_track_audio_track_attribute to pp_project_attribute;
+rename table pp_audio_track to pp_project;
+rename table pp_audio_track_user_visibility to pp_project_user_visibility;
+
+alter table pp_project drop column is_full_song;
+alter table pp_project drop column parent_track_id;
+alter table pp_project drop column originator_notified;
+alter table pp_project drop column preview_mp3_filename;
+alter table pp_project drop column orig_preview_mp3_filename;
+
+alter table pp_project_user_visibility change track_id project_id int(10) not null;
+alter table pp_project_file change track_id project_id int(10) not null;
+alter table pp_project_attribute change track_id project_id int(10) not null;
+
+#### change indizes on existing platforms:
+-> manually rename index pp_project_user_visibility.artist_id to user_id
+-> manually rename index pp_message.aid_del to ruid_del
+-> manually rename index pp_stats.artist_id to user_id
+-> manually rename index pp_project_file.track_id to project_id
+-> manually rename index pp_project_attribute.track_id to project_id
+
+
+#### change path on existing platforms:
+path /ArtistImages/ should be changed to /UserImages/
+
+
+#### make sure the new widget with the corrected config and php script urls is published
+
+
+#### manually make all existing audio tracks full songs and remove the parent track id association. this is no longer used.
+
+
+NB:
+param names like aid don't change at the moment!
+<ppArtistData>, etc. xml for widget doesn't change at the moment!
+
+
+
+

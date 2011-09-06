@@ -19,7 +19,7 @@ class Genre {
         $result = _mysql_query(
             'select * ' .
             'from pp_genre ' .
-            'order by name asc '
+            'order by name asc'
         );
 
         while ($row = mysql_fetch_array($result)) {
@@ -75,8 +75,6 @@ class Genre {
     function _read_row(&$g, $row) {
         $g->id   = $row['id'];
         $g->name = $row['name'];
-
-        return $g;
     }
 
     // class functions
@@ -166,8 +164,13 @@ class Genre {
         return ($count == 1);
     }
 
-    function getSelectorOptionsArray() {
+    function getSelectorOptionsArray($includeEmptyOption = false) {
         $genres = array();
+
+        if ($includeEmptyOption) {
+            $genres[''] = '';
+        }
+
         $all = Genre::fetchAll();
         foreach ($all as $g) {
             $genres[$g->id] = $g->name;

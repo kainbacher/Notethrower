@@ -181,7 +181,7 @@ if ($userIsLoggedIn) { // it's an update
             'obj'                    => $user,
             'unpersistedObj'         => $unpersistedUser,
             'selectOptions'          => $selectOptions,
-            'objValues'              => UserAttribute::fetchAttributeIdsForUserIdAndState($user->id, 'offers'),
+            'objValues'              => UserAttribute::getAttributeIdsForUserIdAndState($user->id, 'offers'),
             'errorFields'            => $errorFields,
             'workWithUnpersistedObj' => $problemOccured,
             'infoText'               => 'List your skills here.'

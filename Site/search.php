@@ -90,7 +90,7 @@ function showGenreList() {
     echo '<table class="searchAttributes"><tr>';
     $i = 1;
     foreach($genres as $genre) {
-        echo '<td><input type="checkbox" name="genres" id="genres" value="' . $genre->name . '"'; // FIXME - work with id's here!
+        echo '<td><input type="checkbox" name="genres" id="genres" value="' . $genre->id . '"';
         echo '> ' . $genre->name . '</td>';
 
         // end of the row?

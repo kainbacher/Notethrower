@@ -64,6 +64,24 @@ name                      varchar(255) not null,
 primary key (id)
 ) default charset=utf8
 
+create table if not exists pp_project_genre
+(
+project_id int(10) not null,
+genre_id   int(10) not null,
+primary key (project_id, genre_id),
+index (project_id),
+index (genre_id)
+) default charset=utf8
+
+create table if not exists pp_user_genre
+(
+user_id  int(10) not null,
+genre_id int(10) not null,
+primary key (user_id, genre_id),
+index (user_id),
+index (genre_id)
+) default charset=utf8
+
 alter table pp_audio_track_file add is_master tinyint(1) not null after type;
 update pp_audio_track_file set is_master = 1 where orig_filename like '%mp3';
 
@@ -102,6 +120,8 @@ path /ArtistImages/ should be changed to /UserImages/
 
 #### manually make all existing audio tracks full songs and remove the parent track id association. this is no longer used.
 
+#### manually execute /Install/rewriteGenres.php, then drop the project.genres column with this stmt:
+alter table pp_project drop column genres;
 
 NB:
 param names like aid don't change at the moment!

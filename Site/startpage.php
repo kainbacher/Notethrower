@@ -15,8 +15,7 @@ $messages = '';
 
 $user = User::new_from_cookie();
 
-$genre = null;
-handleCurrentGenreSelection($genre);
+$genre = handleCurrentGenreSelection();
 
 handleVoting($user, $messages);
 
@@ -125,7 +124,7 @@ function buildRightPlayer(&$rightTrack) {
     ));
 }
 
-function handleCurrentGenreSelection(&$genre) {
+function handleCurrentGenreSelection() {
     $genre = getGenreCookieValue();
 
     if ($selectedGenre = get_param('genre')) {
@@ -140,6 +139,8 @@ function handleCurrentGenreSelection(&$genre) {
             $genre = Genre::chooseRandomGenreName();
         }
     }
+
+    return $genre;
 }
 
 function getLeftAndRightTrack(&$leftTrack, &$rightTrack, &$genre) {
@@ -172,7 +173,7 @@ function buildGenreSelectionList() {
     $genres = Genre::fetchAll();
     foreach ($genres as $g) {
         $genreList .= processTpl('Startpage/genreSelectionElement.html', array(
-            '${genreSelectionUrl}' => $_SERVER['PHP_SELF'] . '?genre=' . urlencode($g->name), // FIXME - work with id instead of name here
+            '${genreSelectionUrl}' => $_SERVER['PHP_SELF'] . '?genre=' . urlencode($g->name),
             '${genre}'             => escape($g->name)
         ));
     }

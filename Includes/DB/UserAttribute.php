@@ -10,56 +10,11 @@ class UserAttribute {
     var $status; // valid values are "offers" and "needs"
 
     // non-table fields
-    var $attribute_name;
+    var $attribute_name; // currently not read/not used
 
     // constructors
     // ------------
     function UserAttribute() {
-    }
-
-    function fetchAttributeIdsForUserIdAndState($user_id, $status) {
-        $objs = array();
-
-        $result = _mysql_query(
-            'select * ' .
-            'from pp_user_attribute ' .
-            'where user_id = ' . n($user_id) . ' and ' .
-            'status = ' . qq($status)
-        );
-
-        while ($row = mysql_fetch_array($result)) {
-            $f = new UserAttribute();
-            $f = UserAttribute::_read_row($f, $row);
-
-            $objs[] = $f->attribute_id;
-        }
-
-        mysql_free_result($result);
-
-        return $objs;
-    }
-
-    function fetchAttributeNamesForUserIdAndState($user_id, $status) {
-        $objs = array();
-
-        $result = _mysql_query(
-            'select ua.*, a.name as attribute_name ' .
-            'from pp_user_attribute ua, pp_attribute a ' .
-            'where ua.user_id = ' . n($user_id) . ' and ' .
-            'ua.status = ' . qq($status) . ' and ' .
-            'ua.attribute_id = a.id'
-        );
-
-        while ($row = mysql_fetch_array($result)) {
-            $f = new UserAttribute();
-            $f = UserAttribute::_read_row($f, $row);
-
-            $objs[] = $f->attribute_name;
-        }
-
-        mysql_free_result($result);
-
-        return $objs;
     }
 
     function fetchForAttributeIdAndStatus($attribute_id, $status) {
@@ -125,6 +80,45 @@ class UserAttribute {
         return $ok;
     }
 
+    function getAttributeIdsForUserIdAndState($user_id, $status) {
+        $ids = array();
+
+        $result = _mysql_query(
+            'select attribute_id ' .
+            'from pp_user_attribute ' .
+            'where user_id = ' . n($user_id) . ' and ' .
+            'status = ' . qq($status)
+        );
+
+        while ($row = mysql_fetch_array($result)) {
+            $ids[] = $row['attribute_id'];
+        }
+
+        mysql_free_result($result);
+
+        return $ids;
+    }
+
+    function getAttributeNamesForUserIdAndState($user_id, $status) {
+        $names = array();
+
+        $result = _mysql_query(
+            'select a.name as attribute_name ' .
+            'from pp_user_attribute ua, pp_attribute a ' .
+            'where ua.user_id = ' . n($user_id) . ' and ' .
+            'ua.status = ' . qq($status) . ' and ' .
+            'ua.attribute_id = a.id'
+        );
+
+        while ($row = mysql_fetch_array($result)) {
+            $names[] = $row['attribute_name'];
+        }
+
+        mysql_free_result($result);
+
+        return $names;
+    }
+
     function deleteForUserId($userId) {
         return _mysql_query(
             'delete from pp_user_attribute ' .
@@ -134,14 +128,6 @@ class UserAttribute {
 
     // object methods
     // --------------
-    function save() {
-        if (isset($this->id)) {
-            return $this->update();
-        } else {
-            return $this->insert();
-        }
-    }
-
     function insert() {
         $ok = _mysql_query(
             'insert into pp_user_attribute ' .
@@ -157,23 +143,8 @@ class UserAttribute {
             return false;
         }
 
-        $this->id = mysql_insert_id();
-
         return $ok;
     }
-
-    function update() {
-        $ok = _mysql_query(
-            'update pp_user_attribute ' .
-            'set user_id = '      . n($this->user_id)      . ', ' .
-            'attribute_id = '     . n($this->attribute_id) . ', ' .
-            'status = '           . qq($this->status)      . ' ' .
-            'where id = '         . n($this->id)
-        );
-
-        return $ok;
-    }
-
 }
 
 ?>

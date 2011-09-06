@@ -21,7 +21,6 @@ class Project {
     var $rating_count;
     var $rating_value;
     var $competition_points; // when two songs are compared and one is chosen as the better song, its comp. points are incremented by 1
-    var $genres; // new: replace with association table entry to genre table
     var $visibility; // new: drop this? maybe useful in the future (pro feature - private projects)
     var $playback_count;
     var $download_count;
@@ -332,7 +331,10 @@ class Project {
         $objs = array();
         $result = _mysql_query(
                 'select distinct t.*, a.name as user_name, a.image_filename as user_img_filename ' .
-                'from pp_project t join pp_user a on t.user_id = a.id join pp_project_user_visibility puv on puv.project_id=t.id where 1=1 ' .
+                'from pp_project t ' .
+                'join pp_user a on t.user_id = a.id ' .
+                (count($genres) == 0 ? '' : 'join pp_project_genre pg on pg.project_id = t.id ') .
+                'join pp_project_user_visibility puv on puv.project_id=t.id where 1=1 ' .
                 ($userOrTitle == '' ? '' : 'and (a.name like ' . qqLike($userOrTitle) . ' or t.title like ' . qqLike($userOrTitle) . ') ') .
                 ($needsOthers == '' ? '' : 'and t.needs_others like ' . qqLike($needsOthers) . ' ') .
                 ($containsOthers == '' ? '' : 'and t.contains_others like ' . qqLike($containsOthers) . ' ') .
@@ -342,8 +344,7 @@ class Project {
                 nList($needsAttributeIds) . ') and attr.status="needs") ') .
                 ($containsAttributeIds == '' ? '' : ' and t.id=(select max(attr.project_id) from pp_project_attribute attr where attr.project_id = t.id and attr.attribute_id in (' .
                 nList($containsAttributeIds) . ') and attr.status="contains") ') .
-                (count($genres) == 0 ? '' : ' and t.genres in (' .
-                qqList($genres) . ') ') .
+                (count($genres) == 0 ? '' : ' and pg.genre_id in (' . qqList($genres) . ') ') .
                 ' order by entry_date desc ' .
                 'limit ' . n($from) . ', ' . n($length)
             );
@@ -368,7 +369,10 @@ class Project {
         $objs = array();
         $result = _mysql_query(
                 'select count(distinct t.id) as cnt ' .
-                'from pp_project t join pp_user a on t.user_id = a.id join pp_project_user_visibility puv on puv.project_id=t.id where 1=1 ' .
+                'from pp_project t ' .
+                'join pp_user a on t.user_id = a.id ' .
+                (count($genres) == 0 ? '' : 'join pp_project_genre pg on pg.project_id = t.id ') .
+                'join pp_project_user_visibility puv on puv.project_id=t.id where 1=1 ' .
                 ($userOrTitle == '' ? '' : 'and (a.name like ' . qqLike($userOrTitle) . ' or t.title like ' . qqLike($userOrTitle) . ') ') .
                 ($needsOthers == '' ? '' : 'and t.needs_others like ' . qqLike($needsOthers) . ' ') .
                 ($containsOthers == '' ? '' : 'and t.contains_others like ' . qqLike($containsOthers) . ' ') .
@@ -378,8 +382,7 @@ class Project {
                 nList($needsAttributeIds) . ') and attr.status="needs") ') .
                 ($containsAttributeIds == '' ? '' : ' and t.id=(select max(attr.project_id) from pp_project_attribute attr where attr.project_id = t.id and attr.attribute_id in (' .
                 nList($containsAttributeIds) . ') and attr.status="contains") ') .
-                (count($genres) == 0 ? '' : ' and t.genres in (' .
-                qqList($genres) . ') ') .
+                (count($genres) == 0 ? '' : ' and pg.genre_id in (' . qqList($genres) . ') ') .
                 ' order by t.entry_date desc '
             );
 
@@ -445,16 +448,18 @@ class Project {
 
     function fetchRandomPublicFinishedProject($genre = null, $excludeProjectId = null) {
         $whereClauseAddon = '';
+        $fromAddon = '';
         if (!is_null($excludeProjectId)) {
             $whereClauseAddon .= 'and t.id != ' . n($excludeProjectId) . ' ';
         }
         if ($genre) {
-            $whereClauseAddon .= 'and t.genres like ' . qqLike($genre) . ' ';
+            $whereClauseAddon .= 'and t.id = pg.project_id and pg.genre_id = g.id and g.name like ' . qqLike($genre) . ' ';
+            $fromAddon = ', pp_project_genre pg, pp_genre g';
         }
 
         $result = _mysql_query(
             'select p.*, u.name as user_name, u.image_filename as user_img_filename, f.filename as mp3_filename ' .
-            'from pp_project t, pp_project_file f, pp_user u ' .
+            'from pp_project t, pp_project_file f, pp_user u' . $fromAddon . ' ' .
             'where p.status = "finished" ' .
             'and p.visibility = "public" ' .
             'and p.user_id = u.id ' .
@@ -477,7 +482,7 @@ class Project {
     }
 
     function fetchAllThatNeedSkillsOfUser(&$user) {
-        $attribute_id_list = UserAttribute::fetchAttributeIdsForUserIdAndState($user->id, 'offers');
+        $attribute_id_list = UserAttribute::getAttributeIdsForUserIdAndState($user->id, 'offers');
 
         $objs = array();
 
@@ -535,7 +540,6 @@ class Project {
         $a->rating_count              = $row['rating_count'];
         $a->rating_value              = $row['rating_value'];
         $a->competition_points        = $row['competition_points'];
-        $a->genres                    = $row['genres'];
         $a->visibility                = $row['visibility'];
         $a->playback_count            = $row['playback_count'];
         $a->download_count            = $row['download_count'];
@@ -569,7 +573,6 @@ class Project {
             'rating_count              int(10)      not null, ' .
             'rating_value              float        not null, ' .
             'competition_points        int(10)      not null, ' .
-            'genres                    varchar(255), ' .
             'visibility                varchar(10)  not null, ' .
             'playback_count            int(10)      not null, ' .
             'download_count            int(10)      not null, ' .
@@ -691,7 +694,7 @@ class Project {
             'insert into pp_project ' .
             '(user_id, title, ' .
             'price, currency, sorting, type, originating_user_id, rating_count, ' .
-            'rating_value, competition_points, genres, visibility, playback_count, download_count, ' .
+            'rating_value, competition_points, visibility, playback_count, download_count, ' .
             'status, contains_others, needs_others, additional_info, entry_date) ' .
             'values (' .
             n($this->user_id)                    . ', ' .
@@ -704,7 +707,6 @@ class Project {
             n($this->rating_count)               . ', ' .
             n($this->rating_value)               . ', ' .
             n($this->competition_points)         . ', ' .
-            qq($this->genres)                    . ', ' .
             qq($this->visibility)                . ', ' .
             n($this->playback_count)             . ', ' .
             n($this->download_count)             . ', ' .
@@ -738,7 +740,6 @@ class Project {
             'rating_count = '              . n($this->rating_count)               . ', ' .
             'rating_value = '              . n($this->rating_value)               . ', ' .
             'competition_points = '        . n($this->competition_points)         . ', ' .
-            'genres = '                    . qq($this->genres)                    . ', ' .
             'visibility = '                . qq($this->visibility)                . ', ' .
             'playback_count = '            . n($this->playback_count)             . ', ' .
             'download_count = '            . n($this->download_count)             . ', ' .

@@ -21,7 +21,7 @@ $containsOthers = get_param('containsOthers');
 $needsOthers = get_param('needsOthers');
 $genres = get_param('genres') ? explode(',', get_param('genres')) : array();
 
-$logger->info(print_r($genres, true));
+$logger->info('genre-ids: ' . print_r($genres, true));
 
 $tracks = Project::fetchForSearch($from, $length, $userOrTitle, $needsAttributIds, $containsAttributIds, $needsOthers, $containsOthers, $genres, false, false, $visitorUserId);
 $filteredTracksCount = Project::fetchCountForSearch($userOrTitle, $needsAttributIds, $containsAttributIds, $needsOthers, $containsOthers, $genres, false, false, $visitorUserId);
@@ -39,7 +39,7 @@ foreach ($tracks as $track) {
         $filename = str_replace('.jpg', '_thumb.jpg', $track->user_img_filename);
         $userImg    = $GLOBALS['USER_IMAGE_BASE_PATH'] . $filename;
         $userImgUrl = $GLOBALS['USER_IMAGE_BASE_URL']  . $filename;
-    
+
         if (file_exists($userImg)) {
             $track->user_img_filename =  $userImgUrl;
         } else {
@@ -48,9 +48,9 @@ foreach ($tracks as $track) {
     } else {
         $track->user_img_filename = '../Images/no_artist_image.png';
     }
-    
+
     $trackData->aaData[$i] = array($track->user_img_filename, $track->user_name, $track->title, $track->id, $track->user_id);
-    $i = $i + 1;   
+    $i = $i + 1;
 }
 
 echo $jsonService->encode($trackData);

@@ -17,51 +17,6 @@ class ProjectAttribute {
     function ProjectAttribute() {
     }
 
-    function fetchAttributeIdsForProjectIdAndState($project_id, $status) {
-        $objs = array();
-
-        $result = _mysql_query(
-            'select * ' .
-            'from pp_project_attribute ' .
-            'where project_id = ' . n($project_id) . ' and ' .
-            'status = ' . qq($status)
-        );
-
-        while ($row = mysql_fetch_array($result)) {
-            $f = new ProjectAttribute();
-            $f = ProjectAttribute::_read_row($f, $row);
-
-            $objs[] = $f->attribute_id;
-        }
-
-        mysql_free_result($result);
-
-        return $objs;
-    }
-
-    function fetchAttributeNamesForProjectIdAndState($project_id, $status) {
-        $objs = array();
-
-        $result = _mysql_query(
-            'select pa.*, a.name as attribute_name ' .
-            'from pp_project_attribute pa, pp_attribute a ' .
-            'where pa.project_id = ' . n($project_id) . ' and ' .
-            'pa.status = ' . qq($status) . ' and ' .
-            'pa.attribute_id = a.id'
-        );
-
-        while ($row = mysql_fetch_array($result)) {
-            $f = new ProjectAttribute();
-            $f = ProjectAttribute::_read_row($f, $row);
-
-            $objs[] = $f->attribute_name;
-        }
-
-        mysql_free_result($result);
-
-        return $objs;
-    }
-
     function fetchForAttributeIdAndStatus($attribute_id, $status) {
         $objs = array();
 
@@ -74,7 +29,7 @@ class ProjectAttribute {
 
         while ($row = mysql_fetch_array($result)) {
             $f = new ProjectAttribute();
-            $f = ProjectAttribute::_read_row($f, $row);
+            ProjectAttribute::_read_row($f, $row);
 
             $objs[] = $f;
         }
@@ -98,7 +53,7 @@ class ProjectAttribute {
 
         while ($row = mysql_fetch_array($result)) {
             $f = new ProjectAttribute();
-            $f = ProjectAttribute::_read_row($f, $row);
+            ProjectAttribute::_read_row($f, $row);
 
             $objs[] = $f;
         }
@@ -120,7 +75,7 @@ class ProjectAttribute {
         }
     }
 
-    function _read_row($a, $row) {
+    function _read_row(&$a, $row) {
         $a->project_id       = $row['project_id'];
         $a->attribute_id     = $row['attribute_id'];
         $a->status           = $row['status'];
@@ -147,6 +102,45 @@ class ProjectAttribute {
         );
 
         return $ok;
+    }
+
+    function getAttributeIdsForProjectIdAndState($project_id, $status) {
+        $ids = array();
+
+        $result = _mysql_query(
+            'select attribute_id ' .
+            'from pp_project_attribute ' .
+            'where project_id = ' . n($project_id) . ' and ' .
+            'status = ' . qq($status)
+        );
+
+        while ($row = mysql_fetch_array($result)) {
+            $ids[] = $row['attribute_id'];
+        }
+
+        mysql_free_result($result);
+
+        return $ids;
+    }
+
+    function getAttributeNamesForProjectIdAndState($project_id, $status) {
+        $names = array();
+
+        $result = _mysql_query(
+            'select a.name as attribute_name ' .
+            'from pp_project_attribute pa, pp_attribute a ' .
+            'where pa.project_id = ' . n($project_id) . ' and ' .
+            'pa.status = ' . qq($status) . ' and ' .
+            'pa.attribute_id = a.id'
+        );
+
+        while ($row = mysql_fetch_array($result)) {
+            $names[] = $row['attribute_name'];
+        }
+
+        mysql_free_result($result);
+
+        return $names;
     }
 
     function deleteForProjectId($projectId) {
@@ -181,18 +175,15 @@ class ProjectAttribute {
             return false;
         }
 
-        $this->id = mysql_insert_id();
-
         return $ok;
     }
 
     function update() {
         $ok = _mysql_query(
             'update pp_project_attribute ' .
-            'set project_id = '   . n($this->project_id)   . ', ' .
-            'attribute_id = '     . n($this->attribute_id) . ', ' .
-            'status = '           . qq($this->status)      . ' ' .
-            'where id = '         . n($this->id)
+            'set status = '       . qq($this->status)      . ' ' .
+            'where project_id = ' . n($this->project_id)   . ' ' .
+            'and attribute_id = ' . n($this->attribute_id)
         );
 
         return $ok;

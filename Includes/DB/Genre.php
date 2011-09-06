@@ -53,6 +53,25 @@ class Genre {
         return $g;
     }
 
+    function fetchForName($name) {
+        $result = _mysql_query(
+            'select * ' .
+            'from pp_genre ' .
+            'where name = ' . qq($name)
+        );
+
+        $g = null;
+
+        if ($row = mysql_fetch_array($result)) {
+            $g = new Genre();
+            Genre::_read_row($g, $row);
+        }
+
+        mysql_free_result($result);
+
+        return $g;
+    }
+
     function _read_row(&$g, $row) {
         $g->id   = $row['id'];
         $g->name = $row['name'];
@@ -151,7 +170,7 @@ class Genre {
         $genres = array();
         $all = Genre::fetchAll();
         foreach ($all as $g) {
-            $genres[$g] = $g; // FIXME - this should rather be an id -> name array!
+            $genres[$g->id] = $g->name;
         }
         return $genres;
     }

@@ -7,6 +7,8 @@ include_once('../Includes/DB/ProjectAttribute.php');
 include_once('../Includes/DB/ProjectUserVisibility.php');
 include_once('../Includes/DB/User.php');
 
+// FIXME - needed? if yes, rename stuff from "track" to "project"
+
 $visitorUserId = -1;
 $userIsLoggedIn  = false;
 
@@ -58,8 +60,8 @@ if ($track) { // could be empty if wrong id or not visible for logged in user
     echo '</small>';
 
     // track attributes
-    $containsAttrs = ProjectAttribute::fetchAttributeNamesForProjectIdAndState($track->id, 'contains');
-    $needsAttrs    = ProjectAttribute::fetchAttributeNamesForProjectIdAndState($track->id, 'needs');
+    $containsAttrs = ProjectAttribute::getAttributeNamesForProjectIdAndState($track->id, 'contains');
+    $needsAttrs    = ProjectAttribute::getAttributeNamesForProjectIdAndState($track->id, 'needs');
 
     if (count($containsAttrs) > 0) {
         echo '<br><br><b>This track contains:</b><br>' . "\n";

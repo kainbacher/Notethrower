@@ -11,6 +11,7 @@ include_once('../Includes/DB/Genre.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectAttribute.php');
 include_once('../Includes/DB/ProjectFile.php');
+include_once('../Includes/DB/ProjectGenre.php');
 include_once('../Includes/DB/ProjectUserVisibility.php');
 include_once('../Includes/DB/User.php');
 
@@ -37,7 +38,6 @@ if (get_param('action') == 'create') {
     $project->originating_user_id       = null;
     $project->price                     = 0;
     $project->currency                  = 'USD'; // TODO - take from config - check other occurences as well
-    $project->genres                    = '';
     $project->visibility                = 'public';
     $project->playback_count            = 0;
     $project->download_count            = 0;
@@ -265,13 +265,15 @@ $formElementsList .= getFormFieldForParams(array(
 ));
 
 $formElementsList .= getFormFieldForParams(array(
-    'inputType'              => 'select',
+    'inputType'              => 'multiselect2',
     'propName'               => 'genres',
-    'label'                  => 'Genre',
+    'label'                  => 'Genres',
     'mandatory'              => true,
-    'selectOptions'          => array_merge(array('' => '- Please choose -'), Genre::getSelectorOptionsArray()),
+    'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
     'obj'                    => $project,
     'unpersistedObj'         => $unpersistedProject,
+    'selectOptions'          => Genre::getSelectorOptionsArray(),
+    'objValues'              => ProjectGenre::getGenreIdsForProjectId($project->id),
     'errorFields'            => $errorFields,
     'workWithUnpersistedObj' => $problemOccured
 ));
@@ -286,7 +288,7 @@ $formElementsList .= getFormFieldForParams(array(
     'obj'                    => $project,
     'unpersistedObj'         => $unpersistedProject,
     'selectOptions'          => Attribute::getIdNameMapShownFor('needs'),
-    'objValues'              => ProjectAttribute::fetchAttributeIdsForProjectIdAndState($project->id, 'needs'),
+    'objValues'              => ProjectAttribute::getAttributeIdsForProjectIdAndState($project->id, 'needs'),
     'errorFields'            => $errorFields,
     'workWithUnpersistedObj' => $problemOccured,
     'infoText'               => 'Make a list of what\'s needed for this project to be finished. Other artists will find your project based on this information.'
@@ -474,12 +476,14 @@ function inputDataOk(&$errorFields, &$project) {
         }
     }
 
-    if (strlen(get_param('genres')) < 1) {
-        $errorFields['genres'] = 'Genre is missing!';
+    if (strlen(get_param('projectGenresList')) < 1) {
+        $errorFields['genres'] = 'Please choose at least one genre here!';
+        $result = false;
+
+    } else if (preg_match('/[^0-9,]/', get_param('projectGenresList'))) {
+        $errorFields['attributes'] = 'Invalid genres list'; // can only happen when someone plays around with the post data
         $result = false;
     }
-
-    // FIXME - check genres for validity
 
 // currently hidden, but maybe a candidate for pro users
 //    if (strlen(get_param('visibility')) < 1) {
@@ -511,7 +515,6 @@ function processParams(&$project, &$user) {
     $project->type                    = get_param('type') == 'remix' ? 'remix' : 'original'; // this is a hidden field, popuplated with a url param
     $project->originating_user_id     = get_numeric_param('originating_user_id');
     $project->price                   = get_numeric_param('price');
-    $project->genres                  = get_param('genres');
     //$project->visibility              = get_param('visibility'); // currently hidden, but maybe a candidate for pro users
     //$project->status                  = 'active';
     //$project->sorting                 = get_numeric_param('sorting');
@@ -545,6 +548,12 @@ function processParams(&$project, &$user) {
 //            $logger->error('no originator found for user id: ' . $project->originating_user_id);
 //        }
 //    }
+
+    // handle project genres
+    if (!is_null($project->id)) {
+        ProjectGenre::deleteForProjectId($project->id); // first, delete all existing genres
+        ProjectGenre::addAll(explode(',', get_param('projectGenresList')), $project->id); // then save the selected genres
+    }
 
     // handle project attributes
     if (!is_null($project->id)) {

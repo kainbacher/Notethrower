@@ -41,7 +41,7 @@ ${Common/bodyHeader}
             ${Common/formElement_list}
 
             <div class="prepend-6 span-6 last">
-                <input class="button blue" type="submit" value="${submitButtonValue}" onClick="buildProjectAttributesAndSubGenresList();">
+                <input class="button blue" type="submit" value="${submitButtonValue}" onClick="buildProjectAttributesAndSubGenresLists();">
             </div>
         </form>
 
@@ -100,7 +100,7 @@ function openUploaderPopup(isMixMp3File) {
     );
 }
 
-function buildProjectAttributesAndSubGenresList() {
+function buildProjectAttributesAndSubGenresLists() {
     if ($('#attributes').val()) {
         var aList = $('#attributes').val().join(','); // create comma separated list string ...
         $('#projectAttributesList').val(aList); // ... and save the string in the hidden field

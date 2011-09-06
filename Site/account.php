@@ -8,8 +8,10 @@ include_once('../Includes/FormUtil.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/Attribute.php');
+include_once('../Includes/DB/Genre.php');
 include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/UserAttribute.php');
+include_once('../Includes/DB/UserGenre.php');
 
 $user = null;
 $unpersistedUser = null;
@@ -181,10 +183,25 @@ if ($userIsLoggedIn) { // it's an update
             'obj'                    => $user,
             'unpersistedObj'         => $unpersistedUser,
             'selectOptions'          => $selectOptions,
-            'objValues'              => UserAttribute::getAttributeIdsForUserIdAndState($user->id, 'offers'),
+            'objValues'              => $problemOccured ? $unpersistedUser->unpersistedUserAttributes : UserAttribute::getAttributeIdsForUserIdAndState($user->id, 'offers'),
             'errorFields'            => $errorFields,
             'workWithUnpersistedObj' => $problemOccured,
             'infoText'               => 'List your skills here.'
+        ));
+
+        // user genres
+        $formElementsSection1 .= getFormFieldForParams(array(
+            'inputType'              => 'multiselect2',
+            'propName'               => 'genres',
+            'label'                  => 'Genres',
+            'mandatory'              => false,
+            'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
+            'obj'                    => $user,
+            'unpersistedObj'         => $unpersistedUser,
+            'selectOptions'          => Genre::getSelectorOptionsArray(),
+            'objValues'              => $problemOccured ? $unpersistedUser->unpersistedUserGenres : UserGenre::getGenreIdsForUserId($user->id),
+            'errorFields'            => $errorFields,
+            'workWithUnpersistedObj' => $problemOccured
         ));
 
         $formElementsSection1 .= getFormFieldForParams(array(
@@ -573,6 +590,11 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
                 $errorFields['attributes'] = 'Invalid attributes list'; // can only happen when someone plays around with the post data
                 $result = false;
             }
+
+            if (preg_match('/[^0-9,]/', get_param('userGenresList'))) {
+                $errorFields['genres'] = 'Invalid genres list'; // can only happen when someone plays around with the post data
+                $result = false;
+            }
         }
     }
 
@@ -613,13 +635,20 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
         $user->influences      = get_param('influences');
         $user->paypal_account  = get_param('paypal_account');
 
-        if ($userIsLoggedIn && $user->id) {
-            UserAttribute::deleteForUserId($user->id); // first, delete all existing
-            UserAttribute::addAll(explode(',', get_param('userAttributesList')), $user->id, 'offers'); // then save the selected attributes
-        }
+        if ($userIsLoggedIn) {
+            // handle user attributes & genres
+            if ($user->id) {
+                UserAttribute::deleteForUserId($user->id); // first, delete all existing
+                UserAttribute::addAll(explode(',', get_param('userAttributesList')), $user->id, 'offers'); // then save the selected attributes
 
-        // FIXME - wenn attribute angegeben werden, aber sonstige params ungültig sind, gehen die attribute verloren.
-        // -> irgendwie zwischenspeichern
+                UserGenre::deleteForUserId($user->id); // first, delete all existing genres
+                UserGenre::addAll(explode(',', get_param('userGenresList')), $user->id); // and the selected genres
+
+            } else { // work with unpersisted obj
+                $user->unpersistedUserAttributes = explode(',', get_param('userAttributesList'));
+                $user->unpersistedUserGenres = explode(',', get_param('userGenresList'));
+            }
+        }
 
     } else {
         $user->is_artist       = false;

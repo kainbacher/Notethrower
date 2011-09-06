@@ -110,7 +110,7 @@ function getFormFieldForParams($params) {
         }
 
         foreach (array_keys($selectOptions) as $optVal) {
-            $selected = in_array($optVal, $objValues) ? $selected = ' selected' : ''; // in_array() with strict flag is making problems with numeric values
+            $selected = $objValues && in_array($optVal, $objValues) ? $selected = ' selected' : ''; // in_array() with strict flag is making problems with numeric values
             $options .= processTpl('Common/formElementInputField_select_option.html', array(
                 '${value}'             => $optVal,
                 '${selected_optional}' => $selected,

@@ -367,16 +367,17 @@ if ($userIsLoggedIn) { // it's an update
 if (!$userIsLoggedIn) {
     if ($pageMode == 'artist') {
         $formElementsSection2 .= getFormFieldForParams(array(
-            'inputType'              => 'checkbox',
-            'propName'               => 'terms_accepted',
-            'label'                  => 'Artist Agreement',
-            'mandatory'              => true,
-            'obj'                    => $user,
-            'unpersistedObj'         => $unpersistedUser,
-            'errorFields'            => $errorFields,
-            'workWithUnpersistedObj' => $problemOccured,
-            'objValueOverride'       => get_param('terms_accepted'), // since this field is not stored in the user obj, we need an override
-            'infoHtml'               => 'I\'ve read and agree to <a href="javascript:showTermsAndConditions();">Notethrower\'s Artist Agreement</a>.' // FIXME - html display
+            'inputType'                 => 'checkbox',
+            'propName'                  => 'terms_accepted',
+            'label'                     => 'Artist Agreement',
+            'inputFieldGroupSuffixHtml' => 'I\'ve read and agree to<br><a href="javascript:showTermsAndConditions();">Notethrower\'s Artist Agreement</a>',
+            'mandatory'                 => true,
+            'obj'                       => $user,
+            'unpersistedObj'            => $unpersistedUser,
+            'errorFields'               => $errorFields,
+            'workWithUnpersistedObj'    => $problemOccured,
+            'objValueOverride'          => get_param('terms_accepted'), // since this field is not stored in the user obj, we need an override
+            'infoHtml'                  => 'Please confirm that you\'ve read and agree to the Notethrower Artist Agreement.' // FIXME - html display
         ));
     }
 

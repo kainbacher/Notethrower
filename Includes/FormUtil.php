@@ -21,28 +21,28 @@ function getFormFieldForParams($params) {
     $workWithUnpersistedObj   = $params['workWithUnpersistedObj'];
 
     // optional params
-    $label                    = array_key_exists('label', $params)                    ? $params['label']                    : str($propName);
-    $inputType                = array_key_exists('inputType', $params)                ? $params['inputType']                : 'text';
-    $inputFieldGroupPrefix    = array_key_exists('inputFieldGroupPrefix', $params)    ? $params['inputFieldGroupPrefix']    : null;
-    $inputFieldPrefix         = array_key_exists('inputFieldPrefix', $params)         ? $params['inputFieldPrefix']         : null;
-    $inputFieldSuffix         = array_key_exists('inputFieldSuffix', $params)         ? $params['inputFieldSuffix']         : null;
-    $inputFieldGroupSuffix    = array_key_exists('inputFieldGroupSuffix', $params)    ? $params['inputFieldGroupSuffix']    : null;
-    $maxlength                = array_key_exists('maxlength', $params)                ? $params['maxlength']                : 0;
-    $size                     = array_key_exists('size', $params)                     ? $params['size']                     : 0;
-    $selectOptions            = array_key_exists('selectOptions', $params)            ? $params['selectOptions']            : array();
-    $objValue                 = array_key_exists('objValue', $params)                 ? $params['objValue']                 : null;
-    $objValues                = array_key_exists('objValues', $params)                ? $params['objValues']                : null;
-    $infoText                 = array_key_exists('infoText', $params)                 ? $params['infoText']                 : null;
-    $infoHtml                 = array_key_exists('infoHtml', $params)                 ? $params['infoHtml']                 : null;
-    $onChangeCallback         = array_key_exists('onChangeCallback', $params)         ? $params['onChangeCallback']         : null;
-    $customStyleForInputField = array_key_exists('customStyleForInputField', $params) ? $params['customStyleForInputField'] : null;
-    $hide                     = array_key_exists('hide', $params)                     ? $params['hide']                     : false;
-    $rows                     = array_key_exists('rows', $params)                     ? $params['rows']                     : 3;
-    $cols                     = array_key_exists('cols', $params)                     ? $params['cols']                     : 30;
-    $disabled                 = array_key_exists('disabled', $params)                 ? $params['disabled']                 : false;
-    $recaptchaPublicKey       = array_key_exists('recaptchaPublicKey', $params)       ? $params['recaptchaPublicKey']       : '';
-    $objValueOverride         = array_key_exists('objValueOverride', $params)         ? $params['objValueOverride']         : null;
-    $cssClassSuffix           = array_key_exists('cssClassSuffix', $params)           ? $params['cssClassSuffix']           : null;
+    $label                     = array_key_exists('label', $params)                     ? $params['label']                     : str($propName);
+    $inputType                 = array_key_exists('inputType', $params)                 ? $params['inputType']                 : 'text';
+    $inputFieldGroupPrefix     = array_key_exists('inputFieldGroupPrefix', $params)     ? $params['inputFieldGroupPrefix']     : null;
+    $inputFieldPrefix          = array_key_exists('inputFieldPrefix', $params)          ? $params['inputFieldPrefix']          : null;
+    $inputFieldSuffix          = array_key_exists('inputFieldSuffix', $params)          ? $params['inputFieldSuffix']          : null;
+    $inputFieldGroupSuffixHtml = array_key_exists('inputFieldGroupSuffixHtml', $params) ? $params['inputFieldGroupSuffixHtml'] : null;
+    $maxlength                 = array_key_exists('maxlength', $params)                 ? $params['maxlength']                 : 0;
+    $size                      = array_key_exists('size', $params)                      ? $params['size']                      : 0;
+    $selectOptions             = array_key_exists('selectOptions', $params)             ? $params['selectOptions']             : array();
+    $objValue                  = array_key_exists('objValue', $params)                  ? $params['objValue']                  : null;
+    $objValues                 = array_key_exists('objValues', $params)                 ? $params['objValues']                 : null;
+    $infoText                  = array_key_exists('infoText', $params)                  ? $params['infoText']                  : null;
+    $infoHtml                  = array_key_exists('infoHtml', $params)                  ? $params['infoHtml']                  : null;
+    $onChangeCallback          = array_key_exists('onChangeCallback', $params)          ? $params['onChangeCallback']          : null;
+    $customStyleForInputField  = array_key_exists('customStyleForInputField', $params)  ? $params['customStyleForInputField']  : null;
+    $hide                      = array_key_exists('hide', $params)                      ? $params['hide']                      : false;
+    $rows                      = array_key_exists('rows', $params)                      ? $params['rows']                      : 3;
+    $cols                      = array_key_exists('cols', $params)                      ? $params['cols']                      : 30;
+    $disabled                  = array_key_exists('disabled', $params)                  ? $params['disabled']                  : false;
+    $recaptchaPublicKey        = array_key_exists('recaptchaPublicKey', $params)        ? $params['recaptchaPublicKey']        : '';
+    $objValueOverride          = array_key_exists('objValueOverride', $params)          ? $params['objValueOverride']          : null;
+    $cssClassSuffix            = array_key_exists('cssClassSuffix', $params)            ? $params['cssClassSuffix']            : null;
 
     // label
     $label = processTpl('Common/formElementLabel_' . ($mandatory ? 'mandatory' : 'optional') . '.html', array(
@@ -360,7 +360,7 @@ function getFormFieldForParams($params) {
         '${Common/formElementLabel_choice}'      => $label,
         '${prefix}'                              => ($inputFieldGroupPrefix ? escape($inputFieldGroupPrefix) . '&nbsp;' : ''),
         '${Common/formElementInputField_choice}' => $inputField,
-        '${suffix}'                              => ($inputFieldGroupSuffix ? '&nbsp;' . escape($inputFieldGroupSuffix) : ''),
+        '${suffix}'                              => ($inputFieldGroupSuffixHtml ? '&nbsp;' . $inputFieldGroupSuffixHtml : ''),
         '${Common/formElementHelp_optional}'     => $help,
         '${Common/formElementError_optional}'    => $errorMsg
     ));

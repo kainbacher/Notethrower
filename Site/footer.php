@@ -7,7 +7,7 @@
                 <li><a href="faq.php" target="_blank">Help and Feedback</a></li>
                 <li><a href="faq.php">FAQ</a></li>
                 <li><a href="about.php">About Page</a></li>
-                <li>&copy; Copyright 2010 Notethrower</li>
+                <li>&copy; Copyright 2010 oneloudr.com</li>
             </ul>
         </div>
 
@@ -18,7 +18,7 @@
                 <li><a href="contact.php">Contact</a></li>
                 <li><a href="http://twitter.com/Notethrower" target="_blank">Twitter</a></li>
                 <li><a href="http://www.facebook.com/pages/Notethrower/170458041694" target="_blank">Facebook</a></li>
-                <li><a href="blogNew">Notethrower Blog</a></li>
+                <li><a href="blogNew">oneloudr Blog</a></li>
             </ul>
         </div>
 
@@ -26,7 +26,7 @@
         <div class="span-6">
             <h3>oneloudr.com <span class="blue">Pro</span></h3>
             <p>Custom Music Supervision and Audio branding Services. For Rates contact <a href="mailto:music@notethrower.com">music(at)notethrower.com</a>.</p>
-            <p>Notethrower is music collaboration and music licensing, made easy. Share your Frequency.</p>
+            <p>oneloudr is music collaboration and music licensing, made easy. Share your Frequency.</p>
         </div>
 
 

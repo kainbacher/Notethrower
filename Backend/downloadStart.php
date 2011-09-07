@@ -197,7 +197,7 @@ var fileSelected = false;
       </div>
 
       <!--<div id="podperfect_headline">
-        <span class="headline">notethrower.com</span><br>
+        <span class="headline">oneloudr.com</span><br>
         Music Collaboration and Licensing
       </div>-->
 
@@ -262,11 +262,11 @@ Remix Agreement
 
 "You have asked to download a song for the purpose of remixing it, or to simply use for non-commercial use. If you intend to participate in collaboration with another artist,  you may create a remix or use the song for non-commercial use under a Non-Commercial Creative Commons license, only if you agree to the following terms.  To agree to these terms, you must click "I accept."
 
-This Agreement sets forth your rights and obligations regarding the remix so you should read it.  Among the important things it says are the following:  If you make a remix, you must upload it to Notethrower, where it will be distributed and licensed according to the Notethrower Artist terms <LINK>.  Notethrower will distribute it to individuals free of charge for personal, non-commercial use under a Creative Commons license.  Notethrower will also offer the remix for commercial licensing, and any fees will be split between you and the original artist after Notethrower takes its fees.  You and original artist will be co-owners of the remix and will be required to split any revenue from it.  The details of these terms are set forth below in the Agreement."
+This Agreement sets forth your rights and obligations regarding the remix so you should read it.  Among the important things it says are the following:  If you make a remix, you must upload it to oneloudr, where it will be distributed and licensed according to the oneloudr Artist terms <LINK>.  oneloudr will distribute it to individuals free of charge for personal, non-commercial use under a Creative Commons license.  oneloudr will also offer the remix for commercial licensing, and any fees will be split between you and the original artist after oneloudr takes its fees.  You and original artist will be co-owners of the remix and will be required to split any revenue from it.  The details of these terms are set forth below in the Agreement."
 
 
 
-This agreement "Agreement" sets forth the terms under which Notethrower authorizes you "New Artist" to create a remixed version of an Original Recording that has been posted on the Notethrower service.  The Original Artist has licensed to Notethrower certain rights with respect to the Original Song with the right to further sublicense rights to other artists, such as the New Artist.  For good and valuable consideration, the receipt of which is acknowledged, the parties agree as follows.
+This agreement "Agreement" sets forth the terms under which oneloudr authorizes you "New Artist" to create a remixed version of an Original Recording that has been posted on the oneloudr service.  The Original Artist has licensed to oneloudr certain rights with respect to the Original Song with the right to further sublicense rights to other artists, such as the New Artist.  For good and valuable consideration, the receipt of which is acknowledged, the parties agree as follows.
 
 1.	Definitions
 
@@ -282,11 +282,11 @@ Original Artist:  the author or authors of the Original Composition.
 
 Original Composition:  the musical composition authored by Original Artist embodied in the Original Recording.
 
-Original Recording:  the sound recording that (a) was created by Original Artist; (b) posted on the Notethrower Service; and (c) downloaded by New Artist for use pursuant to this Agreement.
+Original Recording:  the sound recording that (a) was created by Original Artist; (b) posted on the oneloudr Service; and (c) downloaded by New Artist for use pursuant to this Agreement.
 
 2.	License
 
-a.	Grant.  Notethrower grants New Artist a non-exclusive and non-transferable right, in accordance with the terms of this Agreement, to copy the Original Song as necessary for use under this Agreement and to create a single derivative work of the Original Song by modifying the Original Recording through remixing, sampling, adding additional vocal or instrumental tracks, or otherwise changing it.
+a.	Grant.  oneloudr grants New Artist a non-exclusive and non-transferable right, in accordance with the terms of this Agreement, to copy the Original Song as necessary for use under this Agreement and to create a single derivative work of the Original Song by modifying the Original Recording through remixing, sampling, adding additional vocal or instrumental tracks, or otherwise changing it.
 
 b.	Restrictions on Grant.  Notwithstanding the foregoing, the intent of the license set forth in this Section is to facilitate the creation of a significantly modified work that recasts, transforms, adapts, or adds to the Original Composition.  Changes unlikely to be perceived as significant by listeners (by way of example, but not limited to, adding a few seconds of silence to the beginning or end of the track) violate the terms of the license set forth in this Section 2 and will thus result in New Artist gaining no rights pursuant to Section 3 of this Agreement.
 
@@ -294,39 +294,39 @@ b.	Restrictions on Grant.  Notwithstanding the foregoing, the intent of the lice
 
 a.	Ownership of New Master and New Composition.  The New Artist and Original Artist are joint authors of the New Master and New Composition and co-owners of the copyrights therein.  Any registration of the New Master or New Composition with any governmental copyright office, including, but not limited to the U.S. Copyright Office, or with any collecting society, including, but not limited to ASCAP, BMI, SESAC, or SoundExchange, shall acknowledge such joint authorship and co-ownership.  The joint authorship will be attributed and acknowledged in connection with any publication of the New Song.
 
-b.	License to Notethrower.   New Artist will promptly upload the New Master, and in any event, within no more than 30 days after completion, to the Notethrower Service.  New Artist grants to Notethrower a non-exclusive, transferable, right to reproduce, distribute, publicly perform, and sublicense the New Song in all Media pursuant to the Notethrower Artist Agreement <LINK>, which is hereby incorporated by reference.
+b.	License to oneloudr.   New Artist will promptly upload the New Master, and in any event, within no more than 30 days after completion, to the oneloudr Service.  New Artist grants to oneloudr a non-exclusive, transferable, right to reproduce, distribute, publicly perform, and sublicense the New Song in all Media pursuant to the oneloudr Artist Agreement <LINK>, which is hereby incorporated by reference.
 
-c.	Trademarks and Right of Publicity.  New Artist hereby grants Notethrower and Original Artist a non-exclusive, assignable and sub-licensable license to reproduce and display New Artists trademarks, service marks, logos, and any elements associated with the identity of New Artist including, but not limited to New Artists name, likeness, or signature, for the purpose of identifying the New Artist or any portion thereof in connection with (a) the promotion and marketing of the New Song in any Media and  (b) the promotion of the Notethrower website and business.
+c.	Trademarks and Right of Publicity.  New Artist hereby grants oneloudr and Original Artist a non-exclusive, assignable and sub-licensable license to reproduce and display New Artists trademarks, service marks, logos, and any elements associated with the identity of New Artist including, but not limited to New Artists name, likeness, or signature, for the purpose of identifying the New Artist or any portion thereof in connection with (a) the promotion and marketing of the New Song in any Media and  (b) the promotion of the oneloudr website and business.
 
 d.	Original Song.  For the avoidance of doubt, New Artist acknowledges that this Agreement grants New Artist no rights in, and creates no obligations with respect to, the Original Song or any derivative work based on the Original Song other than the rights needed to create and exploit the New Master and New Composition pursuant to this Agreement.
 
 4.	 Exploitation of the New Song
 
-a.	Notethrower Royalties.  Notethrower will divide all money payable pursuant to the Notethrower Artist Agreement <LINK>, which is hereby incorporated by reference, pertaining to the New Song evenly (50/50) between New Artist and Original Artist.
+a.	oneloudr Royalties.  oneloudr will divide all money payable pursuant to the oneloudr Artist Agreement <LINK>, which is hereby incorporated by reference, pertaining to the New Song evenly (50/50) between New Artist and Original Artist.
 
-b.	Other Revenue.  Unless otherwise agreed by the New Artist and Original Artist, the New Artist agrees to pay the Original Artist 50% of all gross income from commercial exploitation of the New Song.  For the avoidance of doubt, Original Artist has agreed to a reciprocal obligation to New Artist pursuant to the Notethrower Artist Agreement <LINK>, which is hereby incorporated by reference.  Unless otherwise agreed by the New Artist and Original Artist, each will bear its own expenses, taxes, and other costs associated with creating and exploiting the New Song.
+b.	Other Revenue.  Unless otherwise agreed by the New Artist and Original Artist, the New Artist agrees to pay the Original Artist 50% of all gross income from commercial exploitation of the New Song.  For the avoidance of doubt, Original Artist has agreed to a reciprocal obligation to New Artist pursuant to the oneloudr Artist Agreement <LINK>, which is hereby incorporated by reference.  Unless otherwise agreed by the New Artist and Original Artist, each will bear its own expenses, taxes, and other costs associated with creating and exploiting the New Song.
 
-c.	Further Exploitation of New Song.  The New Artist will reasonably cooperate with the Original Artist to exploit the New Song.  In any event, except as set forth in the Notethrower Artist Agreement, exploitation of the New Song, including, but not limited to securing publishing and performance royalties, is the mutual responsibility of New Artist and Original Artist and not Notethrower.
+c.	Further Exploitation of New Song.  The New Artist will reasonably cooperate with the Original Artist to exploit the New Song.  In any event, except as set forth in the oneloudr Artist Agreement, exploitation of the New Song, including, but not limited to securing publishing and performance royalties, is the mutual responsibility of New Artist and Original Artist and not oneloudr.
 
 5.	WARRANTIES
 
-a.	Authority.  New Artist represents and warrants that: (i) it has the authority to enter into this Agreement, (ii) it has the right to provide the New Song (subject only to Original Artists rights) and grant licenses therein to Notethrower, and (iii) all rights granted to Notethrower will be free of any claims, liens or conflicting rights in favor of any third party other than Original Artist.
+a.	Authority.  New Artist represents and warrants that: (i) it has the authority to enter into this Agreement, (ii) it has the right to provide the New Song (subject only to Original Artists rights) and grant licenses therein to oneloudr, and (iii) all rights granted to oneloudr will be free of any claims, liens or conflicting rights in favor of any third party other than Original Artist.
 
 b.	Clearance.  New Artist represents and warrants that it has obtained all releases, consents, and permissions required with respect to the New Song necessary for the execution and performance of this Agreement and for the commercial exploitation of the New Song.
 
 c. 	Legal Status of New Song.  New Artist represents and warrants that the New Song will not contain material that is defamatory, libelous, obscene, indecent, or illegal or that violates any right of confidentiality, privacy or publicity of any third party or that violates any copyright, trademark, trade secret, or other intellectual property right of any third party.
 
-d.	Remedies.  With respect to any breach of warranty provided under this Section 5, New Artist shall at Notethrower's option and request, in addition to any other remedy provided under this Agreement and at no additional cost to Notethrower, replace or modify the New Song to correct any noncomformity.
+d.	Remedies.  With respect to any breach of warranty provided under this Section 5, New Artist shall at oneloudr's option and request, in addition to any other remedy provided under this Agreement and at no additional cost to oneloudr, replace or modify the New Song to correct any noncomformity.
 
 6.	INDEMNIFICATION
 
-a.	Indemnity.  New Artist agrees to defend, indemnify, and hold Notethrower and the Original Artist harmless against any loss, cost, liability, and expense (including reasonable attorneys' fees) arising from any breach of the representations and warranties set forth in Section 5.
+a.	Indemnity.  New Artist agrees to defend, indemnify, and hold oneloudr and the Original Artist harmless against any loss, cost, liability, and expense (including reasonable attorneys' fees) arising from any breach of the representations and warranties set forth in Section 5.
 
-b.	Settlement.  New Artist shall not, without the prior written consent of Notethrower, settle, compromise or consent to the entry of any judgment with respect to any pending or threatened claim covered by the indemnity provided in this Section unless the settlement, compromise or consent provides for and includes an express, unconditional release of all claims, damages, liabilities, costs and expenses, including reasonable legal fees and expenses, against Notethrower.
+b.	Settlement.  New Artist shall not, without the prior written consent of oneloudr, settle, compromise or consent to the entry of any judgment with respect to any pending or threatened claim covered by the indemnity provided in this Section unless the settlement, compromise or consent provides for and includes an express, unconditional release of all claims, damages, liabilities, costs and expenses, including reasonable legal fees and expenses, against oneloudr.
 
 7.	NO CONSEQUENTIAL DAMAGES
 
-UNDER NO CIRCUMSTANCES WILL NOTETHROWER BE LIABLE FOR CONSEQUENTIAL, INDIRECT, SPECIAL, PUNITIVE OR INCIDENTAL DAMAGES OR LOST PROFITS, WHETHER FORESEEABLE OR UNFORESEEABLE, BASED ON CLAIMS ARISING OUT OF BREACH OR FAILURE OF EXPRESS OR IMPLIED WARRANTY, BREACH OF CONTRACT, MISREPRESENTATION, NEGLIGENCE, STRICT LIABILITY IN TORT OR OTHERWISE.  IN NO EVENT WILL THE AGGREGATE LIABILITY THAT NOTETHROWER MAY INCUR IN ANY ACTION OR PROCEEDING EXCEED THE LESSER OF $100 OR THE TOTAL AMOUNT OF ROYALTIES PAID BY NOTETHROWER DURING THE PAST YEAR OF THE CURRENT TERM.  THE LIMITATIONS, EXCLUSIONS AND DISCLAIMERS SET FORTH IN THIS SECTION 7 WILL NOT APPLY ONLY IF AND TO THE EXTENT THAT THE LAW OR A COURT OF COMPETENT JURISDICTION REQUIRES LIABILITY UNDER APPLICABLE LAW BEYOND AND DESPITE THESE LIMITATIONS, EXCLUSIONS AND DISCLAIMERS.
+UNDER NO CIRCUMSTANCES WILL ONELOUDR BE LIABLE FOR CONSEQUENTIAL, INDIRECT, SPECIAL, PUNITIVE OR INCIDENTAL DAMAGES OR LOST PROFITS, WHETHER FORESEEABLE OR UNFORESEEABLE, BASED ON CLAIMS ARISING OUT OF BREACH OR FAILURE OF EXPRESS OR IMPLIED WARRANTY, BREACH OF CONTRACT, MISREPRESENTATION, NEGLIGENCE, STRICT LIABILITY IN TORT OR OTHERWISE.  IN NO EVENT WILL THE AGGREGATE LIABILITY THAT ONELOUDR MAY INCUR IN ANY ACTION OR PROCEEDING EXCEED THE LESSER OF $100 OR THE TOTAL AMOUNT OF ROYALTIES PAID BY ONELOUDR DURING THE PAST YEAR OF THE CURRENT TERM.  THE LIMITATIONS, EXCLUSIONS AND DISCLAIMERS SET FORTH IN THIS SECTION 7 WILL NOT APPLY ONLY IF AND TO THE EXTENT THAT THE LAW OR A COURT OF COMPETENT JURISDICTION REQUIRES LIABILITY UNDER APPLICABLE LAW BEYOND AND DESPITE THESE LIMITATIONS, EXCLUSIONS AND DISCLAIMERS.
 
 8.	TERM AND TERMINATION
 
@@ -334,19 +334,19 @@ This Agreement will become effective as of the Effective Date, and will remain i
 
 9.	CONSEQUENCES OF TERMINATION
 
-Upon expiration or termination of this Agreement for any reason, Notethrower shall have no further obligation to New Artist pursuant to this Agreement.  Sections 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 and 15 will survive the expiration or termination of this Agreement.
+Upon expiration or termination of this Agreement for any reason, oneloudr shall have no further obligation to New Artist pursuant to this Agreement.  Sections 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 and 15 will survive the expiration or termination of this Agreement.
 
 10.	INDEPENDENT PARTIES
 
-New Artist is an independent contractor and shall be solely responsible for any unemployment or disability insurance payments, or any social security, income tax or other withholdings, deductions or payments which may be required by national or local law with respect to any sums paid New Artist hereunder.  Neither this Agreement, nor any terms and conditions contained herein, shall be construed as creating a partnership, joint venture, agency relationship or other fiduciary relationship between the parties or granting a franchise between the parties.  New Artist is not Notethrowers agent or representative and has no authority to bind or commit Notethrower to any agreements or other obligations.
+New Artist is an independent contractor and shall be solely responsible for any unemployment or disability insurance payments, or any social security, income tax or other withholdings, deductions or payments which may be required by national or local law with respect to any sums paid New Artist hereunder.  Neither this Agreement, nor any terms and conditions contained herein, shall be construed as creating a partnership, joint venture, agency relationship or other fiduciary relationship between the parties or granting a franchise between the parties.  New Artist is not oneloudr's agent or representative and has no authority to bind or commit oneloudr to any agreements or other obligations.
 
 11.	NOTICES
 
-All notices and requests in connection with this Agreement shall be deemed given as of the day they are received either by receipted, nationwide overnight delivery service, or in the U.S. mails, postage prepaid, certified or registered, return receipt requested, to the address specified on the first page of this Agreement to the attention of the New Artist representative and to the attention of the Notethrower representative designated in this Agreement or to any other address that may be designated by prior notice.
+All notices and requests in connection with this Agreement shall be deemed given as of the day they are received either by receipted, nationwide overnight delivery service, or in the U.S. mails, postage prepaid, certified or registered, return receipt requested, to the address specified on the first page of this Agreement to the attention of the New Artist representative and to the attention of the oneloudr representative designated in this Agreement or to any other address that may be designated by prior notice.
 
 12.	ASSIGNMENT
 
-New Artist may not assign, delegate, sub-contract or otherwise transfer this Agreement or any of its rights or obligations hereunder without the express written permission of Notethrower. Any assignment in violation of this Section shall be void and unenforceable.  Notethrower may assign, delegate, sub-contract or transfer this Agreement or any of its rights or obligations hereunder.   New Artist hereby consents in advance to any such assignment, subcontract, or transfer.
+New Artist may not assign, delegate, sub-contract or otherwise transfer this Agreement or any of its rights or obligations hereunder without the express written permission of oneloudr. Any assignment in violation of this Section shall be void and unenforceable.  oneloudr may assign, delegate, sub-contract or transfer this Agreement or any of its rights or obligations hereunder.   New Artist hereby consents in advance to any such assignment, subcontract, or transfer.
 
 13.	THIRD PARTY BENEFICIARY
 
@@ -358,7 +358,7 @@ Any controversy or claim arising out of or relating to this contract, or the bre
 
 15.	GENERAL
 
-This Agreement will be governed by and interpreted in accordance with the laws of Tennessee, excluding its conflict of law principles.  The parties hereby submit to the jurisdiction of the state or federal courts located in Nashville, Tennessee, waiving any objection to forum non conveniens.  This Agreement constitutes the complete and entire statement of all terms, conditions and representations of the agreement between New Artist and Notethrower with respect to its subject matter and supersedes all prior writings or understanding. Except as otherwise provided above, any waiver, amendment or other modification of this Agreement will not be effective unless in writing and signed by the party against whom enforcement is sought. If any provision of this Agreement is held to be unenforceable, in whole or in part, such holding will not affect the validity of the other provisions of this Agreement.  No provision of this Agreement, nor any ambiguities that may be contained herein, shall be construed against any party on the ground that such party or its counsel drafted the provision at issue or that the provision at issue contains a covenant, representation or warranty of such party.  All rights and remedies of the parties set forth in this Agreement shall be cumulative, and none shall exclude any other right or remedy allowed by applicable law.
+This Agreement will be governed by and interpreted in accordance with the laws of Tennessee, excluding its conflict of law principles.  The parties hereby submit to the jurisdiction of the state or federal courts located in Nashville, Tennessee, waiving any objection to forum non conveniens.  This Agreement constitutes the complete and entire statement of all terms, conditions and representations of the agreement between New Artist and oneloudr with respect to its subject matter and supersedes all prior writings or understanding. Except as otherwise provided above, any waiver, amendment or other modification of this Agreement will not be effective unless in writing and signed by the party against whom enforcement is sought. If any provision of this Agreement is held to be unenforceable, in whole or in part, such holding will not affect the validity of the other provisions of this Agreement.  No provision of this Agreement, nor any ambiguities that may be contained herein, shall be construed against any party on the ground that such party or its counsel drafted the provision at issue or that the provision at issue contains a covenant, representation or warranty of such party.  All rights and remedies of the parties set forth in this Agreement shall be cumulative, and none shall exclude any other right or remedy allowed by applicable law.
 
 
 

@@ -232,6 +232,26 @@ class User {
         }
     }
 
+    function fetch_for_email_address_and_password($email, $password) {
+        $result = _mysql_query(
+            'select * ' .
+            'from pp_user ' .
+            'where email_address = ' . qq($email) . ' ' .
+            'and password_md5 = ' . qq(md5($password))
+        );
+
+        if ($row = mysql_fetch_array($result)) {
+            $a = new User();
+            $a = User::_read_row($a, $row);
+            mysql_free_result($result);
+            return $a;
+
+        } else {
+            mysql_free_result($result);
+            return null;
+        }
+    }
+
     function fetch_for_email_address($email) {
         $result = _mysql_query(
             'select * ' .
@@ -362,9 +382,11 @@ class User {
             'entry_date      datetime     not null default "1970-01-01 00:00:00", ' .
             'primary key (id), ' .
             'key name (name), ' .
-            'key username (username), ' .
+            'unique key username (username), ' .
+            'unique key email (email_address), ' .
             'key id_pwd (id, password_md5), ' .
-            'key username_pwd (username, password_md5), ' .
+            'unique key username_pwd (username, password_md5), ' .
+            'unique key email_pwd (email_address, password_md5), ' .
             'key entry_date (entry_date) ' .
             ') default charset=utf8'
         );

@@ -28,13 +28,13 @@ if (get_param('action') == 'send') {
         $problemOccured = true;
     } else {
         // send offer as email
-        $text = $offer->email . ' made an offer for your song "' . $track->title . '" on Notethrower.' . "\n" .
+        $text = $offer->email . ' made an offer for your song "' . $track->title . '" on oneloudr.com.' . "\n" .
                 'Usage for your song: ' . $offer->usage . "\n" .
                 'Category: ' . $offer->usageCategory . "\n" .
                 'Offer in $: ' . $offer->price . "\n" . "\n" .
-                'Your Notethrower Team';
-        send_email($user->email_address, 'New offer for song on Notethrower', $text);
-        send_email($GLOBALS['SELLER_EMAIL'], 'New offer for song on Notethrower', $text);
+                'Your oneloudr team';
+        send_email($user->email_address, 'New offer for song on oneloudr.com', $text);
+        send_email($GLOBALS['SELLER_EMAIL'], 'New offer for song on oneloudr.com', $text);
         $offerSent = true;
     }
 } else if (get_param('action') == 'checkout') {
@@ -43,13 +43,13 @@ if (get_param('action') == 'send') {
         $problemOccured = true;
     } else {
         // send an email with the checkout info
-        $text = 'Someone (email: ' . $offer->emailArtistOffer . ') has accepted your offer for track "' . $track->title . '" on Notethrower.' . "\n" .
+        $text = 'Someone (email: ' . $offer->emailArtistOffer . ') has accepted your offer for track "' . $track->title . '" on oneloudr.com.' . "\n" .
                 'Usage for your song: ' . $offer->usageArtistOffer . "\n" .
                 'Category: ' . $offer->usageCategoryArtistOffer . "\n" .
                 'Once the user finishes the paypal transaction, you should receive from paypal a message about the purchase' . "\n\n" .
-                'Your Notethrower Team';
-        send_email($user->email_address, 'Song checkout on Notethrower', $text);
-        send_email($GLOBALS['SELLER_EMAIL'], 'Song checkout on Notethrower', $text);
+                'Your oneloudr team';
+        send_email($user->email_address, 'Song checkout on oneloudr.com', $text);
+        send_email($GLOBALS['SELLER_EMAIL'], 'Song checkout on oneloudr.com', $text);
         //email sent, redirect to paypal
         $paypalUrl = $GLOBALS['PAYPAL_BASE_URL'] . '&business=' . $GLOBALS['SELLER_EMAIL'];
         $paypalUrl .= '&item_name=' . urlencode($user->name . ' - ' . $track->title);
@@ -361,7 +361,7 @@ if (!$offerSent) {
 
                      <div class="makeAnOfferWrapper">
                         <div class="makeAnOfferBroad">
-                            <p>These are the terms pursuant to which Notethrower ("Notethower" or "we") licenses the Song to you.
+                            <p>These are the terms pursuant to which oneloudr.com ("oneloudr" or "we") licenses the Song to you.
                                You must pay the required fees and comply with all terms, conditions, notices and disclaimers set out on the following screens ("Terms").
                                If you agree with what you read, check the "I have read and understand the license agreement" checkbox below. If you do not agree with what you read below,
                                then click the "I DO NOT ACCEPT" link and do not proceed any further.
@@ -374,9 +374,9 @@ if (!$offerSent) {
                         <div class="makeAnOfferBroad">
              <p>
                   <textarea readonly="true" rows="10" cols="140">
-Notethrower Commercial Licensee Terms
+oneloudr Commercial Licensee Terms
 
-This agreement ("Agreement") sets forth the terms under which Notethrower grants you ("Licensee") a license to make commercial use of a song posted on the Notethrower service. For good and valuable consideration, the receipt of which is acknowledged, the parties agree as follows.
+This agreement ("Agreement") sets forth the terms under which oneloudr grants you ("Licensee") a license to make commercial use of a song posted on the oneloudr service. For good and valuable consideration, the receipt of which is acknowledged, the parties agree as follows.
 
 1. Definitions
 
@@ -386,7 +386,7 @@ License Purchase Terms: the commercial terms completed and executed by Licensee 
 
 Media: any recording or distribution medium, now existing or later developed in any format or version.
 
-Song: the musical composition created by Artist and embodied in a sound recording that (a) was created by Artist; (b) posted on the Notethrower Service; and (c) licensed pursuant to this Agreement as identified in the License Purchase Terms.
+Song: the musical composition created by Artist and embodied in a sound recording that (a) was created by Artist; (b) posted on the oneloudr Service; and (c) licensed pursuant to this Agreement as identified in the License Purchase Terms.
 
 Use: the use that Licensee will make of the Song as selected and described by Licensee in the License Purchase Terms.
 
@@ -394,47 +394,47 @@ Work: the audiovisual work, radio commercial, or other work into which the Song 
 
 2. License
 
-a. Non-exclusive License. Subject to the terms and conditions of this Agreement, Notethrower grants Licensee a world-wide, non-exclusive indefinite term license in all Media to make the Use of the Song that Licensee has described in the License Purchase Terms. Notethrower further grants Licensee the right, in accordance with the terms of this Agreement, to reproduce, distribute, and digitally transmit the Song as needed to make the Use and create and distribute the Work specified in the License Purchase Terms.
+a. Non-exclusive License. Subject to the terms and conditions of this Agreement, oneloudr grants Licensee a world-wide, non-exclusive indefinite term license in all Media to make the Use of the Song that Licensee has described in the License Purchase Terms. oneloudr further grants Licensee the right, in accordance with the terms of this Agreement, to reproduce, distribute, and digitally transmit the Song as needed to make the Use and create and distribute the Work specified in the License Purchase Terms.
 
 b. Limitations. The license granted pursuant to Section 2(b) is limited to the Use described in the License Purchase Terms. As set forth in the License Purchase Terms, the Use described in the License Purchase Terms is intended to include the use of the song in only one Work. Additional works or new works based upon the original Work require the purchase of additional licenses.
 
-c. Attribution. When reasonably practicable, Licensee will provide with the Work the name of the Song, the Artist and the fact that the song was licensed from Notethrower. For the avoidance of doubt and without limitation, this obligation applies to Works that are audiovisual works where such credit is traditionally given, including, but not limited to, films, episodes of television shows, and video games, but does not apply to television and radio commercials.
+c. Attribution. When reasonably practicable, Licensee will provide with the Work the name of the Song, the Artist and the fact that the song was licensed from oneloudr. For the avoidance of doubt and without limitation, this obligation applies to Works that are audiovisual works where such credit is traditionally given, including, but not limited to, films, episodes of television shows, and video games, but does not apply to television and radio commercials.
 
 d. Further Obligation. Licensee will deliver 3 copies of the Work (or a single, digital copy in a non copy-protected format) within 30 days of its first commercial use or distribution.
 
-e. Transferability of License. Notethrower grants Licensee a license, in accordance with the terms of this Agreement, to sublicense the rights granted in this Section solely in connection with the creation of the Work and as necessary to make the Use. The licenses granted herein are not otherwise transferable except in connection with the assignment of this Agreement as set forth in Section 9.
+e. Transferability of License. oneloudr grants Licensee a license, in accordance with the terms of this Agreement, to sublicense the rights granted in this Section solely in connection with the creation of the Work and as necessary to make the Use. The licenses granted herein are not otherwise transferable except in connection with the assignment of this Agreement as set forth in Section 9.
 
 3. Licensing Fees and Payment
 
-a. Licensing Fees. Licensee will pay Notethrower the fees set forth in the License Purchase Terms or as otherwise agreed by the parties pursuant to the "Make an Offer" option. Unless otherwise agreed in writing, Licensee will make payment in accordance with, and using the methods set forth in, the License Purchase Terms.
+a. Licensing Fees. Licensee will pay oneloudr the fees set forth in the License Purchase Terms or as otherwise agreed by the parties pursuant to the "Make an Offer" option. Unless otherwise agreed in writing, Licensee will make payment in accordance with, and using the methods set forth in, the License Purchase Terms.
 
-b. Payment Terms. Any late payment will accrue interest at the lesser of the U.S. Prime Rate of interest plus 3% per month or the maximum interest allowable under applicable law. If Licensee fails to make payment, Licensee will be responsible for all reasonable expenses (including attorneys' fees) incurred by Notethrower in collecting such amounts. All payments due hereunder are in U.S. dollars and are exclusive of any applicable taxes, for which Licensee shall be responsible.
+b. Payment Terms. Any late payment will accrue interest at the lesser of the U.S. Prime Rate of interest plus 3% per month or the maximum interest allowable under applicable law. If Licensee fails to make payment, Licensee will be responsible for all reasonable expenses (including attorneys' fees) incurred by oneloudr in collecting such amounts. All payments due hereunder are in U.S. dollars and are exclusive of any applicable taxes, for which Licensee shall be responsible.
 
 4. Ownership
 
-a. Intellectual Property Rights. All intellectual property rights (including, but not limited to, copyrights, trademarks, and rights of publicity) in or related to the Song are and will remain the exclusive property of Notethrower or the Artist, whether or not specifically recognized or perfected under law. Licensee will not take any action that jeopardizes Notethrower’s or the Artist's proprietary rights, or acquire any right in the Song, except the limited rights specified in this Agreement.
+a. Intellectual Property Rights. All intellectual property rights (including, but not limited to, copyrights, trademarks, and rights of publicity) in or related to the Song are and will remain the exclusive property of oneloudr or the Artist, whether or not specifically recognized or perfected under law. Licensee will not take any action that jeopardizes oneloudr’s or the Artist's proprietary rights, or acquire any right in the Song, except the limited rights specified in this Agreement.
 
-b. Use. Licensee may use Notethrower's trademarks and the Artist's trademarks, identity and persona exclusively in connection with the advertisement and promotion of the Work and the attribution of the Song. From time to time and upon request of Notethrower, Licensee will deliver representative samples of any marketing or promotional materials created by or for Licensee that bear a Notethrower trademark.
+b. Use. Licensee may use oneloudr's trademarks and the Artist's trademarks, identity and persona exclusively in connection with the advertisement and promotion of the Work and the attribution of the Song. From time to time and upon request of oneloudr, Licensee will deliver representative samples of any marketing or promotional materials created by or for Licensee that bear a oneloudr trademark.
 
 5. NO CONSEQUENTIAL DAMAGES; LIMITATION ON LIABILITY
 
-UNDER NO CIRCUMSTANCES WILL NOTETHROWER BE LIABLE FOR CONSEQUENTIAL, INDIRECT, SPECIAL, PUNITIVE OR INCIDENTAL DAMAGES OR LOST PROFITS, WHETHER FORESEEABLE OR UNFORESEEABLE, BASED ON CLAIMS ARISING OUT OF BREACH OR FAILURE OF EXPRESS OR IMPLIED WARRANTY, BREACH OF CONTRACT, MISREPRESENTATION, NEGLIGENCE, STRICT LIABILITY IN TORT OR OTHERWISE. IN NO EVENT WILL THE AGGREGATE LIABILITY THAT NOTETHROWER MAY INCUR IN ANY ACTION OR PROCEEDING EXCEED THE TOTAL AMOUNT OF LICENSING FEES PAID BY LICENSEE TO NOTETHROWER FOR THE SONG. THE LIMITATIONS, EXCLUSIONS AND DISCLAIMERS SET FORTH IN THIS SECTION 5WILL NOT APPLY ONLY IF AND TO THE EXTENT THAT THE LAW OR A COURT OF COMPETENT JURISDICTION REQUIRES LIABILITY UNDER APPLICABLE LAW BEYOND AND DESPITE THESE LIMITATIONS, EXCLUSIONS AND DISCLAIMERS.
+UNDER NO CIRCUMSTANCES WILL ONELOUDR BE LIABLE FOR CONSEQUENTIAL, INDIRECT, SPECIAL, PUNITIVE OR INCIDENTAL DAMAGES OR LOST PROFITS, WHETHER FORESEEABLE OR UNFORESEEABLE, BASED ON CLAIMS ARISING OUT OF BREACH OR FAILURE OF EXPRESS OR IMPLIED WARRANTY, BREACH OF CONTRACT, MISREPRESENTATION, NEGLIGENCE, STRICT LIABILITY IN TORT OR OTHERWISE. IN NO EVENT WILL THE AGGREGATE LIABILITY THAT ONELOUDR MAY INCUR IN ANY ACTION OR PROCEEDING EXCEED THE TOTAL AMOUNT OF LICENSING FEES PAID BY LICENSEE TO ONELOUDR FOR THE SONG. THE LIMITATIONS, EXCLUSIONS AND DISCLAIMERS SET FORTH IN THIS SECTION 5WILL NOT APPLY ONLY IF AND TO THE EXTENT THAT THE LAW OR A COURT OF COMPETENT JURISDICTION REQUIRES LIABILITY UNDER APPLICABLE LAW BEYOND AND DESPITE THESE LIMITATIONS, EXCLUSIONS AND DISCLAIMERS.
 
 6. DISCLAIMER
 
-THE SONG IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED. ALL WARRANTIES, CONDITIONS, REPRESENTATIONS, INDEMNITIES AND GUARANTEES WITH RESPECT TO THE SONG, WHETHER EXPRESS OR IMPLIED, ARISING BY LAW, CUSTOM, PRIOR ORAL OR WRITTEN STATEMENTS BY NOTETHROWER, OR OTHERWISE (INCLUDING, BUT NOT LIMITED TO ANY WARRANTY OF SATISFACTORY QUALITY, MERCHANTABILITY, FITNESS FOR PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT) ARE, TO THE MAXIMUM EXTENT ALLOWED BY LAW, HEREBY OVERRIDDEN, EXCLUDED AND DISCLAIMED.
+THE SONG IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED. ALL WARRANTIES, CONDITIONS, REPRESENTATIONS, INDEMNITIES AND GUARANTEES WITH RESPECT TO THE SONG, WHETHER EXPRESS OR IMPLIED, ARISING BY LAW, CUSTOM, PRIOR ORAL OR WRITTEN STATEMENTS BY ONELOUDR, OR OTHERWISE (INCLUDING, BUT NOT LIMITED TO ANY WARRANTY OF SATISFACTORY QUALITY, MERCHANTABILITY, FITNESS FOR PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT) ARE, TO THE MAXIMUM EXTENT ALLOWED BY LAW, HEREBY OVERRIDDEN, EXCLUDED AND DISCLAIMED.
 
 7. INDEPENDENT PARTIES
 
-Licensee and Notethrower are independent parties. Nothing in this Agreement will be construed to make either party an agent, employee, franchisee, joint venturer or legal representative of the other party. Except as otherwise provided in this Agreement, neither party will have nor represent itself to have any authority to bind the other party or act on its behalf.
+Licensee and oneloudr are independent parties. Nothing in this Agreement will be construed to make either party an agent, employee, franchisee, joint venturer or legal representative of the other party. Except as otherwise provided in this Agreement, neither party will have nor represent itself to have any authority to bind the other party or act on its behalf.
 
 8. NOTICES
 
-All notices and requests in connection with this Agreement shall be deemed given as of the day they are received either by receipted, nationwide overnight delivery service, or in the U.S. mails, postage prepaid, certified or registered, return receipt requested, to the address specified in the License Purchase Terms to the attention of the Licensee representative and to the attention of the Notethrower representative designated in this Agreement or to any other address that may be designated by prior notice.
+All notices and requests in connection with this Agreement shall be deemed given as of the day they are received either by receipted, nationwide overnight delivery service, or in the U.S. mails, postage prepaid, certified or registered, return receipt requested, to the address specified in the License Purchase Terms to the attention of the Licensee representative and to the attention of the oneloudr representative designated in this Agreement or to any other address that may be designated by prior notice.
 
 9. ASSIGNMENT
 
-Licensee may assign this Agreement or any of its rights or obligations, upon notice to Notethrower, to its parent or any affiliated company or to any other company or entity pursuant to a merger, acquisition, sale corporate reorganization or other similar transaction. Notethrower may assign, delegate, sub-contract or transfer this Agreement or any of its rights or obligations hereunder. Licensee acknowledges that the provisions of this Agreement are intended to inure to the benefit of the Artist as a third party beneficiary of this Agreement, and the Artist will be entitled to enforce such provisions against Licensee. Licensee further acknowledges that the Artist accepts its third party beneficiary rights hereunder and that such rights will be deemed irrevocable.
+Licensee may assign this Agreement or any of its rights or obligations, upon notice to oneloudr, to its parent or any affiliated company or to any other company or entity pursuant to a merger, acquisition, sale corporate reorganization or other similar transaction. oneloudr may assign, delegate, sub-contract or transfer this Agreement or any of its rights or obligations hereunder. Licensee acknowledges that the provisions of this Agreement are intended to inure to the benefit of the Artist as a third party beneficiary of this Agreement, and the Artist will be entitled to enforce such provisions against Licensee. Licensee further acknowledges that the Artist accepts its third party beneficiary rights hereunder and that such rights will be deemed irrevocable.
 
 10. ARBITRATION
 
@@ -442,7 +442,7 @@ Any controversy or claim arising out of or relating to this contract, or the bre
 
 11. GENERAL
 
-This Agreement will be governed by and interpreted in accordance with the laws of Tennessee, excluding its conflict of law principles. The parties hereby submit to the jurisdiction of the state or federal courts located in Nashville, Tennessee, waiving any objection to forum non conveniens. This Agreement constitutes the complete and entire statement of all terms, conditions and representations of the agreement between Artist and Notethrower with respect to its subject matter and supersedes all prior writings or understanding. Except as otherwise provided above, any waiver, amendment or other modification of this Agreement will not be effective unless in writing and signed by the party against whom enforcement is sought. If any provision of this Agreement is held to be unenforceable, in whole or in part, such holding will not affect the validity of the other provisions of this Agreement. Sections 4 through 11 of this Agreement will survive any expiration or termination of this Agreement. No provision of this Agreement, nor any ambiguities that may be contained herein, shall be construed against any party on the ground that such party or its counsel drafted the provision at issue or that the provision at issue contains a covenant, representation or warranty of such party. All rights and remedies of the parties set forth in this Agreement shall be cumulative, and none shall exclude any other right or remedy allowed by applicable law.
+This Agreement will be governed by and interpreted in accordance with the laws of Tennessee, excluding its conflict of law principles. The parties hereby submit to the jurisdiction of the state or federal courts located in Nashville, Tennessee, waiving any objection to forum non conveniens. This Agreement constitutes the complete and entire statement of all terms, conditions and representations of the agreement between Artist and oneloudr with respect to its subject matter and supersedes all prior writings or understanding. Except as otherwise provided above, any waiver, amendment or other modification of this Agreement will not be effective unless in writing and signed by the party against whom enforcement is sought. If any provision of this Agreement is held to be unenforceable, in whole or in part, such holding will not affect the validity of the other provisions of this Agreement. Sections 4 through 11 of this Agreement will survive any expiration or termination of this Agreement. No provision of this Agreement, nor any ambiguities that may be contained herein, shall be construed against any party on the ground that such party or its counsel drafted the provision at issue or that the provision at issue contains a covenant, representation or warranty of such party. All rights and remedies of the parties set forth in this Agreement shall be cumulative, and none shall exclude any other right or remedy allowed by applicable law.
 
                 </textarea></p>
                  </div>

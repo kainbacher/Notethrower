@@ -1,5 +1,5 @@
 
-notethrower technical documentation
+oneloudr technical documentation
 --------------------------------------------------
 
 
@@ -11,7 +11,7 @@ config + git
 there are two config files:
 
 /Includes/Config.php
-/Includes/Config_local.php 
+/Includes/Config_local.php
 
 the Config_local.php file is not in the git repo - so use this file to set up the database connection and your local pathes. copy the Config_local_default.php to Config_local.php and change the variables. don't touch the Config_local_default.php.
 

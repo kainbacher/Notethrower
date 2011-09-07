@@ -52,8 +52,8 @@ $NEWS_PER_PAGE = 5;
 
 $OFFER_CATEGORIES = array('Documentary/Indie/Student Film', 'Feature Film', 'Corporate CD/DVD', 'TV and Radio Advertising', 'Web', 'Live Events', 'Sample and Remix', 'Audio Projects', 'Video Game', 'TV Show', 'Music Compilation', 'Telephony/Music on Hold', 'Video Clip/Webisode');
 
-$COOKIE_NAME_AUTHENTICATION = 'notethrower';
-$COOKIE_NAME_GENRE          = 'notethrower_genre';
+$COOKIE_NAME_AUTHENTICATION = 'oneloudr';
+$COOKIE_NAME_GENRE          = 'oneloudr_genre';
 
 $RECAPTCHA_PUBLIC_KEY = '6LcNIgoAAAAAAP0BgB5wNty92PiCewdRq7y5L6qw';
 

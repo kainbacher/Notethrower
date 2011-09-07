@@ -74,16 +74,27 @@ function handleAuthentication() {
     if (get_param('action') == 'login') {
         $logger->info('login request received');
         if (get_param('username') && get_param('password')) {
-            $user = User::fetch_for_username_password(get_param('username'), get_param('password'));
+            $user = User::fetch_for_email_address_and_password(get_param('username'), get_param('password'));
             if ($user && $user->status == 'active') {
                 $user->doLogin();
-                $logger->info('login successful, reloading page to set cookie');
+                $logger->info('login via email successful, reloading page to set cookie');
                 header('Location: ' . $_SERVER['PHP_SELF']);
                 exit;
 
             } else {
-                $logger->info('login failed');
-                return null;
+                $logger->info('login via email failed, trying via username');
+
+                $user = User::fetch_for_username_password(get_param('username'), get_param('password'));
+                if ($user && $user->status == 'active') {
+                    $user->doLogin();
+                    $logger->info('login via username successful, reloading page to set cookie');
+                    header('Location: ' . $_SERVER['PHP_SELF']);
+                    exit;
+
+                } else {
+                    $logger->info('login via username failed, too');
+                    return null;
+                }
             }
 
         } else {

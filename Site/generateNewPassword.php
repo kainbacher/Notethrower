@@ -57,12 +57,12 @@ if ($action == 'generatePwd') {
         $logger->info('sending new password for user "' . $username . '" with email "' . $user->email_address . '"');
 
         $text = 'Please do not respond to this email. This is an automatically generated response.' . "\n";
-        $text .= 'You received this email because you requested a reset of your account password for http://www.notethrower.com' . "\n";
-        $text .= 'Please log in with the new secure password.  If you want to change your new password, you can do so in your "edit profile" tab.' . "\n\n";
+        $text .= 'You received this email because you (or someone else) requested a reset of your account password for oneloudr.com' . "\n";
+        $text .= 'Please log in with the new secure password below. If you want to change your new password, you can do so in your user profile.' . "\n\n";
         $text .= 'Your username: ' . $user->username . "\n";
         $text .= 'Your new password: ' . $newPassword  . "\n\n";
         $text .= 'Thank you!' . "\n";
-        $text .= 'The Notethrower Team';
+        $text .= 'The oneloudr team';
 
         $emailSent = send_email($user->email_address, 'Your new password', $text);
 

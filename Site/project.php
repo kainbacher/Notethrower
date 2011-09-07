@@ -260,7 +260,7 @@ $formElementsList .= getFormFieldForParams(array(
     'errorFields'            => $errorFields,
     'workWithUnpersistedObj' => $problemOccured,
     'inputFieldSuffix'       => 'USD', // FIXME - make constant?
-    'infoText'               => 'Please enter the price you want others to pay to license your work.  Notethrower will take a 10% fee from the sale at this price.  If you are uploading a remix of another Notethrower artist\'s track, you will split the profit with that artist 50/50, minus the 10% fee.'
+    'infoText'               => 'Please enter the price you want others to pay to license your work. oneloudr will take a 10% fee from the sale at this price.  If you are uploading a remix of another oneloudr artist\'s track, you will split the profit with that artist 50/50, minus the 10% fee.'
 ));
 
 // main genre
@@ -332,7 +332,7 @@ $formElementsList .= getFormFieldForParams(array(
 //    'unpersistedObj'         => $unpersistedProject,
 //    'errorFields'            => $errorFields,
 //    'workWithUnpersistedObj' => $problemOccured,
-//    'infoText'               => 'If you only want certain Notethrower artist\'s to have access to your track choose PRIVATE.  If you want to make music with the world, choose; you guessed it, PUBLIC.  Your choice. You can change this at any time.'
+//    'infoText'               => 'If you only want certain oneloudr artist\'s to have access to your track choose PRIVATE.  If you want to make music with the world, choose; you guessed it, PUBLIC.  Your choice. You can change this at any time.'
 //));
 
 // FIXME - start
@@ -556,7 +556,7 @@ function processParams(&$project, &$user) {
 //            $email_sent = send_email($originator->email_address, $user->name . ' has created a remix using one of your tracks',
 //                    'Hey ' . $originator->name . ',' . "\n\n" .
 //                    $user->name . ' has just started creating a new remix using one of your tracks.' . "\n\n" .
-//                    'You may want to check out the "Remixed by others" section in your Notethrower Widget or on your public user page: ' .
+//                    'You may want to check out the "Remixed by others" section in your oneloudr Widget or on your public user page: ' .
 //                    $GLOBALS['BASE_URL'] . 'Site/userInfo.php?aid=' . $project->originating_user_id . "\n\n" .
 //                    'Please note that you might not see the new track until the remixer puts it online.');
 //

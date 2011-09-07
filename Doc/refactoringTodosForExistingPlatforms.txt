@@ -116,6 +116,13 @@ alter table pp_project_attribute change track_id project_id int(10) not null;
 path /ArtistImages/ should be changed to /UserImages/
 
 
+#### manually add/change indizes on user table to this:
+'unique key username (username), ' .
+'unique key email (email_address), ' .
+'unique key username_pwd (username, password_md5), ' .
+'unique key email_pwd (email_address, password_md5), ' .
+
+
 #### make sure the new widget with the corrected config and php script urls is published
 
 

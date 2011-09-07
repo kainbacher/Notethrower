@@ -66,8 +66,8 @@ if (get_param('action') == 'save') {
         } else {
             $logger->info('created user record with id: ' . $user->id);
 
-            $email_sent = send_email($user->email_address, 'Please activate your notethrower.com account',
-                    'Please click the link below to confirm your notethrower.com account creation:' . "\n\n" .
+            $email_sent = send_email($user->email_address, 'Please activate your oneloudr.com account',
+                    'Please click the link below to confirm your oneloudr.com account creation:' . "\n\n" .
                     $GLOBALS['BASE_URL'] . 'Site/accountCreationConfirmed.php' .
                     '?x=' . $user->id . '&c=' . md5('TheSparrowsAreFlyingAgain!' . $user->id));
 
@@ -140,18 +140,6 @@ if ($pageMode == 'artist') {
         'infoText'               => 'Please put your band or artist name in the field.'
     ));
 }
-
-//$formElementsSection1 .= getFormFieldForParams(array(
-//    'propName'               => 'username',
-//    'label'                  => 'Username',
-//    'mandatory'              => true,
-//    'maxlength'              => 255,
-//    'obj'                    => $user,
-//    'unpersistedObj'         => $unpersistedUser,
-//    'errorFields'            => $errorFields,
-//    'workWithUnpersistedObj' => $problemOccured,
-//    'infoHtml'               => 'This is your username for logging in to Notethrower.' . ($pageMode == 'artist' ? '<br>If you want to provide a different name than your artist profile, you may do so.' : '')
-//));
 
 $formElementsSection1 .= getFormFieldForParams(array(
     'propName'               => 'email_address',
@@ -370,14 +358,14 @@ if (!$userIsLoggedIn) {
             'inputType'                 => 'checkbox',
             'propName'                  => 'terms_accepted',
             'label'                     => 'Artist Agreement',
-            'inputFieldGroupSuffixHtml' => 'I\'ve read and agree to<br><a href="javascript:showTermsAndConditions();">Notethrower\'s Artist Agreement</a>',
+            'inputFieldGroupSuffixHtml' => 'I\'ve read and agree to<br><a href="javascript:showTermsAndConditions();">oneloudr\'s Artist Agreement</a>',
             'mandatory'                 => true,
             'obj'                       => $user,
             'unpersistedObj'            => $unpersistedUser,
             'errorFields'               => $errorFields,
             'workWithUnpersistedObj'    => $problemOccured,
             'objValueOverride'          => get_param('terms_accepted'), // since this field is not stored in the user obj, we need an override
-            'infoHtml'                  => 'Please confirm that you\'ve read and agree to the Notethrower Artist Agreement.' // FIXME - html display
+            'infoText'                  => 'Please confirm that you\'ve read and agree to the oneloudr Artist Agreement.'
         ));
     }
 
@@ -583,7 +571,7 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
 
     if ($pageMode == 'artist') {
         if (!$userIsLoggedIn && !get_param('terms_accepted')) {
-            $errorFields['terms_accepted'] = 'You need to agree to Notethrower\'s Artist Agreement in order to sign up.';
+            $errorFields['terms_accepted'] = 'You need to agree to oneloudr\'s Artist Agreement in order to sign up.';
             $result = false;
         }
 

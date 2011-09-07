@@ -23,43 +23,43 @@ writePageDoctype();
             <ul>
                 <li><a href="index.php">Startpage</a></li>
             </ul>
-        </div> 
+        </div>
 
 		<div id="mainColumnLeft">
 
- 
+
 
       <div id="standardInfoDiv">
         <div id="container">
-      
- 
-        
-        
+
+
+
+
         <br><br>
 
         <h1>Sitemap</h1>
         <br>
 The following frequently asked questions and corresponding
 answers were created to provide you with further insight about
-becoming a member and licensing your music with Notethrower.<br>
+becoming a member and licensing your music with oneloudr.<br>
 <br>
 <br>
 <br>
 <br>
 
       </div>
-      
+
       </div> <!-- standrardInfoDiv -->
-            
-      
+
+
         </div> <!-- mainColumnLeft -->
 
 		<div id="mainColumnRight">
             <? include ("sidebar.php"); ?>
 		</div> <!-- mainColumnRight -->
-		
+
       	<div style="clear:both"></div>
-    
+
 
 	</div> <!-- pageMainContent -->
 

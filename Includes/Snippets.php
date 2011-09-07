@@ -112,12 +112,12 @@ function writePageDoctype() {
 }
 
 function writePageTitle() {
-    echo 'notethrower.com - Share your frequency';
+    echo 'oneloudr.com';
 }
 
 function writePageMetaTags() {
-    echo '<meta name="keywords" content="Notethrower Share your frequency Music Independent Artists Online Collaboration Revenue Share Money Creative Commons Mp3 Sound Remix Remixer Joe Benso">' . "\n";
-    echo '<meta name="description" content="Notethrower - Share your frequency - Use this online collaboration platform to create and share music with others and earn money">' . "\n";
+    echo '<meta name="keywords" content="oneloudr Notethrower podperfect Share your frequency Music Independent Artists Online Collaboration Revenue Share Money Creative Commons Mp3 Sound Remix Remixer">' . "\n";
+    echo '<meta name="description" content="oneloudr - Share your frequency - Use this online collaboration platform to create and share music with others and earn money">' . "\n";
     echo '<meta name="content-language" content="en">' . "\n";
     echo '<meta name="language" content="en">' . "\n";
     echo '<meta name="robots" content="all">' . "\n";

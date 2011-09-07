@@ -26,7 +26,7 @@ if ($GLOBALS['STAGING_ENV'] == 'dev') {
 
         $users = User::fetch_all_from_to(0, 999, false, false);
         foreach ($users as $user) {
-            echo '<a href="' . $_SERVER['PHP_SELF'] . '?uid=' . $user->id . '">Sign in as user "' . escape($user->username) . '"</a><br>' . "\n";
+            echo '<a href="' . $_SERVER['PHP_SELF'] . '?uid=' . $user->id . '">Sign in as user "' . escape($user->username . ' | ' . $user->name) . '"</a><br>' . "\n";
         }
         exit;
     }

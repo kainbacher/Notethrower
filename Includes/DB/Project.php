@@ -7,6 +7,7 @@ include_once('../Includes/DB/ProjectAttribute.php');
 include_once('../Includes/DB/ProjectFile.php');
 include_once('../Includes/DB/ProjectUserVisibility.php');
 include_once('../Includes/DB/UserAttribute.php');
+include_once('../Includes/DB/UserGenre.php');
 
 // dao for pp_project table
 class Project {
@@ -425,6 +426,32 @@ class Project {
         return $objs;
     }
 
+    function fetch_all_unfinished_projects_of_user($uid) {
+        $objs = array();
+
+        $result = _mysql_query(
+            'select p.* ' .
+            'from pp_project p ' .
+            'where p.user_id = ' . n($uid) . ' ' .
+            'and p.status != "finished" ' .
+            'order by p.entry_date desc'
+        );
+
+        $ind = 0;
+
+        while ($row = mysql_fetch_array($result)) {
+            $a = new Project();
+            $a = Project::_read_row($a, $row);
+
+            $objs[$ind] = $a;
+            $ind++;
+        }
+
+        mysql_free_result($result);
+
+        return $objs;
+    }
+
     function fetchAllNewbornProjectIdsForUserId($aid) {
         if (!$aid) return array();
 
@@ -484,25 +511,31 @@ class Project {
     function fetchAllThatNeedSkillsOfUser(&$user) {
         $attribute_id_list = UserAttribute::getAttributeIdsForUserIdAndState($user->id, 'offers');
 
+        $genre_id_list = UserGenre::getGenreIdsForUserId($user->id);
+
         $objs = array();
 
         if (count($attribute_id_list) > 0) {
             $result = _mysql_query(
                 'select p.*, pa.attribute_id, a.name as attribute_name, u.name as user_name, ' .
-                'u.image_filename as user_img_filename, f.filename as mp3_filename ' .
-                'from pp_project p, pp_project_attribute pa, pp_project_file f, pp_user u, pp_attribute a ' .
+                'u.image_filename as user_img_filename, pf.filename as mp3_filename ' .
+                'from pp_project p ' .
+                'join pp_project_attribute pa on pa.project_id = p.id ' .
+                'join pp_attribute a on pa.attribute_id = a.id ' .
+                'join pp_project_file pf on pf.project_id = p.id ' .
+                'join pp_user u on u.id = p.user_id ' .
+                'left join pp_project_genre pg on pg.project_id = p.id ' .
                 'where pa.attribute_id in (' . implode(',', $attribute_id_list) . ') ' .
                 'and pa.status = "needs" ' .
-                'and pa.project_id = p.id ' .
                 'and p.visibility = "public" ' .
                 'and p.status != "finished" ' .
-                'and p.id = f.project_id ' .
-                'and f.orig_filename like "%.mp3" ' .
-                'and p.user_id = u.id ' .
+                'and pf.orig_filename like "%.mp3" ' .
                 'and u.status = "active" ' .
-                'and pa.attribute_id = a.id ' .
+                'and u.id != ' . n($user->id) . ' ' .
+                (count($genre_id_list) > 0 ? 'and pg.genre_id in (' . implode(',', $genre_id_list) . ') ' : '') .
                 // FIXME - limit/paging?
-                'order by a.name asc'
+                'group by p.id ' .
+                'order by a.name asc, pg.relevance desc'
             );
 
             $previousPid = null;

@@ -10,6 +10,7 @@ include_once('../Includes/DB/Attribute.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/User.php');
 
+$logger->set_debug_level();
 
 $user = User::new_from_cookie();
 ensureUserIsLoggedIn($user);
@@ -31,7 +32,7 @@ foreach ($projects as $project) {
 
 // find artists which could help the user with his projects
 $artistListHtml = '';
-$collabArtists = User::fetchAllThatOfferSkillsForUser(&$user); // FIXME - limit/paging?
+$collabArtists = User::fetchAllThatOfferSkillsForUsersProjects(&$user); // FIXME - limit/paging?
 foreach ($collabArtists as $collabArtist) {
     $collabArtistImgUrl = getUserImageUri($collabArtist->imageFilename, 'tiny');
 

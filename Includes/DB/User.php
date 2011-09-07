@@ -4,6 +4,7 @@ include_once('../Includes/Config.php');
 include_once('../Includes/DbConnect.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/ProjectAttribute.php');
+include_once('../Includes/DB/ProjectGenre.php');
 
 // dao for pp_user table
 class User {
@@ -290,27 +291,56 @@ class User {
         }
     }
 
-    function fetchAllThatOfferSkillsForUser(&$user) {
-        $attribute_id_list = array();
-
+    function fetchAllThatOfferSkillsForUsersProjects(&$user) {
         // fetch all attributes of all projects of the user
+        $attribute_id_list = array();
         $paList = ProjectAttribute::fetchAllWithStatusOfProjectsOfUser($user->id, 'needs');
         foreach ($paList as $pa) {
-            $attribute_id_list[$pa->attribute_id] = $pa->attribute_id; // make distinct list of attributes
+            if (!isset($attribute_id_list[$pa->project_id])) $attribute_id_list[$pa->project_id] = array();
+            $attribute_id_list[$pa->project_id][] = $pa->attribute_id;
+        }
+
+        // fetch all genres of all projects of the user
+        $projects_genre_id_list = array();
+        $pgList = ProjectGenre::fetchAllOfProjectsOfUser($user->id);
+        foreach ($pgList as $pg) {
+            if (!isset($projects_genre_id_list[$pg->project_id])) $projects_genre_id_list[$pg->project_id] = array();
+            $projects_genre_id_list[$pg->project_id][] = $pg->genre_id;
+        }
+
+        // create a map of attributes and genres per project
+        $attributes_and_genres_per_project_map = array();
+
+        $projects = Project::fetch_all_unfinished_projects_of_user($user->id);
+        $clauses = array();
+        foreach ($projects as $proj) {
+            $attributes_and_genres_per_project_map[$proj->id] = array(
+                'attributes' => $attribute_id_list[$proj->id],
+                'genres'     => $projects_genre_id_list[$proj->id]
+            );
+
+            $clauses[] = '(' .
+                         'ua.attribute_id in (' . implode(',', $attribute_id_list[$proj->id]) . ') ' .
+                         'and ug.genre_id in (' . implode(',', $projects_genre_id_list[$proj->id]) . ')' .
+                         ')';
         }
 
         $objs = array();
 
-        if (count($attribute_id_list) > 0) {
+        if (count($clauses) > 0) {
             $result = _mysql_query(
                 'select u.*, a.id as attribute_id, a.name as attribute_name ' .
-                'from pp_user u, pp_user_attribute ua, pp_attribute a ' .
-                'where ua.attribute_id in (' . implode(',', $attribute_id_list) . ') ' .
+                'from pp_user u ' .
+                'join pp_user_attribute ua on ua.user_id = u.id ' .
+                'join pp_attribute a on a.id = ua.attribute_id ' .
+                'left join pp_user_genre ug on ug.user_id = u.id ' .
+                'where ' .
+                '(' . implode("\n" . ' or ', $clauses) . ') ' .
                 'and ua.status = "offers" ' .
-                'and ua.user_id = u.id ' .
                 'and u.status = "active" ' .
-                'and ua.attribute_id = a.id ' .
+                'and u.id != ' . n($user->id) . ' ' .
                 // FIXME - limit/paging?
+                'group by u.id ' .
                 'order by u.name asc' // FIXME - sort by rating as soon as we have one?
             );
 

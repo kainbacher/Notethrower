@@ -55,6 +55,7 @@ class Project {
                 ($show_inactive_items ? 'where t.status in ("finished", "active", "inactive") ' : 'where t.status in ("finished", "active") ') .
                 ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
                 'and t.user_id = a.id ' .
+                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
                 'and t.id = puv.project_id ' .
                 'order by t.entry_date desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
@@ -67,6 +68,7 @@ class Project {
                 ($show_inactive_items ? 'where t.status in ("finished", "active", "inactive") ' : 'where t.status in ("finished", "active") ') .
                 ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
                 'and t.user_id = a.id ' .
+                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
                 'order by t.entry_date desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
             );
@@ -99,6 +101,7 @@ class Project {
                 ($show_inactive_items ? 'where t.status in ("finished", "active", "inactive") ' : 'where t.status in ("finished", "active") ') .
                 ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
                 'and t.user_id = a.id ' .
+                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
                 'and t.id = puv.project_id ' .
                 'order by t.download_count desc, t.entry_date desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
@@ -111,6 +114,7 @@ class Project {
                 ($show_inactive_items ? 'where t.status in ("finished", "active", "inactive") ' : 'where t.status in ("finished", "active") ') .
                 ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
                 'and t.user_id = a.id ' .
+                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
                 'order by t.download_count desc, t.entry_date desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
             );
@@ -145,6 +149,7 @@ class Project {
                 ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
                 ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 'and t.user_id = a.id ' .
+                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
                 'and t.id = puv.project_id ' .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
@@ -159,6 +164,7 @@ class Project {
                 ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
                 ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 'and t.user_id = a.id ' .
+                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
             );
@@ -193,6 +199,7 @@ class Project {
                 ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
                 ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 'and t.originating_user_id = a.id ' .
+                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
                 'and t.id = puv.project_id ' .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
@@ -207,6 +214,7 @@ class Project {
                 ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
                 ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 'and t.originating_user_id = a.id ' .
+                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
             );
@@ -241,6 +249,7 @@ class Project {
                 ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
                 ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 'and t.user_id = a.id ' .
+                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
                 'and t.id = puv.project_id ' .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
@@ -255,6 +264,7 @@ class Project {
                 ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
                 ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 'and t.user_id = a.id ' .
+                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
             );
@@ -281,20 +291,24 @@ class Project {
         if ($visitorUserId >= 0) {
             $result = _mysql_query(
                 'select distinct t.* ' .
-                'from pp_project t, pp_project_user_visibility puv ' .
+                'from pp_project t, pp_project_user_visibility puv, pp_user u ' .
                 'where t.id = ' . n($tid) . ' ' .
                 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ' .
                 'and t.status in ("finished", "active") ' .
-                'and t.id = puv.project_id'
+                'and t.id = puv.project_id ' .
+                'and t.user_id = u.id ' .
+                'and u.status = "active"'
             );
 
         } else {
             $result = _mysql_query(
                 'select t.* ' .
-                'from pp_project t ' .
+                'from pp_project t, pp_user u ' .
                 'where t.id = ' . n($tid) . ' ' .
                 'and t.visibility = "public" ' .
-                'and t.status in ("finished", "active")'
+                'and t.status in ("finished", "active") ' .
+                'and t.user_id = u.id ' .
+                'and u.status = "active"'
             );
         }
 
@@ -335,7 +349,8 @@ class Project {
                 'from pp_project t ' .
                 'join pp_user a on t.user_id = a.id ' .
                 (count($genres) == 0 ? '' : 'join pp_project_genre pg on pg.project_id = t.id ') .
-                'join pp_project_user_visibility puv on puv.project_id=t.id where 1=1 ' .
+                'join pp_project_user_visibility puv on puv.project_id = t.id ' .
+                'where a.status = "active" ' .
                 ($userOrTitle == '' ? '' : 'and (a.name like ' . qqLike($userOrTitle) . ' or t.title like ' . qqLike($userOrTitle) . ') ') .
                 ($needsOthers == '' ? '' : 'and t.needs_others like ' . qqLike($needsOthers) . ' ') .
                 ($containsOthers == '' ? '' : 'and t.contains_others like ' . qqLike($containsOthers) . ' ') .
@@ -373,7 +388,8 @@ class Project {
                 'from pp_project t ' .
                 'join pp_user a on t.user_id = a.id ' .
                 (count($genres) == 0 ? '' : 'join pp_project_genre pg on pg.project_id = t.id ') .
-                'join pp_project_user_visibility puv on puv.project_id=t.id where 1=1 ' .
+                'join pp_project_user_visibility puv on puv.project_id = t.id ' .
+                'where a.status = "active" ' .
                 ($userOrTitle == '' ? '' : 'and (a.name like ' . qqLike($userOrTitle) . ' or t.title like ' . qqLike($userOrTitle) . ') ') .
                 ($needsOthers == '' ? '' : 'and t.needs_others like ' . qqLike($needsOthers) . ' ') .
                 ($containsOthers == '' ? '' : 'and t.contains_others like ' . qqLike($containsOthers) . ' ') .
@@ -407,6 +423,7 @@ class Project {
             'and t.visibility = "private" ' .
             'and t.user_id != ' . n($aid) . ' ' .
             'and t.user_id = a.id ' .
+            'and a.status = "active" ' .
             'order by t.entry_date desc ' .
             'limit ' . $from . ', ' . ($to - $from + 1)
         );
@@ -431,9 +448,11 @@ class Project {
 
         $result = _mysql_query(
             'select p.* ' .
-            'from pp_project p ' .
+            'from pp_project p, pp_user u ' .
             'where p.user_id = ' . n($uid) . ' ' .
             'and p.status != "finished" ' .
+            'and p.user_id = u.id ' .
+            'and u.status = "active" ' .
             'order by p.entry_date desc'
         );
 
@@ -490,6 +509,7 @@ class Project {
             'where p.status = "finished" ' .
             'and p.visibility = "public" ' .
             'and p.user_id = u.id ' .
+            'and u.status = "active" ' .
             'and p.id = f.project_id ' .
             'and f.orig_filename like "%.mp3" ' .
             $whereClauseAddon .
@@ -628,30 +648,25 @@ class Project {
     function count_all($count_inactive_items, $ignore_visibility, $visitorUserId) {
         $result = null;
 
-//        $result = _mysql_query(
-//            'select count(*) as cnt ' .
-//            'from pp_project t, pp_project_user_visibility puv ' .
-//            'where t.id = puv.project_id ' .
-//            ($ignore_visibility ? '' : 'and (t.visibility = "public" or (t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ')) ') .
-//            ($count_inactive_items ? 'and t.status in ("finished", "active", "inactive")' : 'and t.status in ("finished", "active")')
-//        );
-
         if ($visitorUserId >= 0) {
             $result = _mysql_query(
                 'select count(distinct t.id) as cnt ' .
-                'from pp_project t, pp_project_user_visibility puv ' .
+                'from pp_project t, pp_project_user_visibility puv, pp_user u ' .
                 'where t.id = puv.project_id ' .
                 ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
-                ($count_inactive_items ? 'and t.status in ("finished", "active", "inactive")' : 'and t.status in ("finished", "active")')
+                ($count_inactive_items ? 'and t.status in ("finished", "active", "inactive")' : 'and t.status in ("finished", "active")') . ' ' .
+                'and t.user_id = u.id ' .
+                ($count_inactive_items ? 'and u.status in ("active", "inactive")' : 'and u.status in ("active")')
             );
 
         } else {
             $result = _mysql_query(
                 'select count(*) as cnt ' .
-                'from pp_project t ' .
-                'where 1=1 ' .
+                'from pp_project t, pp_user u ' .
+                'where t.user_id = u.id ' .
                 ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
-                ($count_inactive_items ? 'and t.status in ("finished", "active", "inactive")' : 'and t.status in ("finished", "active")')
+                ($count_inactive_items ? 'and t.status in ("finished", "active", "inactive")' : 'and t.status in ("finished", "active")') . ' ' .
+                ($count_inactive_items ? 'and u.status in ("active", "inactive")' : 'and u.status in ("active")')
             );
         }
 
@@ -665,12 +680,14 @@ class Project {
     function count_all_private_projects_the_user_can_access($aid) {
         $result = _mysql_query(
             'select count(*) as cnt ' .
-            'from pp_project t, pp_project_user_visibility puv ' .
+            'from pp_project t, pp_project_user_visibility puv, pp_user u ' .
             'where puv.user_id = ' . n($aid) . ' ' .
             'and puv.project_id = t.id ' .
             'and t.user_id != ' . n($aid) . ' ' .
             'and t.status in ("finished", "active") ' .
-            'and t.visibility = "private"'
+            'and t.visibility = "private" ' .
+            'and t.user_id = u.id ' .
+            'and u.status = "active"'
         );
 
         $row = mysql_fetch_array($result);

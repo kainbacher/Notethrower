@@ -86,7 +86,9 @@ class User {
         $objs = array();
 
         $constraints = array();
-        if (!$show_inactive_items) {
+        if ($show_inactive_items) {
+            $constraints[] = 'u.status in ("active", "inactive")';
+        } else {
             $constraints[] = 'u.status = "active"';
         }
         if (!$include_unknown_artist) {
@@ -129,6 +131,7 @@ class User {
             'select u.*, sum(t.playback_count) as pb_count ' .
             'from pp_user u, pp_project t ' .
             'where u.id = t.user_id ' .
+            'and u.status = "active" ' .
             'group by u.id ' .
             'order by pb_count desc ' .
             'limit ' . $from . ', ' . ($to - $from + 1)
@@ -194,6 +197,7 @@ class User {
             'select * ' .
             'from pp_user ' .
             'where upper(name) like ' . qq('%' . strtoupper($search_string) . '%') . ' ' .
+            'and status = "active" ' .
             'order by name ' .
             'limit ' . ($limit)
         );
@@ -427,7 +431,7 @@ class User {
                 $ok = _mysql_query(
                     'insert into pp_user (id, username, password_md5, email_address, name, artist_info, additional_info, influences,' .
                     'image_filename, webpage_url, paypal_account, activity_points, is_artist, is_pro, status, entry_date) ' .
-                    'values (-1, "_unknown_artist", "' . md5('dummyPwd') . '", "", "Unknown Artist", "", "", "", "", "", "", 0, 1, 0, "active", now())'
+                    'values (-1, "_unknown_artist", "' . md5('dummyPwd') . '", "", "Unknown Artist", "", "", "", "", "", "", 0, 1, 0, "inactive", now())'
                 );
             }
         }
@@ -439,7 +443,7 @@ class User {
         $result = _mysql_query(
             'select count(*) as cnt ' .
             'from pp_user ' .
-            ($count_inactive_items ? 'where 1 = 1 ' : 'where status = "active" ') .
+            ($count_inactive_items ? 'where status in ("active", "inactive") ' : 'where status = "active" ') .
             ($include_unknown_artist ? '' : 'and id >= 0')
         );
 

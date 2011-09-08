@@ -3,9 +3,9 @@
 explain what happens.
 
 #### manually fix non-unique emails on live system:
-feuerstein@gmx.at	2 occurences
+select count(*) as cnt, id, username, name, email_address, status from pp_artist group by email_address having cnt > 1
 gumihere@gmail.com	4 occurences
-joebenso@gmail.com	22 occurences
+joebenso@gmail.com	7 occurences
 nver4got10@yahoo.com	2 occurences
 romac@the-groovy-toolbox.com	5 occurences
 

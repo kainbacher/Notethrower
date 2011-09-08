@@ -8,7 +8,6 @@ include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/User.php');
 
 $user = null;
-$unpersistedUser = null;
 $problemOccured = false;
 $errorMsg = '';
 
@@ -24,55 +23,102 @@ if ($user) {
 
 $action = get_param('action');
 
-$passwordSent = false;
+$instructionsSent       = false;
+$passwordWillBeEntered  = false;
+$passwordWasSet         = false;
+$email = '';
+$checksum = '';
 
-if ($action == 'generatePwd') {
-    $username = get_param('username');
+if ($action == 'sendInstructions') {
     $email = get_param('email');
-    if ($username != '') {
-        $user = User::fetch_for_username($username);
-        if (!$user) {
-            $problemOccured = true;
-            $errorMsg = 'No user found for username: ' . $username;
-        }
-    } else if ($email != '') {
+    if ($email) {
         $user = User::fetch_for_email_address($email);
         if (!$user) {
             $problemOccured = true;
             $errorMsg = 'No user found for email address: ' . $email;
         }
+
     } else {
         $problemOccured = true;
-        $errorMsg = 'No username or email address specified';
+        $errorMsg = 'Please enter your email address.';
     }
 
     if (!$problemOccured) {
-        $logger->info('creating new password for user');
+        $logger->info('sending pwd reset instructions to user with email "' . $user->email_address . '"');
 
-        // generate new password and save it in user record
-        $newPassword = generatePassword();
-        $user->password_md5 = md5($newPassword);
-        $user->save();
+        $resetPasswordUrl = $GLOBALS['BASE_URL'] . 'Site/generateNewPassword.php' .
+                            '?action=enterPwd' .
+                            '&email=' . urlencode($user->email_address) .
+                            '&cs=' . md5('HurziHurziBrrrigidigibab!' . $user->email_address);
 
-        $logger->info('sending new password for user "' . $username . '" with email "' . $user->email_address . '"');
-
-        $text = 'Please do not respond to this email. This is an automatically generated response.' . "\n";
+        $text = 'Please do not reply to this email. This is an automatically generated response.' . "\n";
         $text .= 'You received this email because you (or someone else) requested a reset of your account password for oneloudr.com' . "\n";
-        $text .= 'Please log in with the new secure password below. If you want to change your new password, you can do so in your user profile.' . "\n\n";
-        $text .= 'Your username: ' . $user->username . "\n";
-        $text .= 'Your new password: ' . $newPassword  . "\n\n";
-        $text .= 'Thank you!' . "\n";
+        $text .= 'To reset your password to a new random password please click the URL below.' . "\n\n";
+        $text .= $resetPasswordUrl  . "\n\n";
+        $text .= 'We recommend to change your password in your user profile after you logged in with the random password.' . "\n\n";
         $text .= 'The oneloudr team';
 
-        $emailSent = send_email($user->email_address, 'Your new password', $text);
+        $emailSent = send_email($user->email_address, 'Password reset instructions', $text);
 
-        if (!$emailSent) {
-            show_fatal_error_and_exit('failed to send new password email!');
-
+        if ($emailSent) {
+            $instructionsSent = true;
         } else {
-            $passwordSent = true;
+            show_fatal_error_and_exit('failed to send password reset instructions email!');
         }
     }
+
+} else if ($action == 'enterPwd') {
+    $email = get_param('email');
+    $checksum = get_param('cs');
+
+    if (!$email) {
+        show_fatal_error_and_exit('email param is missing!');
+    }
+
+    if (!$checksum) {
+        show_fatal_error_and_exit('cs param is missing!');
+    }
+
+    // validate checksum
+    if (md5('HurziHurziBrrrigidigibab!' . $email) != $checksum) {
+        show_fatal_error_and_exit('checksum validation failed!');
+    }
+
+    $user = User::fetch_for_email_address($email);
+    if (!$user) {
+        show_fatal_error_and_exit('No user found for email address: ' . $email);
+    }
+
+    $passwordWillBeEntered = true;
+
+} else if ($action == 'setPwd') {
+    $email = get_param('email');
+    $checksum = get_param('cs');
+    $newPassword = get_param('newPassword');
+
+    if (!$email) {
+        show_fatal_error_and_exit('email param is missing!');
+    }
+
+    if (!$checksum) {
+        show_fatal_error_and_exit('cs param is missing!');
+    }
+
+    // validate checksum
+    if (md5('HurziHurziBrrrigidigibab!' . $email) != $checksum) {
+        show_fatal_error_and_exit('checksum validation failed!');
+    }
+
+    $user = User::fetch_for_email_address($email);
+    if (!$user) {
+        show_fatal_error_and_exit('No user found for email address: ' . $email);
+    }
+
+    $logger->info('setting new password for user');
+    $user->password_md5 = md5($newPassword);
+    $user->save();
+
+    $passwordWasSet = true;
 }
 
 $messageList = '';
@@ -82,10 +128,22 @@ if ($errorMsg) {
     ));
 }
 
-$resetPasswordFormBlock = '';
-$newPasswordWasSentBlock = '';
-if ($passwordSent) {
-    $newPasswordWasSentBlock = processTpl('GenerateNewPassword/newPasswordWasSent.html', array());
+$instructionsWereSentBlock    = '';
+$newPasswordWasGeneratedBlock = '';
+$passwordWasSetBlock          = '';
+$resetPasswordFormBlock       = '';
+if ($instructionsSent) {
+    $instructionsWereSentBlock = processTpl('GenerateNewPassword/instructionsWereSent.html', array());
+
+} else if ($passwordWillBeEntered) {
+    $enterNewPasswordFormBlock = processTpl('GenerateNewPassword/enterNewPasswordForm.html', array(
+        '${formAction}' => $_SERVER['PHP_SELF'],
+        '${email}'      => $email,
+        '${checksum}'   => $checksum
+    ));
+
+} else if ($passwordWasSet) {
+    $passwordWasSetBlock = processTpl('GenerateNewPassword/passwordWasSet.html', array());
 
 } else {
     $resetPasswordFormBlock = processTpl('GenerateNewPassword/resetPasswordForm.html', array(
@@ -94,13 +152,15 @@ if ($passwordSent) {
 }
 
 processAndPrintTpl('GenerateNewPassword/index.html', array(
-    '${Common/pageHeader}'                               => buildPageHeader('Reset password'),
-    '${Common/bodyHeader}'                               => buildBodyHeader($user),
-    '${Common/message_choice_list}'                      => $messageList,
-    '${GenerateNewPassword/newPasswordWasSent_optional}' => $newPasswordWasSentBlock,
-    '${GenerateNewPassword/resetPasswordForm_optional}'  => $resetPasswordFormBlock,
-    '${Common/bodyFooter}'                               => buildBodyFooter(),
-    '${Common/pageFooter}'                               => buildPageFooter()
+    '${Common/pageHeader}'                                 => buildPageHeader('Reset password'),
+    '${Common/bodyHeader}'                                 => buildBodyHeader(null), // never put the $user var here because on this page the user is never logged in
+    '${Common/message_choice_list}'                        => $messageList,
+    '${GenerateNewPassword/instructionsWereSent_optional}' => $instructionsWereSentBlock,
+    '${GenerateNewPassword/enterNewPasswordForm_optional}' => $enterNewPasswordFormBlock,
+    '${GenerateNewPassword/passwordWasSet_optional}'       => $passwordWasSetBlock,
+    '${GenerateNewPassword/resetPasswordForm_optional}'    => $resetPasswordFormBlock,
+    '${Common/bodyFooter}'                                 => buildBodyFooter(),
+    '${Common/pageFooter}'                                 => buildPageFooter()
 ));
 
 // END

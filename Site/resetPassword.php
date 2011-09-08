@@ -46,7 +46,7 @@ if ($action == 'sendInstructions') {
     if (!$problemOccured) {
         $logger->info('sending pwd reset instructions to user with email "' . $user->email_address . '"');
 
-        $resetPasswordUrl = $GLOBALS['BASE_URL'] . 'Site/generateNewPassword.php' .
+        $resetPasswordUrl = $GLOBALS['BASE_URL'] . 'Site/resetPassword.php' .
                             '?action=enterPwd' .
                             '&email=' . urlencode($user->email_address) .
                             '&cs=' . md5('HurziHurziBrrrigidigibab!' . $user->email_address);
@@ -133,34 +133,34 @@ $newPasswordWasGeneratedBlock = '';
 $passwordWasSetBlock          = '';
 $resetPasswordFormBlock       = '';
 if ($instructionsSent) {
-    $instructionsWereSentBlock = processTpl('GenerateNewPassword/instructionsWereSent.html', array());
+    $instructionsWereSentBlock = processTpl('ResetPassword/instructionsWereSent.html', array());
 
 } else if ($passwordWillBeEntered) {
-    $enterNewPasswordFormBlock = processTpl('GenerateNewPassword/enterNewPasswordForm.html', array(
+    $enterNewPasswordFormBlock = processTpl('ResetPassword/enterNewPasswordForm.html', array(
         '${formAction}' => $_SERVER['PHP_SELF'],
         '${email}'      => $email,
         '${checksum}'   => $checksum
     ));
 
 } else if ($passwordWasSet) {
-    $passwordWasSetBlock = processTpl('GenerateNewPassword/passwordWasSet.html', array());
+    $passwordWasSetBlock = processTpl('ResetPassword/passwordWasSet.html', array());
 
 } else {
-    $resetPasswordFormBlock = processTpl('GenerateNewPassword/resetPasswordForm.html', array(
+    $resetPasswordFormBlock = processTpl('ResetPassword/resetPasswordForm.html', array(
         '${formAction}' => $_SERVER['PHP_SELF']
     ));
 }
 
-processAndPrintTpl('GenerateNewPassword/index.html', array(
-    '${Common/pageHeader}'                                 => buildPageHeader('Reset password'),
-    '${Common/bodyHeader}'                                 => buildBodyHeader(null), // never put the $user var here because on this page the user is never logged in
-    '${Common/message_choice_list}'                        => $messageList,
-    '${GenerateNewPassword/instructionsWereSent_optional}' => $instructionsWereSentBlock,
-    '${GenerateNewPassword/enterNewPasswordForm_optional}' => $enterNewPasswordFormBlock,
-    '${GenerateNewPassword/passwordWasSet_optional}'       => $passwordWasSetBlock,
-    '${GenerateNewPassword/resetPasswordForm_optional}'    => $resetPasswordFormBlock,
-    '${Common/bodyFooter}'                                 => buildBodyFooter(),
-    '${Common/pageFooter}'                                 => buildPageFooter()
+processAndPrintTpl('ResetPassword/index.html', array(
+    '${Common/pageHeader}'                           => buildPageHeader('Reset password'),
+    '${Common/bodyHeader}'                           => buildBodyHeader(null), // never put the $user var here because on this page the user is never logged in
+    '${Common/message_choice_list}'                  => $messageList,
+    '${ResetPassword/instructionsWereSent_optional}' => $instructionsWereSentBlock,
+    '${ResetPassword/enterNewPasswordForm_optional}' => $enterNewPasswordFormBlock,
+    '${ResetPassword/passwordWasSet_optional}'       => $passwordWasSetBlock,
+    '${ResetPassword/resetPasswordForm_optional}'    => $resetPasswordFormBlock,
+    '${Common/bodyFooter}'                           => buildBodyFooter(),
+    '${Common/pageFooter}'                           => buildPageFooter()
 ));
 
 // END

@@ -182,7 +182,7 @@ if ($userIsLoggedIn) { // it's an update
             'inputType'              => 'multiselect2',
             'propName'               => 'genres',
             'label'                  => 'Genres',
-            'mandatory'              => false,
+            'mandatory'              => true,
             'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
             'obj'                    => $user,
             'unpersistedObj'         => $unpersistedUser,
@@ -581,7 +581,11 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
                 $result = false;
             }
 
-            if (preg_match('/[^0-9,]/', get_param('userGenresList'))) {
+            if (!get_param('userGenresList')) {
+                $errorFields['genres'] = 'Please pick at least one genre.';
+                $result = false;
+
+            } else if (preg_match('/[^0-9,]/', get_param('userGenresList'))) {
                 $errorFields['genres'] = 'Invalid genres list'; // can only happen when someone plays around with the post data
                 $result = false;
             }

@@ -319,7 +319,7 @@ class User {
             if (isset($attribute_id_list[$proj->id]) && isset($projects_genre_id_list[$proj->id])) {
                 $clauses[] = '(' .
                              'ua.attribute_id in (' . implode(',', $attribute_id_list[$proj->id]) . ') ' .
-                             'and ug.genre_id in (' . implode(',', $projects_genre_id_list[$proj->id]) . ')' .
+                             'and (ug.genre_id is null or ug.genre_id in (' . implode(',', $projects_genre_id_list[$proj->id]) . '))' .
                              ')';
             }
         }

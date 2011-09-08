@@ -313,20 +313,15 @@ class User {
         }
 
         // create a map of attributes and genres per project
-        $attributes_and_genres_per_project_map = array();
-
         $projects = Project::fetch_all_unfinished_projects_of_user($user->id);
         $clauses = array();
         foreach ($projects as $proj) {
-            $attributes_and_genres_per_project_map[$proj->id] = array(
-                'attributes' => $attribute_id_list[$proj->id],
-                'genres'     => $projects_genre_id_list[$proj->id]
-            );
-
-            $clauses[] = '(' .
-                         'ua.attribute_id in (' . implode(',', $attribute_id_list[$proj->id]) . ') ' .
-                         'and ug.genre_id in (' . implode(',', $projects_genre_id_list[$proj->id]) . ')' .
-                         ')';
+            if (isset($attribute_id_list[$proj->id]) && isset($projects_genre_id_list[$proj->id])) {
+                $clauses[] = '(' .
+                             'ua.attribute_id in (' . implode(',', $attribute_id_list[$proj->id]) . ') ' .
+                             'and ug.genre_id in (' . implode(',', $projects_genre_id_list[$proj->id]) . ')' .
+                             ')';
+            }
         }
 
         $objs = array();

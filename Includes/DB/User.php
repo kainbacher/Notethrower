@@ -14,7 +14,10 @@ class User {
     var $email_address;
     var $name;
     var $artist_info;
+    var $latitude;
+    var $longitude;
     var $additional_info;
+    var $video_url;
     var $influences;
     var $image_filename;
     var $webpage_url;
@@ -373,7 +376,10 @@ class User {
         $a->email_address   = $row['email_address'];
         $a->name            = $row['name'];
         $a->artist_info     = $row['artist_info'];
+        $a->latitude        = $row['latitude'];
+        $a->longitude       = $row['longitude'];
         $a->additional_info = $row['additional_info'];
+        $a->video_url       = $row['video_url'];
         $a->influences      = $row['influences'];
         $a->image_filename  = $row['image_filename'];
         $a->webpage_url     = $row['webpage_url'];
@@ -399,7 +405,10 @@ class User {
             'email_address   varchar(255) not null, ' .
             'name            varchar(50)  not null, ' .
             'artist_info     text, ' .
+            'latitude        double, ' .
+            'longitude       double, ' .
             'additional_info text, ' .
+            'video_url       varchar(255), ' .
             'influences      text, ' .
             'image_filename  varchar(255), ' .
             'webpage_url     varchar(255), ' .
@@ -424,9 +433,10 @@ class User {
             $test_record = User::fetch_for_id(-1);
             if (!$test_record || !$test_record->id) {
                 $ok = _mysql_query(
-                    'insert into pp_user (id, username, password_md5, email_address, name, artist_info, additional_info, influences,' .
+                    'insert into pp_user (id, username, password_md5, email_address, name, artist_info, latitude, longitude, ' .
+                    'additional_info, video_url, influences,' .
                     'image_filename, webpage_url, paypal_account, activity_points, is_artist, is_pro, status, entry_date) ' .
-                    'values (-1, "_unknown_artist", "' . md5('dummyPwd') . '", "", "Unknown Artist", "", "", "", "", "", "", 0, 1, 0, "inactive", now())'
+                    'values (-1, "_unknown_artist", "' . md5('dummyPwd') . '", "", "Unknown Artist", null, null, "", "", "", "", "", "", 0, 1, 0, "inactive", now())'
                 );
             }
         }
@@ -489,15 +499,18 @@ class User {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_user ' .
-            '(username, password_md5, email_address, name, artist_info, additional_info, influences, image_filename, ' .
-            'webpage_url, paypal_account, activity_points, is_artist, is_pro, status, entry_date) ' .
+            '(username, password_md5, email_address, name, artist_info, latitude, longitude, additional_info, video_url, ' .
+            'influences, image_filename, webpage_url, paypal_account, activity_points, is_artist, is_pro, status, entry_date) ' .
             'values (' .
             qq($this->username)        . ', ' .
             qq($this->password_md5)    . ', ' .
             qq($this->email_address)   . ', ' .
             qq($this->name)            . ', ' .
             qq($this->artist_info)     . ', ' .
+            n($this->latitude)         . ', ' .
+            n($this->longitude)        . ', ' .
             qq($this->additional_info) . ', ' .
+            qq($this->video_url)       . ', ' .
             qq($this->influences)      . ', ' .
             qq($this->image_filename)  . ', ' .
             qq($this->webpage_url)     . ', ' .
@@ -527,7 +540,10 @@ class User {
             'email_address = '     . qq($this->email_address)   . ', ' .
             'name = '              . qq($this->name)            . ', ' .
             'artist_info = '       . qq($this->artist_info)     . ', ' .
+            'latitude = '          . n($this->latitude)         . ', ' .
+            'longitude = '         . n($this->longitude)        . ', ' .
             'additional_info = '   . qq($this->additional_info) . ', ' .
+            'video_url = '         . qq($this->video_url)       . ', ' .
             'influences = '        . qq($this->influences)      . ', ' .
             'image_filename = '    . qq($this->image_filename)  . ', ' .
             'webpage_url = '       . qq($this->webpage_url)     . ', ' .

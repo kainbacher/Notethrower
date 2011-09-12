@@ -18,9 +18,13 @@ ${Common/bodyHeader}
             <input type="hidden" name="signupAs" value="${signupAs}">
             <input type="hidden" name="userAttributesList" id="userAttributesList" value="">
             <input type="hidden" name="userGenresList" id="userGenresList" value="">
+            <input type="hidden" name="latitude" value="${latitude}">
+            <input type="hidden" name="longitude" value="${longitude}">
             ${Common/formElement_section1_list}
 
-            <div id="{id}" class=" formElement span-15 last">
+            ${Account/chooseLocationLink_optional}
+
+            <div id="userImageFormRow" class=" formElement span-15 last">
                 <div class="span-6">&nbsp;</div>
                 <div class="span-8">
                     ${userImage_choice}

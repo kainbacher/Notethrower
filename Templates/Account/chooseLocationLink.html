@@ -1,0 +1,17 @@
+<div id="chooseLocationLinkFormRow" class=" formElement span-15 last">
+  <div class="span-6">Location:</div>
+  <div class="span-8">
+    <div id="chooseLocationLinkDiv" class="formElement span-15 last">
+      <a href="javascript:showLocationChooser();">Pick location</a><br>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+function showLocationChooser() {
+    window.open('locationChooser.php?formName=userForm&latFieldId=latitude&lngFieldId=longitude','ONELOUDR_LOCATIONCHOOSER_LOCATION','scrollbars=0,status=0,width=610,height=480');
+}
+
+</script>
+  

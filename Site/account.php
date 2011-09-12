@@ -13,6 +13,8 @@ include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/UserAttribute.php');
 include_once('../Includes/DB/UserGenre.php');
 
+$logger->set_debug_level();
+
 $user = null;
 $unpersistedUser = null;
 $message = get_param('msg');
@@ -153,8 +155,13 @@ $formElementsSection1 .= getFormFieldForParams(array(
     'infoHtml'               => 'We will send you a verification link to this address to login. If another user sends you a message, a notification will also be sent here.<br>We will never give out your email or spam you. Aren\'t we nice?'
 ));
 
+$chooseLocationLink = '';
+
 if ($userIsLoggedIn) { // it's an update
     if ($pageMode == 'artist') {
+        $chooseLocationLink = processTpl('Account/chooseLocationLink.html', array(
+        ));
+
         // skills
         $selectOptions = array();
         $aList = Attribute::fetchShownFor('contains');
@@ -182,7 +189,7 @@ if ($userIsLoggedIn) { // it's an update
             'inputType'              => 'multiselect2',
             'propName'               => 'genres',
             'label'                  => 'Genres',
-            'mandatory'              => true,
+            'mandatory'              => false,
             'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
             'obj'                    => $user,
             'unpersistedObj'         => $unpersistedUser,
@@ -339,6 +346,18 @@ if ($userIsLoggedIn) { // it's an update
         ));
 
         $formElementsSection2 .= getFormFieldForParams(array(
+            'inputType'              => 'text',
+            'propName'               => 'video_url',
+            'label'                  => 'Video URL',
+            'mandatory'              => false,
+            'obj'                    => $user,
+            'unpersistedObj'         => $unpersistedUser,
+            'errorFields'            => $errorFields,
+            'workWithUnpersistedObj' => $problemOccured,
+            'infoText'               => 'If you have eg. a youtube video, put the URL here.'
+        ));
+
+        $formElementsSection2 .= getFormFieldForParams(array(
             'inputType'              => 'textarea',
             'propName'               => 'influences',
             'label'                  => 'Influences',
@@ -383,6 +402,9 @@ if (!$userIsLoggedIn) {
 //    ));
 }
 
+$latitude  = $problemOccured ? $unpersistedUser->latitude  : $user->latitude;
+$longitude = $problemOccured ? $unpersistedUser->longitude : $user->longitude;
+
 processAndPrintTpl('Account/index.html', array(
     '${Common/pageHeader}'                    => buildPageHeader('Account', false, false, true),
     '${Common/bodyHeader}'                    => buildBodyHeader($userIsLoggedIn ? $user : null),
@@ -391,6 +413,9 @@ processAndPrintTpl('Account/index.html', array(
     '${formAction}'                           => $_SERVER['PHP_SELF'],
     '${signupAs}'                             => get_param('signupAs'),
     '${Common/formElement_section1_list}'     => $formElementsSection1,
+    '${Account/chooseLocationLink_optional}'  => $chooseLocationLink,
+    '${latitude}'                             => $latitude,
+    '${longitude}'                            => $longitude,
     '${userImage_choice}'                     => $userImage,
     '${Common/formElement_section2_list}'     => $formElementsSection2,
     '${submitButtonClass}'                    => $userIsLoggedIn ? 'updateAccountButton' : 'createAccountButton',
@@ -581,11 +606,12 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
                 $result = false;
             }
 
-            if (!get_param('userGenresList')) {
-                $errorFields['genres'] = 'Please pick at least one genre.';
-                $result = false;
-
-            } else if (preg_match('/[^0-9,]/', get_param('userGenresList'))) {
+//            if (!get_param('userGenresList')) {
+//                $errorFields['genres'] = 'Please pick at least one genre.';
+//                $result = false;
+//
+//            } else
+            if (preg_match('/[^0-9,]/', get_param('userGenresList'))) {
                 $errorFields['genres'] = 'Invalid genres list'; // can only happen when someone plays around with the post data
                 $result = false;
             }
@@ -626,6 +652,7 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
         $user->name            = get_param('name');
         $user->artist_info     = get_param('artist_info');
         $user->additional_info = get_param('additional_info');
+        $user->video_url       = get_param('video_url');
         $user->influences      = get_param('influences');
         $user->paypal_account  = get_param('paypal_account');
 
@@ -642,11 +669,15 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
                 $user->unpersistedUserAttributes = explode(',', get_param('userAttributesList'));
                 $user->unpersistedUserGenres = explode(',', get_param('userGenresList'));
             }
+
+            // save location
+            $user->latitude  = get_numeric_param('latitude');
+            $user->longitude = get_numeric_param('longitude');
         }
 
     } else {
-        $user->is_artist       = false;
-        $user->name            = get_param('username'); // use the username as (artist) name as long as the user is just a fan
+        $user->is_artist = false;
+        $user->name      = get_param('username'); // use the username as (artist) name as long as the user is just a fan
 
         if (!$user->name) $user->name = $user->email_address;
     }

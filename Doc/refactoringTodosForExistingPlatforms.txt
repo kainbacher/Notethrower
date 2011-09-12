@@ -35,6 +35,9 @@ alter table pp_user add activity_points int(10) after paypal_account;
 alter table pp_user add is_artist tinyint(1) after activity_points;
 alter table pp_user add is_pro tinyint(1) after is_artist;
 alter table pp_user add influences text after additional_info;
+alter table pp_user add video_url varchar(255) after additional_info;
+alter table pp_user add latitude double after artist_info;
+alter table pp_user add longitude double after artist_info;
 
 update pp_user set is_artist=1;
 

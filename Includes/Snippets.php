@@ -189,7 +189,7 @@ function get_numeric_param($name) {
 
     if (preg_match('/[^0-9.,-]/', $val)) { // non-numeric
         return 0;
-    } else if (preg_match('/^(-?[0-9]+)[,.](\d{1,2})$/', $val, $treffer)) { // -1234,56 or -1234.56
+    } else if (preg_match('/^(-?\d+)[,.](\d+)$/', $val, $treffer)) { // -1234,5678 or -1234.5678
         $val = $treffer[1] . '.' . $treffer[2];
     } else if (preg_match('/^(-?[0-9.]+),(\d+)$/', $val, $treffer)) { // -1.234,56
         $val = preg_replace('/\./', '', $treffer[1]) . '.' . $treffer[2];

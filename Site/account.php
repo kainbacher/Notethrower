@@ -271,18 +271,18 @@ if ($userIsLoggedIn) { // it's an update
         'infoText'               => 'Enter your new password here if you want to change it.'
     ));
 
-//    $formElementsSection2 .= getFormFieldForParams(array(
-//        'inputType'              => 'password',
-//        'propName'               => 'password2',
-//        'label'                  => 'Password verification',
-//        'mandatory'              => false,
-//        'maxlength'              => 255,
-//        'obj'                    => $user,
-//        'unpersistedObj'         => $unpersistedUser,
-//        'errorFields'            => $errorFields,
-//        'workWithUnpersistedObj' => $problemOccured,
-//        'infoText'               => 'Enter your new password again, for verification.'
-//    ));
+    $formElementsSection2 .= getFormFieldForParams(array(
+        'inputType'              => 'password',
+        'propName'               => 'password2',
+        'label'                  => 'Confirm password',
+        'mandatory'              => false,
+        'maxlength'              => 255,
+        'obj'                    => $user,
+        'unpersistedObj'         => $unpersistedUser,
+        'errorFields'            => $errorFields,
+        'workWithUnpersistedObj' => $problemOccured,
+        'infoText'               => 'Enter your new password again, for verification.'
+    ));
 
 } else { // it's an insert
     $formElementsSection2 .= getFormFieldForParams(array(
@@ -298,18 +298,18 @@ if ($userIsLoggedIn) { // it's an update
         'infoText'               => 'Create your own password and use this for logging in. If you ever forget it, we can email you a new one or you can change it in the future.'
     ));
 
-//    $formElementsSection2 .= getFormFieldForParams(array(
-//        'inputType'              => 'password',
-//        'propName'               => 'password2',
-//        'label'                  => 'Password verification',
-//        'mandatory'              => true,
-//        'maxlength'              => 255,
-//        'obj'                    => $user,
-//        'unpersistedObj'         => $unpersistedUser,
-//        'errorFields'            => $errorFields,
-//        'workWithUnpersistedObj' => $problemOccured,
-//        'infoText'               => 'This should be pretty easy. Do you remember the password you just created? Type it here.'
-//    ));
+    $formElementsSection2 .= getFormFieldForParams(array(
+        'inputType'              => 'password',
+        'propName'               => 'password2',
+        'label'                  => 'Confirm password',
+        'mandatory'              => true,
+        'maxlength'              => 255,
+        'obj'                    => $user,
+        'unpersistedObj'         => $unpersistedUser,
+        'errorFields'            => $errorFields,
+        'workWithUnpersistedObj' => $problemOccured,
+        'infoText'               => 'This should be pretty easy. Do you remember the password you just created? Type it here.'
+    ));
 }
 
 if ($userIsLoggedIn) { // it's an update
@@ -411,7 +411,7 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
     $result = true;
 
     $pwd    = get_param('password');
-    //$pwd2   = get_param('password2');
+    $pwd2   = get_param('password2');
     $oldPwd = get_param('old_password');
 
     if ($userIsLoggedIn) { // update operation - user has to specify old password -> update: currently not desired
@@ -426,53 +426,53 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
     }
 
     if ($userIsLoggedIn) { // update operation - user *can* change the password
-//        if (!$pwd && !$pwd2) {
-//            // noop
-//
-//        } else if (!$pwd || !$pwd2) { // one of the pwds is missing
-//            $errorFields['password']  = 'Password or password verification is missing!';
-//            $errorFields['password2'] = 'Password or password verification is missing!';
-//            $result = false;
-//
-//        } else { // both pwds are present
-//            if ($pwd != $pwd2) {
-//                $errorFields['password']  = 'Passwords do not match!';
-//                $errorFields['password2'] = 'Passwords do not match!';
-//                $result = false;
-//            }
-//
-//            if (!$oldPwd) {
-//                $errorFields['old_password'] = 'Please enter your current password!';
-//                $result = false;
-//            }
-//        }
-        if (!$pwd) {
+        if (!$pwd && !$pwd2) {
             // noop
 
-        } else { // pwd is present
+        } else if (!$pwd || !$pwd2) { // one of the pwds is missing
+            $errorFields['password']  = 'Password or password verification is missing!';
+            $errorFields['password2'] = 'Password or password verification is missing!';
+            $result = false;
+
+        } else { // both pwds are present
+            if ($pwd != $pwd2) {
+                $errorFields['password']  = 'Passwords do not match!';
+                $errorFields['password2'] = 'Passwords do not match!';
+                $result = false;
+            }
+
             if (!$oldPwd) {
                 $errorFields['old_password'] = 'Please enter your current password!';
                 $result = false;
             }
         }
-
-    } else { // insert operation
-//        if (!$pwd || !$pwd2) {
-//            $errorFields['password']  = 'Password or password verification is missing!';
-//            $errorFields['password2'] = 'Password or password verification is missing!';
-//            $result = false;
+//        if (!$pwd) {
+//            // noop
 //
-//        } else {
-//            if ($pwd != $pwd2) {
-//                $errorFields['password']  = 'Passwords do not match!';
-//                $errorFields['password2'] = 'Passwords do not match!';
+//        } else { // pwd is present
+//            if (!$oldPwd) {
+//                $errorFields['old_password'] = 'Please enter your current password!';
 //                $result = false;
 //            }
 //        }
-        if (!$pwd) {
-            $errorFields['password']  = 'Password is missing!';
+
+    } else { // insert operation
+        if (!$pwd || !$pwd2) {
+            $errorFields['password']  = 'Password or password verification is missing!';
+            $errorFields['password2'] = 'Password or password verification is missing!';
             $result = false;
+
+        } else {
+            if ($pwd != $pwd2) {
+                $errorFields['password']  = 'Passwords do not match!';
+                $errorFields['password2'] = 'Passwords do not match!';
+                $result = false;
+            }
         }
+//        if (!$pwd) {
+//            $errorFields['password']  = 'Password is missing!';
+//            $result = false;
+//        }
     }
 
     // check artist name and username

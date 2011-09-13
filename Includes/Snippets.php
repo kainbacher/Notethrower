@@ -583,6 +583,7 @@ function send_email($recipient_email, $subject, $text, $filename = '', $data = '
                 'subject: '   . $subject         . "\n" .
                 'text: '      . $final_text
             );
+
         } else {
             $logger->info('mail successfully sent');
         }

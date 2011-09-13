@@ -68,7 +68,7 @@ function sendEmailWithFromAddressToRecipients($emails, $subject, $textContent, $
     }
 
     require_once ('../Includes/Mail.php');
-    require_once ('../Includes/mime.php');
+    require_once ('../Includes/Mail/mime.php');
 
     $crlf = "\r\n";
 

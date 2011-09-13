@@ -135,4 +135,8 @@ function enc8bit($string) {
 	return $ret . '?=';
 }
 
+function normalizeNewlines($text) {
+    return str_replace(array("\r\n", "\n", "\r"), "\r\n", $text); // extend everything to \r\n
+}
+
 ?>

@@ -2,18 +2,6 @@
 #### manually create a list of all remixes (and their originating artists), then delete these tracks. joe will contact them to
 explain what happens.
 
-#### manually fix non-unique emails on live system:
-select count(*) as cnt, id, username, name, email_address, status from pp_artist group by email_address having cnt > 1
-gumihere@gmail.com	4 occurences
-joebenso@gmail.com	7 occurences
-nver4got10@yahoo.com	2 occurences
-romac@the-groovy-toolbox.com	5 occurences
-
---> make them unique!
-
-to get the details, execute:
-select id, username, email_address, name, status from pp_artist where email_address in ('feuerstein@gmx.at', 'gumihere@gmail.com', 'joebenso@gmail.com', 'nver4got10@yahoo.com', 'romac@the-groovy-toolbox.com') order by email_address
-
 ++++ launch steps:
 ###### change table names and table columns on existing platforms:
 execute:

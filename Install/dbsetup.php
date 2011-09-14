@@ -38,6 +38,7 @@ Stats::create_table();
 User::create_table();
 UserAttribute::createTable();
 UserGenre::createTable();
+Subscription::create_table();
 
 echo 'creation done.' . "\n";
 

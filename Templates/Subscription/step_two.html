@@ -1,0 +1,15 @@
+${Common/pageHeader}
+<body>
+<p>Enter your email address</p>
+${Optional/error}
+<form name="frm" action="${phpSelf}" method="POST">
+    <label for="email">E-Mail:</label>
+    <input type="hidden" name="username" value="${userName}" />
+    <input type="hidden" name="referrerid" value="${Optional/referrerId}" />
+
+    <input type="text" name="email" />
+    <input type="submit">
+</form>
+</body>
+
+${Common/pageFooter}

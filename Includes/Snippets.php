@@ -673,5 +673,14 @@ function create_resized_jpg($file, $destFile, $maxWidth, $maxHeight) {
     imagejpeg($imageNew, $destFile, 100);
     imagedestroy($imageNew); // free memory
 }
+	
+function rand_char($length=6) {
+    $key = '';  
+    $pattern = "12345678901234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";  
+    for($i=0;$i<$length;$i++){  
+        $key .= $pattern{rand(0,72)};  
+    }  
+    return $key; 
+}
 
 ?>

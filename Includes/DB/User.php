@@ -436,7 +436,7 @@ class User {
                     'insert into pp_user (id, username, password_md5, email_address, name, artist_info, latitude, longitude, ' .
                     'additional_info, video_url, influences,' .
                     'image_filename, webpage_url, paypal_account, activity_points, is_artist, is_pro, status, entry_date) ' .
-                    'values (-1, "_unknown_artist", "' . md5('dummyPwd') . '", "", "Unknown Artist", null, null, "", "", "", "", "", "", 0, 1, 0, "inactive", now())'
+                    'values (-1, "_unknown_artist", "' . md5('dummyPwd') . '", "", "Unknown Artist", "", null, null, "", "", "", "", "", "", 0, 1, 0, "inactive", now())'
                 );
             }
         }

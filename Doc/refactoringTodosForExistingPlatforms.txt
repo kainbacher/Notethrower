@@ -2,6 +2,11 @@
 #### manually create a list of all remixes (and their originating artists), then delete these tracks. joe will contact them to
 explain what happens.
 
+select t.id, t.status, t.type, t.title, a.username, a.name, a.email_address from pp_audio_track t, pp_artist a where t.type="remix" and t.status = "active" and t.artist_id = a.id
+//update pp_audio_track set status = 'banned' where status="inactive" and type="remix" and artist_id in (3,5,30,52,64,98);
+
+-> joe is informed. he will contact the artists: https://docs.google.com/spreadsheet/ccc?key=0Aje2y_YIOn5RdEhzM1RTaHRfdTh4YVgyZUZHc2dqQmc#gid=0
+
 ++++ launch steps:
 ###### change table names and table columns on existing platforms:
 execute:

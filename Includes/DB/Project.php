@@ -25,7 +25,7 @@ class Project {
     var $visibility; // new: drop this? maybe useful in the future (pro feature - private projects)
     var $playback_count;
     var $download_count;
-    var $status; // old: newborn, active and inactive (mp3 file missing) - new: newborn, active, inactive (mp3 file missing) and finished (watch out to change all $show_inactive_items stuff!)
+    var $status; // old: newborn, active and inactive (mp3 file missing) - new: newborn, active, inactive (mp3 file missing), banned and finished
     var $entry_date;
     var $containsOthers; // check this if we need it here
     var $needsOthers; // check this if we need it here

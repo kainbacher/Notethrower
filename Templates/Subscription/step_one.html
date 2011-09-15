@@ -1,24 +1,29 @@
 ${Common/pageHeader}
-<body>
-<h1>Welcome friend!</h1>
-<p>
-    Oneloudr makes it ridiculously easy to share in the music making, music discovery, and music selling process.
-</p>
-<p>
-    Collaborate with other musicians from around the world. Finally get your music discovered by entering the oneloudr charts, and watch your music rise with the best community rating system online. Oh, and it's FREE!
-</p>
-<p>
-    Reserve your artist/username and we'll put you on the invite list.
-</p>
-${Optional/error}
-${Optional/referrerName}
-<form name="frm" action="${phpSelf}" method="POST">
-    <label for="username">Username:</label>
-    <input type="text" name="username" />
-    
-    <input type="hidden" name="referrerid" value="${Optional/referrerId}" />
-    <input type="submit">
-</form>
-</body>
+                <h1>Welcome Friend!</h1>
+                <p>
+                    Oneloudr makes it ridiculously easy to share in the music making, music discovery, and music selling process.
+                </p>
+                <p>
+                    Collaborate with other musicians from around the world. Finally get your music discovered by entering the oneloudr charts, and watch your music rise with the best community rating system online. Oh, and it's FREE!
+                </p>
+                <p>
+                    Reserve your artist/username and we'll put you on the invite list.
+                </p>
+                ${Optional/error}
+                <form name="frm" action="${formAction}" method="POST">
+                    <div class="label">
+                        <label for="username">
+                            Username:
+                        </label>
+                        <input type="text" name="username" value="${Optional/username}" />
+                        <div class="clearfix">
+                        </div>
+                    </div>
+                
+                    </label>
+
+                    <input type="image" src="/Images/subscription/submit.png">
+                
+                </form>
 
 ${Common/pageFooter}

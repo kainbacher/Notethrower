@@ -1,0 +1,85 @@
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, figure, footer, header, hgroup, menu, nav, section, menu, time, mark, audio, video {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+    color: #FFFFFF;
+}
+body {
+    background:#000000 url('../Images/subscription/background.jpg') no-repeat top;
+    font-family: Arial, Helvetica, sans-serif;
+}
+#container {
+    width: 930px;
+    margin: 100px auto;
+}
+#logo {
+    width: 539px;
+    height: 112px;
+    background-image: url('../Images/subscription/logo.png');
+    margin: 0 auto 50px;
+}
+#content {
+    background-color: #17222D;
+    background-color:rgba(255,255,255,0.05);
+    min-height: 250px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+#left, #right {
+    float: left;
+}
+#left {
+    width: 304px;
+}
+#right {
+    width: 526px;
+    padding: 40px;
+}
+.clearfix {
+    clear: both;
+}
+h1 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    font-weight: normal;
+}
+p {
+    font-size: 18px;
+    margin-bottom: 16px;
+}
+.label {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 10px 30px;
+    background-color: #131D28;
+}
+form label {
+    display: inline;
+    float: left;
+    font-size: 20px;
+}
+form input[type="text"] {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    height: 20px;
+    border: 0;
+    width: 340px;
+    float: right;
+    padding: 5px;
+}
+form input[type="image"] {
+    float: right;
+    margin: 20px 10px 0 0;
+}
+
+.errormsg{
+    background-color: #882DE3;
+    padding: 5px;
+}

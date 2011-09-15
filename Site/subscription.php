@@ -6,13 +6,145 @@ include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/Subscription.php');
 
+
+
+$referrer = Subscription::fetch_for_rand_str(get_param('referrer'));
+if(!$referrer->id){
+    //if no referral -> just die 
+    //uncomment when we open the subscription for everyone
+    exit;
+}
+if(get_param('action')=='success' && $referrer->id){
+    displaySuccess($referrer);
+    exit;
+}
+
+
+//$error = processTpl('Subscription/err_email_wrongformat.html');
+if(get_param('username')){
+    $username = get_param('username');
+    
+    if(get_param('email')){
+        $email = get_param('email');
+        if(Subscription::fetch_for_email(get_param('email'))){
+            $error = processTpl('Subscription/err_email_exists.html');
+            displayStepTwo($referrer, $username, $email, $error);
+            exit;    
+        } elseif(email_syntax_ok($email) == false){
+            $error = processTpl('Subscription/err_email_wrongformat.html');
+            displayStepTwo($referrer, $username, $email, $error);
+            exit;
+        } else {
+            $subscription = new Subscription();
+            processParams($subscription, $referrer->id);
+            
+            $subscription->insert();
+            $referal_url = 'http://oneloudr.com/invite/'.$subscription->rand_str;
+            $emailtext = processTpl('Subscription/emailtext.html', array(
+                '${username}'                                => $username,
+                '${referralUrl}'                             => $referal_url
+            ));
+            $email_sent = send_email($subscription->email_address, 'Your ONELOUDR Invitation', $emailtext);
+            
+            
+            //prevent reload
+            header('Location: /invite/'.$subscription->rand_str.'/success');
+            //header('Location: subscription.php?action=success&code='.$subscription->rand_str);
+            exit;
+          
+        }
+    }
+    
+    
+    //error checks
+    if(strlen($username) < 3){
+        $error = processTpl('Subscription/err_username_tooshort.html');
+        displayStepOne($referrer, $username, $error);
+        exit;
+    } elseif(strlen($username) > 50){
+        $error = processTpl('Subscription/err_username_toolong.html');
+        displayStepOne($referrer, $username, $error);
+        exit;
+    } elseif(Subscription::fetch_for_username($username)){
+        $error = processTpl('Subscription/err_username_exists.html');
+        displayStepOne($referrer, $username, $error);
+        exit;
+    }
+    displayStepTwo($referrer, $username);
+
+} else {
+    displayStepOne($referrer);
+}
+
+
+
+
+function buildSubscriptionHeader($title){
+    return processTpl('Subscription/pageHeader.html', array(
+        '${pageTitle}'                                => escape($title)
+    ));
+}
+
+function buildSubscriptionFooter(){
+    return processTpl('Subscription/pageFooter.html');
+}
+
+function displayStepOne($referrer, $username = null, $error = null){
+    
+    processAndPrintTpl('Subscription/step_one.html', array(
+        '${Common/pageHeader}'                     => buildSubscriptionHeader('Signup'),
+        '${Optional/username}'                     => $username,
+        '${Optional/error}'                        => $error,
+        '${formAction}'                            => '/invite/'.$referrer->rand_str,
+        '${Common/pageFooter}'                     => buildSubscriptionFooter()
+    ));
+}
+
+
+function displayStepTwo($referrer, $username, $email = null, $error = null){
+    processAndPrintTpl('Subscription/step_two.html', array(
+        '${Common/pageHeader}'                     => buildSubscriptionHeader('Signup - Step 2'),
+        '${Optional/error}'                        => $error,
+        '${Optional/email}'                        => $email,
+        '${username}'                              => $username,
+        '${formAction}'                            => '/invite/'.$referrer->rand_str,
+        '${userName}'                              => get_param('username'),
+        '${Common/pageFooter}'                     => buildSubscriptionFooter()
+    ));
+}
+
+function displaySuccess($referrer){
+    
+    processAndPrintTpl('Subscription/step_three.html', array(
+        '${Common/pageHeader}'                     => buildSubscriptionHeader('Signup - Success'),
+        '${referalUrl}'                            => 'http://oneloudr.com/invite/'.$referrer->rand_str,
+        '${Common/pageFooter}'                     => buildSubscriptionFooter()
+    ));
+}
+
+
+function processParams($subscription, $referrerid = 0){
+    $subscription->username = get_param('username');
+    $subscription->email_address = get_param('email');
+    $subscription->rand_str = rand_char();
+    $subscription->referrer_id = $referrerid;
+}
+
+
+
+
+
+
+
+
+
+/*
+ * 
+ *
 if(get_param('action') == 'success'){
     $subscription = Subscription::fetch_for_rand_str(get_param('code'));
     
     $referal_url = $_SERVER['HTTP_REFERER'].'?referrer='.$subscription->rand_str;
-    $email_sent = send_email($subscription->email_address, 'Your ONELOUDR Subscription',
-                'Hey ' . $subscription->username . "\n" . 
-                'Your referral-url: '. $referal_url . "\n");
     
     processAndPrintTpl('Subscription/step_three.html', array(
         '${Common/pageHeader}'                     => buildPageHeader('Subscription Title - Success'),
@@ -33,6 +165,11 @@ if(get_param('username') && get_param('email') && email_syntax_ok(get_param('ema
         processParams($subscription);
     
         $subscription->insert();
+        $referal_url = $_SERVER['HTTP_REFERER'].'?referrer='.$subscription->rand_str;
+        $email_sent = send_email($subscription->email_address, 'Your ONELOUDR Subscription',
+                'Hey ' . $subscription->username . "\n" . 
+                'Your referral-url: '. $referal_url . "\n");
+                
         //prevent reload
         header('Location: subscription.php?action=success&code='.$subscription->rand_str);
         exit;
@@ -93,17 +230,13 @@ if(get_param('username') && get_param('email') && email_syntax_ok(get_param('ema
         '${Optional/referrerName}'                 => $referrer_name,
         '${Optional/referrerId}'                   => $referrer->id,
         '${Optional/error}'                        => $error,
-        '${phpSelf}'                               => $_SERVER['PHP_SELF'],
+        '${phpSelf}'                               => '/invite/',
         '${Common/pageFooter}'                     => buildPageFooter()
     ));
 }
 
 
-function processParams($subscription){
-    $subscription->username = get_param('username');
-    $subscription->email_address = get_param('email');
-    $subscription->rand_str = rand_char();
-    $subscription->referrer_id = get_param('referrerid');
-}
+
+*/
 
 ?>

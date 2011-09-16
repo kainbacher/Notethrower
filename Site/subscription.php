@@ -12,6 +12,7 @@ $referrer = Subscription::fetch_for_rand_str(get_param('referrer'));
 if(!$referrer->id){
     //if no referral -> just die 
     //uncomment when we open the subscription for everyone
+    displayStartpage();
     exit;
 }
 if(get_param('action')=='success' && $referrer->id){
@@ -87,6 +88,13 @@ function buildSubscriptionHeader($title){
 
 function buildSubscriptionFooter(){
     return processTpl('Subscription/pageFooter.html');
+}
+
+function displayStartpage(){
+    processAndPrintTpl('Subscription/start.html', array(
+        '${Common/pageHeader}'                     => buildSubscriptionHeader('Welcome'),
+        '${Common/pageFooter}'                     => buildSubscriptionFooter()
+    ));
 }
 
 function displayStepOne($referrer, $username = null, $error = null){

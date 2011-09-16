@@ -6,11 +6,13 @@ html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pr
     font-size:100%;
     vertical-align:baseline;
     background:transparent;
-    color: #FFFFFF;
 }
 body {
     background:#000000 url('../Images/subscription/background.jpg') no-repeat top;
     font-family: Arial, Helvetica, sans-serif;
+}
+h1, p, label {
+    color: #FFFFFF;
 }
 #container {
     width: 930px;

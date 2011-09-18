@@ -75,6 +75,24 @@ class Subscription {
             return null;
         }
     }
+    
+    function fetch_notethrower_artists(){
+        $ok = _mysql_query(
+            'SELECT * FROM pp_subscription ' .
+            'WHERE old_artist_id > 0' 
+            );
+        while($row = mysql_fetch_array($ok)){
+            $result[] = array(
+                'id' => $row['id'],
+                'username' => $row['username'],
+                'email_address' => $row['email_address'],
+                'rand_str' => $row['rand_str']   
+            );
+        }
+        
+        return $result;
+    } 
+    
     function insert() {
         $ok = _mysql_query(
             'insert into pp_subscription ' .
@@ -110,6 +128,7 @@ class Subscription {
         return $a;
     }
     
+    
      function create_table() {
         $ok = _mysql_query(
             'create table if not exists pp_subscription ' .
@@ -120,6 +139,7 @@ class Subscription {
             'rand_str        varchar(10)  not null, ' .
             'referrer_id     int(10), ' .
             'entry_date      datetime     not null default "1970-01-01 00:00:00", ' .
+            'old_artist_id   int(10)      not null default "0", ' .
             'primary key (id) ' .
            ') default charset=utf8'
         );

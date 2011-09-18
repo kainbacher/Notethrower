@@ -7,6 +7,25 @@ include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/Subscription.php');
 
 
+if(get_param('referrer') == 'batcholdartists'){
+    $oldartists = Subscription::fetch_notethrower_artists();
+    
+    for($i=0; $i < count($oldartists); $i++){
+        $artist = $oldartists[$i];
+        $referral_url = 'http://oneloudr.com/invite/'.$artist['rand_str'];
+        $emailtext = processTpl('Subscription/emailtextoldartists.html', array(
+                '${username}'                                => $artist['username'],
+                '${referralUrl}'                             => $referral_url
+            ));
+        $email_sent = send_email($artist['email_address'], 'Your ONELOUDR Invitation', $emailtext);
+        if($email_sent){
+            echo 'Invitation for "'.$artist['username'].'" successfully sent<br />';
+        }  
+        //echo $email_sent;
+        //echo 'name: '.$artist['username'].'<br />';
+    }
+    exit;
+}
 
 $referrer = Subscription::fetch_for_rand_str(get_param('referrer'));
 if(!$referrer->id){

@@ -8,7 +8,9 @@ include_once('../Includes/DB/Subscription.php');
 
 
 if(get_param('referrer') == 'batcholdartists'){
-    $oldartists = Subscription::fetch_notethrower_artists();
+    /*
+	Invitation sent on 20.09.2011 - 15:34. DONT REPEAT!!!
+	$oldartists = Subscription::fetch_notethrower_artists();
     
     for($i=0; $i < count($oldartists); $i++){
         $artist = $oldartists[$i];
@@ -24,6 +26,7 @@ if(get_param('referrer') == 'batcholdartists'){
         //echo $email_sent;
         //echo 'name: '.$artist['username'].'<br />';
     }
+	*/
     exit;
 }
 

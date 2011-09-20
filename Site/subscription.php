@@ -113,7 +113,7 @@ function buildSubscriptionFooter(){
 }
 
 function displayStartpage(){
-    processAndPrintTpl('Subscription/start.html', array(
+    processAndPrintTpl('Subscription/index.html', array(
         '${Common/pageHeader}'                     => buildSubscriptionHeader('Welcome'),
         '${Common/pageFooter}'                     => buildSubscriptionFooter()
     ));

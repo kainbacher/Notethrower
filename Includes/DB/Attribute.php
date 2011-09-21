@@ -76,6 +76,24 @@ class Attribute {
         return $a;
     }
 
+    function fetchForName($name) {
+        $result = _mysql_query(
+            'select * ' .
+            'from pp_attribute ' .
+            'where name = ' . qq($name)
+        );
+
+        $a = new Attribute();
+
+        if ($row = mysql_fetch_array($result)) {
+            $a = Attribute::_read_row($a, $row);
+        }
+
+        mysql_free_result($result);
+
+        return $a;
+    }
+
     function _read_row($a, $row) {
         $a->id           = $row['id'];
         $a->name         = $row['name'];

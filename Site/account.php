@@ -43,7 +43,9 @@ if (get_param('action') == 'save') {
         processParams($user, true, $userIsLoggedIn);
 
         // check if a url was entered or if there's still only the predefined value
-        if ($user->webpage_url == 'http://') $user->webpage_url = '';
+        if ($user->webpage_url  == 'http://') $user->webpage_url  = '';
+        if ($user->facebook_url == 'http://') $user->facebook_url = '';
+        if ($user->twitter_url  == 'http://') $user->twitter_url  = '';
 
         // the newly created account needs to be activated first
         if (!$userIsLoggedIn) {
@@ -95,7 +97,9 @@ if (get_param('action') == 'save') {
 // prefill form with some values if present
 if (!$user) {
     $user = new User();
-    $user->webpageUrl = 'http://';
+    $user->webpageUrl  = 'http://';
+    $user->facebookUrl = 'http://';
+    $user->twitterUrl  = 'http://';
     processParams($user, false, $userIsLoggedIn);
 }
 
@@ -184,6 +188,19 @@ if ($userIsLoggedIn) { // it's an update
             'infoText'               => 'List your skills here.'
         ));
 
+        // "create new skill"
+        $formElementsSection1 .= getFormFieldForParams(array(
+            'propName'               => 'newAttribute',
+            'label'                  => 'Add new skill',
+            'mandatory'              => false,
+            'maxlength'              => 50,
+            'obj'                    => $user,
+            'unpersistedObj'         => $unpersistedUser,
+            'errorFields'            => $errorFields,
+            'workWithUnpersistedObj' => $problemOccured,
+            'infoText'               => 'If you can\'t find your skill in the selection above, you can add it here. It will be added to the skills list, when you click "Update account".'
+        ));
+
         // user genres
         $formElementsSection1 .= getFormFieldForParams(array(
             'inputType'              => 'multiselect2',
@@ -222,7 +239,31 @@ if ($userIsLoggedIn) { // it's an update
             'unpersistedObj'         => $unpersistedUser,
             'errorFields'            => $errorFields,
             'workWithUnpersistedObj' => $problemOccured,
-            'infoText'               => 'If you have another place you would like your fans to find you, please enter the link here. For example, your MySpace or Facebook page.'
+            'infoText'               => 'If you have another place you would like your fans to find you, please enter the link here.'
+        ));
+
+        $formElementsSection1 .= getFormFieldForParams(array(
+            'propName'               => 'facebook_url',
+            'label'                  => 'Facebook URL',
+            'mandatory'              => false,
+            'maxlength'              => 255,
+            'obj'                    => $user,
+            'unpersistedObj'         => $unpersistedUser,
+            'errorFields'            => $errorFields,
+            'workWithUnpersistedObj' => $problemOccured,
+            'infoText'               => 'Enter your facebook link here if you have one.'
+        ));
+
+        $formElementsSection1 .= getFormFieldForParams(array(
+            'propName'               => 'twitter_url',
+            'label'                  => 'Twitter URL',
+            'mandatory'              => false,
+            'maxlength'              => 255,
+            'obj'                    => $user,
+            'unpersistedObj'         => $unpersistedUser,
+            'errorFields'            => $errorFields,
+            'workWithUnpersistedObj' => $problemOccured,
+            'infoText'               => 'Enter your twitter link here if you have one.'
         ));
 
         $formElementsSection1 .= getFormFieldForParams(array(
@@ -662,6 +703,8 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
     if ($pageMode == 'artist') {
         $user->is_artist       = true;
         $user->webpage_url     = get_param('webpage_url');
+        $user->facebook_url    = get_param('facebook_url');
+        $user->twitter_url     = get_param('twitter_url');
         $user->name            = get_param('name');
         $user->artist_info     = get_param('artist_info');
         $user->additional_info = get_param('additional_info');
@@ -670,11 +713,23 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
         $user->paypal_account  = get_param('paypal_account');
 
         if ($userIsLoggedIn) {
+            // save new skill, if one was entered
+            $newAttribute = null;
+            if (get_param('newAttribute')) {
+                $newAttribute = Attribute::fetchForName(get_param('newAttribute'));
+                if (!$newAttribute || !$newAttribute->id) {
+                    $newAttribute = new Attribute();
+                    $newAttribute->name = get_param('newAttribute');
+                    $newAttribute->shown_for = "both";
+                    $newAttribute->insert();
+                }
+            }
+
             // save new genre, if one was entered
             $newGenre = null;
             if (get_param('newGenre')) {
                 $newGenre = Genre::fetchForName(get_param('newGenre'));
-                if (!$newGenre) {
+                if (!$newGenre || !$newGenre->id) {
                     $newGenre = new Genre();
                     $newGenre->name = get_param('newGenre');
                     $newGenre->insert();
@@ -682,20 +737,24 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
             }
 
             // handle user attributes & genres
+            $userAttributesList = explode(',', get_param('userAttributesList'));
+            if ($newAttribute) $userAttributesList[] = $newAttribute->id;
+            $userAttributesList = array_unique($userAttributesList);
+
             $userGenresList = explode(',', get_param('userGenresList'));
             if ($newGenre) $userGenresList[] = $newGenre->id;
             $userGenresList = array_unique($userGenresList);
 
             if ($user->id) {
                 UserAttribute::deleteForUserId($user->id); // first, delete all existing
-                UserAttribute::addAll(explode(',', get_param('userAttributesList')), $user->id, 'offers'); // then save the selected attributes
+                UserAttribute::addAll($userAttributesList, $user->id, 'offers'); // then save the selected attributes (including the new one, if one was entered)
 
                 UserGenre::deleteForUserId($user->id); // first, delete all existing genres
                 UserGenre::addAll($userGenresList, $user->id); // then save the selected genres (including the new one, if one was entered)
 
             } else { // work with unpersisted obj
-                $user->unpersistedUserAttributes = explode(',', get_param('userAttributesList'));
-                $user->unpersistedUserGenres = $userGenresList;
+                $user->unpersistedUserAttributes = $userAttributesList;
+                $user->unpersistedUserGenres     = $userGenresList;
             }
 
             // save location

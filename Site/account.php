@@ -200,6 +200,19 @@ if ($userIsLoggedIn) { // it's an update
             'infoText'               => 'Please choose the genres that best describe what type of musician you are. We will provide recommendations on which projects to work on based on your selections.'
         ));
 
+        // "create new genre"
+        $formElementsSection1 .= getFormFieldForParams(array(
+            'propName'               => 'newGenre',
+            'label'                  => 'Add new genre',
+            'mandatory'              => false,
+            'maxlength'              => 50,
+            'obj'                    => $user,
+            'unpersistedObj'         => $unpersistedUser,
+            'errorFields'            => $errorFields,
+            'workWithUnpersistedObj' => $problemOccured,
+            'infoText'               => 'If you can\'t find your genre in the selection above, you can add it here. It will be added to the genre list, when you click "Update account".'
+        ));
+
         $formElementsSection1 .= getFormFieldForParams(array(
             'propName'               => 'webpage_url',
             'label'                  => 'Webpage URL',
@@ -657,17 +670,32 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
         $user->paypal_account  = get_param('paypal_account');
 
         if ($userIsLoggedIn) {
+            // save new genre, if one was entered
+            $newGenre = null;
+            if (get_param('newGenre')) {
+                $newGenre = Genre::fetchForName(get_param('newGenre'));
+                if (!$newGenre) {
+                    $newGenre = new Genre();
+                    $newGenre->name = get_param('newGenre');
+                    $newGenre->insert();
+                }
+            }
+
             // handle user attributes & genres
+            $userGenresList = explode(',', get_param('userGenresList'));
+            if ($newGenre) $userGenresList[] = $newGenre->id;
+            $userGenresList = array_unique($userGenresList);
+
             if ($user->id) {
                 UserAttribute::deleteForUserId($user->id); // first, delete all existing
                 UserAttribute::addAll(explode(',', get_param('userAttributesList')), $user->id, 'offers'); // then save the selected attributes
 
                 UserGenre::deleteForUserId($user->id); // first, delete all existing genres
-                UserGenre::addAll(explode(',', get_param('userGenresList')), $user->id); // and the selected genres
+                UserGenre::addAll($userGenresList, $user->id); // then save the selected genres (including the new one, if one was entered)
 
             } else { // work with unpersisted obj
                 $user->unpersistedUserAttributes = explode(',', get_param('userAttributesList'));
-                $user->unpersistedUserGenres = explode(',', get_param('userGenresList'));
+                $user->unpersistedUserGenres = $userGenresList;
             }
 
             // save location

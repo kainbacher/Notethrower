@@ -580,7 +580,7 @@ a.nohighlight:hover {
 
 #pageHeader {
     width: 998px;
-    height: 36px;
+    height: 40px;
     margin: 0px auto;
     position: relative;
 }
@@ -592,7 +592,7 @@ a.nohighlight:hover {
     float: left;
     width: 170px;
     height: 26px;
-    margin-top: 8px;
+    margin-top: 0px;
     cursor: pointer;
 }
 
@@ -762,13 +762,17 @@ a.nohighlight:hover {
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
     */
 
+/*
     background: #64991e;
     background: -webkit-gradient(linear, left top, left bottom, from(#7db72f), to(#4e7d0e));
     background: -moz-linear-gradient(top,  #7db72f,  #4e7d0e);
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#7db72f', endColorstr='#4e7d0e');
+*/
 
-    border-top: 1px solid #8cd305;
-    border-bottom: 1px solid #436b02;
+    background-color: #62487C;
+    
+    border-top: 1px solid #8270A4; /* #8cd305; */
+    border-bottom: 1px solid #3B245D; /* #436b02; */
 
 	height: 36px;
 	margin-bottom: 54px;
@@ -805,7 +809,7 @@ a.nohighlight:hover {
 
 #mainMenu a:hover {
 	color: #222;
-	color: #2a4301;
+	color: #8270A4;
 	text-shadow: white 0px 1px 1px;
 }
 

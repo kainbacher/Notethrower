@@ -21,6 +21,8 @@ class User {
     var $influences;
     var $image_filename;
     var $webpage_url;
+    var $facebook_url;
+    var $twitter_url;
     var $paypal_account;
     var $activity_points;
     var $is_artist; // if true, the user is both a fan and an artist, if false the user is only a fan
@@ -383,6 +385,8 @@ class User {
         $a->influences      = $row['influences'];
         $a->image_filename  = $row['image_filename'];
         $a->webpage_url     = $row['webpage_url'];
+        $a->facebook_url    = $row['facebook_url'];
+        $a->twitter_url     = $row['twitter_url'];
         $a->paypal_account  = $row['paypal_account'];
         $a->activity_points = $row['activity_points'];
         $a->is_artist       = $row['is_artist'];
@@ -412,6 +416,8 @@ class User {
             'influences      text, ' .
             'image_filename  varchar(255), ' .
             'webpage_url     varchar(255), ' .
+            'facebook_url    varchar(255), ' .
+            'twitter_url     varchar(255), ' .
             'paypal_account  varchar(255), ' .
             'activity_points int(10), ' .
             'is_artist       tinyint(1)   not null, ' .
@@ -433,10 +439,12 @@ class User {
             $test_record = User::fetch_for_id(-1);
             if (!$test_record || !$test_record->id) {
                 $ok = _mysql_query(
-                    'insert into pp_user (id, username, password_md5, email_address, name, artist_info, latitude, longitude, ' .
-                    'additional_info, video_url, influences,' .
-                    'image_filename, webpage_url, paypal_account, activity_points, is_artist, is_pro, status, entry_date) ' .
-                    'values (-1, "_unknown_artist", "' . md5('dummyPwd') . '", "", "Unknown Artist", "", null, null, "", "", "", "", "", "", 0, 1, 0, "inactive", now())'
+                    'insert into pp_user (id, username, password_md5, email_address, name, artist_info, ' .
+                    'latitude, longitude, additional_info, video_url, influences,' .
+                    'image_filename, webpage_url, facebook_url, twitter_url, paypal_account, activity_points, ' .
+                    'is_artist, is_pro, status, entry_date) ' .
+                    'values (-1, "_unknown_artist", "' . md5('dummyPwd') . '", "", "Unknown Artist", "", null, null, ' .
+                    '"", "", "", "", "", "", "", "", 0, 1, 0, "inactive", now())'
                 );
             }
         }
@@ -499,8 +507,9 @@ class User {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_user ' .
-            '(username, password_md5, email_address, name, artist_info, latitude, longitude, additional_info, video_url, ' .
-            'influences, image_filename, webpage_url, paypal_account, activity_points, is_artist, is_pro, status, entry_date) ' .
+            '(username, password_md5, email_address, name, artist_info, latitude, longitude, additional_info, ' .
+            'video_url, influences, image_filename, webpage_url, facebook_url, twitter_url, paypal_account, ' .
+            'activity_points, is_artist, is_pro, status, entry_date) ' .
             'values (' .
             qq($this->username)        . ', ' .
             qq($this->password_md5)    . ', ' .
@@ -514,6 +523,8 @@ class User {
             qq($this->influences)      . ', ' .
             qq($this->image_filename)  . ', ' .
             qq($this->webpage_url)     . ', ' .
+            qq($this->facebook_url)    . ', ' .
+            qq($this->twitter_url)     . ', ' .
             qq($this->paypal_account)  . ', ' .
             n($this->activity_points)  . ', ' .
             b($this->is_artist)        . ', ' .
@@ -547,6 +558,8 @@ class User {
             'influences = '        . qq($this->influences)      . ', ' .
             'image_filename = '    . qq($this->image_filename)  . ', ' .
             'webpage_url = '       . qq($this->webpage_url)     . ', ' .
+            'facebook_url = '      . qq($this->facebook_url)    . ', ' .
+            'twitter_url = '       . qq($this->twitter_url)     . ', ' .
             'paypal_account = '    . qq($this->paypal_account)  . ', ' .
             'activity_points = '   . n($this->activity_points)  . ', ' .
             'is_artist = '         . b($this->is_artist)        . ', ' .

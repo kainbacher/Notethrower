@@ -31,6 +31,8 @@ alter table pp_user add influences text after additional_info;
 alter table pp_user add video_url varchar(255) after additional_info;
 alter table pp_user add latitude double after artist_info;
 alter table pp_user add longitude double after artist_info;
+alter table pp_user add facebook_url varchar(255) after webpage_url;
+alter table pp_user add twitter_url varchar(255) after facebook_url;
 
 update pp_user set is_artist=1;
 

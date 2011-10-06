@@ -1249,7 +1249,8 @@ a.nohighlight:hover {
 
 .trackList {
     border-top: 1px solid #ccc;
-    margin-bottom: 18px;
+    display: inline-block;
+    margin-bottom: 36px;
 }
 
 .trackListItem {

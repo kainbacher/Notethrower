@@ -7,45 +7,25 @@ ${Common/bodyHeader}
 
     <div class="container">
 
-        <div class="span-16">
 
-            <div  class="span-16 last">
-                <div id="galleria">
-                    <img src="../Images/testimages/grammatics.jpeg" alt="My description" title="My title">
-                    <img src="../Images/testimages/iliketrains.jpeg" alt="My description" title="My title">
-                    <img src="../Images/testimages/kaisercartel.jpeg" alt="My description" title="My title">
-                    <img src="../Images/testimages/llukereynolds.jpeg" alt="My description" title="My title">
-                    <img src="../Images/testimages/natty.jpeg" alt="My description" title="My title">
-                </div>
-            </div>
-
-
+        <div class="span-16 last">
+        
             <div class="span-16 last">
-                <br/>
-
-                <div class="span-16 last">
-                    <ul class="tabs">
-                        <li class="tabsItem"><a href="#" class="tab-1 tabsAct">Top artists</a></li>
-                        <li class="tabsItem"><a href="#" class="tab-2">Latest artists</a></li>
-                    </ul>
+                <h1>Top artists</h1>
+                <div class="trackList">
+                    ${Artists/artistListItem_top_list}
                 </div>
-
-                <div class="span-16 last tabcontent-1 tabcontentAct">
-                    <div class="trackList">
-                        ${Artists/artistListItem_top_list}
-                    </div>
-                </div>
-
-                <div class="span-16 last tabcontent-2">
-                    <div class="trackList">
-                        ${Artists/artistListItem_latest_list}
-                    </div>
-                </div>
-
             </div>
-
+    
+            <div class="span-16 last">
+                <h1>Latest artists</h1>
+                <div class="trackList">
+                    ${Artists/artistListItem_latest_list}
+                </div>
+            </div>
 
         </div>
+
 
         <div class="span-8 last">
 
@@ -80,25 +60,6 @@ ${Common/bodyHeader}
                     <a href="#">instrumental</a>
                 </p>
             </div>
-
-
-            <div class="box-grey">
-                <object width="285" height="200">
-                    <param  name="movie"
-                    value="http://www.youtube.com/v/PY2jW56o1Zo&amp;hl=en_US&amp;fs=1&amp;" />
-                    <param name="allowFullScreen" value="true" />
-                    <param name="allowscriptaccess" value="always" />
-                    <embed src="http://www.youtube.com/v/PY2jW56o1Zo&amp;hl=en_US&amp;fs=1&amp;"
-                    type="application/x-shockwave-flash"
-                    allowscriptaccess="always"
-                    allowfullscreen="true"
-                    width="285"
-                    height="200" />
-                </object>
-            </div>
-
-
-            ${Common/newsletterSubscription}
 
 
         </div>

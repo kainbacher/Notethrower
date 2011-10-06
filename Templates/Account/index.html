@@ -7,13 +7,14 @@ ${Common/bodyHeader}
 
 <div class="container">
 
-    <div class="span-24 last box-grey">
+    <div class="span-16">
+    <div class="box-grey">
         <h1>${headline}</h1>
         <br />
 
         ${Common/message_choice_list}
 
-        <form action="${formAction}" name="userForm" method="POST" enctype="multipart/form-data">
+        <form action="${formAction}" name="userForm" method="POST" enctype="multipart/form-data" style="display:inline-block;">
             <input type="hidden" name="action" value="save">
             <input type="hidden" name="signupAs" value="${signupAs}">
             <input type="hidden" name="userAttributesList" id="userAttributesList" value="">
@@ -37,7 +38,24 @@ ${Common/bodyHeader}
                 <input type="submit" class="${submitButtonClass} button blue" value="${submitButtonValue}" onClick="buildUserAttributesAndGenresLists();">
             </div>
         </form>
+    
     </div>
+    </div>
+    
+    <div class="span-8 last">
+        <div  class="box-grey">
+
+            <img src="${userImgUrl}" width="200" />
+            
+            <h1>${userName}</h1>
+            ${Common/externalWebLink_optional}
+            ${UserInfo/sendMessage_optional}
+            ${UserInfo/artistInfo_optional}
+            ${UserInfo/additionalInfo_optional}
+        
+        </div>
+    </div>
+    
 </div>
 
 ${Common/bodyFooter}

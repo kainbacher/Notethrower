@@ -1,32 +1,65 @@
 
-<div class="topMenuItem">
-    <a href="dashboard.php?aid=${userId}">Dashboard</a>
+<div id="mainMenuWrapper">
+    <div id="mainMenu">
+    	<ul>
+    		<li class="mainMenuItem mainMenuItemAct">
+                <a href="dashboard.php?aid=${userId}">
+                    <span class="mainMenuIcon"></span>
+                    <span class="mainMenuLink">Dashboard</span>
+                </a>
+            </li>
+    		<li class="mainMenuItem">
+                <a href="userInfo.php?aid=${userId}">
+                    <span class="mainMenuIcon"></span>
+                    <span class="mainMenuLink">Artistpage</span>
+                </a>
+            </li>
+    		<li class="mainMenuItem">
+                <a href="projectList.php">
+                    <span class="mainMenuIcon"></span>
+                    <span class="mainMenuLink">My Projects</span>
+                </a>
+            </li>
+    		<li class="mainMenuItem">
+                <a href="project.php?action=create">
+                    <span class="mainMenuIcon"></span>
+                    <span class="mainMenuLink">Upload</span>
+                </a>
+            </li>
+    		<li class="mainMenuItem">
+                <a href="account.php">
+                    <span class="mainMenuIcon"></span>
+                    <span class="mainMenuLink">Profile</span>
+                </a>
+            </li>
+    		<li class="mainMenuItem">
+                <a href="logout.php">
+                    <span class="mainMenuIcon"></span>
+                    <span class="mainMenuLink">Logout</span>
+                </a>
+            </li>
+    	</ul>
+    </div>
 </div>
+
+
+
+<!--
+<li><a href="index.php">Home</a></li>
+<li><a href="artists.php">Artists</a></li>
+<li><a href="blog.php">Blog</a></li>
+<li><a href="features.php">Features</a></li>
+<li><a href="pricing.php">Plans</a></li>
+
+
+
+
 
 <div class="topMenuItem">
     <a href="userInfo.php?aid=${userId}">Me</a>
 	<div class="topMenuSub">
-
-	    <div class="topMenuSubItem">
-	        <a href="userInfo.php?aid=${userId}">My Artistpage</a>
-	    </div>
-
-	    <div class="topMenuSubItem">
-	        <a href="projectList.php">My Projects</a>
-	    </div>
-
-        <div class="topMenuSubItem">
-            <a href="project.php?action=create">Upload</a>
-        </div>
-
-	    <div class="topMenuSubItem">
-	        <a href="account.php">Profile</a>
-	    </div>
-
+	    <div class="topMenuSubItem"></div>
 	</div>
 </div>
+-->
 
-
-<div class="topMenuItem">
-    <a href="logout.php">Logout</a>
-</div>

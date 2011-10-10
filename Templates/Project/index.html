@@ -24,38 +24,220 @@ function showSelectFriendsPopup() {
 
 ${Common/bodyHeader}
 
-<div class="container">
 
-    <div class="span-16 last box-grey">
-        <h1>${headline}</h1>
-        <br />
+<div id="pageContent" class="container">
 
-        ${Common/message_choice_list}
 
-        <form name="projectForm" action="${formAction}" method="POST">
-            <input type="hidden" name="action" value="save">
-            <input type="hidden" name="pid" value="${projectId}">
-            <input type="hidden" name="type" value="${type}">
-            <input type="hidden" name="projectSubGenresList" id="projectSubGenresList" value="">
-            <input type="hidden" name="projectMoodsList" id="projectMoodsList" value="">
-            <input type="hidden" name="projectAttributesList" id="projectAttributesList" value="">
-            ${Common/formElement_list}
-
-            <div class="prepend-6 span-6 last">
-                <input class="button blue" type="submit" value="${submitButtonValue}" onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+            <div class="span-24 last">
+                <ul class="tabs">
+                    <li class="tabsItem"><a href="#" class="tab-1 tabsAct">Basics</a></li>
+                    <li class="tabsItem"><a href="#" class="tab-2">Invite</a></li>
+                    <li class="tabsItem"><a href="#" class="tab-3">Upload</a></li>
+                    <li class="tabsItem"><a href="#" class="tab-4">Publish</a></li>
+                </ul>
             </div>
-        </form>
 
-        <div>
-            ${Project/uploadedFilesSection}
-
-            <div class="span-12 last">
-                <br />
-                <a href="projectList.php">&larr; back to project list</a>
+            <div class="span-24 last tabcontent-1 tabcontentAct">
+                <div class="span-16 last">
+                    <div class="box-grey">
+                        <form name="projectForm" action="${formAction}" method="POST" style="display:inline-block;">
+                            <input type="hidden" name="action" value="save">
+                            <input type="hidden" name="pid" value="${projectId}">
+                            <input type="hidden" name="type" value="${type}">
+                            <input type="hidden" name="projectSubGenresList" id="projectSubGenresList" value="">
+                            <input type="hidden" name="projectMoodsList" id="projectMoodsList" value="">
+                            <input type="hidden" name="projectAttributesList" id="projectAttributesList" value="">
+                            ${Common/formElement_list}
+                
+                            <div class="prepend-6 span-6 last">
+                                <input class="button blue" 
+                                    type="submit" 
+                                    value="${submitButtonValue}" 
+                                    onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+            
+            
+            <div class="span-24 last tabcontent-2">
+                <div class="span-16 last">
+                    <div class="box-grey">
+                        <form name="projectForm" action="${formAction}" method="POST" style="display:inline-block;">
+                            <input type="hidden" name="action" value="save">
+                            <input type="hidden" name="pid" value="${projectId}">
+                            <input type="hidden" name="type" value="${type}">
+                            <input type="hidden" name="projectSubGenresList" id="projectSubGenresList" value="">
+                            <input type="hidden" name="projectMoodsList" id="projectMoodsList" value="">
+                            <input type="hidden" name="projectAttributesList" id="projectAttributesList" value="">
+                            
+                            <div id="formElt_title" class=" formElement span-15 last">
+                                <div class="span-6">E-Mail:</div>
+                                <div class="span-8">
+                                    <input type="text" id="title" name="title" value="Projekt 1" maxlength="255">
+                                </div>
+                                <div class="span-1 last"></div>
+                            </div>
+
+                            <div id="formElt_title" class=" formElement span-15 last">
+                                <div class="span-6">Artist:</div>
+                                <div class="span-8">
+                                    <input type="text" id="title" name="title" value="Projekt 1" maxlength="255">
+                                </div>
+                                <div class="span-1 last"></div>
+                            </div>
+
+                            <div id="formElt_title" class=" formElement span-15 last">
+                                <div class="span-6">Artist Search:</div>
+                                <div class="span-8">
+                                    <input type="text" id="title" name="title" value="Projekt 1" maxlength="255">
+                                </div>
+                                <div class="span-1 last"></div>
+                            </div>
+                
+                            <div class="prepend-6 span-6 last">
+                                <input class="button blue" 
+                                    type="submit" 
+                                    value="${submitButtonValue}" 
+                                    onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="span-24 last tabcontent-3">
+                <div class="span-16">
+                    <div class="box-grey">
+                        <h2>Project Title</h2>
+                        
+                        <p>
+                            Projectdescription Projectdescription Projectdescription Projectdescription Projectdescription 
+                            Projectdescription Projectdescription Projectdescription Projectdescription Projectdescription 
+                            Projectdescription Projectdescription Projectdescription Projectdescription ...
+                        </p>
+                        <br />
+                    
+                        <form name="projectForm" action="${formAction}" method="POST" style="display:inline-block;">
+                            <input type="hidden" name="action" value="save">
+                            <input type="hidden" name="pid" value="${projectId}">
+                            <input type="hidden" name="type" value="${type}">
+                            <input type="hidden" name="projectSubGenresList" id="projectSubGenresList" value="">
+                            <input type="hidden" name="projectMoodsList" id="projectMoodsList" value="">
+                            <input type="hidden" name="projectAttributesList" id="projectAttributesList" value="">
+                            
+                            <h2>stems list</h2>
+                            <p>
+                                - textfeld<br />
+                                - name vom künstler<br />
+                                - instrument<br />
+                                - boolean<br />
+                            </p>
+                            <br />
+                            
+                            <div class="prepend-6 span-6 last">
+                                <input class="button blue" 
+                                    type="submit" 
+                                    value="Download selected Stems" 
+                                    onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                            </div>
+                                                        
+                            <br />
+                            <br />
+                            <br />
+                            
+                            <h2>releases list</h2>
+                            <p>
+                                - title<br />
+                            </p>
+                            
+
+                            <br />
+                            <br />
+                            <br />
+                            
+                            <h2>mixes list</h2>
+                            <p>
+                                - title<br />
+                                - stems<br />
+                            </p>
+                            
+                            
+                            
+                            <div class="prepend-6 span-6 last">
+                                <input class="button blue" 
+                                    type="submit" 
+                                    value="${submitButtonValue}" 
+                                    onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="span-8 last">
+                    <div class="box-grey">
+                        <h1>${headline}</h1>
+                        <br />
+                        ${Common/message_choice_list}
+                        ${Project/uploadedFilesSection}
+                        <br />
+                        &nbsp;
+                    </div>
+                </div>
+                
+            </div>
+
+
+
+            <div class="span-24 last tabcontent-4">
+                <div class="span-16">
+                    <div class="box-grey">
+                        
+                        <form name="projectForm" action="${formAction}" method="POST" style="display:inline-block;">
+                        
+                            <h2>Share</h2>
+                            <p>List with Names</p>
+                            <p>Aufteilung in %</p>
+                            
+                            <h2>Opitons</h2>
+                            <input type="checkbox" name="needsAttributIds" id="needsAttributIds" value="1"> iTunes<br />
+                            <input type="checkbox" name="needsAttributIds" id="needsAttributIds" value="1"> sptify<br />
+                            <input type="checkbox" name="needsAttributIds" id="needsAttributIds" value="1"> Soundcloud<br />
+
+                            <br />
+                            <br />
+
+                            <div id="formElt_artist_info" class=" formElement span-15 last">
+                                <div class="span-6">Artist/Band information:</div>
+                                <div class="span-8">
+                                    <textarea id="artist_info" name="artist_info" rows="3" cols="30"></textarea>
+                                </div>
+                                <div class="span-1 last"></div>
+                            </div>
+
+                  
+                        
+                            <div class="prepend-6 span-6 last">
+                                <input class="button blue" 
+                                    type="submit" 
+                                    value="${submitButtonValue}" 
+                                    onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                            </div>
+                        
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+    
+            <br />
+            <br />
+            <br />
+            <a href="projectList.php">&larr; back to project list</a>
+    
 </div>
+
 
 ${Common/bodyFooter}
 

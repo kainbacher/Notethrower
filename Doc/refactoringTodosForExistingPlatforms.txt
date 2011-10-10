@@ -73,6 +73,22 @@ index (project_id),
 index (genre_id)
 ) default charset=utf8
 
+create table if not exists pp_mood
+(
+id                        int(10)      not null auto_increment,
+name                      varchar(255) not null,
+primary key (id)
+) default charset=utf8
+
+create table if not exists pp_project_mood
+(
+project_id int(10) not null,
+mood_id    int(10) not null,
+primary key (project_id, mood_id),
+index (project_id),
+index (mood_id)
+) default charset=utf8
+
 create table if not exists pp_user_genre
 (
 user_id  int(10) not null,

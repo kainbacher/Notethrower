@@ -150,13 +150,14 @@ if ($pageMode == 'artist') {
 $formElementsSection1 .= getFormFieldForParams(array(
     'propName'               => 'email_address',
     'label'                  => 'Email address',
-    'mandatory'              => true,
+    'mandatory'              => $userIsLoggedIn ? false : true,
     'maxlength'              => 255,
     'obj'                    => $user,
     'unpersistedObj'         => $unpersistedUser,
     'errorFields'            => $errorFields,
     'workWithUnpersistedObj' => $problemOccured,
-    'infoHtml'               => 'We will send you a verification link to this address to login. If another user sends you a message, a notification will also be sent here.<br>We will never give out your email or spam you. Aren\'t we nice?'
+    'infoHtml'               => 'We will send you a verification link to this address to login. If another user sends you a message, a notification will also be sent here.<br>We will never give out your email or spam you. Aren\'t we nice?',
+    'readonly'               => $userIsLoggedIn ? true : false
 ));
 
 $chooseLocationLink = '';

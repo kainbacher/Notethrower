@@ -40,6 +40,7 @@ function getFormFieldForParams($params) {
     $rows                      = array_key_exists('rows', $params)                      ? $params['rows']                      : 3;
     $cols                      = array_key_exists('cols', $params)                      ? $params['cols']                      : 30;
     $disabled                  = array_key_exists('disabled', $params)                  ? $params['disabled']                  : false;
+    $readonly                  = array_key_exists('readonly', $params)                  ? $params['readonly']                  : false;
     $recaptchaPublicKey        = array_key_exists('recaptchaPublicKey', $params)        ? $params['recaptchaPublicKey']        : '';
     $objValueOverride          = array_key_exists('objValueOverride', $params)          ? $params['objValueOverride']          : null;
     $cssClassSuffix            = array_key_exists('cssClassSuffix', $params)            ? $params['cssClassSuffix']            : null;
@@ -80,7 +81,7 @@ function getFormFieldForParams($params) {
             '${suffix}'                                          => ($inputFieldSuffix ? '&nbsp;' . escape($inputFieldSuffix) : ''),
             '${size_optional}'                                   => '',
             '${multiple_optional}'                               => '',
-            '${disabled_optional}'                               => ($disabled ? ' disabled' : ''),
+            '${disabled_optional}'                               => ($disabled ? ' disabled="disabled"' : ''),
             '${onChangeCallback_optional}'                       => ($onChangeCallback ? ' onChange="' . $onChangeCallback . '"' : ''),
             '${Common/formElementInputField_select_option_list}' => $options,
             '${cssClassSuffix}'                                  => ($cssClassSuffix ? ' ' . $cssClassSuffix : '')
@@ -146,8 +147,8 @@ function getFormFieldForParams($params) {
             '${label}'                     => '', // no label for single checkbox
             '${prefix}'                    => ($inputFieldPrefix ? escape($inputFieldPrefix) . '&nbsp;' : ''),
             '${suffix}'                    => ($inputFieldSuffix ? '&nbsp;' . escape($inputFieldSuffix) : ''),
-            '${checked_optional}'          => ($objValue ? ' checked' : ''),
-            '${disabled_optional}'         => ($disabled ? ' disabled' : ''),
+            '${checked_optional}'          => ($objValue ? ' checked="checked"' : ''),
+            '${disabled_optional}'         => ($disabled ? ' disabled="disabled"' : ''),
             '${onChangeCallback_optional}' => ($onChangeCallback ? ' onClick="' . $onChangeCallback . '"' : '')
         ));
 
@@ -168,7 +169,7 @@ function getFormFieldForParams($params) {
                 '${prefix}'                    => ($inputFieldPrefix ? escape($inputFieldPrefix) . '&nbsp;' : ''),
                 '${suffix}'                    => ($inputFieldSuffix ? '&nbsp;' . escape($inputFieldSuffix) : ''),
                 '${checked_optional}'          => ($objValues && in_array($optVal, $objValues) ? ' checked' : ''),
-                '${disabled_optional}'         => ($disabled ? ' disabled' : ''),
+                '${disabled_optional}'         => ($disabled ? ' disabled="disabled"' : ''),
                 '${onChangeCallback_optional}' => ($onChangeCallback ? ' onClick="' . $onChangeCallback . '"' : '')
             ));
 
@@ -192,7 +193,7 @@ function getFormFieldForParams($params) {
                 '${prefix}'                    => ($inputFieldPrefix ? escape($inputFieldPrefix) . '&nbsp;' : ''),
                 '${suffix}'                    => ($inputFieldSuffix ? '&nbsp;' . escape($inputFieldSuffix) : ''),
                 '${checked_optional}'          => ((string) $selectedValue === (string) $optVal ? ' checked' : ''),
-                '${disabled_optional}'         => ($disabled ? ' disabled' : ''),
+                '${disabled_optional}'         => ($disabled ? ' disabled="disabled"' : ''),
                 '${onChangeCallback_optional}' => ($onChangeCallback ? ' onClick="' . $onChangeCallback . '"' : '')
             ));
 
@@ -217,7 +218,8 @@ function getFormFieldForParams($params) {
             '${text}'                      => escape($text),
             '${prefix}'                    => ($inputFieldPrefix ? escape($inputFieldPrefix) . '&nbsp;' : ''),
             '${suffix}'                    => ($inputFieldSuffix ? '&nbsp;' . escape($inputFieldSuffix) : ''),
-            '${readonly_optional}'         => ($disabled ? ' readonly' : ''),
+            '${disabled_optional}'         => ($disabled ? ' disabled="disabled"' : ''),
+            '${readonly_optional}'         => ($readonly ? ' readonly="readonly"' : ''),
             '${onChangeCallback_optional}' => ($onChangeCallback ? ' onChange="' . $onChangeCallback . '"' : '')
         ));
 
@@ -300,7 +302,8 @@ function getFormFieldForParams($params) {
             '${value}'                     => escape($value),
             '${prefix}'                    => ($inputFieldPrefix ? escape($inputFieldPrefix) . '&nbsp;' : ''),
             '${suffix}'                    => ($inputFieldSuffix ? '&nbsp;' . escape($inputFieldSuffix) : ''),
-            '${readonly_optional}'         => ($disabled ? ' readonly' : ''),
+            '${disabled_optional}'         => ($disabled ? ' disabled="disabled"' : ''),
+            '${readonly_optional}'         => ($readonly ? ' readonly="readonly"' : ''),
             '${onChangeCallback_optional}' => ($onChangeCallback ? ' onChange="' . $onChangeCallback . '"' : '')
         ));
 
@@ -312,7 +315,8 @@ function getFormFieldForParams($params) {
             '${maxlength_optional}'        => ($maxlength > 0 ? ' maxlength="' . $maxlength . '"' : ''),
             '${prefix}'                    => ($inputFieldPrefix ? escape($inputFieldPrefix) . '&nbsp;' : ''),
             '${suffix}'                    => ($inputFieldSuffix ? '&nbsp;' . escape($inputFieldSuffix) : ''),
-            '${readonly_optional}'         => ($disabled ? ' readonly' : ''),
+            '${disabled_optional}'         => ($disabled ? ' disabled="disabled"' : ''),
+            '${readonly_optional}'         => ($readonly ? ' readonly="readonly"' : ''),
             '${onChangeCallback_optional}' => ($onChangeCallback ? ' onChange="' . $onChangeCallback . '"' : '')
         ));
 
@@ -324,7 +328,8 @@ function getFormFieldForParams($params) {
             '${maxlength_optional}'        => ($maxlength > 0 ? ' maxlength="' . $maxlength . '"' : ''),
             '${prefix}'                    => ($inputFieldPrefix ? escape($inputFieldPrefix) . '&nbsp;' : ''),
             '${suffix}'                    => ($inputFieldSuffix ? '&nbsp;' . escape($inputFieldSuffix) : ''),
-            '${readonly_optional}'         => ($disabled ? ' readonly' : ''),
+            '${disabled_optional}'         => ($disabled ? ' disabled="disabled"' : ''),
+            '${readonly_optional}'         => ($readonly ? ' readonly="readonly"' : ''),
             '${onChangeCallback_optional}' => ($onChangeCallback ? ' onChange="' . $onChangeCallback . '"' : '')
         ));
 

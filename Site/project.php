@@ -295,6 +295,19 @@ $formElementsList .= getFormFieldForParams(array(
     'workWithUnpersistedObj' => $problemOccured
 ));
 
+// "create new genre"
+$formElementsList .= getFormFieldForParams(array(
+    'propName'               => 'newGenre',
+    'label'                  => 'Add new genre',
+    'mandatory'              => false,
+    'maxlength'              => 50,
+    'obj'                    => $project,
+    'unpersistedObj'         => $unpersistedProject,
+    'errorFields'            => $errorFields,
+    'workWithUnpersistedObj' => $problemOccured,
+    'infoText'               => 'If you can\'t find the right genre in the selection above, you can add it here. It will be added to the sub genres list, when you click "Save".'
+));
+
 // mood
 $formElementsList .= getFormFieldForParams(array(
     'inputType'              => 'multiselect2',
@@ -308,6 +321,19 @@ $formElementsList .= getFormFieldForParams(array(
     'objValues'              => $problemOccured ? $unpersistedProject->unpersistedProjectMoods : ProjectMood::getMoodIdsForProjectId($project->id),
     'errorFields'            => $errorFields,
     'workWithUnpersistedObj' => $problemOccured
+));
+
+// "create new mood"
+$formElementsList .= getFormFieldForParams(array(
+    'propName'               => 'newMood',
+    'label'                  => 'Add new mood',
+    'mandatory'              => false,
+    'maxlength'              => 255,
+    'obj'                    => $project,
+    'unpersistedObj'         => $unpersistedProject,
+    'errorFields'            => $errorFields,
+    'workWithUnpersistedObj' => $problemOccured,
+    'infoText'               => 'If you can\'t find the right mood in the selection above, you can add it here. It will be added to the moods list, when you click "Save".'
 ));
 
 // project attributes
@@ -595,24 +621,54 @@ function processParams(&$project, &$user) {
 //        }
 //    }
 
+    // save new genre, if one was entered
+    $newGenre = null;
+    if (get_param('newGenre')) {
+        $newGenre = Genre::fetchForName(get_param('newGenre'));
+        if (!$newGenre || !$newGenre->id) {
+            $newGenre = new Genre();
+            $newGenre->name = get_param('newGenre');
+            $newGenre->insert();
+        }
+    }
+
+    // save new mood, if one was entered
+    $newMood = null;
+    if (get_param('newMood')) {
+        $newMood = Mood::fetchForName(get_param('newMood'));
+        if (!$newMood || !$newMood->id) {
+            $newMood = new Mood();
+            $newMood->name = get_param('newMood');
+            $newMood->insert();
+        }
+    }
+
     // handle project main & sub genres
+    $projectSubGenresList = explode(',', get_param('projectSubGenresList'));
+    if ($newGenre) $projectSubGenresList[] = $newGenre->id;
+    $projectSubGenresList = array_unique($projectSubGenresList);
+
     if ($project->id) {
         ProjectGenre::deleteForProjectId($project->id); // first, delete all existing genres
         if (get_numeric_param('mainGenre')) ProjectGenre::addAll(array(get_numeric_param('mainGenre')), $project->id, 1); // then save the selected main genre
-        ProjectGenre::addAll(explode(',', get_param('projectSubGenresList')), $project->id, 0); // and the selected sub genres
+        ProjectGenre::addAll($projectSubGenresList, $project->id, 0); // and the selected sub genres
 
     } else { // work with unpersisted obj
         $project->unpersistedProjectMainGenre = get_numeric_param('mainGenre');
-        $project->unpersistedProjectSubGenres = explode(',', get_param('projectSubGenresList'));
+        $project->unpersistedProjectSubGenres = $projectSubGenresList;
     }
 
     // handle project moods
+    $projectMoodsList = explode(',', get_param('projectMoodsList'));
+    if ($newMood) $projectMoodsList[] = $newMood->id;
+    $projectMoodsList = array_unique($projectMoodsList);
+
     if ($project->id) {
         ProjectMood::deleteForProjectId($project->id); // first, delete all existing moods
-        ProjectMood::addAll(explode(',', get_param('projectMoodsList')), $project->id); // and the selected moods
+        ProjectMood::addAll($projectMoodsList, $project->id); // and the selected moods
 
     } else { // work with unpersisted obj
-        $project->unpersistedProjectMoods = explode(',', get_param('projectMoodsList'));
+        $project->unpersistedProjectMoods = $projectMoodsList;
     }
 
     // handle project attributes

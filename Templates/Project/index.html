@@ -37,11 +37,12 @@ ${Common/bodyHeader}
             <input type="hidden" name="pid" value="${projectId}">
             <input type="hidden" name="type" value="${type}">
             <input type="hidden" name="projectSubGenresList" id="projectSubGenresList" value="">
+            <input type="hidden" name="projectMoodsList" id="projectMoodsList" value="">
             <input type="hidden" name="projectAttributesList" id="projectAttributesList" value="">
             ${Common/formElement_list}
 
             <div class="prepend-6 span-6 last">
-                <input class="button blue" type="submit" value="${submitButtonValue}" onClick="buildProjectAttributesAndSubGenresLists();">
+                <input class="button blue" type="submit" value="${submitButtonValue}" onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
             </div>
         </form>
 
@@ -100,7 +101,7 @@ function openUploaderPopup(isMixMp3File) {
     );
 }
 
-function buildProjectAttributesAndSubGenresLists() {
+function buildProjectAttributesAndSubGenresAndMoodsLists() {
     if ($('#attributes').val()) {
         var aList = $('#attributes').val().join(','); // create comma separated list string ...
         $('#projectAttributesList').val(aList); // ... and save the string in the hidden field
@@ -109,6 +110,11 @@ function buildProjectAttributesAndSubGenresLists() {
     if ($('#subGenres').val()) {
         var gList = $('#subGenres').val().join(','); // create comma separated list string ...
         $('#projectSubGenresList').val(gList); // ... and save the string in the hidden field
+    }
+
+    if ($('#moods').val()) {
+        var mList = $('#moods').val().join(','); // create comma separated list string ...
+        $('#projectMoodsList').val(mList); // ... and save the string in the hidden field
     }
 }
 

@@ -8,10 +8,12 @@ include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/Attribute.php');
 include_once('../Includes/DB/Genre.php');
+include_once('../Includes/DB/Mood.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectAttribute.php');
 include_once('../Includes/DB/ProjectFile.php');
 include_once('../Includes/DB/ProjectGenre.php');
+include_once('../Includes/DB/ProjectMood.php');
 include_once('../Includes/DB/ProjectUserVisibility.php');
 include_once('../Includes/DB/User.php');
 
@@ -293,6 +295,21 @@ $formElementsList .= getFormFieldForParams(array(
     'workWithUnpersistedObj' => $problemOccured
 ));
 
+// mood
+$formElementsList .= getFormFieldForParams(array(
+    'inputType'              => 'multiselect2',
+    'propName'               => 'moods',
+    'label'                  => 'Moods',
+    'mandatory'              => false,
+    'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
+    'obj'                    => $project,
+    'unpersistedObj'         => $unpersistedProject,
+    'selectOptions'          => Mood::getSelectorOptionsArray(true),
+    'objValues'              => $problemOccured ? $unpersistedProject->unpersistedProjectMoods : ProjectMood::getMoodIdsForProjectId($project->id),
+    'errorFields'            => $errorFields,
+    'workWithUnpersistedObj' => $problemOccured
+));
+
 // project attributes
 $formElementsList .= getFormFieldForParams(array(
     'inputType'              => 'multiselect2',
@@ -509,6 +526,11 @@ function inputDataOk(&$errorFields, &$project) {
         }
     }
 
+    if (preg_match('/[^0-9,]/', get_param('projectMoodsList'))) {
+        $errorFields['moods'] = 'Invalid moods list'; // can only happen when someone plays around with the post data
+        $result = false;
+    }
+
 // currently hidden, but maybe a candidate for pro users
 //    if (strlen(get_param('visibility')) < 1) {
 //        $errorFields['visibility'] = 'Visibility is missing!';
@@ -582,6 +604,15 @@ function processParams(&$project, &$user) {
     } else { // work with unpersisted obj
         $project->unpersistedProjectMainGenre = get_numeric_param('mainGenre');
         $project->unpersistedProjectSubGenres = explode(',', get_param('projectSubGenresList'));
+    }
+
+    // handle project moods
+    if ($project->id) {
+        ProjectMood::deleteForProjectId($project->id); // first, delete all existing moods
+        ProjectMood::addAll(explode(',', get_param('projectMoodsList')), $project->id); // and the selected moods
+
+    } else { // work with unpersisted obj
+        $project->unpersistedProjectMoods = explode(',', get_param('projectMoodsList'));
     }
 
     // handle project attributes

@@ -50,7 +50,7 @@ if ($user->webpage_url) {
 // send message
 $sendMessageBlock = '';
 if ($visitorUser && $user->id != $visitorUser->id) {
-    $sendMessageBlock = processTpl('UserInfo/sendMessage.html', array(
+    $sendMessageBlock = processTpl('Common/sendMessage.html', array(
         '${recipientUserId}' => $user->id,
         '${recipientName}'   => escape($user->name)
     ), $showMobileVersion);
@@ -59,7 +59,7 @@ if ($visitorUser && $user->id != $visitorUser->id) {
 // artist info
 $artistInfo = '';
 if ($user->artist_info) {
-    $artistInfo = processTpl('UserInfo/artistInfo.html', array(
+    $artistInfo = processTpl('Artist/artistInfo.html', array(
         '${artistInfo}' => escape($user->artist_info)
     ), $showMobileVersion);
 }
@@ -67,7 +67,7 @@ if ($user->artist_info) {
 // additional info
 $additionalInfo = '';
 if ($user->additional_info) {
-    $additionalInfo = processTpl('UserInfo/additionalInfo.html', array(
+    $additionalInfo = processTpl('Artist/additionalInfo.html', array(
         '${additionalInfo}' => escape($user->additional_info)
     ), $showMobileVersion);
 }
@@ -82,7 +82,7 @@ if ($user->additional_info) {
 //        for ($i = 0; $i < 5; $i++) {
 //            echo '<td>';
 //            if (isset($collaborators[$i])) {
-//                echo '<a href="userInfo.php?aid=' . $collaborators[$i]->collaborating_user_id . '" target="_blank">';
+//                echo '<a href="artist.php?aid=' . $collaborators[$i]->collaborating_user_id . '" target="_blank">';
 //                echo getUserImageHtml($collaborators[$i]->user_image_filename, $collaborators[$i]->user_name, 'tiny');
 //                echo '</a>';
 //
@@ -98,7 +98,7 @@ if ($user->additional_info) {
 //        for ($i = 5; $i < 10; $i++) {
 //            echo '<td>';
 //            if (isset($collaborators[$i])) {
-//                echo '<a href="userInfo.php?aid=' . $collaborators[$i]->collaborating_user_id . '" target="_blank">';
+//                echo '<a href="artist.php?aid=' . $collaborators[$i]->collaborating_user_id . '" target="_blank">';
 //                echo getUserImageHtml($collaborators[$i]->user_image_filename, $collaborators[$i]->user_name, 'tiny');
 //                echo '</a>';
 //
@@ -144,7 +144,7 @@ $myRemixesList = '';
 $remixedByOthersList = '';
 for ($i = 0; $i < $rows; $i++) {
     if (isset($originals[$i])) {
-        $mySongsList .= processTpl('UserInfo/trackListElement.html', array(
+        $mySongsList .= processTpl('Artist/trackListElement.html', array(
             '${userId}'  => $user_id,
             '${trackId}' => $originals[$i]->id,
             '${title}'   => escape($originals[$i]->title)
@@ -152,7 +152,7 @@ for ($i = 0; $i < $rows; $i++) {
     }
 
     if (isset($remixes[$i])) {
-        $myRemixesList .= processTpl('UserInfo/trackListElement.html', array(
+        $myRemixesList .= processTpl('Artist/trackListElement.html', array(
             '${userId}'  => $user_id,
             '${trackId}' => $remixes[$i]->id,
             '${title}'   => escape($remixes[$i]->title)
@@ -160,7 +160,7 @@ for ($i = 0; $i < $rows; $i++) {
     }
 
     if (isset($remixed_by_others[$i])) {
-        $remixedByOthersList .= processTpl('UserInfo/trackListElement.html', array(
+        $remixedByOthersList .= processTpl('Artist/trackListElement.html', array(
             '${userId}'  => $user_id,
             '${trackId}' => $remixed_by_others[$i]->id,
             '${title}'   => escape($remixed_by_others[$i]->title)
@@ -168,19 +168,19 @@ for ($i = 0; $i < $rows; $i++) {
     }
 }
 
-processAndPrintTpl('UserInfo/index.html', array(
+processAndPrintTpl('Artist/index.html', array(
     '${Common/pageHeader}'                              => buildPageHeader('User Info', false, false, false, $showMobileVersion),
     '${Common/bodyHeader}'                              => buildBodyHeader($visitorUser, $showMobileVersion),
     '${userId}'                                         => $user->id,
     '${userName}'                                       => escape($user->name),
     '${userImgUrl}'                                     => $userImgUrl,
     '${Common/externalWebLink_optional}'                => $webpageLink,
-    '${UserInfo/sendMessage_optional}'                  => $sendMessageBlock,
-    '${UserInfo/artistInfo_optional}'                   => $artistInfo,
-    '${UserInfo/additionalInfo_optional}'               => $additionalInfo,
-    '${UserInfo/trackListElement_list_mySongs}'         => $mySongsList,
-    '${UserInfo/trackListElement_list_myRemixes}'       => $myRemixesList,
-    '${UserInfo/trackListElement_list_remixedByOthers}' => $remixedByOthersList,
+    '${Common/sendMessage_optional}'                    => $sendMessageBlock,
+    '${Artist/artistInfo_optional}'                     => $artistInfo,
+    '${Artist/additionalInfo_optional}'                 => $additionalInfo,
+    '${Artist/trackListElement_list_mySongs}'           => $mySongsList,
+    '${Artist/trackListElement_list_myRemixes}'         => $myRemixesList,
+    '${Artist/trackListElement_list_remixedByOthers}'   => $remixedByOthersList,
     '${Common/bodyFooter}'                              => buildBodyFooter($showMobileVersion),
     '${Common/pageFooter}'                              => buildPageFooter()
 ), $showMobileVersion);

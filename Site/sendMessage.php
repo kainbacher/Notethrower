@@ -26,7 +26,7 @@ if (!$recipientUser || !$recipientUser->id) {
 }
 
 
-$sendMsgForm = processTpl('UserInfo/newMessageForm.html', array(
+$sendMsgForm = processTpl('SendMessage/newMessageForm.html', array(
     '${recipientUserId}' => $recipientUser->id
 ), $showMobileVersion);
 
@@ -46,9 +46,9 @@ if ($action == 'send') {
         $msg->text                = $text;
         $msg->marked_as_read      = false;
         $msg->save();
-        
+
         $email_sent = send_email($recipientUser->email_address, 'Message from ' . $senderUser->name,
-                'Hey ' . $recipientUser->name . "\n" . 
+                'Hey ' . $recipientUser->name . "\n" .
                 $senderUser->name . ' has just sent you a private Message.'. "\n" .
                 'Subject: ' . $msg->subject . "\n" .
                 'Message: ' . $msg->text);
@@ -66,13 +66,13 @@ if ($action == 'send') {
     echo $statusMessage;
 } else {
 
-    processAndPrintTpl('UserInfo/newMessage.html', array(
-        '${Common/pageHeader}'                     => buildPageHeader('User Info', false, false, false, $showMobileVersion),
-        '${Common/bodyHeader}'                     => buildBodyHeader($user),
-        '${Common/bodyFooter}'                     => buildBodyFooter(),
-        '${Common/pageFooter}'                     => buildPageFooter(),
-        '${recipientUserName}'                     => $recipientUser->name,
-        '${UserInfo/sendMessageForm_optional}'     => $sendMsgForm
+    processAndPrintTpl('SendMessage/index.html', array(
+        '${Common/pageHeader}'            => buildPageHeader('Send message', false, false, false, $showMobileVersion),
+        '${Common/bodyHeader}'            => buildBodyHeader($user),
+        '${Common/bodyFooter}'            => buildBodyFooter(),
+        '${Common/pageFooter}'            => buildPageFooter(),
+        '${recipientUserName}'            => $recipientUser->name,
+        '${SendMessage/sendMessageForm}'  => $sendMsgForm
     ));
 }
 //print_r($senderUser);
@@ -128,9 +128,9 @@ if ($action == 'send') {
         $msg->text                = $text;
         $msg->marked_as_read      = false;
         $msg->save();
-        
+
         $email_sent = send_email($recipientUser->email_address, 'Message from ' . $senderUser->name,
-                'Hey ' . $recipientUser->name . "\n" . 
+                'Hey ' . $recipientUser->name . "\n" .
                 'A message from ' . $senderUser->name . ' has been stored in your message inbox on ' . $GLOBALS['DOMAIN']);
 
         if (!$email_sent) {

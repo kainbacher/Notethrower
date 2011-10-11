@@ -38,24 +38,24 @@ ${Common/bodyHeader}
                 <input type="submit" class="${submitButtonClass} button blue" value="${submitButtonValue}" onClick="buildUserAttributesAndGenresLists();">
             </div>
         </form>
-    
+
     </div>
     </div>
-    
+
     <div class="span-8 last">
         <div  class="box-grey">
 
             <img src="${userImgUrl}" width="200" />
-            
+
             <h1>${userName}</h1>
             ${Common/externalWebLink_optional}
-            ${UserInfo/sendMessage_optional}
-            ${UserInfo/artistInfo_optional}
-            ${UserInfo/additionalInfo_optional}
-        
+            ${Common/sendMessage_optional}
+            ${Artist/artistInfo_optional}
+            ${Artist/additionalInfo_optional}
+
         </div>
     </div>
-    
+
 </div>
 
 ${Common/bodyFooter}

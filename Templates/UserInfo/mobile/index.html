@@ -12,28 +12,28 @@ ${Common/pageHeader}
   <br />
 
   ${Common/externalWebLink_optional}
-  ${UserInfo/sendMessage_optional}
-  ${UserInfo/artistInfo_optional}
-  ${UserInfo/additionalInfo_optional}
+  ${Common/sendMessage_optional}
+  ${Artist/artistInfo_optional}
+  ${Artist/additionalInfo_optional}
 
   <div class="trackInfoColumn">
     <div class="trackInfoTitle">My songs</div>
     <div class="trackInfoContent">
-      ${UserInfo/trackListElement_list_mySongs}
+      ${Artist/trackListElement_list_mySongs}
     </div>
   </div>
 
   <div class="trackInfoColumn">
     <div class="trackInfoTitle">My remixes</div>
   	<div class="trackInfoContent">
-  	  ${UserInfo/trackListElement_list_myRemixes}
+  	  ${Artist/trackListElement_list_myRemixes}
     </div>
   </div>
 
   <div class="trackInfoColumn last">
     <div class="trackInfoTitle">Remixed from other artists</div>
     <div class="trackInfoContent">
-      ${UserInfo/trackListElement_list_remixedByOthers}
+      ${Artist/trackListElement_list_remixedByOthers}
     </div>
   </div>
 

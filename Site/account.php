@@ -460,6 +460,48 @@ if (!$userIsLoggedIn) {
 $latitude  = $problemOccured ? $unpersistedUser->latitude  : $user->latitude;
 $longitude = $problemOccured ? $unpersistedUser->longitude : $user->longitude;
 
+// user image
+$userImgUrl = getUserImageUri($user->image_filename, 'regular');
+
+// webpage url
+$webpageLink = '';
+if ($userIsLoggedIn && $user->webpage_url) {
+    $webpageUrl = $user->webpage_url;
+    if (substr($user->webpage_url, 0, 7) != 'http://' && substr($user->webpage_url, 0, 8) != 'https://') {
+        $webpageUrl = 'http://' . $user->webpage_url;
+    }
+
+    $webpageLink = processTpl('Common/externalWebLink.html', array(
+        '${href}'  => escape($webpageUrl),
+        '${label}' => escape($user->webpage_url)
+    ), $showMobileVersion) . '<br /><br />'; // we don't put the newlines into the template because we probably need the link without them on a different page.
+}
+
+// send message
+$sendMessageBlock = '';
+if ($userIsLoggedIn && $visitorUser && $user->id != $visitorUser->id) {
+    $sendMessageBlock = processTpl('Common/sendMessage.html', array(
+        '${recipientUserId}' => $user->id,
+        '${recipientName}'   => escape($user->name)
+    ), $showMobileVersion);
+}
+
+// artist info
+$artistInfo = '';
+if ($userIsLoggedIn && $user->artist_info) {
+    $artistInfo = processTpl('Artist/artistInfo.html', array(
+        '${artistInfo}' => escape($user->artist_info)
+    ), $showMobileVersion);
+}
+
+// additional info
+$additionalInfo = '';
+if ($userIsLoggedIn && $user->additional_info) {
+    $additionalInfo = processTpl('Artist/additionalInfo.html', array(
+        '${additionalInfo}' => escape($user->additional_info)
+    ), $showMobileVersion);
+}
+
 processAndPrintTpl('Account/index.html', array(
     '${Common/pageHeader}'                    => buildPageHeader('Account', false, false, true),
     '${Common/bodyHeader}'                    => buildBodyHeader($userIsLoggedIn ? $user : null),
@@ -475,6 +517,12 @@ processAndPrintTpl('Account/index.html', array(
     '${Common/formElement_section2_list}'     => $formElementsSection2,
     '${submitButtonClass}'                    => $userIsLoggedIn ? 'updateAccountButton' : 'createAccountButton',
     '${submitButtonValue}'                    => $userIsLoggedIn ? 'update Account' : 'create Account',
+    '${userName}'                             => $userIsLoggedIn ? escape($user->name) : '',
+    '${userImgUrl}'                                     => $userImgUrl,
+    '${Common/externalWebLink_optional}'                => $webpageLink,
+    '${Common/sendMessage_optional}'                    => $sendMessageBlock,
+    '${Artist/artistInfo_optional}'                     => $artistInfo,
+    '${Artist/additionalInfo_optional}'                 => $additionalInfo,
     '${Common/bodyFooter}'                    => buildBodyFooter(),
     '${Common/pageFooter}'                    => buildPageFooter()
 ));

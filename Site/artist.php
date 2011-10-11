@@ -31,7 +31,7 @@ if (!$user) {
 }
 
 // user image
-$userImgUrl = getUserImageUri($userImageFilename, 'regular');
+$userImgUrl = getUserImageUri($user->image_filename, 'regular');
 
 // webpage url
 $webpageLink = '';

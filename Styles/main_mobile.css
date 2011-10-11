@@ -584,7 +584,7 @@ a.nohighlight:hover {
 }
 
 #logo {
-    background: url(../Images/logo_01.png);	
+    background: url(../Images/logo_01.png);
     float: left;
     width: 365px;
     height: 62px;
@@ -611,7 +611,7 @@ a.nohighlight:hover {
 #loginStatusDiv {
 	color: #cccccc;
 	float: right;
-	height: 36px;  
+	height: 36px;
     position: relative;
 	text-align: center;
 }
@@ -660,12 +660,12 @@ a.nohighlight:hover {
 .topMenuSubItem {
     border-top: 1px dotted #cccccc;
     margin-left: 10px;
-    margin-right: 10px; 
+    margin-right: 10px;
 }
 
 .topMenuSubItem a {
     height: 20px;
-    padding-top: 3px; 
+    padding-top: 3px;
 }
 
 
@@ -832,7 +832,7 @@ a.nohighlight:hover {
     text-shadow: 0 -1px 1px #222;
     border-bottom: 1px solid #222;
     position: relative;
-    
+
     -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
     -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
     text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
@@ -852,7 +852,7 @@ a.nohighlight:hover {
 
 #chosenTrackHeadline {
     font-size: 20px;
-    font-weight: normal;   
+    font-weight: normal;
     float: left;
     margin-top: 30px;
     padding-left: 10px;
@@ -1246,7 +1246,7 @@ a.nohighlight:hover {
 }
 
 
-/* !userInfo.php */
+/* !artist.php */
 /* ---------------------------------------------------------------------- */
 
 #trackInfoWrapper {
@@ -1269,7 +1269,7 @@ a.nohighlight:hover {
 
 .trackInfoTitle {
 	border-bottom: 1px solid #cccccc;
-	margin-bottom: 16px;	
+	margin-bottom: 16px;
 }
 
 /* !horizontalMenu */
@@ -1374,7 +1374,7 @@ a.nohighlight:hover {
 */
 
 #startpageButtonStart {
-    float: left;   
+    float: left;
 }
 
 /*
@@ -1496,7 +1496,7 @@ a.nohighlight:hover {
     width: 115px;
 }
 
-/* !userInfo Page */
+/* !artist.php Page */
 /* ---------------------------------------------------------------------- */
 
 #userInfoLeft {

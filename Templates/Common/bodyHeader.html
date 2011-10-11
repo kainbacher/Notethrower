@@ -4,7 +4,7 @@
 
         <div id="logo">
             <a href="index.php" alt="Home">
-                <img src="../Images/logo-01.png" alt="logo-01" width="180" height="36" />
+                <a href="${logoLinkUrl}"><img src="../Images/logo-01.png" alt="logo-01" width="180" height="36" /></a>
             </a>
         </div>
 
@@ -16,6 +16,7 @@
             <div id="loginStatusDiv">
 
                 ${Common/signUpAndLoginMenuItems_optional}
+                ${Common/loggedInUserFirstRowMenuItems_optional}
 
                 <div class="topMenuItemSearch">
                     <div class="topSearch">
@@ -31,6 +32,6 @@
 </div><!-- pageHeaderWrapper -->
 
 
-${Common/loggedInUserMenuItems_optional}
+${Common/loggedInUserSecondRowMenuItems_optional}
 
 

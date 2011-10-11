@@ -50,12 +50,12 @@ body {
         echo '<tr>';
 
         // linked image
-        echo '<td><a href="userInfo.php?aid=' . $collaborator->collaborating_user_id . '" target="_blank">';
+        echo '<td><a href="artist.php?aid=' . $collaborator->collaborating_user_id . '" target="_blank">';
         echo getUserImageHtml($collaborator->user_image_filename, $collaborator->user_name, 'tiny');
         echo '</a></td>';
 
         // name
-        echo '<td><a href="userInfo.php?aid=' . $collaborator->collaborating_user_id . '" target="_blank">' . escape($collaborator->user_name) . '</a></td>';
+        echo '<td><a href="artist.php?aid=' . $collaborator->collaborating_user_id . '" target="_blank">' . escape($collaborator->user_name) . '</a></td>';
 
         echo '</tr>';
     }

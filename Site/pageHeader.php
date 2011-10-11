@@ -61,7 +61,7 @@ if ($userIsLoggedIn) {
 	echo '<div class="topMenuSub">' . "\n";
 
 	echo '<div class="topMenuSubItem">' . "\n";
-	echo '<a href="userInfo.php?aid=' . $loggedInUserId . '">Artistpage</a>' . "\n";
+	echo '<a href="artist.php?aid=' . $loggedInUserId . '">Artistpage</a>' . "\n";
 	echo '</div>' . "\n";
 
 	echo '<div class="topMenuSubItem">' . "\n";

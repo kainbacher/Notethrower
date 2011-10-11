@@ -394,7 +394,7 @@ echo '<div id="associated_users_row"' . ($hidden ? ' style="display:none";' : ''
 //if ($ac > 20) {
 //    for ($ai = 0; $ai < 20; $ai++) {
 //        if ($usersWithAccessList[$ai]->user_id != $user->id) {
-//            $usersWithAccessListStr .= '<a href="userInfo.php?aid=' . $usersWithAccessList[$ai]->user_id . '" target="_blank">' .
+//            $usersWithAccessListStr .= '<a href="artist.php?aid=' . $usersWithAccessList[$ai]->user_id . '" target="_blank">' .
 //                    escape($usersWithAccessList[$ai]->user_name) . '</a>, ';
 //        }
 //    }
@@ -403,7 +403,7 @@ echo '<div id="associated_users_row"' . ($hidden ? ' style="display:none";' : ''
 //} else if ($ac > 1) {
 //    foreach ($usersWithAccessList as $a) {
 //        if ($a->user_id != $user->id) {
-//            $usersWithAccessListStr .= '<a href="userInfo.php?aid=' . $a->user_id . '" target="_blank">' .
+//            $usersWithAccessListStr .= '<a href="artist.php?aid=' . $a->user_id . '" target="_blank">' .
 //                    escape($a->user_name) . '</a>, ';
 //        }
 //    }
@@ -605,7 +605,7 @@ function processParams(&$project, &$user) {
 //                    'Hey ' . $originator->name . ',' . "\n\n" .
 //                    $user->name . ' has just started creating a new remix using one of your tracks.' . "\n\n" .
 //                    'You may want to check out the "Remixed by others" section in your oneloudr Widget or on your public user page: ' .
-//                    $GLOBALS['BASE_URL'] . 'Site/userInfo.php?aid=' . $project->originating_user_id . "\n\n" .
+//                    $GLOBALS['BASE_URL'] . 'Site/artist.php?aid=' . $project->originating_user_id . "\n\n" .
 //                    'Please note that you might not see the new track until the remixer puts it online.');
 //
 //            if (!$email_sent) {

@@ -51,7 +51,7 @@ if ($track) { // could be empty if wrong id or not visible for logged in user
         echo 'Remix';
         $oa = User::fetch_for_id($track->originating_user_id);
         if ($oa) {
-            echo ' | Originating user: <a href="userInfo.php?aid=' . $oa->id . '" target="_blank">' . escape($oa->name) . '</a>' . "\n";
+            echo ' | Originating user: <a href="artist.php?aid=' . $oa->id . '" target="_blank">' . escape($oa->name) . '</a>' . "\n";
         }
 
     } else {
@@ -93,7 +93,7 @@ if ($track) { // could be empty if wrong id or not visible for logged in user
         for ($i = 0; $i < 5; $i++) {
             echo '<td>';
             if (isset($collaborators[$i])) {
-                echo '<a href="userInfo.php?aid=' . $collaborators[$i]->collaborating_user_id . '" target="_blank">';
+                echo '<a href="artist.php?aid=' . $collaborators[$i]->collaborating_user_id . '" target="_blank">';
                 echo getUserImageHtml($collaborators[$i]->user_image_filename, $collaborators[$i]->user_name, 'tiny');
                 echo '</a>';
 
@@ -109,7 +109,7 @@ if ($track) { // could be empty if wrong id or not visible for logged in user
         for ($i = 5; $i < 10; $i++) {
             echo '<td>';
             if (isset($collaborators[$i])) {
-                echo '<a href="userInfo.php?aid=' . $collaborators[$i]->collaborating_user_id . '" target="_blank">';
+                echo '<a href="artist.php?aid=' . $collaborators[$i]->collaborating_user_id . '" target="_blank">';
                 echo getUserImageHtml($collaborators[$i]->user_image_filename, $collaborators[$i]->user_name, 'tiny');
                 echo '</a>';
 

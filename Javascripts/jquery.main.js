@@ -109,7 +109,7 @@ if ($("...").is(":focus")) {
     });
 
 
-    /* !userInfo sendMessage */
+    /* !artist.php sendMessage */
     /* ---------------------------------------------------------------------- */
 /*
     $('.sendMessageLink a').bind('click', function(){
@@ -243,7 +243,7 @@ if ($("...").is(":focus")) {
 
     /* !popup opener */
     /* ---------------------------------------------------------------------- */
-    
+
     $('.popup').bind('click', function(){
         popup();
         return false;

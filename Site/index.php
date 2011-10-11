@@ -78,8 +78,7 @@ function handleAuthentication() {
             if ($user && $user->status == 'active') {
                 $user->doLogin();
                 $logger->info('login via email successful, reloading page to set cookie');
-                header('Location: ' . $_SERVER['PHP_SELF']);
-                exit;
+                redirectTo($GLOBALS['BASE_URL'] . 'Site/dashboard.php');
 
             } else {
                 $logger->info('login via email failed, trying via username');
@@ -88,8 +87,7 @@ function handleAuthentication() {
                 if ($user && $user->status == 'active') {
                     $user->doLogin();
                     $logger->info('login via username successful, reloading page to set cookie');
-                    header('Location: ' . $_SERVER['PHP_SELF']);
-                    exit;
+                    redirectTo($GLOBALS['BASE_URL'] . 'Site/dashboard.php');
 
                 } else {
                     $logger->info('login via username failed, too');
@@ -116,7 +114,7 @@ function handleAuthentication() {
             if ($user) {
                 $user->doLogin();
                 $logger->info('facebook login successful, reloading page to set cookie');
-                redirectTo($_SERVER['PHP_SELF']);
+                redirectTo($GLOBALS['BASE_URL'] . 'Site/dashboard.php');
 
             } else { // user not found -> this either means the user doesn't exist here yet or he was not found with the facebook email address
                 // the only thing we can do here is redirect the user to the signup page

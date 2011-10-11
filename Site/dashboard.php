@@ -46,6 +46,7 @@ foreach ($collabArtists as $collabArtist) {
 processAndPrintTpl('Dashboard/index.html', array(
     '${Common/pageHeader}'                     => buildPageHeader('Dashboard', true, false),
     '${Common/bodyHeader}'                     => buildBodyHeader($user),
+    '${userId}'                                => $user->id,
     '${Dashboard/projectListItem_list}'        => $projectListHtml,
     '${Dashboard/artistListItem_list}'         => $artistListHtml,
     '${Common/bodyFooter}'                     => buildBodyFooter(),

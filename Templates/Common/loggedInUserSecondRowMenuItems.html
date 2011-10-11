@@ -2,40 +2,34 @@
 <div id="mainMenuWrapper">
     <div id="mainMenu">
     	<ul>
-    		<li class="mainMenuItem mainMenuItemAct">
+    		<li class="mainMenuItem${dashboardActiveMenuItemClass}">
                 <a href="dashboard.php?aid=${userId}">
                     <span class="mainMenuIcon"></span>
                     <span class="mainMenuLink">Dashboard</span>
                 </a>
             </li>
-    		<li class="mainMenuItem">
-                <a href="userInfo.php?aid=${userId}">
+    		<li class="mainMenuItem${artistActiveMenuItemClass}">
+                <a href="artist.php?aid=${userId}">
                     <span class="mainMenuIcon"></span>
                     <span class="mainMenuLink">Artistpage</span>
                 </a>
             </li>
-    		<li class="mainMenuItem">
+    		<li class="mainMenuItem${projectListActiveMenuItemClass}">
                 <a href="projectList.php">
                     <span class="mainMenuIcon"></span>
                     <span class="mainMenuLink">My Projects</span>
                 </a>
             </li>
-    		<li class="mainMenuItem">
+    		<li class="mainMenuItem${projectActiveMenuItemClass}">
                 <a href="project.php?action=create">
                     <span class="mainMenuIcon"></span>
                     <span class="mainMenuLink">Upload</span>
                 </a>
             </li>
-    		<li class="mainMenuItem">
+    		<li class="mainMenuItem${accountActiveMenuItemClass}">
                 <a href="account.php">
                     <span class="mainMenuIcon"></span>
                     <span class="mainMenuLink">Profile</span>
-                </a>
-            </li>
-    		<li class="mainMenuItem">
-                <a href="logout.php">
-                    <span class="mainMenuIcon"></span>
-                    <span class="mainMenuLink">Logout</span>
                 </a>
             </li>
     	</ul>
@@ -56,7 +50,7 @@
 
 
 <div class="topMenuItem">
-    <a href="userInfo.php?aid=${userId}">Me</a>
+    <a href="artist.php?aid=${userId}">Me</a>
 	<div class="topMenuSub">
 	    <div class="topMenuSubItem"></div>
 	</div>

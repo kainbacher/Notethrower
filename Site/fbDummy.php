@@ -18,7 +18,7 @@ if ($GLOBALS['STAGING_ENV'] == 'dev') {
         if ($destUrl) {
             redirectTo($destUrl);
         } else {
-            redirectTo($GLOBALS['BASE_URL'] . 'Site/index.php');
+            redirectTo($GLOBALS['BASE_URL'] . 'Site/dashboard.php');
         }
 
     } else {

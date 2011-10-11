@@ -76,10 +76,14 @@ function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagin
 }
 
 function buildBodyHeader($loggedInUser, $useMobileVersion = false) {
+    $logoLinkUrl = $GLOBALS['BASE_URL'] . 'Site/dashboard.php';
     $loginBlock = '';
-    $loggedInUserInfoBlock = '';
+    $loggedInUserInfoBlockFirstRow = '';
+    $loggedInUserInfoBlockSecondRow = '';
 
     if (!$loggedInUser) {
+        $logoLinkUrl = $GLOBALS['BASE_URL'] . 'Site/index.php';
+
         $fbLoginUrl = $GLOBALS['STAGING_ENV'] == 'dev' ? 'fbDummy.php' : 'fb.php';
         $fbLoginUrl .= '?destUrl=' . urlencode($_SERVER['PHP_SELF']);
 
@@ -88,14 +92,25 @@ function buildBodyHeader($loggedInUser, $useMobileVersion = false) {
         ), $useMobileVersion);
 
     } else {
-        $loggedInUserInfoBlock = processTpl('Common/loggedInUserMenuItems.html', array(
+        $loggedInUserInfoBlockFirstRow = processTpl('Common/loggedInUserFirstRowMenuItems.html', array(
             '${userId}' => $loggedInUser->id
+        ), $useMobileVersion);
+
+        $loggedInUserInfoBlockSecondRow = processTpl('Common/loggedInUserSecondRowMenuItems.html', array(
+            '${userId}'                         => $loggedInUser->id,
+            '${dashboardActiveMenuItemClass}'   => strpos($_SERVER['PHP_SELF'], 'dashboard.php')   !== false ? ' mainMenuItemAct' : '',
+            '${artistActiveMenuItemClass}'      => strpos($_SERVER['PHP_SELF'], 'artist.php')      !== false ? ' mainMenuItemAct' : '',
+            '${projectListActiveMenuItemClass}' => strpos($_SERVER['PHP_SELF'], 'projectList.php') !== false ? ' mainMenuItemAct' : '',
+            '${projectActiveMenuItemClass}'     => strpos($_SERVER['PHP_SELF'], 'project.php')     !== false ? ' mainMenuItemAct' : '',
+            '${accountActiveMenuItemClass}'     => strpos($_SERVER['PHP_SELF'], 'account.php')     !== false ? ' mainMenuItemAct' : ''
         ), $useMobileVersion);
     }
 
     return processTpl('Common/bodyHeader.html', array(
-        '${Common/signUpAndLoginMenuItems_optional}' => $loginBlock,
-        '${Common/loggedInUserMenuItems_optional}'   => $loggedInUserInfoBlock,
+        '${logoLinkUrl}'                                    => $logoLinkUrl,
+        '${Common/signUpAndLoginMenuItems_optional}'        => $loginBlock,
+        '${Common/loggedInUserFirstRowMenuItems_optional}'  => $loggedInUserInfoBlockFirstRow,
+        '${Common/loggedInUserSecondRowMenuItems_optional}' => $loggedInUserInfoBlockSecondRow,
     ), $useMobileVersion);
 }
 
@@ -674,14 +689,14 @@ function create_resized_jpg($file, $destFile, $maxWidth, $maxHeight) {
     imagejpeg($imageNew, $destFile, 100);
     imagedestroy($imageNew); // free memory
 }
-	
+
 function rand_char($length=6) {
-    $key = '';  
-    $pattern = "12345678901234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";  
-    for($i=0;$i<$length;$i++){  
-        $key .= $pattern{rand(0,72)};  
-    }  
-    return $key; 
+    $key = '';
+    $pattern = "12345678901234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    for($i=0;$i<$length;$i++){
+        $key .= $pattern{rand(0,72)};
+    }
+    return $key;
 }
 
 ?>

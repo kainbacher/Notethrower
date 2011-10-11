@@ -24,7 +24,7 @@ if ($user) {
 $latestArtistsList = '';
 $latestArtists = User::fetch_all_from_to(0, 999999, false, false, false, 'order by u.entry_date desc'); // FIXME - paging?
 foreach ($latestArtists as $a) {
-    $latestArtistsList .= processTpl('Artists/artistListItem.html', array(
+    $latestArtistsList .= processTpl('ArtistList/artistListItem.html', array(
         '${artistImgUrl}' => getUserImageUri($a->image_filename, 'tiny'),
         '${userId}'       => $a->id,
         '${artistName}'   => escape($a->name)
@@ -34,18 +34,18 @@ foreach ($latestArtists as $a) {
 $topArtistsList = '';
 $topArtists = User::fetch_most_listened_artists_from_to(0, 999999); // FIXME - paging?
 foreach ($topArtists as $a) {
-    $topArtistsList .= processTpl('Artists/artistListItem.html', array(
+    $topArtistsList .= processTpl('ArtistList/artistListItem.html', array(
         '${artistImgUrl}' => getUserImageUri($a->image_filename, 'tiny'),
         '${userId}'       => $a->id,
         '${artistName}'   => escape($a->name)
     ));
 }
 
-processAndPrintTpl('Artists/index.html', array(
-    '${Common/pageHeader}'                     => buildPageHeader('Artists', true, false),
+processAndPrintTpl('ArtistList/index.html', array(
+    '${Common/pageHeader}'                     => buildPageHeader('Artist list', true, false),
     '${Common/bodyHeader}'                     => buildBodyHeader($user),
-    '${Artists/artistListItem_top_list}'       => $topArtistsList,
-    '${Artists/artistListItem_latest_list}'    => $latestArtistsList,
+    '${ArtistList/artistListItem_top_list}'    => $topArtistsList,
+    '${ArtistList/artistListItem_latest_list}' => $latestArtistsList,
     '${Common/newsletterSubscription}'         => processTpl('Common/newsletterSubscription.html', array()),
     '${Common/bodyFooter}'                     => buildBodyFooter(),
     '${Common/pageFooter}'                     => buildPageFooter()

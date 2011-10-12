@@ -50,11 +50,6 @@ function putProjectFilesIntoZip($projectFileIds) {
 
         $zip->close();
         chmod($zipFilename, 0666);
-
-        chmod ('/home/benso/oneloudr.com/OL/Tmp/1318412751.6487.zip', 0666);
-        chmod ('/home/benso/oneloudr.com/OL/Tmp/1318412751.2382.zip', 0666);
-        chmod ('/home/benso/oneloudr.com/OL/Tmp/1318412747.4281.zip', 0666);
-        chmod ('/home/benso/oneloudr.com/OL/Tmp/1318412737.0174.zip', 0666);
     }
 
     return $response;

@@ -14,9 +14,9 @@
 
 body {
 	font-family: Arial, Sans-Serif;
-	font-size: 16px;
+	font-size: 14px;
     color: #444444;
-	line-height: 22px;
+	line-height: 20px;
 	text-align: left;
 	vertical-align: top;
 }
@@ -24,24 +24,25 @@ body {
 p {
     font-family: Arial, Arial, sans;
     font-weight: normal;
-    font-size: 16px;
-    line-height: 22px;
+    font-size: 14px;
+    line-height: 20px;
 }
 
 h1 {
     color: #444444;
-    font-size: 21px;
+    font-size: 18px;
     font-weight: bold;
-    line-height: 32px;
+    line-height: 28px;
     text-transform: uppercase;
 }
 
 h2 {
     color: #444444;
     font-size: 18px;
-    font-weight: bold;
+    font-weight: normal;
     line-height: 24px;
     margin-bottom: 12px;
+    text-transform: uppercase;
 }
 
 h3 {
@@ -94,14 +95,17 @@ img {
 
 input {
     border: 1px solid #ddd;
-    font-size: 14px;
-    padding: 2px;
+    color: #999;
+    font-size: 12px;
+    padding: 5px;
 }
 
 textarea {
     border: 1px solid #ddd;
+    color: #999;
     font-family: Arial, sans-seriv;
-    font-size: 14px;
+    font-size: 12px;
+    padding: 5px;
 }
 
 .clear {
@@ -159,15 +163,17 @@ textarea {
 
 .toolTipContent {
     background-color: #f2f2f2;
+    font-size: 11px;
     position: absolute;
     top: 0;
     left: 20px;
+    line-height: 13px;
     z-index: 3;
     display: none;
     width: 230px;
     height: auto;
-    padding: 15px;
-    border: 3px solid #dddddd;
+    padding: 10px;
+    border: 1px solid #dddddd;
     border-radius: 6px;
 }
 
@@ -183,8 +189,8 @@ textarea {
 }
 
 .box-grey {
-    background-color: #F9F9F9;
-    border: 3px solid #eeeeee;
+    background-color: #fafafa;
+    border: 1px solid #f0f0f0;
     padding: 18px;
     margin-bottom: 18px;
 }
@@ -208,25 +214,33 @@ textarea {
 /* ---------------------------------------------------------------------- */
 
 .tabs {
-    border-bottom: 2px solid #7DB72F;
+    border-bottom: 2px solid #4BA8E0;
     list-style: none;
     list-style-type: none;
     padding: 0px;
     padding-left: 10px;
     margin: 0px;
     margin-bottom: 24px;
-    height: 34px;
+    height: 30px;
 }
 
 .tabsItem {
     background-color: #f9f9f9;
     float: left;
-    border: 2px solid #ccc;
+    border: 1px solid #ccc;
     border-bottom-width: 0;
     margin: 0;
     margin-right: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 6px;
+    padding-bottom: 2px;
+
+    -webkit-border-top-left-radius: 4px;
+    -webkit-border-top-right-radius: 4px;
+    -moz-border-radius-topleft: 4px;
+    -moz-border-radius-topright: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+
 }
 
 .tabsItem a {
@@ -238,7 +252,7 @@ textarea {
 
 .tabsAct {
     /*color: #4BA8E0;*/
-    color: #7DB72F !important;
+    color: #4BA8E0 !important;
 }
 
 .tabcontent-1 { display: none; }
@@ -1255,6 +1269,7 @@ a.nohighlight:hover {
 
 .trackListItem {
     border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
     padding-top: 5px;
 }
 
@@ -1765,5 +1780,41 @@ a.nohighlight:hover {
 }
 
 #popupInner {}
+
+/* !recommendedList */
+/* ---------------------------------------------------------------------- */
+
+.recommendedList {
+    border-top: 1px solid #ccc;
+    display: inline-block;
+    list-style: none;
+    list-style-type: none;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+.recommendedList li {
+    border-bottom: 1px solid #ccc;
+    display: inline-block;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.recommendedList li img {
+    padding-left: 10px;
+}
+
+.recommendedListName {
+    margin-top: 8px;
+}
+
+.recommendedListButton {
+    margin-top: 18px;
+}
+
+
+
+
+
 
 

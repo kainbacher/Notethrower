@@ -31,7 +31,7 @@ function putProjectFilesIntoZip($projectFileIds) {
     } else {
         $data = ProjectFile::getFilepathsForProjectFileIds($projectFileIds);
 
-        forach ($data as $entry) {
+        foreach ($data as $entry) {
             $zip->addFile($entry['path'], $entry['origFilename']);
         }
 

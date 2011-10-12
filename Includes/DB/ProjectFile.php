@@ -188,10 +188,12 @@ class ProjectFile {
     }
 
     function getFilepathsForProjectFileIds($pfids) {
+        if (count($pfids) == 0) return array();
+
         $result = _mysql_query(
             'select id, filename, orig_filename ' .
             'from pp_project_file ' .
-            'where id in ' . implode(',', $pfids)
+            'where id in (' . implode(',', $pfids) . ')'
         );
 
         $data = array();

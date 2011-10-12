@@ -12,10 +12,47 @@ for($i = 128; $i < 256; $i++){
 }
 
 // functions
+function deleteOldTempFiles() { // FIXME - use this ####################################
+    global $logger;
+
+    $expiryDays = 0;
+
+    // safenet - if config value is missing or doesn't have a meaningful value
+    if (
+        !isset($GLOBALS['TEMP_FILES_BASE_PATH']) ||
+        $GLOBALS['TEMP_FILES_BASE_PATH'] === ''  ||
+        $GLOBALS['TEMP_FILES_BASE_PATH'] == './' ||
+        $GLOBALS['TEMP_FILES_BASE_PATH'] == '.\\'
+    ) {
+        show_fatal_error_and_exit('suspicious temp file base path: ' . $GLOBALS['TEMP_FILES_BASE_PATH']);
+    }
+
+    $files = glob($GLOBALS['TEMP_FILES_BASE_PATH'] . '*');
+
+    $logger->info('found ' . count($files) . ' old temp files');
+
+    $deleteCount = 0;
+
+    foreach ($files as $file) {
+        // calculate file age in seconds
+        $fileAge = time() - filemtime($file); // age = now - last modification time
+
+        $logger->debug('age of file ' . $file . ' is: ' . ($fileAge / 60 / 60 / 24) . ' days');
+
+        // is the file older than the given time span?
+        if ($fileAge > ($expiryDays * 60 * 60 * 24)) {
+            $logger->info('deleting file: ' . $file);
+            //unlink($file);
+            $deleteCount++;
+        }
+    }
+
+    $logger->info('deleted ' . $deleteCount . ' old temp files');
+}
 
 // takes the given project file IDs, takes the corresponding files and creates a zip file in the Tmp folder.
 // returns the full path to the zip file or false if something went wrong.
-function putProjectFilesIntoZip($projectFileIds) {
+function putProjectFilesIntoZip($projectFileIds) { // FIXME - use this ####################################
     global $logger;
 
     $logger->info('zipping up project files with IDs: ' . implode(', ', $projectFileIds));

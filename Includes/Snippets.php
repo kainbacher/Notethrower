@@ -23,7 +23,7 @@ function putProjectFilesIntoZip($projectFileIds) {
     $response = false;
 
     $zip = new ZipArchive();
-    $zipFilename = $GLOBALS['TEMP_FILES_BASE_PATH'] . str_replace(',', '_', microtime(true)) . '.zip';
+    $zipFilename = $GLOBALS['TEMP_FILES_BASE_PATH'] . str_replace('.', '_', microtime(true)) . '.zip';
 
     if ($zip->open($zipFilename, ZIPARCHIVE::CREATE) !== true) {
         $logger->error('cannot create zip file: ' . $zipFilename);
@@ -49,6 +49,7 @@ function putProjectFilesIntoZip($projectFileIds) {
         }
 
         $zip->close();
+        chmod($zipFilename, 0666);
     }
 
     return $response;

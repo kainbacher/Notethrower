@@ -17,7 +17,7 @@ ensureUserIsLoggedIn($user);
 
 // find projects where the user could collaborate
 $projectListHtml = '';
-$projects = Project::fetchAllThatNeedSkillsOfUser(&$user); // FIXME - limit/paging?
+$projects = Project::fetchAllThatNeedSkillsOfUser($user); // FIXME - limit/paging?
 foreach ($projects as $project) {
     $projectUserImgUrl = getUserImageUri($project->userImgFilename, 'tiny');
 
@@ -32,7 +32,7 @@ foreach ($projects as $project) {
 
 // find artists which could help the user with his projects
 $artistListHtml = '';
-$collabArtists = User::fetchAllThatOfferSkillsForUsersProjects(&$user); // FIXME - limit/paging?
+$collabArtists = User::fetchAllThatOfferSkillsForUsersProjects($user); // FIXME - limit/paging?
 foreach ($collabArtists as $collabArtist) {
     $collabArtistImgUrl = getUserImageUri($collabArtist->imageFilename, 'tiny');
 

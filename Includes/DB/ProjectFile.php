@@ -141,7 +141,8 @@ class ProjectFile {
         if (!$tid) return;
 
         $result = _mysql_query(
-            'select id from pp_project_file ' .
+            'select id ' .
+            'from pp_project_file ' .
             'where project_id = ' . n($tid)
         );
 
@@ -184,6 +185,27 @@ class ProjectFile {
             'delete from pp_project_file ' .
             'where id = ' . n($id)
         );
+    }
+
+    function getFilepathsForProjectFileIds($pfids) {
+        $result = _mysql_query(
+            'select id, filename, orig_filename ' .
+            'from pp_project_file ' .
+            'where id in ' . implode(',', $pfids)
+        );
+
+        $data = array();
+        while ($row = mysql_fetch_array($result)) {
+            $data[] = array(
+                'id'           => $row['id'],
+                'origFilename' => $row['orig_filename'],
+                'path'         => $GLOBALS['CONTENT_BASE_PATH'] . $row['filename']
+            );
+        }
+
+        mysql_free_result($result);
+
+        return $data;
     }
 
     // object methods

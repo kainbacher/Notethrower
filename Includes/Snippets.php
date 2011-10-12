@@ -3,6 +3,7 @@
 error_reporting (E_ALL ^ E_NOTICE);
 
 include_once('../Includes/Config.php');
+include_once('../Includes/DB/ProjectFile.php');
 
 // constants
 $ASC2UNI = Array();
@@ -11,6 +12,48 @@ for($i = 128; $i < 256; $i++){
 }
 
 // functions
+
+// takes the given project file IDs, takes the corresponding files and creates a zip file in the Tmp folder.
+// returns the full path to the zip file or false if something went wrong.
+function putProjectFilesIntoZip($projectFileIds) {
+    global $logger;
+
+    $logger->info('zipping up project files with IDs: ' . implode(', ', $projectFileIds));
+
+    $response = false;
+
+    $zip = new ZipArchive();
+    $zipFilename = $GLOBALS['TEMP_FILES_BASE_PATH'] . str_replace(',', '_', microtime(true)) . '.zip';
+
+    if ($zip->open($zipFilename, ZIPARCHIVE::CREATE) !== true) {
+        $logger->error('cannot create zip file: ' . $zipFilename);
+
+    } else {
+        $data = ProjectFile::getFilepathsForProjectFileIds($projectFileIds);
+
+        forach ($data as $entry) {
+            $zip->addFile($entry['path'], $entry['origFilename']);
+        }
+
+        $logger->info('zipped files count: ' . $zip->numFiles);
+        $logger->info('zip status: ' . $zip->status);
+
+        if ($zip->numFiles != count($data)) {
+            $logger->error('zip file count (' . $zip->numFiles . ') does not match project file count (' . count($data) . ')!');
+
+        } else if ($zip->status !== 0) {
+            $logger->error('zip file creation failed!');
+
+        } else {
+            $response = $zipFilename;
+        }
+
+        $zip->close();
+    }
+
+    return $response;
+}
+
 function sendJsonResponseAndExit(&$jsonResponse) {
     global $logger;
 

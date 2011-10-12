@@ -40,6 +40,8 @@ ${Common/bodyHeader}
             <div class="span-24 last tabcontent-1 tabcontentAct">
                 <div class="span-16 last">
                     <div class="box-grey">
+                        <h2>Basic Project Information</h2>
+                        <br />
                         <form name="projectForm" action="${formAction}" method="POST" style="display:inline-block;">
                             <input type="hidden" name="action" value="save">
                             <input type="hidden" name="pid" value="${projectId}">
@@ -62,47 +64,218 @@ ${Common/bodyHeader}
             
             
             <div class="span-24 last tabcontent-2">
-                <div class="span-16 last">
+                <div class="span-16">
                     <div class="box-grey">
-                        <form name="projectForm" action="${formAction}" method="POST" style="display:inline-block;">
-                            <input type="hidden" name="action" value="save">
-                            <input type="hidden" name="pid" value="${projectId}">
-                            <input type="hidden" name="type" value="${type}">
-                            <input type="hidden" name="projectSubGenresList" id="projectSubGenresList" value="">
-                            <input type="hidden" name="projectMoodsList" id="projectMoodsList" value="">
-                            <input type="hidden" name="projectAttributesList" id="projectAttributesList" value="">
                             
-                            <div id="formElt_title" class=" formElement span-15 last">
-                                <div class="span-6">E-Mail:</div>
-                                <div class="span-8">
-                                    <input type="text" id="title" name="title" value="Projekt 1" maxlength="255">
-                                </div>
-                                <div class="span-1 last"></div>
-                            </div>
+                            <h2>Recommended Artists</h2>
+                            <ul class="recommendedList">
+                                <li class="trackListItem">
+                                    <div class="span-3">
+                                        <img src="../Images/testimages/profile-testimg-75x75.png" alt="profile-testimg-75x75" width="55" height="55" />
+                                    </div>
+                                    <div class="span-8">
+                                        <div class="recommendedListName">
+                                            <a href="#" title="Vorname Nachname">Vorname Nachname</a><br />
+                                            Drums, Guitarr
+                                        </div>
+                                    </div>
+                                    <div class="span-3 last">
+                                        <div class="recommendedListButton">
+                                            <input class="button-small grey" 
+                                                type="submit" 
+                                                value="Add" 
+                                                onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                        </div>
+                                    </div>
+                                </li>
 
-                            <div id="formElt_title" class=" formElement span-15 last">
-                                <div class="span-6">Artist:</div>
-                                <div class="span-8">
-                                    <input type="text" id="title" name="title" value="Projekt 1" maxlength="255">
-                                </div>
-                                <div class="span-1 last"></div>
-                            </div>
+                                <li class="trackListItem">
+                                    <div class="span-3">
+                                        <img src="../Images/testimages/profile-testimg-75x75.png" alt="profile-testimg-75x75" width="55" height="55" />
+                                    </div>
+                                    <div class="span-8">
+                                        <div class="recommendedListName">
+                                            <a href="#" title="Vorname Nachname">Vorname Nachname</a><br />
+                                            Drums, Guitarr
+                                        </div>
+                                    </div>
+                                    <div class="span-3 last">
+                                        <div class="recommendedListButton">
+                                            <input class="button-small grey" 
+                                                type="submit" 
+                                                value="Add" 
+                                                onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                        </div>
+                                    </div>
+                                </li>
 
-                            <div id="formElt_title" class=" formElement span-15 last">
-                                <div class="span-6">Artist Search:</div>
-                                <div class="span-8">
-                                    <input type="text" id="title" name="title" value="Projekt 1" maxlength="255">
-                                </div>
-                                <div class="span-1 last"></div>
-                            </div>
+                                <li class="trackListItem">
+                                    <div class="span-3">
+                                        <img src="../Images/testimages/profile-testimg-75x75.png" alt="profile-testimg-75x75" width="55" height="55" />
+                                    </div>
+                                    <div class="span-8">
+                                        <div class="recommendedListName">
+                                            <a href="#" title="Vorname Nachname">Vorname Nachname</a><br />
+                                            Drums, Guitarr
+                                        </div>
+                                    </div>
+                                    <div class="span-3 last">
+                                        <div class="recommendedListButton">
+                                            <input class="button-small grey" 
+                                                type="submit" 
+                                                value="Add" 
+                                                onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="trackListItem">
+                                    <div class="span-3">
+                                        <img src="../Images/testimages/profile-testimg-75x75.png" alt="profile-testimg-75x75" width="55" height="55" />
+                                    </div>
+                                    <div class="span-8">
+                                        <div class="recommendedListName">
+                                            <a href="#" title="Vorname Nachname">Vorname Nachname</a><br />
+                                            Drums, Guitarr
+                                        </div>
+                                    </div>
+                                    <div class="span-3 last">
+                                        <div class="recommendedListButton">
+                                            <input class="button-small grey" 
+                                                type="submit" 
+                                                value="Add" 
+                                                onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="trackListItem">
+                                    <div class="span-3">
+                                        <img src="../Images/testimages/profile-testimg-75x75.png" alt="profile-testimg-75x75" width="55" height="55" />
+                                    </div>
+                                    <div class="span-8">
+                                        <div class="recommendedListName">
+                                            <a href="#" title="Vorname Nachname">Vorname Nachname</a><br />
+                                            Drums, Guitarr
+                                        </div>
+                                    </div>
+                                    <div class="span-3 last">
+                                        <div class="recommendedListButton">
+                                            <input class="button-small grey" 
+                                                type="submit" 
+                                                value="Add" 
+                                                onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="trackListItem">
+                                    <div class="span-3">
+                                        <img src="../Images/testimages/profile-testimg-75x75.png" alt="profile-testimg-75x75" width="55" height="55" />
+                                    </div>
+                                    <div class="span-8">
+                                        <div class="recommendedListName">
+                                            <a href="#" title="Vorname Nachname">Vorname Nachname</a><br />
+                                            Drums, Guitarr
+                                        </div>
+                                    </div>
+                                    <div class="span-3 last">
+                                        <div class="recommendedListButton">
+                                            <input class="button-small grey" 
+                                                type="submit" 
+                                                value="Add" 
+                                                onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="trackListItem">
+                                    <div class="span-3">
+                                        <img src="../Images/testimages/profile-testimg-75x75.png" alt="profile-testimg-75x75" width="55" height="55" />
+                                    </div>
+                                    <div class="span-8">
+                                        <div class="recommendedListName">
+                                            <a href="#" title="Vorname Nachname">Vorname Nachname</a><br />
+                                            Drums, Guitarr
+                                        </div>
+                                    </div>
+                                    <div class="span-3 last">
+                                        <div class="recommendedListButton">
+                                            <input class="button-small grey" 
+                                                type="submit" 
+                                                value="Add" 
+                                                onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="trackListItem">
+                                    <div class="span-3">
+                                        <img src="../Images/testimages/profile-testimg-75x75.png" alt="profile-testimg-75x75" width="55" height="55" />
+                                    </div>
+                                    <div class="span-8">
+                                        <div class="recommendedListName">
+                                            <a href="#" title="Vorname Nachname">Vorname Nachname</a><br />
+                                            Drums, Guitarr
+                                        </div>
+                                    </div>
+                                    <div class="span-3 last">
+                                        <div class="recommendedListButton">
+                                            <input class="button-small grey" 
+                                                type="submit" 
+                                                value="Add" 
+                                                onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="trackListItem">
+                                    <div class="span-3">
+                                        <img src="../Images/testimages/profile-testimg-75x75.png" alt="profile-testimg-75x75" width="55" height="55" />
+                                    </div>
+                                    <div class="span-8">
+                                        <div class="recommendedListName">
+                                            <a href="#" title="Vorname Nachname">Vorname Nachname</a><br />
+                                            Drums, Guitarr
+                                        </div>
+                                    </div>
+                                    <div class="span-3 last">
+                                        <div class="recommendedListButton">
+                                            <input class="button-small grey" 
+                                                type="submit" 
+                                                value="Add" 
+                                                onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                        </div>
+                                    </div>
+                                </li>
+
+                            </ul>
+    
+                    </div>
+                </div>
+                <div class="span-8 last">
+                    <div class="box-grey">
+
+                        <h2>Invite a Friend:</h2>
+                        <input type="text" id="title" name="title" value="E-Mail" maxlength="255">
+                        <input class="button-small blue" 
+                            type="submit" 
+                            value="send" 
+                            onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+
+                        <br />
+                        <br />
+                        <br />
+
+                        <h2>Search an Artist:</h2>
+                        <input type="text" id="title" name="title" value="Artist Name" maxlength="255">
                 
-                            <div class="prepend-6 span-6 last">
-                                <input class="button blue" 
-                                    type="submit" 
-                                    value="${submitButtonValue}" 
-                                    onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
-                            </div>
-                        </form>
+                        <input class="button-small blue" 
+                            type="submit" 
+                            value="search" 
+                            onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+
+
                     </div>
                 </div>
             </div>
@@ -111,7 +284,7 @@ ${Common/bodyHeader}
                 <div class="span-16">
                     <div class="box-grey">
                         <h2>Project Title</h2>
-                        
+                        <br />
                         <p>
                             Projectdescription Projectdescription Projectdescription Projectdescription Projectdescription 
                             Projectdescription Projectdescription Projectdescription Projectdescription Projectdescription 
@@ -197,6 +370,7 @@ ${Common/bodyHeader}
                         <form name="projectForm" action="${formAction}" method="POST" style="display:inline-block;">
                         
                             <h2>Share</h2>
+                            <br />
                             <p>List with Names</p>
                             <p>Aufteilung in %</p>
                             

@@ -2,7 +2,7 @@
 
 include_once('../Includes/Snippets.php');
 
-$zipfile = putProjectFilesIntoZip(array());
+$zipfile = putProjectFilesIntoZip(array(66,67));
 if ($zipfile === false) {
     echo 'OUCH!';
     exit;

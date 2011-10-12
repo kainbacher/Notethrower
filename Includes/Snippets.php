@@ -12,7 +12,7 @@ for($i = 128; $i < 256; $i++){
 }
 
 // functions
-function deleteOldTempFiles() { // FIXME - use this ####################################
+function deleteOldTempFiles($extension) { // FIXME - use this ####################################
     global $logger;
 
     $expiryDays = 0;
@@ -27,9 +27,9 @@ function deleteOldTempFiles() { // FIXME - use this ############################
         show_fatal_error_and_exit('suspicious temp file base path: ' . $GLOBALS['TEMP_FILES_BASE_PATH']);
     }
 
-    $files = glob($GLOBALS['TEMP_FILES_BASE_PATH'] . '*');
+    $files = glob($GLOBALS['TEMP_FILES_BASE_PATH'] . '*.' . $extension);
 
-    $logger->info('found ' . count($files) . ' old temp files');
+    $logger->info('found ' . count($files) . ' old temp files with extension: ' . $extension);
 
     $deleteCount = 0;
 

@@ -4,33 +4,56 @@
     	<ul>
     		<li class="mainMenuItem${dashboardActiveMenuItemClass}">
                 <a href="dashboard.php?aid=${userId}">
-                    <span class="mainMenuIcon"></span>
+                    <span class="mainMenuIcon">
+                        <img src="../Images/icons/home.png" alt="home" width="24" height="24" />
+                    </span>
                     <span class="mainMenuLink">Dashboard</span>
                 </a>
             </li>
     		<li class="mainMenuItem${artistActiveMenuItemClass}">
                 <a href="artist.php?aid=${userId}">
-                    <span class="mainMenuIcon"></span>
+                    <span class="mainMenuIcon">
+                        <img src="../Images/icons/microphone.png" alt="microphone" width="24" height="24" />
+                    </span>
                     <span class="mainMenuLink">Artistpage</span>
+                </a>
+            </li>
+    		<li class="mainMenuItem${artistActiveMenuItemClass}">
+                <a href="artistList.php">
+                    <span class="mainMenuIcon">
+                        <img src="../Images/icons/microphone.png" alt="microphone" width="24" height="24" />
+                    </span>
+                    <span class="mainMenuLink">Find Artists</span>
                 </a>
             </li>
     		<li class="mainMenuItem${projectListActiveMenuItemClass}">
                 <a href="projectList.php">
-                    <span class="mainMenuIcon"></span>
-                    <span class="mainMenuLink">My Projects</span>
+                    <span class="mainMenuIcon">
+                        <img src="../Images/icons/inbox-document-music.png" alt="project" width="24" height="24" />
+                    </span>
+                    <span class="mainMenuLink">Projects</span>
                 </a>
             </li>
     		<li class="mainMenuItem${projectActiveMenuItemClass}">
                 <a href="project.php?action=create">
-                    <span class="mainMenuIcon"></span>
-                    <span class="mainMenuLink">Upload</span>
+                    <span class="mainMenuIcon">
+                        <img src="../Images/icons/plus.png" alt="plus" width="24" height="24" />
+                    </span>
+                    <span class="mainMenuLink">New Project</span>
                 </a>
             </li>
     		<li class="mainMenuItem${accountActiveMenuItemClass}">
                 <a href="account.php">
-                    <span class="mainMenuIcon"></span>
+                    <span class="mainMenuIcon">
+                        <img src="../Images/icons/profile.png" alt="profile" width="24" height="24" />
+                    </span>
                     <span class="mainMenuLink">Profile</span>
                 </a>
+            </li>
+            <li class="mainMenuItem">
+                <div style="color:white; font-weight:bold;">
+                === DUMMY ICONS !!
+                </div>
             </li>
     	</ul>
     </div>
@@ -38,22 +61,4 @@
 
 
 
-<!--
-<li><a href="index.php">Home</a></li>
-<li><a href="artistList.php">Artists</a></li>
-<li><a href="blog.php">Blog</a></li>
-<li><a href="features.php">Features</a></li>
-<li><a href="pricing.php">Plans</a></li>
-
-
-
-
-
-<div class="topMenuItem">
-    <a href="artist.php?aid=${userId}">Me</a>
-	<div class="topMenuSub">
-	    <div class="topMenuSubItem"></div>
-	</div>
-</div>
--->
 

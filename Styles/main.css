@@ -191,6 +191,7 @@ textarea {
 .box-grey {
     background-color: #fafafa;
     border: 1px solid #f0f0f0;
+    display: inline-block;
     padding: 18px;
     margin-bottom: 18px;
 }
@@ -218,7 +219,7 @@ textarea {
     list-style: none;
     list-style-type: none;
     padding: 0px;
-    padding-left: 10px;
+    padding-left: 0px;
     margin: 0px;
     margin-bottom: 24px;
     height: 30px;
@@ -720,6 +721,7 @@ a.nohighlight:hover {
 
 #loginStatusDiv a {
     color: #ffffff;
+    font-size: 12px;
 }
 
 #loginStatusDiv a:hover {
@@ -786,6 +788,9 @@ a.nohighlight:hover {
 }
 
 #mainMenu li {
+    background-image: url(../Images/menu-spacer.png);
+    background-position: right center;
+    background-repeat: no-repeat;
 	float: left;
 	text-align: center;
 	width: 80px;
@@ -818,7 +823,6 @@ a.nohighlight:hover {
 }
 
 .mainMenuIcon {
-    background-color: #fff;
     display: block;
     height: 30px;
     margin-bottom: 6px;

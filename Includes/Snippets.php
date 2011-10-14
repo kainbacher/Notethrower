@@ -70,7 +70,8 @@ function putProjectFilesIntoZip($projectFileIds) {
 
         foreach ($data as $entry) {
             $path = $entry['path'];
-            $pathInZip = preg_replace('/[^a-zA-Z0-9.]/', '', $entry['origFilename']);
+            //$pathInZip = preg_replace('/[^a-zA-Z0-9.]/', '', $entry['origFilename']);
+            $pathInZip = $entry['origFilename'];
             $logger->info('adding file ' . $path . ' as ' . $pathInZip);
             $zip->addFile($path, $pathInZip);
         }

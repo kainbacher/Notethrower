@@ -465,7 +465,7 @@ function buildProjectAttributesAndSubGenresAndMoodsLists() {
 }
 
 function downloadSelectedStems() {
-    if ($('input:checkbox[id=selectedStems]:checked')) {
+    if ($('input:checkbox[id=selectedStems]:checked').val()) {
         var idList = [];
         $('input:checkbox[id=selectedStems]:checked').each(function() {
             idList.push($(this).val());

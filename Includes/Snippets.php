@@ -12,10 +12,10 @@ for($i = 128; $i < 256; $i++){
 }
 
 // functions
-function deleteOldTempFiles($extension) { // FIXME - use this ####################################
+function deleteOldTempFiles($extension) {
     global $logger;
 
-    $expiryDays = 0;
+    $expiryDays = 3;
 
     // safenet - if config value is missing or doesn't have a meaningful value
     if (
@@ -42,7 +42,7 @@ function deleteOldTempFiles($extension) { // FIXME - use this ##################
         // is the file older than the given time span?
         if ($fileAge > ($expiryDays * 60 * 60 * 24)) {
             $logger->info('deleting file: ' . $file);
-            //unlink($file);
+            unlink($file);
             $deleteCount++;
         }
     }
@@ -52,7 +52,7 @@ function deleteOldTempFiles($extension) { // FIXME - use this ##################
 
 // takes the given project file IDs, takes the corresponding files and creates a zip file in the Tmp folder.
 // returns the full path to the zip file or false if something went wrong.
-function putProjectFilesIntoZip($projectFileIds) { // FIXME - use this ####################################
+function putProjectFilesIntoZip($projectFileIds) {
     global $logger;
 
     $logger->info('zipping up project files with IDs: ' . implode(', ', $projectFileIds));
@@ -69,7 +69,10 @@ function putProjectFilesIntoZip($projectFileIds) { // FIXME - use this #########
         $data = ProjectFile::getFilepathsForProjectFileIds($projectFileIds);
 
         foreach ($data as $entry) {
-            $zip->addFile($entry['path'], $entry['origFilename']);
+            $path = $entry['path'];
+            $pathInZip = 'Files/' . preg_replace('/[^a-zA-Z0-9.]/', '', $entry['origFilename']);
+            $logger->info('adding file ' . $path . ' as ' . $pathInZip);
+            $zip->addFile($path, $pathInZip);
         }
 
         $logger->info('zipped files count: ' . $zip->numFiles);
@@ -85,7 +88,12 @@ function putProjectFilesIntoZip($projectFileIds) { // FIXME - use this #########
             $response = $zipFilename;
         }
 
-        $zip->close();
+        $ok = $zip->close();
+        if (!$ok) {
+            $logger->error('zip->close() was unsuccessful!');
+            $response = false;
+        }
+
         chmod($zipFilename, 0666);
     }
 

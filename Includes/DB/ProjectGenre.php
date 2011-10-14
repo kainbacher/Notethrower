@@ -127,7 +127,8 @@ class ProjectGenre {
             'select g.name as genre_name ' .
             'from pp_project_genre pg, pp_genre g ' .
             'where pg.project_id = ' . n($project_id) . ' ' .
-            'and pg.genre_id = g.id'
+            'and pg.genre_id = g.id ' .
+            'order by relevance desc, genre_name asc'
         );
 
         while ($row = mysql_fetch_array($result)) {

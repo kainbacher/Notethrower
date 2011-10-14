@@ -42,6 +42,7 @@ ${Common/bodyHeader}
                     <div class="box-grey">
                         <h2>Basic Project Information</h2>
                         <br />
+                        ${Common/message_choice_list}
                         <form name="projectForm" action="${formAction}" method="POST" style="display:inline-block;">
                             <input type="hidden" name="action" value="save">
                             <input type="hidden" name="pid" value="${projectId}">
@@ -50,23 +51,23 @@ ${Common/bodyHeader}
                             <input type="hidden" name="projectMoodsList" id="projectMoodsList" value="">
                             <input type="hidden" name="projectAttributesList" id="projectAttributesList" value="">
                             ${Common/formElement_list}
-                
+
                             <div class="prepend-6 span-6 last">
-                                <input class="button blue" 
-                                    type="submit" 
-                                    value="${submitButtonValue}" 
+                                <input class="button blue"
+                                    type="submit"
+                                    value="${submitButtonValue}"
                                     onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-            
-            
+
+
             <div class="span-24 last tabcontent-2">
                 <div class="span-16">
                     <div class="box-grey">
-                            
+
                             <h2>Recommended Artists</h2>
                             <ul class="recommendedList">
                                 <li class="trackListItem">
@@ -81,10 +82,9 @@ ${Common/bodyHeader}
                                     </div>
                                     <div class="span-3 last">
                                         <div class="recommendedListButton">
-                                            <input class="button-small grey" 
-                                                type="submit" 
-                                                value="Add" 
-                                                onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                            <input class="button-small grey"
+                                                type="submit"
+                                                value="Add">
                                         </div>
                                     </div>
                                 </li>
@@ -101,10 +101,9 @@ ${Common/bodyHeader}
                                     </div>
                                     <div class="span-3 last">
                                         <div class="recommendedListButton">
-                                            <input class="button-small grey" 
-                                                type="submit" 
-                                                value="Add" 
-                                                onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                            <input class="button-small grey"
+                                                type="submit"
+                                                value="Add">
                                         </div>
                                     </div>
                                 </li>
@@ -121,10 +120,9 @@ ${Common/bodyHeader}
                                     </div>
                                     <div class="span-3 last">
                                         <div class="recommendedListButton">
-                                            <input class="button-small grey" 
-                                                type="submit" 
-                                                value="Add" 
-                                                onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                            <input class="button-small grey"
+                                                type="submit"
+                                                value="Add">
                                         </div>
                                     </div>
                                 </li>
@@ -141,10 +139,9 @@ ${Common/bodyHeader}
                                     </div>
                                     <div class="span-3 last">
                                         <div class="recommendedListButton">
-                                            <input class="button-small grey" 
-                                                type="submit" 
-                                                value="Add" 
-                                                onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                            <input class="button-small grey"
+                                                type="submit"
+                                                value="Add">
                                         </div>
                                     </div>
                                 </li>
@@ -161,10 +158,9 @@ ${Common/bodyHeader}
                                     </div>
                                     <div class="span-3 last">
                                         <div class="recommendedListButton">
-                                            <input class="button-small grey" 
-                                                type="submit" 
-                                                value="Add" 
-                                                onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                            <input class="button-small grey"
+                                                type="submit"
+                                                value="Add">
                                         </div>
                                     </div>
                                 </li>
@@ -181,10 +177,9 @@ ${Common/bodyHeader}
                                     </div>
                                     <div class="span-3 last">
                                         <div class="recommendedListButton">
-                                            <input class="button-small grey" 
-                                                type="submit" 
-                                                value="Add" 
-                                                onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                            <input class="button-small grey"
+                                                type="submit"
+                                                value="Add">
                                         </div>
                                     </div>
                                 </li>
@@ -201,10 +196,9 @@ ${Common/bodyHeader}
                                     </div>
                                     <div class="span-3 last">
                                         <div class="recommendedListButton">
-                                            <input class="button-small grey" 
-                                                type="submit" 
-                                                value="Add" 
-                                                onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                            <input class="button-small grey"
+                                                type="submit"
+                                                value="Add">
                                         </div>
                                     </div>
                                 </li>
@@ -221,10 +215,9 @@ ${Common/bodyHeader}
                                     </div>
                                     <div class="span-3 last">
                                         <div class="recommendedListButton">
-                                            <input class="button-small grey" 
-                                                type="submit" 
-                                                value="Add" 
-                                                onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                            <input class="button-small grey"
+                                                type="submit"
+                                                value="Add">
                                         </div>
                                     </div>
                                 </li>
@@ -241,16 +234,15 @@ ${Common/bodyHeader}
                                     </div>
                                     <div class="span-3 last">
                                         <div class="recommendedListButton">
-                                            <input class="button-small grey" 
-                                                type="submit" 
-                                                value="Add" 
-                                                onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                            <input class="button-small grey"
+                                                type="submit"
+                                                value="Add">
                                         </div>
                                     </div>
                                 </li>
 
                             </ul>
-    
+
                     </div>
                 </div>
                 <div class="span-8 last">
@@ -258,10 +250,9 @@ ${Common/bodyHeader}
 
                         <h2>Invite a Friend:</h2>
                         <input type="text" id="title" name="title" value="E-Mail" maxlength="255">
-                        <input class="button-small blue" 
-                            type="submit" 
-                            value="send" 
-                            onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                        <input class="button-small blue"
+                            type="submit"
+                            value="send">
 
                         <br />
                         <br />
@@ -269,96 +260,98 @@ ${Common/bodyHeader}
 
                         <h2>Search an Artist:</h2>
                         <input type="text" id="title" name="title" value="Artist Name" maxlength="255">
-                
-                        <input class="button-small blue" 
-                            type="submit" 
-                            value="search" 
-                            onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+
+                        <input class="button-small blue"
+                            type="submit"
+                            value="search">
 
 
                     </div>
                 </div>
             </div>
-            
+
             <div class="span-24 last tabcontent-3">
                 <div class="span-16">
                     <div class="box-grey">
-                        <h2>Project Title</h2>
-                        <br />
+                        <h2>${projectTitle}</h2>
                         <p>
-                            Projectdescription Projectdescription Projectdescription Projectdescription Projectdescription 
-                            Projectdescription Projectdescription Projectdescription Projectdescription Projectdescription 
-                            Projectdescription Projectdescription Projectdescription Projectdescription ...
+                            Genres: ${projectGenres}<br />
+                            <br />
+                            Moods: ${projectMoods}<br />
+                            <br />
+                            Project needs: ${projectNeeds}<br />
+                            <br />
+                            ${projectAdditionalInfo}
                         </p>
                         <br />
-                    
-                        <form name="projectForm" action="${formAction}" method="POST" style="display:inline-block;">
-                            <input type="hidden" name="action" value="save">
-                            <input type="hidden" name="pid" value="${projectId}">
-                            <input type="hidden" name="type" value="${type}">
-                            <input type="hidden" name="projectSubGenresList" id="projectSubGenresList" value="">
-                            <input type="hidden" name="projectMoodsList" id="projectMoodsList" value="">
-                            <input type="hidden" name="projectAttributesList" id="projectAttributesList" value="">
-                            
+
+                        ${Project/uploadedFilesSection}
+
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+
                             <h2>stems list</h2>
                             <p>
                                 - textfeld<br />
                                 - name vom künstler<br />
                                 - instrument<br />
                                 - boolean<br />
+
                             </p>
                             <br />
-                            
+
                             <div class="prepend-6 span-6 last">
-                                <input class="button blue" 
-                                    type="submit" 
-                                    value="Download selected Stems" 
-                                    onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                <input class="button blue"
+                                    type="submit"
+                                    value="Download selected Stems">
                             </div>
-                                                        
-                            <br />
-                            <br />
-                            <br />
-                            
-                            <h2>releases list</h2>
-                            <p>
-                                - title<br />
-                            </p>
-                            
 
                             <br />
                             <br />
                             <br />
-                            
+
+                            <h2>releases list</h2>
+                            <p>
+                                - title<br />
+                            </p>
+
+
+                            <br />
+                            <br />
+                            <br />
+
                             <h2>mixes list</h2>
                             <p>
                                 - title<br />
                                 - stems<br />
                             </p>
-                            
-                            
-                            
+
+
+
                             <div class="prepend-6 span-6 last">
-                                <input class="button blue" 
-                                    type="submit" 
-                                    value="${submitButtonValue}" 
-                                    onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                <input class="button blue"
+                                    type="submit"
+                                    value="${submitButtonValue}">
                             </div>
-                        </form>
+
                     </div>
                 </div>
-                
+
                 <div class="span-8 last">
                     <div class="box-grey">
                         <h2>${headline}</h2>
                         <br />
-                        ${Common/message_choice_list}
-                        ${Project/uploadedFilesSection}
+
+                        ...
                         <br />
                         &nbsp;
                     </div>
                 </div>
-                
+
             </div>
 
 
@@ -366,14 +359,13 @@ ${Common/bodyHeader}
             <div class="span-24 last tabcontent-4">
                 <div class="span-16">
                     <div class="box-grey">
-                        
-                        <form name="projectForm" action="${formAction}" method="POST" style="display:inline-block;">
-                        
+
+
                             <h2>Share</h2>
                             <br />
                             <p>List with Names</p>
                             <p>Aufteilung in %</p>
-                            
+
                             <h2>Opitons</h2>
                             <input type="checkbox" name="needsAttributIds" id="needsAttributIds" value="1"> iTunes<br />
                             <input type="checkbox" name="needsAttributIds" id="needsAttributIds" value="1"> sptify<br />
@@ -390,26 +382,24 @@ ${Common/bodyHeader}
                                 <div class="span-1 last"></div>
                             </div>
 
-                  
-                        
+
+
                             <div class="prepend-6 span-6 last">
-                                <input class="button blue" 
-                                    type="submit" 
-                                    value="${submitButtonValue}" 
-                                    onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                                <input class="button blue"
+                                    type="submit"
+                                    value="${submitButtonValue}">
                             </div>
-                        
-                        </form>
-                        
+
+
                     </div>
                 </div>
             </div>
-    
+
             <br />
             <br />
             <br />
             <a href="projectList.php">&larr; back to project list</a>
-    
+
 </div>
 
 
@@ -472,6 +462,24 @@ function buildProjectAttributesAndSubGenresAndMoodsLists() {
         var mList = $('#moods').val().join(','); // create comma separated list string ...
         $('#projectMoodsList').val(mList); // ... and save the string in the hidden field
     }
+}
+
+function downloadSelectedStems() {
+    if ($('#selectedStems').val()) {
+        var idList = [];
+        $('input:checkbox[id=selectedStems]:checked').each(function() {
+            idList.push($(this).val());
+        });
+
+        openInNewWindow('project.php?action=downloadProjectFiles&fileIds=' + idList);
+    }
+}
+
+function openInNewWindow(href) {
+    // Change "_blank" to something like "newWindow" to load all links in the same new window
+    var newWindow = window.open(href, '_blank');
+    newWindow.focus();
+    return false;
 }
 
 // convert all select fields with special class to chosen thingies

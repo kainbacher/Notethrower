@@ -79,7 +79,8 @@ class ProjectMood {
             'select g.name as mood_name ' .
             'from pp_project_mood pg, pp_mood g ' .
             'where pg.project_id = ' . n($project_id) . ' ' .
-            'and pg.mood_id = g.id'
+            'and pg.mood_id = g.id ' .
+            'order by mood_name asc'
         );
 
         while ($row = mysql_fetch_array($result)) {

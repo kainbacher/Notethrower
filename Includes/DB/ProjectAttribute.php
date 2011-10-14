@@ -131,7 +131,8 @@ class ProjectAttribute {
             'from pp_project_attribute pa, pp_attribute a ' .
             'where pa.project_id = ' . n($project_id) . ' and ' .
             'pa.status = ' . qq($status) . ' and ' .
-            'pa.attribute_id = a.id'
+            'pa.attribute_id = a.id ' .
+            'order by attribute_name asc'
         );
 
         while ($row = mysql_fetch_array($result)) {

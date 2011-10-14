@@ -213,6 +213,16 @@ if (get_param('action') == 'create') {
 
     echo getUploadedFilesSection($project, $projectFilesMessageList);
     exit;
+
+} else if (get_param('action') == 'downloadProjectFiles') {
+    deleteOldTempFiles('zip'); // cleanup old temp zip files first
+
+    if ($idListStr = get_param('fileIds')) {
+        $zipFilepath = putProjectFilesIntoZip(explode(',', $idListStr));
+        echo $zipFilepath;
+    }
+
+    exit;
 }
 
 $userSelectionArray = array();
@@ -417,6 +427,21 @@ echo '<a href="javascript:showSelectFriendsPopup();">Select the artists you want
 echo '</div>' . "\n";
 // FIXME - end
 
+$projectGenreList = array();
+if ($project) {
+    $projectGenreList = ProjectGenre::getGenreNamesForProjectId($project->id);
+}
+
+$projectMoodList = array();
+if ($project) {
+    $projectMoodList = ProjectMood::getMoodNamesForProjectId($project->id);
+}
+
+$projectNeedsList = array();
+if ($project) {
+    $projectNeedsList = ProjectAttribute::getAttributeNamesForProjectIdAndState($project->id, 'needs');
+}
+
 processAndPrintTpl('Project/index.html', array(
     '${Common/pageHeader}'                      => buildPageHeader(($projectId ? 'Edit project' : 'Create project'), false, false, true),
     '${Common/bodyHeader}'                      => buildBodyHeader($user),
@@ -424,6 +449,11 @@ processAndPrintTpl('Project/index.html', array(
     '${Common/message_choice_list}'             => $generalMessageList,
     '${formAction}'                             => $_SERVER['PHP_SELF'],
     '${projectId}'                              => $project && $project->id ? $project->id : '',
+    '${projectTitle}'                           => $project && $project->title ? $project->title : '(No title)',
+    '${projectGenres}'                          => escape(implode(', ', $projectGenreList)),
+    '${projectMoods}'                           => escape(implode(', ', $projectMoodList)),
+    '${projectNeeds}'                           => escape(implode(', ', $projectNeedsList)),
+    '${projectAdditionalInfo}'                  => escape($project->additionalInfo),
     '${type}'                                   => get_param('type') == 'remix' ? 'remix' : 'original',
     '${submitButtonValue}'                      => 'Save',
     '${Common/formElement_list}'                => $formElementsList,
@@ -459,8 +489,12 @@ function getUploadedFilesSection(&$project, $messageList) {
     $masterFileFoundHtml    = '';
     $masterFileNotFoundHtml = '';
 
-    $projectFilesHtml         = '';
-    $projectFilesNotFoundHtml = '';
+    $projectFilesStemsHtml            = '';
+    $projectFilesNotFoundStemsHtml    = '';
+    $projectFilesReleasesHtml         = '';
+    $projectFilesNotFoundReleasesHtml = '';
+    $projectFilesMixesHtml            = '';
+    $projectFilesNotFoundMixesHtml    = '';
 
     $projectFiles = ProjectFile::fetch_all_for_project_id($project->id, true);
 
@@ -469,37 +503,61 @@ function getUploadedFilesSection(&$project, $messageList) {
     foreach ($projectFiles as $file) {
         $uploaderUserImg = getUserImageHtml($file->userImageFilename, $file->userName, 'tiny');
 
+        $checkbox = '';
         $mixMp3OrRawFileIcon = '';
         if ($file->is_master && strpos($file->orig_filename, '.mp3') !== false) {
             $mixMp3OrRawFileIcon = processTpl('Project/mixMp3FileIcon.html', array());
-        } else {
-            $mixMp3OrRawFileIcon = processTpl('Project/rawFileIcon.html', array());
-        }
 
-        $projectFilesHtml .= processTpl('Project/projectFileElement.html', array(
-            '${mixMp3OrRawFileIcon}'  => $mixMp3OrRawFileIcon,
-            '${filename}'             => escape($file->orig_filename),
-            '${filenameEscaped}'      => escape_and_rewrite_single_quotes($file->orig_filename),
-            '${fileDownloadUrl}'      => '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $file->id,
-            '${status}'               => $file->status == 'active' ? 'Active' : 'Inactive', // TODO - currently not used
-            '${projectId}'            => $project->id,
-            '${projectFileId}'        => $file->id,
-            '${uploadedByName}'       => $file->userName,
-            '${uploaderUserImg}'      => $uploaderUserImg
+        } else {
+            $checkbox = processTpl('Project/projectFileElementCheckbox.html', array(
+                '${id}'    => 'selectedStems',
+                '${name}'  => 'selectedStems',
+                '${value}' => $file->id
+            ));
+            $mixMp3OrRawFileIcon = processTpl('Project/rawFileIcon.html', array());
+        } // FIXME - deal with releases here, too
+
+        $snippet = processTpl('Project/projectFileElement.html', array(
+            '${projectFileElementCheckbox_optional}' => $checkbox,
+            '${mixMp3OrRawFileIcon}'                 => $mixMp3OrRawFileIcon,
+            '${filename}'                            => escape($file->orig_filename),
+            '${filenameEscaped}'                     => escape_and_rewrite_single_quotes($file->orig_filename),
+            '${fileDownloadUrl}'                     => '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $file->id,
+            '${status}'                              => $file->status == 'active' ? 'Active' : 'Inactive', // TODO - currently not used
+            '${projectId}'                           => $project->id,
+            '${projectFileId}'                       => $file->id,
+            '${uploadedByName}'                      => $file->userName,
+            '${uploaderUserImg}'                     => $uploaderUserImg
         ));
+
+        if ($file->is_master && strpos($file->orig_filename, '.mp3') !== false) {
+            $projectFilesMixesHtml .= $snippet;
+        } else {
+            $projectFilesStemsHtml .= $snippet;
+        } // FIXME - deal with releases here, too
 
         // FIXME - download links absichern, damit man nicht beliebige files von beliebigen projekten runterladen kann? ist das überhaupt nötig?
     }
 
-    if (count($projectFiles) == 0) {
-        $projectFilesNotFoundHtml = processTpl('Project/projectFilesNotFound.html', array());
+    if (!$projectFilesStemsHtml) {
+        $projectFilesNotFoundStemsHtml = processTpl('Project/projectFilesNotFound.html', array());
+    }
+    if (!$projectFilesReleasesHtml) {
+        $projectFilesNotFoundReleasesHtml = processTpl('Project/projectFilesNotFound.html', array());
+    }
+    if (!$projectFilesMixesHtml) {
+        $projectFilesNotFoundMixesHtml = processTpl('Project/projectFilesNotFound.html', array());
     }
 
     return processTpl('Project/uploadedFilesSection.html', array(
-        '${Common/message_choice_list}'             => $messageList,
-        '${Project/projectFileElement_list}'        => $projectFilesHtml,
-        '${Project/projectFilesNotFound_optional}'  => $projectFilesNotFoundHtml,
-        '${projectId}'                              => $project->id
+        '${Common/message_choice_list}'                      => $messageList,
+        '${Project/projectFileElement_list_stems}'           => $projectFilesStemsHtml,
+        '${Project/projectFilesNotFound_optional_stems}'     => $projectFilesNotFoundStemsHtml,
+        '${Project/projectFileElement_list_releases}'        => $projectFilesReleasesHtml,
+        '${Project/projectFilesNotFound_optional_releases}'  => $projectFilesNotFoundReleasesHtml,
+        '${Project/projectFileElement_list_mixes}'           => $projectFilesMixesHtml,
+        '${Project/projectFilesNotFound_optional_mixes}'     => $projectFilesNotFoundMixesHtml,
+        '${projectId}'                                       => $project->id
     ));
 }
 

@@ -103,7 +103,7 @@ function putProjectFilesIntoZip($projectFileIds) {
 function sendJsonResponseAndExit(&$jsonResponse) {
     global $logger;
 
-    $logger->debug('json response: ' . print_r($jsonResponse, true));
+    $logger->info('json response: ' . print_r($jsonResponse, true));
     $jsonResponse = json_encode($jsonResponse);
     header('Content-type: text/plain');
     header('Content-length: ' . strlen($jsonResponse));

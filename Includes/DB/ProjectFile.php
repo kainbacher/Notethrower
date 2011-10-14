@@ -174,7 +174,7 @@ class ProjectFile {
 
         if ($f) {
             $logger->info('deleting project file: ' . $GLOBALS['CONTENT_BASE_PATH'] . $f);
-            unlink ($GLOBALS['CONTENT_BASE_PATH'] . $f);
+            @unlink($GLOBALS['CONTENT_BASE_PATH'] . $f); // suppress errors because this negatively influences ajax/json communication
         } else {
             $logger->error('unable to get filename for project file id: ' . $id);
         }

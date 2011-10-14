@@ -37,6 +37,7 @@ $USER_IMAGE_BASE_PATH = $BASE_PATH . 'Content' . $PATH_SEPARATOR . 'UserImages' 
 $TEMP_FILES_BASE_PATH = $BASE_PATH . 'Tmp' . $PATH_SEPARATOR;
 
 $USER_IMAGE_BASE_URL  = $BASE_URL . 'Content/UserImages/';
+$TEMP_FILES_BASE_URL  = $BASE_URL . 'Tmp/';
 
 $RETURN_URL = $BASE_URL . 'Backend/downloadStart.php';
 

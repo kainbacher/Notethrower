@@ -70,7 +70,7 @@ function putProjectFilesIntoZip($projectFileIds) {
 
         foreach ($data as $entry) {
             $path = $entry['path'];
-            $pathInZip = 'Files/' . preg_replace('/[^a-zA-Z0-9.]/', '', $entry['origFilename']);
+            $pathInZip = preg_replace('/[^a-zA-Z0-9.]/', '', $entry['origFilename']);
             $logger->info('adding file ' . $path . ' as ' . $pathInZip);
             $zip->addFile($path, $pathInZip);
         }
@@ -103,7 +103,7 @@ function putProjectFilesIntoZip($projectFileIds) {
 function sendJsonResponseAndExit(&$jsonResponse) {
     global $logger;
 
-    $logger->info('json response: ' . print_r($jsonResponse, true));
+    $logger->debug('json response: ' . print_r($jsonResponse, true));
     $jsonResponse = json_encode($jsonResponse);
     header('Content-type: text/plain');
     header('Content-length: ' . strlen($jsonResponse));

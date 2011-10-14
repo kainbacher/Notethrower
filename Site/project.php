@@ -219,7 +219,10 @@ if (get_param('action') == 'create') {
 
     if ($idListStr = get_param('fileIds')) {
         $zipFilepath = putProjectFilesIntoZip(explode(',', $idListStr));
-        echo $zipFilepath;
+        redirectTo($GLOBALS['TEMP_FILES_BASE_URL'] . basename($zipFilepath));
+
+    } else {
+        echo 'no file ids specified';
     }
 
     exit;

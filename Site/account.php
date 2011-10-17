@@ -190,6 +190,7 @@ if ($userIsLoggedIn) { // it's an update
         ));
 
         // "create new skill"
+        /* handled with chosen.js
         $formElementsSection1 .= getFormFieldForParams(array(
             'propName'               => 'newAttribute',
             'label'                  => 'Add new skill',
@@ -201,6 +202,7 @@ if ($userIsLoggedIn) { // it's an update
             'workWithUnpersistedObj' => $problemOccured,
             'infoText'               => 'If you can\'t find your skill in the selection above, you can add it here. It will be added to the skills list, when you click "Update account".'
         ));
+        */
 
         // user genres
         $formElementsSection1 .= getFormFieldForParams(array(
@@ -219,6 +221,7 @@ if ($userIsLoggedIn) { // it's an update
         ));
 
         // "create new genre"
+        /* handled with chosen.js
         $formElementsSection1 .= getFormFieldForParams(array(
             'propName'               => 'newGenre',
             'label'                  => 'Add new genre',
@@ -230,7 +233,8 @@ if ($userIsLoggedIn) { // it's an update
             'workWithUnpersistedObj' => $problemOccured,
             'infoText'               => 'If you can\'t find your genre in the selection above, you can add it here. It will be added to the genre list, when you click "Update account".'
         ));
-
+        */
+       
         $formElementsSection1 .= getFormFieldForParams(array(
             'propName'               => 'webpage_url',
             'label'                  => 'Webpage URL',
@@ -704,6 +708,7 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
         }
 
         if ($userIsLoggedIn) {
+            /*
             if (preg_match('/[^0-9,]/', get_param('userAttributesList'))) {
                 $errorFields['attributes'] = 'Invalid attributes list'; // can only happen when someone plays around with the post data
                 $result = false;
@@ -718,6 +723,8 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
                 $errorFields['genres'] = 'Invalid genres list'; // can only happen when someone plays around with the post data
                 $result = false;
             }
+             * 
+             */
         }
     }
 
@@ -762,18 +769,43 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
         $user->paypal_account  = get_param('paypal_account');
 
         if ($userIsLoggedIn) {
-            // save new skill, if one was entered
-            $newAttribute = null;
-            if (get_param('newAttribute')) {
-                $newAttribute = Attribute::fetchForName(get_param('newAttribute'));
-                if (!$newAttribute || !$newAttribute->id) {
+            // create attributes list and save new skills if entered
+            $attributes = explode(',', get_param('userAttributesList'));
+            $newAttributeList = array();
+            foreach($attributes as $attribute){
+                $newCheck = strstr($attribute, 'new_');
+                if($newCheck){
                     $newAttribute = new Attribute();
-                    $newAttribute->name = get_param('newAttribute');
+                    $newAttribute->name = substr($newCheck,4,strlen($newCheck));
                     $newAttribute->shown_for = "both";
                     $newAttribute->insert();
+                    $newAttributeList[] = $newAttribute->id;
+
+                }else{
+                    $userAttributesList[] = $attribute;
                 }
             }
+            
+            // create genre list and save new genres if entered
+            
+            $genres = explode(',', get_param('userGenresList'));
+            $newGenreList = array();
+            
+            foreach($genres as $genre){
+                $newCheck = strstr($genre, 'new_');
+                if($newCheck){
+                    $newGenre = new Genre();
+                    $newGenre->name = substr($newCheck,4,strlen($newCheck));
+                    $newGenre->insert();
+                    $newGenreList[] = $newGenre->id;
 
+                }else{
+                    $userGenresList[] = $genre;
+                }
+            }
+            
+            
+            
             // save new genre, if one was entered
             $newGenre = null;
             if (get_param('newGenre')) {
@@ -786,18 +818,16 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
             }
 
             // handle user attributes & genres
-            $userAttributesList = explode(',', get_param('userAttributesList'));
-            if ($newAttribute) $userAttributesList[] = $newAttribute->id;
+            $userAttributesList = array_merge($userAttributesList, $newAttributeList);
             $userAttributesList = array_unique($userAttributesList);
 
-            $userGenresList = explode(',', get_param('userGenresList'));
-            if ($newGenre) $userGenresList[] = $newGenre->id;
+            $userGenresList = array_merge($userGenresList, $newGenreList);
             $userGenresList = array_unique($userGenresList);
 
             if ($user->id) {
                 UserAttribute::deleteForUserId($user->id); // first, delete all existing
                 UserAttribute::addAll($userAttributesList, $user->id, 'offers'); // then save the selected attributes (including the new one, if one was entered)
-
+  
                 UserGenre::deleteForUserId($user->id); // first, delete all existing genres
                 UserGenre::addAll($userGenresList, $user->id); // then save the selected genres (including the new one, if one was entered)
 

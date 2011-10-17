@@ -36,7 +36,7 @@ if (!$projectId) {
 <script type="text/javascript" src="js/plupload.js"></script>
 <script type="text/javascript" src="js/plupload.gears.js"></script>
 <script type="text/javascript" src="js/plupload.silverlight.js"></script>
-<!--script type="text/javascript" src="js/plupload.flash.js"></script-->
+<script type="text/javascript" src="js/plupload.flash.js"></script>
 <script type="text/javascript" src="js/plupload.browserplus.js"></script>
 <script type="text/javascript" src="js/plupload.html4.js"></script>
 <script type="text/javascript" src="js/plupload.html5.js"></script>
@@ -57,7 +57,7 @@ if (!$projectId) {
 $(function() {
 	$("#uploader").plupload({
 		// General settings
-		runtimes : 'browserplus,silverlight,gears,html5,html4', // TODO - test all runtimes (html 4 makes problems in chrome)
+		runtimes : 'browserplus,silverlight,gears,html5,flash,html4', // TODO - test all runtimes (html 4 makes problems in chrome, flash sometimes makes problems (error #2032))
 		url : 'upload.php',
 		max_file_size : '500mb',
 		max_file_count: 20, // user can add no more then 20 files at a time

@@ -20,8 +20,8 @@ include_once('../Includes/DB/User.php');
 // FIXME - use this in upload form:
 // <input type="hidden" name="MAX_FILE_SIZE" value="524288001">
 
-$user = User::new_from_cookie();
-ensureUserIsLoggedIn($user);
+$loggedInUser = User::new_from_cookie();
+ensureUserIsLoggedIn($loggedInUser);
 
 $project = null;
 $unpersistedProject = null;
@@ -34,10 +34,9 @@ $projectId = get_numeric_param('pid'); // this is only set in an update scenario
 
 if (get_param('action') == 'create') {
     $project = new Project();
-    $project->user_id                   = $user->id;
+    $project->user_id                   = $loggedInUser->id;
     $project->title                     = '(New project)';
     $project->type                      = 'original';
-    $project->originating_user_id       = null;
     $project->price                     = 0;
     $project->currency                  = 'USD'; // TODO - take from config - check other occurences as well
     $project->visibility                = 'public';
@@ -52,29 +51,30 @@ if (get_param('action') == 'create') {
 
     // create a visibility record for this user
     $atav = new ProjectUserVisibility();
-    $atav->user_id = $user->id;
+    $atav->user_id = $loggedInUser->id;
     $atav->project_id = $project->id;
     $atav->save();
 
-} else if (get_param('action') == 'edit') {
+} else if (get_param('action') == 'edit') { // can be called by both the project owner and collaboration artists for this project
     if (!$projectId) {
         show_fatal_error_and_exit('cannot save without a project id!');
     }
 
     $project = Project::fetch_for_id($projectId);
-    ensureProjectBelongsToUserId($project, $user->id);
+    //ensureProjectBelongsToUserId($project, $loggedInUser->id);
+    ensureProjectIdIsAssociatedWithUserId($project->id, $loggedInUser->id);
 
-} else if (get_param('action') == 'save') {
+} else if (get_param('action') == 'save') { // FIXME - clarify if this can only be called by the project owner or all collab. artists
     $logger->info('attempting to save project data ...');
     if (!$projectId) {
         show_fatal_error_and_exit('cannot save without a project id!');
     }
 
     $project = Project::fetch_for_id($projectId);
-    ensureProjectBelongsToUserId($project, $user->id);
+    ensureProjectBelongsToUserId($project, $loggedInUser->id);
 
     if (inputDataOk($errorFields, $project)) {
-        processParams($project, $user);
+        processParams($project, $loggedInUser);
 
         if ($project->status == 'newborn') {
             $project->status = 'active';
@@ -84,10 +84,10 @@ if (get_param('action') == 'create') {
 
         // if the project is private, make sure that the owner can see it
         if ($project->visibility == 'private') {
-            $atav = ProjectUserVisibility::fetch_for_user_id_project_id($user->id, $project->id);
+            $atav = ProjectUserVisibility::fetch_for_user_id_project_id($loggedInUser->id, $project->id);
             if (!$atav) {
                 $atav = new ProjectUserVisibility();
-                $atav->user_id = $user->id;
+                $atav->user_id = $loggedInUser->id;
                 $atav->project_id = $project->id;
                 $atav->save();
             }
@@ -100,7 +100,7 @@ if (get_param('action') == 'create') {
     } else {
         $logger->info('input data was invalid: ' . print_r($errorFields, true));
         $unpersistedProject = new Project();
-        processParams($unpersistedProject, $user);
+        processParams($unpersistedProject, $loggedInUser);
         $generalMessageList .= processTpl('Common/message_error.html', array(
             '${msg}' => 'Please correct the highlighted problems!'
         ));
@@ -113,7 +113,7 @@ if (get_param('action') == 'create') {
     }
 
     $project = Project::fetch_for_id($projectId);
-    ensureProjectBelongsToUserId($project, $user->id);
+    ensureProjectBelongsToUserId($project, $loggedInUser->id);
 
     Project::delete_with_id($projectId);
     ProjectAttribute::deleteForProjectId($projectId);
@@ -130,7 +130,7 @@ if (get_param('action') == 'create') {
     $msg = '';
 
     $project = Project::fetch_for_id($projectId);
-    ensureProjectBelongsToUserId($project, $user->id);
+    ensureProjectBelongsToUserId($project, $loggedInUser->id);
 
     if ($project->status == 'active') {
         $project->status = 'inactive';
@@ -159,12 +159,14 @@ if (get_param('action') == 'create') {
     }
 
     $project = Project::fetch_for_id($projectId);
-    ensureProjectBelongsToUserId($project, $user->id);
+    ensureProjectBelongsToUserId($project, $loggedInUser->id);
 
     $file = ProjectFile::fetch_for_id(get_numeric_param('fid'));
     if (!$file) {
         show_fatal_error_and_exit('project file not found!');
     }
+
+    ensureProjectFileBelongsToProjectId($file, $projectId);
 
     if ($file->status == 'active') $file->status = 'inactive';
     else $file->status = 'active';
@@ -183,7 +185,7 @@ if (get_param('action') == 'create') {
     }
 
     $project = Project::fetch_for_id($projectId);
-    ensureProjectBelongsToUserId($project, $user->id);
+    ensureProjectBelongsToUserId($project, $loggedInUser->id);
 
     $file = ProjectFile::fetch_for_id(get_numeric_param('fid'));
     if (!$file) {
@@ -194,6 +196,8 @@ if (get_param('action') == 'create') {
         );
         sendJsonResponseAndExit($jsonReponse);
     }
+
+    ensureProjectFileBelongsToProjectId($file, $projectId);
 
     ProjectFile::delete_with_id(get_numeric_param('fid'));
 
@@ -209,7 +213,8 @@ if (get_param('action') == 'create') {
     }
 
     $project = Project::fetch_for_id($projectId);
-    ensureProjectBelongsToUserId($project, $user->id);
+    //ensureProjectBelongsToUserId($project, $loggedInUser->id);
+    ensureProjectIdIsAssociatedWithUserId($project->id, $loggedInUser->id);
 
     echo getUploadedFilesSection($project, $projectFilesMessageList);
     exit;
@@ -217,8 +222,18 @@ if (get_param('action') == 'create') {
 } else if (get_param('action') == 'downloadProjectFiles') {
     deleteOldTempFiles('zip'); // cleanup old temp zip files first
 
-    if ($idListStr = get_param('fileIds')) {
-        $zipFilepath = putProjectFilesIntoZip(explode(',', $idListStr));
+    $idListStr = get_param('fileIds');
+    if ($idListStr) {
+        ensureProjectIdIsAssociatedWithUserId($projectId, $loggedInUser->id);
+
+        $idList = explode(',', $idListStr);
+
+        foreach ($idList as $pfid) {
+            $pf = ProjectFile::fetch_for_id($pfid);
+            ensureProjectFileBelongsToProjectId($pf, $projectId);
+        }
+
+        $zipFilepath = putProjectFilesIntoZip($idList);
         redirectTo($GLOBALS['TEMP_FILES_BASE_URL'] . basename($zipFilepath));
 
     } else {
@@ -226,15 +241,6 @@ if (get_param('action') == 'create') {
     }
 
     exit;
-}
-
-$userSelectionArray = array();
-$userSelectionArray[0] = '- Please choose -';
-$users = User::fetch_all_from_to(0, 999999999, false, false);
-foreach ($users as $a) {
-    if ($a->name != $user->name) {
-        $userSelectionArray[$a->id] = $a->name;
-    }
 }
 
 // form fields
@@ -247,22 +253,6 @@ $formElementsList .= getFormFieldForParams(array(
     'unpersistedObj'         => $unpersistedProject,
     'errorFields'            => $errorFields,
     'workWithUnpersistedObj' => $problemOccured
-));
-
-$hidden = true;
-if ($errorFields['originating_user_id'] || ($project && $project->type == 'remix') || ($unpersistedProject && $unpersistedProject->type == 'remix')) $hidden = false;
-
-$formElementsList .= getFormFieldForParams(array(
-    'inputType'              => 'select',
-    'propName'               => 'originating_user_id',
-    'label'                  => 'Originating artist',
-    'mandatory'              => false,
-    'selectOptions'          => $userSelectionArray,
-    'obj'                    => $project,
-    'unpersistedObj'         => $unpersistedProject,
-    'errorFields'            => $errorFields,
-    'workWithUnpersistedObj' => $problemOccured,
-    'hide'                   => $hidden
 ));
 
 $formElementsList .= getFormFieldForParams(array(
@@ -406,7 +396,7 @@ echo '<div id="associated_users_row"' . ($hidden ? ' style="display:none";' : ''
 //$ac = count($usersWithAccessList);
 //if ($ac > 20) {
 //    for ($ai = 0; $ai < 20; $ai++) {
-//        if ($usersWithAccessList[$ai]->user_id != $user->id) {
+//        if ($usersWithAccessList[$ai]->user_id != $loggedInUser->id) {
 //            $usersWithAccessListStr .= '<a href="artist.php?aid=' . $usersWithAccessList[$ai]->user_id . '" target="_blank">' .
 //                    escape($usersWithAccessList[$ai]->user_name) . '</a>, ';
 //        }
@@ -415,7 +405,7 @@ echo '<div id="associated_users_row"' . ($hidden ? ' style="display:none";' : ''
 //
 //} else if ($ac > 1) {
 //    foreach ($usersWithAccessList as $a) {
-//        if ($a->user_id != $user->id) {
+//        if ($a->user_id != $loggedInUser->id) {
 //            $usersWithAccessListStr .= '<a href="artist.php?aid=' . $a->user_id . '" target="_blank">' .
 //                    escape($a->user_name) . '</a>, ';
 //        }
@@ -447,7 +437,7 @@ if ($project) {
 
 processAndPrintTpl('Project/index.html', array(
     '${Common/pageHeader}'                      => buildPageHeader(($projectId ? 'Edit project' : 'Create project'), false, false, true),
-    '${Common/bodyHeader}'                      => buildBodyHeader($user),
+    '${Common/bodyHeader}'                      => buildBodyHeader($loggedInUser),
     '${headline}'                               => $projectId ? 'Edit project' : 'Create project',
     '${Common/message_choice_list}'             => $generalMessageList,
     '${formAction}'                             => $_SERVER['PHP_SELF'],
@@ -538,8 +528,6 @@ function getUploadedFilesSection(&$project, $messageList) {
         } else {
             $projectFilesStemsHtml .= $snippet;
         } // FIXME - deal with releases here, too
-
-        // FIXME - download links absichern, damit man nicht beliebige files von beliebigen projekten runterladen kann? ist das überhaupt nötig?
     }
 
     if (!$projectFilesStemsHtml) {
@@ -572,20 +560,6 @@ function inputDataOk(&$errorFields, &$project) {
     if (strlen(get_param('title')) < 1) {
         $errorFields['title'] = 'Title is missing!';
         $result = false;
-    }
-
-    if (get_param('type') != 'original') {
-        if (!get_numeric_param('originating_user_id')) {
-            $errorFields['originating_user_id'] = 'Originating user is missing!';
-            $result = false;
-
-        } else {
-            $checkUser = User::fetch_for_id(get_numeric_param('originating_user_id'));
-            if (!$checkUser) {
-                $errorFields['originating_user_id'] = 'Originating user is invalid!';
-                $result = false;
-            }
-        }
     }
 
     if ($price = get_numeric_param('price')) {
@@ -640,13 +614,12 @@ function inputDataOk(&$errorFields, &$project) {
     return $result;
 }
 
-function processParams(&$project, &$user) {
+function processParams(&$project, &$loggedInUser) {
     global $logger;
 
-    $project->user_id                 = $user->id;
+    $project->user_id                 = $loggedInUser->id;
     $project->title                   = get_param('title');
     $project->type                    = get_param('type') == 'remix' ? 'remix' : 'original'; // this is a hidden field, popuplated with a url param
-    $project->originating_user_id     = get_numeric_param('originating_user_id');
     $project->price                   = get_numeric_param('price');
     //$project->visibility              = get_param('visibility'); // currently hidden, but maybe a candidate for pro users
     //$project->status                  = 'active';
@@ -662,9 +635,9 @@ function processParams(&$project, &$user) {
 //        $originator = User::fetch_for_id($project->originating_user_id);
 //        if ($originator) {
 //            // send notification mail to originator
-//            $email_sent = send_email($originator->email_address, $user->name . ' has created a remix using one of your tracks',
+//            $email_sent = send_email($originator->email_address, $loggedInUser->name . ' has created a remix using one of your tracks',
 //                    'Hey ' . $originator->name . ',' . "\n\n" .
-//                    $user->name . ' has just started creating a new remix using one of your tracks.' . "\n\n" .
+//                    $loggedInUser->name . ' has just started creating a new remix using one of your tracks.' . "\n\n" .
 //                    'You may want to check out the "Remixed by others" section in your oneloudr Widget or on your public user page: ' .
 //                    $GLOBALS['BASE_URL'] . 'Site/artist.php?aid=' . $project->originating_user_id . "\n\n" .
 //                    'Please note that you might not see the new track until the remixer puts it online.');

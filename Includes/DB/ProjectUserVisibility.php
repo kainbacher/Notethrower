@@ -4,6 +4,7 @@ include_once('../Includes/DbConnect.php');
 include_once('../Includes/Snippets.php');
 
 // dao for pp_project_user_visibility table
+// this table stores which user can access which project (collaboration artists)
 class ProjectUserVisibility {
     var $project_id;
     var $user_id;

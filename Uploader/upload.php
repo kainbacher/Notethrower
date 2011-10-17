@@ -1,6 +1,7 @@
 <?php
 
 include_once('../Includes/Init.php');
+include_once('../Includes/Snippets.php');
 
 /**
  * upload.php
@@ -27,7 +28,8 @@ $targetDir = 'uploads/';
 //$maxFileAge = 60 * 60; // Temp file age in seconds
 
 // 5 minutes execution time
-@set_time_limit(5 * 60);
+//@set_time_limit(5 * 60);
+set_time_limit(0); // hj: unlimited execution time
 
 // Uncomment this one to fake upload time
 // usleep(5000);
@@ -59,7 +61,7 @@ if (!file_exists($targetDir))
 
 // Remove old temp files
 /* this doesn't really work by now
-	
+
 if (is_dir($targetDir) && ($dir = opendir($targetDir))) {
 	while (($file = readdir($dir)) !== false) {
 		$filePath = $targetDir . DIRECTORY_SEPARATOR . $file;
@@ -83,11 +85,11 @@ if (isset($_SERVER["CONTENT_TYPE"]))
 
 // Handle non multipart uploads older WebKit versions didn't support multipart in HTML5
 if (strpos($contentType, "multipart") !== false) {
-	if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
-		// Open temp file
+    if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
+	    // Open temp file
 		$out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
 		if ($out) {
-			// Read binary input stream and append it to temp file
+		    // Read binary input stream and append it to temp file
 			$in = fopen($_FILES['file']['tmp_name'], "rb");
 
 			if ($in) {
@@ -103,10 +105,10 @@ if (strpos($contentType, "multipart") !== false) {
 	} else
 		die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
 } else {
-	// Open temp file
+    // Open temp file
 	$out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
 	if ($out) {
-		// Read binary input stream and append it to temp file
+	    // Read binary input stream and append it to temp file
 		$in = fopen("php://input", "rb");
 
 		if ($in) {

@@ -36,7 +36,7 @@ if (!$projectId) {
 <script type="text/javascript" src="js/plupload.js"></script>
 <script type="text/javascript" src="js/plupload.gears.js"></script>
 <script type="text/javascript" src="js/plupload.silverlight.js"></script>
-<script type="text/javascript" src="js/plupload.flash.js"></script>
+<!--script type="text/javascript" src="js/plupload.flash.js"></script-->
 <script type="text/javascript" src="js/plupload.browserplus.js"></script>
 <script type="text/javascript" src="js/plupload.html4.js"></script>
 <script type="text/javascript" src="js/plupload.html5.js"></script>
@@ -47,7 +47,7 @@ if (!$projectId) {
 
 <form action="upload.php">
   <div id="uploader">
-    <p>You browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</p>
+    <p>You browser doesn't have Silverlight, Gears, BrowserPlus or HTML5 support.</p>
   </div>
 </form>
 
@@ -57,11 +57,11 @@ if (!$projectId) {
 $(function() {
 	$("#uploader").plupload({
 		// General settings
-		runtimes : 'browserplus,silverlight,gears,flash,html5,html4', // TODO - test all runtimes (html 4 makes problems in chrome)
+		runtimes : 'browserplus,silverlight,gears,html5,html4', // TODO - test all runtimes (html 4 makes problems in chrome)
 		url : 'upload.php',
 		max_file_size : '500mb',
 		max_file_count: 20, // user can add no more then 20 files at a time
-		chunk_size : '1mb',
+		chunk_size : '5mb',
 		unique_names : true,
 		multiple_queues : true,
 		<?= $singleFileOnly ? 'multi_selection : false,' : '' ?>

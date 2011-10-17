@@ -471,7 +471,7 @@ function downloadSelectedStems() {
             idList.push($(this).val());
         });
 
-        openInNewWindow('project.php?action=downloadProjectFiles&fileIds=' + idList);
+        openInNewWindow('project.php?action=downloadProjectFiles&pid=${projectId}&fileIds=' + idList);
     }
 }
 

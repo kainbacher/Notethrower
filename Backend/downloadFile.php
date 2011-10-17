@@ -4,12 +4,17 @@ include_once('../Includes/Init.php');
 
 include_once('../Includes/Config.php');
 include_once('../Includes/Logger.php');
+include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/PayPalTx.php');
+include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectFile.php');
+include_once('../Includes/DB/User.php');
 
 // TODO - in case of error: show friendly error page with instructions for help
+
+$loggedInUser = User::new_from_cookie();
+ensureUserIsLoggedIn($loggedInUser);
 
 $project = Project::fetch_for_id(get_param('project_id'));
 if (!$project || !$project->id) {
@@ -17,6 +22,8 @@ if (!$project || !$project->id) {
     echo 'PROJECT NOT FOUND!';
     exit;
 }
+
+ensureProjectBelongsToUserId($project, $loggedInUser->id);
 
 $pFile = ProjectFile::fetch_for_id(get_numeric_param('atfid'));
 if (!$pFile || !$pFile->id || $pFile->project_id != $project->id) {
@@ -37,7 +44,7 @@ exit;
 
 function check_authorization() {
     global $logger;
-    
+
     $logger->info('checking authorization ...');
 
     // check that we have a transaction and that the consumer's ip address is still the same
@@ -70,7 +77,7 @@ function increment_download_count() {
 
 function deliver_file(&$pFile) {
     global $logger;
-    
+
     $logger->info('delivering content ...');
 
     $filename = $pFile->filename;

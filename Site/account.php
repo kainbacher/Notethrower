@@ -393,17 +393,18 @@ if ($userIsLoggedIn) { // it's an update
             'infoText'               => 'Enter your twitter username here if you have one.'
         ));
 
-        $formElementsSection2 .= getFormFieldForParams(array(
-            'inputType'              => 'textarea',
-            'propName'               => 'additional_info',
-            'label'                  => 'Additional information',
-            'mandatory'              => false,
-            'obj'                    => $user,
-            'unpersistedObj'         => $unpersistedUser,
-            'errorFields'            => $errorFields,
-            'workWithUnpersistedObj' => $problemOccured,
-            'infoText'               => 'Anything else we should know?'
-        ));
+// currently not used
+//        $formElementsSection2 .= getFormFieldForParams(array(
+//            'inputType'              => 'textarea',
+//            'propName'               => 'additional_info',
+//            'label'                  => 'Additional information',
+//            'mandatory'              => false,
+//            'obj'                    => $user,
+//            'unpersistedObj'         => $unpersistedUser,
+//            'errorFields'            => $errorFields,
+//            'workWithUnpersistedObj' => $problemOccured,
+//            'infoText'               => 'Anything else we should know?'
+//        ));
 
         $formElementsSection2 .= getFormFieldForParams(array(
             'inputType'              => 'text',

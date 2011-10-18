@@ -16,7 +16,7 @@ class User {
     var $artist_info;
     var $latitude;
     var $longitude;
-    var $additional_info;
+    var $additional_info; // currently hidden
     var $video_url;
     var $influences;
     var $image_filename;

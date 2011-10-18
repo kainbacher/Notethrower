@@ -927,7 +927,7 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
             $logger->info('user image filename: ' . $user->image_filename);
 
         } else if (get_param('facebook_id') && !$user->image_filename) { // new signup via facebook - we fetch the facebook profile image
-            $fbImgUrl = 'graph.facebook.com/' . get_param('facebook_id') . '/picture?type=large';
+            $fbImgUrl = 'http://graph.facebook.com/' . get_param('facebook_id') . '/picture?type=large';
             $logger->info('getting user profile picture from facebook: ' . $fbImgUrl);
             $data = file_get_contents($fbImgUrl);
             if ($data) {

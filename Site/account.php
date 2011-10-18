@@ -833,7 +833,7 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
                     $newGenre->insert();
                     $newGenreList[] = $newGenre->id;
 
-                }else{
+                } else {
                     $userGenresList[] = $genre;
                 }
             }
@@ -903,6 +903,9 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
         $final_thumb_img_filename = md5('Wuizi' . $user->id) . '_thumb.jpg'; // must be unique (see safe mode logic above)
         $final_img_file = $upload_dir . $GLOBALS['PATH_SEPARATOR'] . $final_img_filename;
         $final_thumb_img_file = $upload_dir . $GLOBALS['PATH_SEPARATOR'] . $final_thumb_img_filename;
+
+        $logger->info('fb id: ' . get_param('facebook_id'));
+        $logger->info('user img filename: ' . $user->image_filename);
 
         if (isset($_FILES['image_filename']['name']) && $_FILES['image_filename']['name']) { // regular upload
             $logger->info('processing file upload: ' . $_FILES['image_filename']['name']);

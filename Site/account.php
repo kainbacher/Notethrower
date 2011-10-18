@@ -260,6 +260,21 @@ if ($userIsLoggedIn) { // it's an update
             'infoHtml'               => 'This is where your earnings will be sent. <a href="http://www.paypal.com" target="_blank">Get a PayPal account!</a><br>You can always add this later, but we need it in order to pay you.  We\'ve made it extremely easy for you to get paid for licensing your work. If someone has remixed your work and made it available in their widget, You get paid 50% of the earnings from the sale of that work. Now imagine if there are hundreds of remixed versions of your track all available for licensing. Many more opportunities to get paid for your initial work.'
         ));
     }
+
+} else { // it's an insert
+    if ($unpersistedUser->webpage_url) {
+        $formElementsSection1 .= getFormFieldForParams(array(
+            'propName'               => 'webpage_url',
+            'label'                  => 'Webpage URL',
+            'mandatory'              => false,
+            'maxlength'              => 255,
+            'obj'                    => $user,
+            'unpersistedObj'         => $unpersistedUser,
+            'errorFields'            => $errorFields,
+            'workWithUnpersistedObj' => $problemOccured,
+            'infoText'               => 'If you have another place you would like your fans to find you, please enter the link here.'
+        ));
+    }
 }
 
 $userImage = '';
@@ -430,6 +445,21 @@ if ($userIsLoggedIn) { // it's an update
             'infoText'               => 'List the artists here which influenced you.'
         ));
     }
+
+} else { // it's an insert
+    if ($unpersistedUser->facebook_url) {
+        $formElementsSection2 .= getFormFieldForParams(array(
+            'propName'               => 'facebook_url',
+            'label'                  => 'Facebook URL',
+            'mandatory'              => false,
+            'maxlength'              => 255,
+            'obj'                    => $user,
+            'unpersistedObj'         => $unpersistedUser,
+            'errorFields'            => $errorFields,
+            'workWithUnpersistedObj' => $problemOccured,
+            'infoText'               => 'Enter your facebook link here if you have one.'
+        ));
+    }
 }
 
 if (!$userIsLoggedIn) {
@@ -515,6 +545,7 @@ processAndPrintTpl('Account/index.html', array(
     '${Common/message_choice_list}'           => $messageList,
     '${formAction}'                           => $_SERVER['PHP_SELF'],
     '${signupAs}'                             => get_param('signupAs'),
+    '${facebookId}'                           => get_param('facebook_id'),
     '${Common/formElement_section1_list}'     => $formElementsSection1,
     '${Account/chooseLocationLink_optional}'  => $chooseLocationLink, // currently hidden in template
     '${latitude}'                             => $latitude,
@@ -761,6 +792,7 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
     if ($pageMode == 'artist') {
         $user->is_artist        = true;
         $user->webpage_url      = get_param('webpage_url');
+        $user->facebook_id      = get_param('facebook_id'); // not a user obj property, just used temporarily
         $user->facebook_url     = get_param('facebook_url');
         $user->twitter_username = get_param('twitter_username');
         $user->name             = get_param('name');
@@ -855,9 +887,7 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
     }
 
     // handle user image upload
-    if ($uploadAllowed && isset($_FILES['image_filename']['name']) && $_FILES['image_filename']['name']) {
-        $logger->info('processing file upload: ' . $_FILES['image_filename']['name']);
-
+    if ($uploadAllowed) {
         $userImgSubdir = null;
         if (ini_get('safe_mode')) {
             $userImgSubdir = ''; // in safe mode we're not allowed to create directories
@@ -866,27 +896,57 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
         }
         $upload_dir = $GLOBALS['USER_IMAGE_BASE_PATH'] . $userImgSubdir;
 
-        // upload to tmp file
         $upload_filename = $user->id . '_' . time() . '.jpg';
-        do_upload($upload_dir, 'image_filename', $upload_filename);
+
         $upload_img_file = $upload_dir . $GLOBALS['PATH_SEPARATOR'] . $upload_filename;
         $final_img_filename = md5('Wuizi' . $user->id) . '.jpg'; // must be unique (see safe mode logic above)
         $final_thumb_img_filename = md5('Wuizi' . $user->id) . '_thumb.jpg'; // must be unique (see safe mode logic above)
         $final_img_file = $upload_dir . $GLOBALS['PATH_SEPARATOR'] . $final_img_filename;
         $final_thumb_img_file = $upload_dir . $GLOBALS['PATH_SEPARATOR'] . $final_thumb_img_filename;
 
-        $logger->info('resizing uploaded image');
-        umask(0777); // most probably ignored on windows systems
-        create_resized_jpg($upload_img_file, $final_img_file, $GLOBALS['USER_IMG_MAX_WIDTH'], $GLOBALS['USER_IMG_MAX_HEIGHT']);
-        create_resized_jpg($upload_img_file, $final_thumb_img_file, $GLOBALS['USER_THUMB_MAX_WIDTH'], $GLOBALS['USER_THUMB_MAX_HEIGHT']);
-        chmod($final_img_file, 0666);
-        chmod($final_thumb_img_file, 0666);
+        if (isset($_FILES['image_filename']['name']) && $_FILES['image_filename']['name']) { // regular upload
+            $logger->info('processing file upload: ' . $_FILES['image_filename']['name']);
 
-        unlink($upload_img_file);
+            // upload to tmp file
+            do_upload($upload_dir, 'image_filename', $upload_filename);
 
-        $user->image_filename = ($userImgSubdir ? $userImgSubdir . '/' : '') . $final_img_filename;
+            $logger->info('resizing uploaded image');
+            umask(0777); // most probably ignored on windows systems
+            create_resized_jpg($upload_img_file, $final_img_file, $GLOBALS['USER_IMG_MAX_WIDTH'], $GLOBALS['USER_IMG_MAX_HEIGHT']);
+            create_resized_jpg($upload_img_file, $final_thumb_img_file, $GLOBALS['USER_THUMB_MAX_WIDTH'], $GLOBALS['USER_THUMB_MAX_HEIGHT']);
+            chmod($final_img_file, 0666);
+            chmod($final_thumb_img_file, 0666);
 
-        $logger->info('user image filename: ' . $user->image_filename);
+            unlink($upload_img_file);
+
+            $user->image_filename = ($userImgSubdir ? $userImgSubdir . '/' : '') . $final_img_filename;
+
+            $logger->info('user image filename: ' . $user->image_filename);
+
+        } else if (get_param('facebook_id') && !$user->image_filename) { // new signup via facebook - we fetch the facebook profile image
+            $fbImgUrl = 'graph.facebook.com/' . get_param('facebook_id') . '/picture?type=large';
+            $logger->info('getting user profile picture from facebook: ' . $fbImgUrl);
+            $data = file_get_contents($fbImgUrl);
+            if ($data) {
+                file_put_contents($upload_img_file, $data);
+
+                $logger->info('resizing uploaded image');
+                umask(0777); // most probably ignored on windows systems
+                create_resized_jpg($upload_img_file, $final_img_file, $GLOBALS['USER_IMG_MAX_WIDTH'], $GLOBALS['USER_IMG_MAX_HEIGHT']);
+                create_resized_jpg($upload_img_file, $final_thumb_img_file, $GLOBALS['USER_THUMB_MAX_WIDTH'], $GLOBALS['USER_THUMB_MAX_HEIGHT']);
+                chmod($final_img_file, 0666);
+                chmod($final_thumb_img_file, 0666);
+
+                unlink($upload_img_file);
+
+                $user->image_filename = ($userImgSubdir ? $userImgSubdir . '/' : '') . $final_img_filename;
+
+                $logger->info('user image filename: ' . $user->image_filename);
+
+            } else {
+                $logger->warn('unable to get user profile picture data from facebook!');
+            }
+        }
     }
 }
 

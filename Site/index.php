@@ -119,9 +119,12 @@ function handleAuthentication() {
             } else { // user not found -> this either means the user doesn't exist here yet or he was not found with the facebook email address
                 // the only thing we can do here is redirect the user to the signup page
                 // FIXME - which page mode? fan or artist or shall we redirect to the selection page (as soon as we have one)?
-                redirectTo('account.php?email_address=' . urlencode($fbUserData->email) .
-                        '&webpage_url=' . urlencode($fbUserData->user_website) .
-                        '&username=' . urlencode($fbUserData->email));
+                redirectTo('account.php' .
+                        '?email_address=' . urlencode($fbUserData->email) .
+                        '&facebook_id='   . urlencode($fbUserData->id) .
+                        '&facebook_url='  . urlencode($fbUserData->link) .
+                        '&webpage_url='   . urlencode($fbUserData->user_website) .
+                        '&username='      . urlencode($fbUserData->email));
             }
 
         } else {

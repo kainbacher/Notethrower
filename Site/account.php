@@ -40,7 +40,7 @@ if (get_param('action') == 'save') {
 
         $oldPasswordMd5 = $user->password_md5;
 
-        processParams($user, true, $userIsLoggedIn);
+        processParams($user, $userIsLoggedIn);
 
         // check if a url was entered or if there's still only the predefined value
         if ($user->webpage_url  == 'http://') $user->webpage_url  = '';
@@ -55,6 +55,8 @@ if (get_param('action') == 'save') {
         }
 
         $user->save();
+
+        handleUserImageUpload($user);
 
         $newPasswordMd5 = $user->password_md5;
 
@@ -90,7 +92,7 @@ if (get_param('action') == 'save') {
     } else {
         $logger->info('input data was invalid: ' . join(', ', $errorFields));
         $unpersistedUser = new User();
-        processParams($unpersistedUser, false, $userIsLoggedIn);
+        processParams($unpersistedUser, $userIsLoggedIn);
         $message = 'Please correct the highlighted problems!';
         $problemOccured = true;
     }
@@ -101,7 +103,7 @@ if (!$user) {
     $user = new User();
     $user->webpageUrl  = 'http://';
     $user->facebookUrl = 'http://';
-    processParams($user, false, $userIsLoggedIn);
+    processParams($user, $userIsLoggedIn);
 }
 
 $messageList = '';
@@ -779,7 +781,7 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
     return $result;
 }
 
-function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
+function processParams(&$user, $userIsLoggedIn) {
     global $logger;
 
     $pageMode = getPageMode($userIsLoggedIn, $user);
@@ -815,13 +817,12 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
                     $newAttribute->insert();
                     $newAttributeList[] = $newAttribute->id;
 
-                }else{
+                } else {
                     $userAttributesList[] = $attribute;
                 }
             }
 
             // create genre list and save new genres if entered
-
             $genres = explode(',', get_param('userGenresList'));
             $newGenreList = array();
 
@@ -837,8 +838,6 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
                     $userGenresList[] = $genre;
                 }
             }
-
-
 
             // save new genre, if one was entered
             $newGenre = null;
@@ -885,33 +884,55 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
     if (get_param('password')) { // this can be empty when an account is updated without a password change. we musst not save an empty password then.
         $user->password_md5 = md5(get_param('password'));
     }
+}
 
-    // handle user image upload
-    if ($uploadAllowed) {
-        $userImgSubdir = null;
-        if (ini_get('safe_mode')) {
-            $userImgSubdir = ''; // in safe mode we're not allowed to create directories
-        } else {
-            $userImgSubdir = md5('Wuizi' . $user->id);
-        }
-        $upload_dir = $GLOBALS['USER_IMAGE_BASE_PATH'] . $userImgSubdir;
+function handleUserImageUpload(&$user) {
+    global $logger;
 
-        $upload_filename = $user->id . '_' . time() . '.jpg';
+    $userImgSubdir = null;
+    if (ini_get('safe_mode')) {
+        $userImgSubdir = ''; // in safe mode we're not allowed to create directories
+    } else {
+        $userImgSubdir = md5('Wuizi' . $user->id);
+    }
+    $upload_dir = $GLOBALS['USER_IMAGE_BASE_PATH'] . $userImgSubdir;
 
-        $upload_img_file = $upload_dir . $GLOBALS['PATH_SEPARATOR'] . $upload_filename;
-        $final_img_filename = md5('Wuizi' . $user->id) . '.jpg'; // must be unique (see safe mode logic above)
-        $final_thumb_img_filename = md5('Wuizi' . $user->id) . '_thumb.jpg'; // must be unique (see safe mode logic above)
-        $final_img_file = $upload_dir . $GLOBALS['PATH_SEPARATOR'] . $final_img_filename;
-        $final_thumb_img_file = $upload_dir . $GLOBALS['PATH_SEPARATOR'] . $final_thumb_img_filename;
+    $upload_filename = $user->id . '_' . time() . '.jpg';
 
-        $logger->info('fb id: ' . get_param('facebook_id'));
-        $logger->info('user img filename: ' . $user->image_filename);
+    $upload_img_file = $upload_dir . $GLOBALS['PATH_SEPARATOR'] . $upload_filename;
+    $final_img_filename = md5('Wuizi' . $user->id) . '.jpg'; // must be unique (see safe mode logic above)
+    $final_thumb_img_filename = md5('Wuizi' . $user->id) . '_thumb.jpg'; // must be unique (see safe mode logic above)
+    $final_img_file = $upload_dir . $GLOBALS['PATH_SEPARATOR'] . $final_img_filename;
+    $final_thumb_img_file = $upload_dir . $GLOBALS['PATH_SEPARATOR'] . $final_thumb_img_filename;
 
-        if (isset($_FILES['image_filename']['name']) && $_FILES['image_filename']['name']) { // regular upload
-            $logger->info('processing file upload: ' . $_FILES['image_filename']['name']);
+    $logger->info('fb id: ' . get_param('facebook_id'));
+    $logger->info('user img filename: ' . $user->image_filename);
 
-            // upload to tmp file
-            do_upload($upload_dir, 'image_filename', $upload_filename);
+    if (isset($_FILES['image_filename']['name']) && $_FILES['image_filename']['name']) { // regular upload
+        $logger->info('processing file upload: ' . $_FILES['image_filename']['name']);
+
+        // upload to tmp file
+        do_upload($upload_dir, 'image_filename', $upload_filename);
+
+        $logger->info('resizing uploaded image');
+        umask(0777); // most probably ignored on windows systems
+        create_resized_jpg($upload_img_file, $final_img_file, $GLOBALS['USER_IMG_MAX_WIDTH'], $GLOBALS['USER_IMG_MAX_HEIGHT']);
+        create_resized_jpg($upload_img_file, $final_thumb_img_file, $GLOBALS['USER_THUMB_MAX_WIDTH'], $GLOBALS['USER_THUMB_MAX_HEIGHT']);
+        chmod($final_img_file, 0666);
+        chmod($final_thumb_img_file, 0666);
+
+        unlink($upload_img_file);
+
+        $user->image_filename = ($userImgSubdir ? $userImgSubdir . '/' : '') . $final_img_filename;
+
+        $logger->info('user image filename: ' . $user->image_filename);
+
+    } else if (get_param('facebook_id') && !$user->image_filename) { // new signup via facebook - we fetch the facebook profile image
+        $fbImgUrl = 'http://graph.facebook.com/' . get_param('facebook_id') . '/picture?type=large';
+        $logger->info('getting user profile picture from facebook: ' . $fbImgUrl);
+        $data = file_get_contents($fbImgUrl);
+        if ($data) {
+            file_put_contents($upload_img_file, $data);
 
             $logger->info('resizing uploaded image');
             umask(0777); // most probably ignored on windows systems
@@ -926,29 +947,8 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
 
             $logger->info('user image filename: ' . $user->image_filename);
 
-        } else if (get_param('facebook_id') && !$user->image_filename) { // new signup via facebook - we fetch the facebook profile image
-            $fbImgUrl = 'http://graph.facebook.com/' . get_param('facebook_id') . '/picture?type=large';
-            $logger->info('getting user profile picture from facebook: ' . $fbImgUrl);
-            $data = file_get_contents($fbImgUrl);
-            if ($data) {
-                file_put_contents($upload_img_file, $data);
-
-                $logger->info('resizing uploaded image');
-                umask(0777); // most probably ignored on windows systems
-                create_resized_jpg($upload_img_file, $final_img_file, $GLOBALS['USER_IMG_MAX_WIDTH'], $GLOBALS['USER_IMG_MAX_HEIGHT']);
-                create_resized_jpg($upload_img_file, $final_thumb_img_file, $GLOBALS['USER_THUMB_MAX_WIDTH'], $GLOBALS['USER_THUMB_MAX_HEIGHT']);
-                chmod($final_img_file, 0666);
-                chmod($final_thumb_img_file, 0666);
-
-                unlink($upload_img_file);
-
-                $user->image_filename = ($userImgSubdir ? $userImgSubdir . '/' : '') . $final_img_filename;
-
-                $logger->info('user image filename: ' . $user->image_filename);
-
-            } else {
-                $logger->warn('unable to get user profile picture data from facebook!');
-            }
+        } else {
+            $logger->warn('unable to get user profile picture data from facebook!');
         }
     }
 }

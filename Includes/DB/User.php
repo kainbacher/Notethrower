@@ -22,7 +22,7 @@ class User {
     var $image_filename;
     var $webpage_url;
     var $facebook_url;
-    var $twitter_url;
+    var $twitter_username;
     var $paypal_account;
     var $activity_points;
     var $is_artist; // if true, the user is both a fan and an artist, if false the user is only a fan
@@ -372,27 +372,27 @@ class User {
     }
 
     function _read_row($a, $row) {
-        $a->id              = $row['id'];
-        $a->username        = $row['username'];
-        $a->password_md5    = $row['password_md5'];
-        $a->email_address   = $row['email_address'];
-        $a->name            = $row['name'];
-        $a->artist_info     = $row['artist_info'];
-        $a->latitude        = $row['latitude'];
-        $a->longitude       = $row['longitude'];
-        $a->additional_info = $row['additional_info'];
-        $a->video_url       = $row['video_url'];
-        $a->influences      = $row['influences'];
-        $a->image_filename  = $row['image_filename'];
-        $a->webpage_url     = $row['webpage_url'];
-        $a->facebook_url    = $row['facebook_url'];
-        $a->twitter_url     = $row['twitter_url'];
-        $a->paypal_account  = $row['paypal_account'];
-        $a->activity_points = $row['activity_points'];
-        $a->is_artist       = $row['is_artist'];
-        $a->is_pro          = $row['is_pro'];
-        $a->status          = $row['status'];
-        $a->entry_date      = reformat_sql_date($row['entry_date']);
+        $a->id               = $row['id'];
+        $a->username         = $row['username'];
+        $a->password_md5     = $row['password_md5'];
+        $a->email_address    = $row['email_address'];
+        $a->name             = $row['name'];
+        $a->artist_info      = $row['artist_info'];
+        $a->latitude         = $row['latitude'];
+        $a->longitude        = $row['longitude'];
+        $a->additional_info  = $row['additional_info'];
+        $a->video_url        = $row['video_url'];
+        $a->influences       = $row['influences'];
+        $a->image_filename   = $row['image_filename'];
+        $a->webpage_url      = $row['webpage_url'];
+        $a->facebook_url     = $row['facebook_url'];
+        $a->twitter_username = $row['twitter_username'];
+        $a->paypal_account   = $row['paypal_account'];
+        $a->activity_points  = $row['activity_points'];
+        $a->is_artist        = $row['is_artist'];
+        $a->is_pro           = $row['is_pro'];
+        $a->status           = $row['status'];
+        $a->entry_date       = reformat_sql_date($row['entry_date']);
 
         return $a;
     }
@@ -403,27 +403,27 @@ class User {
         $ok = _mysql_query(
             'create table if not exists pp_user ' .
             '(' .
-            'id              int(10)      not null auto_increment, ' .
-            'username        varchar(50)  not null, ' .
-            'password_md5    varchar(50)  not null, ' .
-            'email_address   varchar(255) not null, ' .
-            'name            varchar(50)  not null, ' .
-            'artist_info     text, ' .
-            'latitude        double, ' .
-            'longitude       double, ' .
-            'additional_info text, ' .
-            'video_url       varchar(255), ' .
-            'influences      text, ' .
-            'image_filename  varchar(255), ' .
-            'webpage_url     varchar(255), ' .
-            'facebook_url    varchar(255), ' .
-            'twitter_url     varchar(255), ' .
-            'paypal_account  varchar(255), ' .
-            'activity_points int(10), ' .
-            'is_artist       tinyint(1)   not null, ' .
-            'is_pro          tinyint(1)   not null, ' .
-            'status          varchar(20)  not null, ' .
-            'entry_date      datetime     not null default "1970-01-01 00:00:00", ' .
+            'id               int(10)      not null auto_increment, ' .
+            'username         varchar(50)  not null, ' .
+            'password_md5     varchar(50)  not null, ' .
+            'email_address    varchar(255) not null, ' .
+            'name             varchar(50)  not null, ' .
+            'artist_info      text, ' .
+            'latitude         double, ' .
+            'longitude        double, ' .
+            'additional_info  text, ' .
+            'video_url        varchar(255), ' .
+            'influences       text, ' .
+            'image_filename   varchar(255), ' .
+            'webpage_url      varchar(255), ' .
+            'facebook_url     varchar(255), ' .
+            'twitter_username varchar(255), ' .
+            'paypal_account   varchar(255), ' .
+            'activity_points  int(10), ' .
+            'is_artist        tinyint(1)   not null, ' .
+            'is_pro           tinyint(1)   not null, ' .
+            'status           varchar(20)  not null, ' .
+            'entry_date       datetime     not null default "1970-01-01 00:00:00", ' .
             'primary key (id), ' .
             'key name (name), ' .
             'unique key username (username), ' .
@@ -441,7 +441,7 @@ class User {
                 $ok = _mysql_query(
                     'insert into pp_user (id, username, password_md5, email_address, name, artist_info, ' .
                     'latitude, longitude, additional_info, video_url, influences,' .
-                    'image_filename, webpage_url, facebook_url, twitter_url, paypal_account, activity_points, ' .
+                    'image_filename, webpage_url, facebook_url, twitter_username, paypal_account, activity_points, ' .
                     'is_artist, is_pro, status, entry_date) ' .
                     'values (-1, "_unknown_artist", "' . md5('dummyPwd') . '", "", "Unknown Artist", "", null, null, ' .
                     '"", "", "", "", "", "", "", "", 0, 1, 0, "inactive", now())'
@@ -508,29 +508,29 @@ class User {
         $ok = _mysql_query(
             'insert into pp_user ' .
             '(username, password_md5, email_address, name, artist_info, latitude, longitude, additional_info, ' .
-            'video_url, influences, image_filename, webpage_url, facebook_url, twitter_url, paypal_account, ' .
+            'video_url, influences, image_filename, webpage_url, facebook_url, twitter_username, paypal_account, ' .
             'activity_points, is_artist, is_pro, status, entry_date) ' .
             'values (' .
-            qq($this->username)        . ', ' .
-            qq($this->password_md5)    . ', ' .
-            qq($this->email_address)   . ', ' .
-            qq($this->name)            . ', ' .
-            qq($this->artist_info)     . ', ' .
-            n($this->latitude)         . ', ' .
-            n($this->longitude)        . ', ' .
-            qq($this->additional_info) . ', ' .
-            qq($this->video_url)       . ', ' .
-            qq($this->influences)      . ', ' .
-            qq($this->image_filename)  . ', ' .
-            qq($this->webpage_url)     . ', ' .
-            qq($this->facebook_url)    . ', ' .
-            qq($this->twitter_url)     . ', ' .
-            qq($this->paypal_account)  . ', ' .
-            n($this->activity_points)  . ', ' .
-            b($this->is_artist)        . ', ' .
-            b($this->is_pro)           . ', ' .
-            qq($this->status)          . ', ' .
-            'now()'                    .
+            qq($this->username)         . ', ' .
+            qq($this->password_md5)     . ', ' .
+            qq($this->email_address)    . ', ' .
+            qq($this->name)             . ', ' .
+            qq($this->artist_info)      . ', ' .
+            n($this->latitude)          . ', ' .
+            n($this->longitude)         . ', ' .
+            qq($this->additional_info)  . ', ' .
+            qq($this->video_url)        . ', ' .
+            qq($this->influences)       . ', ' .
+            qq($this->image_filename)   . ', ' .
+            qq($this->webpage_url)      . ', ' .
+            qq($this->facebook_url)     . ', ' .
+            qq($this->twitter_username) . ', ' .
+            qq($this->paypal_account)   . ', ' .
+            n($this->activity_points)   . ', ' .
+            b($this->is_artist)         . ', ' .
+            b($this->is_pro)            . ', ' .
+            qq($this->status)           . ', ' .
+            'now()'                     .
             ')'
         );
 
@@ -546,25 +546,25 @@ class User {
     function update() {
         $ok = _mysql_query(
             'update pp_user ' .
-            'set username = '      . qq($this->username)        . ', ' .
-            'password_md5 = '      . qq($this->password_md5)    . ', ' .
-            'email_address = '     . qq($this->email_address)   . ', ' .
-            'name = '              . qq($this->name)            . ', ' .
-            'artist_info = '       . qq($this->artist_info)     . ', ' .
-            'latitude = '          . n($this->latitude)         . ', ' .
-            'longitude = '         . n($this->longitude)        . ', ' .
-            'additional_info = '   . qq($this->additional_info) . ', ' .
-            'video_url = '         . qq($this->video_url)       . ', ' .
-            'influences = '        . qq($this->influences)      . ', ' .
-            'image_filename = '    . qq($this->image_filename)  . ', ' .
-            'webpage_url = '       . qq($this->webpage_url)     . ', ' .
-            'facebook_url = '      . qq($this->facebook_url)    . ', ' .
-            'twitter_url = '       . qq($this->twitter_url)     . ', ' .
-            'paypal_account = '    . qq($this->paypal_account)  . ', ' .
-            'activity_points = '   . n($this->activity_points)  . ', ' .
-            'is_artist = '         . b($this->is_artist)        . ', ' .
-            'is_pro = '            . b($this->is_pro)           . ', ' .
-            'status = '            . qq($this->status)          . ' ' .
+            'set username = '      . qq($this->username)         . ', ' .
+            'password_md5 = '      . qq($this->password_md5)     . ', ' .
+            'email_address = '     . qq($this->email_address)    . ', ' .
+            'name = '              . qq($this->name)             . ', ' .
+            'artist_info = '       . qq($this->artist_info)      . ', ' .
+            'latitude = '          . n($this->latitude)          . ', ' .
+            'longitude = '         . n($this->longitude)         . ', ' .
+            'additional_info = '   . qq($this->additional_info)  . ', ' .
+            'video_url = '         . qq($this->video_url)        . ', ' .
+            'influences = '        . qq($this->influences)       . ', ' .
+            'image_filename = '    . qq($this->image_filename)   . ', ' .
+            'webpage_url = '       . qq($this->webpage_url)      . ', ' .
+            'facebook_url = '      . qq($this->facebook_url)     . ', ' .
+            'twitter_username = '  . qq($this->twitter_username) . ', ' .
+            'paypal_account = '    . qq($this->paypal_account)   . ', ' .
+            'activity_points = '   . n($this->activity_points)   . ', ' .
+            'is_artist = '         . b($this->is_artist)         . ', ' .
+            'is_pro = '            . b($this->is_pro)            . ', ' .
+            'status = '            . qq($this->status)           . ' ' .
             // entry_date intentionally not set here
             'where id = '          . n($this->id)
         );

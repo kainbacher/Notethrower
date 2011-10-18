@@ -12,7 +12,7 @@ $destUrl = get_param('destUrl');
 if (!$code) {
     $dialogUrl = 'http://www.facebook.com/dialog/oauth?client_id=' .
             $GLOBALS['FACEBOOK_APP_ID'] . '&redirect_uri=' . urlencode($myUrl) .
-            '&scope=email' .
+            '&scope=email,user_website' .
             '&destUrl=' . urlencode(get_param('destUrl'));
 
     redirectTo($dialogUrl);

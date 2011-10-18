@@ -107,10 +107,10 @@ function handleAuthentication() {
         $resp = sendGetRequest('https://graph.facebook.com/me?access_token=' . get_param('access_token'), 15);
         if ($resp['result'] == 'SUCCESS') {
             $fbUserData = json_decode($resp['responseBody']);
-            $logger->debug(print_r($fbUserData, true));
+            $logger->info(print_r($fbUserData, true));
 
             // if user data complete, log user in
-            $user = User::fetch_for_email_address($fbUserData->email); // ####### FIXME there are some duplicated emails in the NT database!
+            $user = User::fetch_for_email_address($fbUserData->email);
             if ($user) {
                 $user->doLogin();
                 $logger->info('facebook login successful, reloading page to set cookie');
@@ -119,7 +119,9 @@ function handleAuthentication() {
             } else { // user not found -> this either means the user doesn't exist here yet or he was not found with the facebook email address
                 // the only thing we can do here is redirect the user to the signup page
                 // FIXME - which page mode? fan or artist or shall we redirect to the selection page (as soon as we have one)?
-                redirectTo('account.php?email_address=' . urlencode($fbUserData->email) . '&username=' . urlencode($fbUserData->email));
+                redirectTo('account.php?email_address=' . urlencode($fbUserData->email) .
+                        '&webpage_url=' . urlencode($fbUserData->user_website) .
+                        '&username=' . urlencode($fbUserData->email));
             }
 
         } else {

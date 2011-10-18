@@ -32,7 +32,7 @@ alter table pp_user add video_url varchar(255) after additional_info;
 alter table pp_user add latitude double after artist_info;
 alter table pp_user add longitude double after artist_info;
 alter table pp_user add facebook_url varchar(255) after webpage_url;
-alter table pp_user add twitter_url varchar(255) after facebook_url;
+alter table pp_user add twitter_username varchar(255) after facebook_url;
 
 update pp_user set is_artist=1;
 
@@ -114,6 +114,7 @@ alter table pp_project drop column parent_track_id;
 alter table pp_project drop column originator_notified;
 alter table pp_project drop column preview_mp3_filename;
 alter table pp_project drop column orig_preview_mp3_filename;
+alter table pp_project drop column price;
 
 alter table pp_project_user_visibility change track_id project_id int(10) not null;
 alter table pp_project_file change track_id project_id int(10) not null;

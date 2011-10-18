@@ -17,7 +17,6 @@ class Project {
     var $sorting; // not used at the moment but maybe useful in the future
     var $type; // old: original or remix, new: drop this! but only after the old live data has been successfully converted into the new projects concept!
     var $originating_user_id; // new: drop this! but only after the old live data has been successfully converted into the new projects concept!
-    var $price;
     var $currency;
     var $rating_count;
     var $rating_value;
@@ -585,7 +584,6 @@ class Project {
         $a->id                        = $row['id'];
         $a->user_id                   = $row['user_id'];
         $a->title                     = $row['title'];
-        $a->price                     = $row['price'];
         $a->currency                  = $row['currency'];
         $a->sorting                   = $row['sorting'];
         $a->type                      = $row['type'];
@@ -618,7 +616,6 @@ class Project {
             'id                        int(10)      not null auto_increment, ' .
             'user_id                   int(10)      not null, ' .
             'title                     varchar(255) not null, ' .
-            'price                     float        not null, ' .
             'currency                  varchar(3)   not null, ' .
             'sorting                   int(5), ' .
             'type                      varchar(10)  not null, ' .
@@ -743,13 +740,12 @@ class Project {
         $ok = _mysql_query(
             'insert into pp_project ' .
             '(user_id, title, ' .
-            'price, currency, sorting, type, originating_user_id, rating_count, ' .
+            'currency, sorting, type, originating_user_id, rating_count, ' .
             'rating_value, competition_points, visibility, playback_count, download_count, ' .
             'status, contains_others, needs_others, additional_info, entry_date) ' .
             'values (' .
             n($this->user_id)                    . ', ' .
             qq($this->title)                     . ', ' .
-            qq($this->price)                     . ', ' .
             qq($this->currency)                  . ', ' .
             n($this->sorting)                    . ', ' .
             qq($this->type)                      . ', ' .
@@ -782,7 +778,6 @@ class Project {
             'update pp_project ' .
             'set user_id = '               . n($this->user_id)                    . ', ' .
             'title = '                     . qq($this->title)                     . ', ' .
-            'price = '                     . qq($this->price)                     . ', ' .
             'currency = '                  . qq($this->currency)                  . ', ' .
             'sorting = '                   . n($this->sorting)                    . ', ' .
             'type = '                      . qq($this->type)                      . ', ' .

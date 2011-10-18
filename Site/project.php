@@ -37,7 +37,6 @@ if (get_param('action') == 'create') {
     $project->user_id                   = $loggedInUser->id;
     $project->title                     = '(New project)';
     $project->type                      = 'original';
-    $project->price                     = 0;
     $project->currency                  = 'USD'; // TODO - take from config - check other occurences as well
     $project->visibility                = 'public';
     $project->playback_count            = 0;
@@ -253,19 +252,6 @@ $formElementsList .= getFormFieldForParams(array(
     'unpersistedObj'         => $unpersistedProject,
     'errorFields'            => $errorFields,
     'workWithUnpersistedObj' => $problemOccured
-));
-
-$formElementsList .= getFormFieldForParams(array(
-    'propName'               => 'price',
-    'label'                  => 'Price for commercial license',
-    'mandatory'              => false,
-    'maxlength'              => 255,
-    'obj'                    => $project,
-    'unpersistedObj'         => $unpersistedProject,
-    'errorFields'            => $errorFields,
-    'workWithUnpersistedObj' => $problemOccured,
-    'inputFieldSuffix'       => 'USD', // FIXME - make constant?
-    'infoText'               => 'Please enter the price you want others to pay to license your work. oneloudr will take a 10% fee from the sale at this price.  If you are uploading a remix of another oneloudr artist\'s track, you will split the profit with that artist 50/50, minus the 10% fee.'
 ));
 
 // main genre
@@ -562,13 +548,6 @@ function inputDataOk(&$errorFields, &$project) {
         $result = false;
     }
 
-    if ($price = get_numeric_param('price')) {
-        if ($price < 0) {
-            $errorFields['price'] = 'Price is invalid!';
-            $result = false;
-        }
-    }
-
     if (!get_numeric_param('mainGenre')) {
         $errorFields['mainGenre'] = 'Please choose a main genre here!';
         $result = false;
@@ -620,7 +599,6 @@ function processParams(&$project, &$loggedInUser) {
     $project->user_id                 = $loggedInUser->id;
     $project->title                   = get_param('title');
     $project->type                    = get_param('type') == 'remix' ? 'remix' : 'original'; // this is a hidden field, popuplated with a url param
-    $project->price                   = get_numeric_param('price');
     //$project->visibility              = get_param('visibility'); // currently hidden, but maybe a candidate for pro users
     //$project->status                  = 'active';
     //$project->sorting                 = get_numeric_param('sorting');

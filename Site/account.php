@@ -45,7 +45,9 @@ if (get_param('action') == 'save') {
         // check if a url was entered or if there's still only the predefined value
         if ($user->webpage_url  == 'http://') $user->webpage_url  = '';
         if ($user->facebook_url == 'http://') $user->facebook_url = '';
-        if ($user->twitter_url  == 'http://') $user->twitter_url  = '';
+
+        // sanitize twitter username (according to joe/eric this must not start with a @ char)
+        if (strpos($user->twitter_username, '@') === 0) $user->twitter_username = substr($user->twitter_username, 1);
 
         // the newly created account needs to be activated first
         if (!$userIsLoggedIn) {
@@ -99,7 +101,6 @@ if (!$user) {
     $user = new User();
     $user->webpageUrl  = 'http://';
     $user->facebookUrl = 'http://';
-    $user->twitterUrl  = 'http://';
     processParams($user, false, $userIsLoggedIn);
 }
 
@@ -234,7 +235,7 @@ if ($userIsLoggedIn) { // it's an update
             'infoText'               => 'If you can\'t find your genre in the selection above, you can add it here. It will be added to the genre list, when you click "Update account".'
         ));
         */
-       
+
         $formElementsSection1 .= getFormFieldForParams(array(
             'propName'               => 'webpage_url',
             'label'                  => 'Webpage URL',
@@ -245,30 +246,6 @@ if ($userIsLoggedIn) { // it's an update
             'errorFields'            => $errorFields,
             'workWithUnpersistedObj' => $problemOccured,
             'infoText'               => 'If you have another place you would like your fans to find you, please enter the link here.'
-        ));
-
-        $formElementsSection1 .= getFormFieldForParams(array(
-            'propName'               => 'facebook_url',
-            'label'                  => 'Facebook URL',
-            'mandatory'              => false,
-            'maxlength'              => 255,
-            'obj'                    => $user,
-            'unpersistedObj'         => $unpersistedUser,
-            'errorFields'            => $errorFields,
-            'workWithUnpersistedObj' => $problemOccured,
-            'infoText'               => 'Enter your facebook link here if you have one.'
-        ));
-
-        $formElementsSection1 .= getFormFieldForParams(array(
-            'propName'               => 'twitter_url',
-            'label'                  => 'Twitter URL',
-            'mandatory'              => false,
-            'maxlength'              => 255,
-            'obj'                    => $user,
-            'unpersistedObj'         => $unpersistedUser,
-            'errorFields'            => $errorFields,
-            'workWithUnpersistedObj' => $problemOccured,
-            'infoText'               => 'Enter your twitter link here if you have one.'
         ));
 
         $formElementsSection1 .= getFormFieldForParams(array(
@@ -393,6 +370,30 @@ if ($userIsLoggedIn) { // it's an update
         ));
 
         $formElementsSection2 .= getFormFieldForParams(array(
+            'propName'               => 'facebook_url',
+            'label'                  => 'Facebook URL',
+            'mandatory'              => false,
+            'maxlength'              => 255,
+            'obj'                    => $user,
+            'unpersistedObj'         => $unpersistedUser,
+            'errorFields'            => $errorFields,
+            'workWithUnpersistedObj' => $problemOccured,
+            'infoText'               => 'Enter your facebook link here if you have one.'
+        ));
+
+        $formElementsSection2 .= getFormFieldForParams(array(
+            'propName'               => 'twitter_username',
+            'label'                  => 'Twitter username',
+            'mandatory'              => false,
+            'maxlength'              => 255,
+            'obj'                    => $user,
+            'unpersistedObj'         => $unpersistedUser,
+            'errorFields'            => $errorFields,
+            'workWithUnpersistedObj' => $problemOccured,
+            'infoText'               => 'Enter your twitter username here if you have one.'
+        ));
+
+        $formElementsSection2 .= getFormFieldForParams(array(
             'inputType'              => 'textarea',
             'propName'               => 'additional_info',
             'label'                  => 'Additional information',
@@ -514,7 +515,7 @@ processAndPrintTpl('Account/index.html', array(
     '${formAction}'                           => $_SERVER['PHP_SELF'],
     '${signupAs}'                             => get_param('signupAs'),
     '${Common/formElement_section1_list}'     => $formElementsSection1,
-    '${Account/chooseLocationLink_optional}'  => $chooseLocationLink,
+    '${Account/chooseLocationLink_optional}'  => $chooseLocationLink, // currently hidden in template
     '${latitude}'                             => $latitude,
     '${longitude}'                            => $longitude,
     '${userImage_choice}'                     => $userImage,
@@ -522,11 +523,11 @@ processAndPrintTpl('Account/index.html', array(
     '${submitButtonClass}'                    => $userIsLoggedIn ? 'updateAccountButton' : 'createAccountButton',
     '${submitButtonValue}'                    => $userIsLoggedIn ? 'update Account' : 'create Account',
     '${userName}'                             => $userIsLoggedIn ? escape($user->name) : '',
-    '${userImgUrl}'                                     => $userImgUrl,
-    '${Common/externalWebLink_optional}'                => $webpageLink,
-    '${Common/sendMessage_optional}'                    => $sendMessageBlock,
-    '${Artist/artistInfo_optional}'                     => $artistInfo,
-    '${Artist/additionalInfo_optional}'                 => $additionalInfo,
+    '${userImgUrl}'                           => $userImgUrl,
+    '${Common/externalWebLink_optional}'      => $webpageLink,
+    '${Common/sendMessage_optional}'          => $sendMessageBlock,
+    '${Artist/artistInfo_optional}'           => $artistInfo,
+    '${Artist/additionalInfo_optional}'       => $additionalInfo,
     '${Common/bodyFooter}'                    => buildBodyFooter(),
     '${Common/pageFooter}'                    => buildPageFooter()
 ));
@@ -723,7 +724,7 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
                 $errorFields['genres'] = 'Invalid genres list'; // can only happen when someone plays around with the post data
                 $result = false;
             }
-             * 
+             *
              */
         }
     }
@@ -757,16 +758,16 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
     if (!$user->username) $user->username = $user->email_address;
 
     if ($pageMode == 'artist') {
-        $user->is_artist       = true;
-        $user->webpage_url     = get_param('webpage_url');
-        $user->facebook_url    = get_param('facebook_url');
-        $user->twitter_url     = get_param('twitter_url');
-        $user->name            = get_param('name');
-        $user->artist_info     = get_param('artist_info');
-        $user->additional_info = get_param('additional_info');
-        $user->video_url       = get_param('video_url');
-        $user->influences      = get_param('influences');
-        $user->paypal_account  = get_param('paypal_account');
+        $user->is_artist        = true;
+        $user->webpage_url      = get_param('webpage_url');
+        $user->facebook_url     = get_param('facebook_url');
+        $user->twitter_username = get_param('twitter_username');
+        $user->name             = get_param('name');
+        $user->artist_info      = get_param('artist_info');
+        $user->additional_info  = get_param('additional_info');
+        $user->video_url        = get_param('video_url');
+        $user->influences       = get_param('influences');
+        $user->paypal_account   = get_param('paypal_account');
 
         if ($userIsLoggedIn) {
             // create attributes list and save new skills if entered
@@ -785,12 +786,12 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
                     $userAttributesList[] = $attribute;
                 }
             }
-            
+
             // create genre list and save new genres if entered
-            
+
             $genres = explode(',', get_param('userGenresList'));
             $newGenreList = array();
-            
+
             foreach($genres as $genre){
                 $newCheck = strstr($genre, 'new_');
                 if($newCheck){
@@ -803,9 +804,9 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
                     $userGenresList[] = $genre;
                 }
             }
-            
-            
-            
+
+
+
             // save new genre, if one was entered
             $newGenre = null;
             if (get_param('newGenre')) {
@@ -827,7 +828,7 @@ function processParams(&$user, $uploadAllowed, $userIsLoggedIn) {
             if ($user->id) {
                 UserAttribute::deleteForUserId($user->id); // first, delete all existing
                 UserAttribute::addAll($userAttributesList, $user->id, 'offers'); // then save the selected attributes (including the new one, if one was entered)
-  
+
                 UserGenre::deleteForUserId($user->id); // first, delete all existing genres
                 UserGenre::addAll($userGenresList, $user->id); // then save the selected genres (including the new one, if one was entered)
 

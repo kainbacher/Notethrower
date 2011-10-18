@@ -115,7 +115,6 @@ function processTrack(&$xml, &$track, $remixedByOthersMode) {
         else if (strpos($filename, '.zip')  !== false) $xml .= '<zipFile>'   . xmlentities($file->filename) . '</zipFile>';
     }
 
-    $xml .= '<price>' . $track->price . '</price>';
     $xml .= '<currency>' . $track->currency . '</currency>';
 
     $xml .= '</track>';

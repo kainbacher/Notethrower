@@ -19,7 +19,7 @@ ensureUserIsLoggedIn($user);
 $projectListHtml = '';
 $projects = Project::fetchAllThatNeedSkillsOfUser($user); // FIXME - limit/paging?
 foreach ($projects as $project) {
-    $projectUserImgUrl = getUserImageUri($project->userImgFilename, 'tiny');
+    $projectUserImgUrl = getUserImageUri($project->user_img_filename, 'tiny');
 
     $projectListHtml .= processTpl('Dashboard/projectListItem.html', array(
         '${userName}'     => escape($project->user_name),

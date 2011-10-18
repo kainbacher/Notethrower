@@ -128,12 +128,12 @@ function validate_request_data() {
         exit;
     }
 
-    // check price/currency
-    if ($_POST['mc_gross'] < $project->price) {
-        $logger->warn('transaction price is lower than project price!');
-        echo 'INVALID REQUEST (8)';
-        exit;
-    }
+//    // check price/currency // FIXME - no project price available anymore
+//    if ($_POST['mc_gross'] < $project->price) {
+//        $logger->warn('transaction price is lower than project price!');
+//        echo 'INVALID REQUEST (8)';
+//        exit;
+//    }
     if ($_POST['mc_currency'] != $project->currency) {
         $logger->warn('currency mismatch!');
         echo 'INVALID REQUEST (10)';

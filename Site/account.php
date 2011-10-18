@@ -102,10 +102,10 @@ if (get_param('action') == 'save') {
 
 // prefill form with some values if present (eg. email_address, facebook_url, webpage_url)
 if (!$user) {
-    $unpersistedUser = new User();
-    $unpersistedUser->webpageUrl  = 'http://';
-    $unpersistedUser->facebookUrl = 'http://';
-    processParams($unpersistedUser, $userIsLoggedIn);
+    $user = new User();
+    $user->webpageUrl  = 'http://';
+    $user->facebookUrl = 'http://';
+    processParams($user, $userIsLoggedIn);
 }
 
 $messageList = '';
@@ -266,7 +266,7 @@ if ($userIsLoggedIn) { // it's an update
     }
 
 } else { // it's an insert
-    if ($unpersistedUser->webpage_url) {
+    if ($user->webpage_url) {
         $formElementsSection1 .= getFormFieldForParams(array(
             'propName'               => 'webpage_url',
             'label'                  => 'Webpage URL',
@@ -451,7 +451,7 @@ if ($userIsLoggedIn) { // it's an update
     }
 
 } else { // it's an insert
-    if ($unpersistedUser->facebook_url) {
+    if ($user->facebook_url) {
         $formElementsSection2 .= getFormFieldForParams(array(
             'propName'               => 'facebook_url',
             'label'                  => 'Facebook URL',

@@ -56,7 +56,9 @@ if (get_param('action') == 'save') {
 
         $user->save();
 
-        handleUserImageUpload($user);
+        // handle user image upload or facebook image download
+        handleUserImageUploadOrFacebookImageDownload($user);
+        $user->save();
 
         $newPasswordMd5 = $user->password_md5;
 
@@ -886,7 +888,7 @@ function processParams(&$user, $userIsLoggedIn) {
     }
 }
 
-function handleUserImageUpload(&$user) {
+function handleUserImageUploadOrFacebookImageDownload(&$user) {
     global $logger;
 
     $userImgSubdir = null;

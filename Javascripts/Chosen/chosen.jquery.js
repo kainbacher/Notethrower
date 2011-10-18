@@ -165,15 +165,11 @@
       }
     };
     Chosen.prototype.container_mousedown = function(evt) {
-
       var target_closelink;
 	  var target_addlink;
       if (!this.is_disabled) {
 		target_closelink = evt != null ? ($(evt.target)).hasClass("search-choice-close") : false;
 		target_addlink = evt != null ? (($(evt.target)).hasClass("add-result") || ($(evt.target)).parent().hasClass("add-result")) : false;
-		
-		
-		//console.debug(target_addlink);
 		
         if (evt && evt.type === "mousedown") {
           evt.stopPropagation();
@@ -183,13 +179,13 @@
 			if(jQuery.isEmptyObject(target_addlink_text)){
 				target_addlink_text = $(evt.target).text();
 			}
-			console.debug(this.form_field);
 			
 			$(this.form_field).append('<option value="new_'+target_addlink_text+'" selected>'+target_addlink_text+'</option>');		
 			this.results_toggle();
 			$(this.form_field).trigger("liszt:updated");
 		}
         if (!this.pending_destroy_click && !target_closelink) {
+		  
           if (!this.active_field) {
             if (this.is_multiple) {
               this.search_field.val("");
@@ -202,6 +198,7 @@
           }
           return this.activate_field();
         } else {
+		  
           return this.pending_destroy_click = false;
         }
       }
@@ -469,6 +466,7 @@
         this.results_hide();
       }
       this.result_deselect(link.attr("rel"));
+	  
       return link.parents('li').first().remove();
     };
     Chosen.prototype.results_reset = function(evt) {
@@ -527,6 +525,8 @@
       this.form_field.options[result_data.options_index].selected = false;
       result = $("#" + this.container_id + "_o_" + pos);
       result.removeClass("result-selected").addClass("active-result").show();
+      $(this.form_field).find('option[value="'+result_data.value+'"]').remove();
+      this.form_field_jq.trigger("liszt:updated");
       this.result_clear_highlight();
       this.winnow_results();
       this.form_field_jq.trigger("change");

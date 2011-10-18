@@ -899,6 +899,9 @@ function handleUserImageUpload(&$user) {
 
     $upload_filename = $user->id . '_' . time() . '.jpg';
 
+    // make sure the directory exists
+    create_directory($upload_dir . $GLOBALS['PATH_SEPARATOR']);
+
     $upload_img_file = $upload_dir . $GLOBALS['PATH_SEPARATOR'] . $upload_filename;
     $final_img_filename = md5('Wuizi' . $user->id) . '.jpg'; // must be unique (see safe mode logic above)
     $final_thumb_img_filename = md5('Wuizi' . $user->id) . '_thumb.jpg'; // must be unique (see safe mode logic above)
@@ -932,7 +935,13 @@ function handleUserImageUpload(&$user) {
         $logger->info('getting user profile picture from facebook: ' . $fbImgUrl);
         $data = file_get_contents($fbImgUrl);
         if ($data) {
-            file_put_contents($upload_img_file, $data);
+            $logger->info('saving downloaded facebook user profile image to file: ' . $upload_img_file);
+            $ok = file_put_contents($upload_img_file, $data);
+            if ($ok === false) {
+                $logger->warn('failed to save downloaded facebook user profile image to file: ' . $upload_img_file);
+            } else {
+                chmod($upload_img_file, 0666);
+            }
 
             $logger->info('resizing uploaded image');
             umask(0777); // most probably ignored on windows systems

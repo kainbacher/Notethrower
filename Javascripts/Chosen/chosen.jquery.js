@@ -165,26 +165,29 @@
       }
     };
     Chosen.prototype.container_mousedown = function(evt) {
+
       var target_closelink;
 	  var target_addlink;
       if (!this.is_disabled) {
 		target_closelink = evt != null ? ($(evt.target)).hasClass("search-choice-close") : false;
-		target_addlink = evt != null ? (($(evt.target)).hasClass("add-result") || ($(evt.target)).parent().hasClass("add-result")) : false;
+		target_addlink = evt != null ? ($(evt.target)).hasClass("button-small grey") : false;
 		
         if (evt && evt.type === "mousedown") {
           evt.stopPropagation();
         }
 		if (target_addlink) {
-			target_addlink_text = $(evt.target).find('span').text();
-			if(jQuery.isEmptyObject(target_addlink_text)){
-				target_addlink_text = $(evt.target).text();
-			}
+			//target_addlink_text = $(evt.target).find('span').text();
+			//if(jQuery.isEmptyObject(target_addlink_text)){
+			//	target_addlink_text = $(evt.target).text();
+			//}
+			target_addlink_text = $(evt.target).siblings().text();
 			
-			$(this.form_field).append('<option value="new_'+target_addlink_text+'" selected>'+target_addlink_text+'</option>');		
+			$(this.form_field).append('<option value="new_'+target_addlink_text+'" selected>'+target_addlink_text+'</option>');	
 			this.results_toggle();
 			$(this.form_field).trigger("liszt:updated");
+			
 		}
-        if (!this.pending_destroy_click && !target_closelink) {
+        else if (!this.pending_destroy_click && !target_closelink) {
 		  
           if (!this.active_field) {
             if (this.is_multiple) {
@@ -525,9 +528,9 @@
       this.form_field.options[result_data.options_index].selected = false;
       result = $("#" + this.container_id + "_o_" + pos);
       result.removeClass("result-selected").addClass("active-result").show();
-      $(this.form_field).find('option[value="'+result_data.value+'"]').remove();
-      this.form_field_jq.trigger("liszt:updated");
-      this.result_clear_highlight();
+	  $(this.form_field).find('option[value="'+result_data.value+'"]').remove();
+	  this.form_field_jq.trigger("liszt:updated");
+	  this.result_clear_highlight();
       this.winnow_results();
       this.form_field_jq.trigger("change");
       return this.search_field_scale();
@@ -626,12 +629,13 @@
     };
     Chosen.prototype.no_results = function(terms) {
       var no_results_html;
-      no_results_html = $('<li class="no-results">' + this.results_none_found + ' "<span></span>"</li>');
+      no_results_html = $('<li class="no-results">' + this.results_none_found + ' "<span></span>" <span style="cursor:pointer;" class="button-small grey">Add</span></li>');
       no_results_html.find("span").first().html(terms);
-	  var add_notfound_html;
-	  add_notfound_html = $('<li class="add-result">Add "<span></span>"</li>');
-	  add_notfound_html.find("span").first().html(terms);
-      return this.search_results.append(no_results_html, add_notfound_html);
+	  //var add_notfound_html;
+	  //add_notfound_html = $('<li class="add-result">Add "<span></span>"</li>');
+	  //add_notfound_html.find("span").first().html(terms);
+      //return this.search_results.append(no_results_html, add_notfound_html);
+	  return this.search_results.append(no_results_html);
     };
     Chosen.prototype.no_results_clear = function() {
       return this.search_results.find(".no-results").remove();

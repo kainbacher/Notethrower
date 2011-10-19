@@ -1,5 +1,4 @@
 <?php
-
 include_once('../Includes/Init.php');
 
 include_once('../Includes/FormUtil.php');
@@ -275,7 +274,7 @@ $formElementsList .= getFormFieldForParams(array(
     'propName'               => 'subGenres',
     'label'                  => 'Sub genres',
     'mandatory'              => false,
-    'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
+    'cssClassSuffix'         => 'chzn-select chzn-modify', // this triggers a conversion to a "chosen" select field
     'obj'                    => $project,
     'unpersistedObj'         => $unpersistedProject,
     'selectOptions'          => Genre::getSelectorOptionsArray(),
@@ -284,6 +283,7 @@ $formElementsList .= getFormFieldForParams(array(
     'workWithUnpersistedObj' => $problemOccured
 ));
 
+/* DEPRECATED - handled by chosen.js
 // "create new genre"
 $formElementsList .= getFormFieldForParams(array(
     'propName'               => 'newGenre',
@@ -296,6 +296,7 @@ $formElementsList .= getFormFieldForParams(array(
     'workWithUnpersistedObj' => $problemOccured,
     'infoText'               => 'If you can\'t find the right genre in the selection above, you can add it here. It will be added to the sub genres list, when you click "Save".'
 ));
+*/
 
 // mood
 $formElementsList .= getFormFieldForParams(array(
@@ -303,7 +304,7 @@ $formElementsList .= getFormFieldForParams(array(
     'propName'               => 'moods',
     'label'                  => 'Moods',
     'mandatory'              => false,
-    'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
+    'cssClassSuffix'         => 'chzn-select chzn-modify', // this triggers a conversion to a "chosen" select field
     'obj'                    => $project,
     'unpersistedObj'         => $unpersistedProject,
     'selectOptions'          => Mood::getSelectorOptionsArray(true),
@@ -312,6 +313,7 @@ $formElementsList .= getFormFieldForParams(array(
     'workWithUnpersistedObj' => $problemOccured
 ));
 
+/* DEPRECATED - handled by chosen.js
 // "create new mood"
 $formElementsList .= getFormFieldForParams(array(
     'propName'               => 'newMood',
@@ -324,7 +326,7 @@ $formElementsList .= getFormFieldForParams(array(
     'workWithUnpersistedObj' => $problemOccured,
     'infoText'               => 'If you can\'t find the right mood in the selection above, you can add it here. It will be added to the moods list, when you click "Save".'
 ));
-
+*/
 // project attributes
 $formElementsList .= getFormFieldForParams(array(
     'inputType'              => 'multiselect2',
@@ -552,12 +554,13 @@ function inputDataOk(&$errorFields, &$project) {
         $errorFields['mainGenre'] = 'Please choose a main genre here!';
         $result = false;
     }
-
+    /*
     if (preg_match('/[^0-9,]/', get_param('projectSubGenresList'))) {
         $errorFields['subGenres'] = 'Invalid genres list'; // can only happen when someone plays around with the post data
         $result = false;
     }
-
+    */
+   
     if (get_numeric_param('mainGenre') && get_param('projectSubGenresList')) {
         $subGenres = explode(',', get_param('projectSubGenresList'));
         if (in_array(get_numeric_param('mainGenre'), $subGenres)) {
@@ -566,10 +569,12 @@ function inputDataOk(&$errorFields, &$project) {
         }
     }
 
+    /*
     if (preg_match('/[^0-9,]/', get_param('projectMoodsList'))) {
         $errorFields['moods'] = 'Invalid moods list'; // can only happen when someone plays around with the post data
         $result = false;
     }
+    */ 
 
 // currently hidden, but maybe a candidate for pro users
 //    if (strlen(get_param('visibility')) < 1) {
@@ -633,7 +638,48 @@ function processParams(&$project, &$loggedInUser) {
 //        }
 //    }
 
-    // save new genre, if one was entered
+    // create genre list and save new genre, if one was entered
+    $subgenres = explode(',', get_param('projectSubGenresList'));
+    $newGenreList = array();
+    $projectSubGenresList = array();
+    foreach($subgenres as $subgenre){
+        $newCheck = strstr($subgenre, 'new_');
+        if($newCheck){
+            
+            $newGenre = Genre::fetchForName($subgenre);
+            if (!$newGenre || !$newGenre->id) {
+                $newGenre = new Genre();
+                $newGenre->name = substr($newCheck,4,strlen($newCheck));
+                $newGenre->insert();
+                $newGenreList[] = $newGenre->id;
+            }
+        }
+        else {
+            $projectSubGenresList[] = $subgenre;
+        }
+    }
+
+    // create moods list and save new mood, if one was entered
+    $moods = explode(',', get_param('projectMoodsList'));
+    $newMoodsList = array();
+    $projectMoodsList = array();
+    foreach($moods as $mood){
+        $newCheck = strstr($mood, 'new_');
+        if($newCheck){
+            
+            $newMood = Mood::fetchForName($mood);
+            if (!$newMood || !$newMood->id) {
+                $newMood = new Mood();
+                $newMood->name = substr($newCheck,4,strlen($newCheck));
+                $newMood->insert();
+                $newMoodsList[] = $newMood->id;
+            }
+        }
+        else {
+            $projectMoodsList[] = $mood;
+        }
+    }
+    /*
     $newGenre = null;
     if (get_param('newGenre')) {
         $newGenre = Genre::fetchForName(get_param('newGenre'));
@@ -654,12 +700,13 @@ function processParams(&$project, &$loggedInUser) {
             $newMood->insert();
         }
     }
-
+    */
     // handle project main & sub genres
-    $projectSubGenresList = explode(',', get_param('projectSubGenresList'));
-    if ($newGenre) $projectSubGenresList[] = $newGenre->id;
+    //$projectSubGenresList = explode(',', get_param('projectSubGenresList'));
+    //if ($newGenre) $projectSubGenresList[] = $newGenre->id;
+    $projectSubGenresList = array_merge($projectSubGenresList, $newGenreList);
     $projectSubGenresList = array_unique($projectSubGenresList);
-
+    
     if ($project->id) {
         ProjectGenre::deleteForProjectId($project->id); // first, delete all existing genres
         if (get_numeric_param('mainGenre')) ProjectGenre::addAll(array(get_numeric_param('mainGenre')), $project->id, 1); // then save the selected main genre
@@ -671,8 +718,9 @@ function processParams(&$project, &$loggedInUser) {
     }
 
     // handle project moods
-    $projectMoodsList = explode(',', get_param('projectMoodsList'));
-    if ($newMood) $projectMoodsList[] = $newMood->id;
+    //$projectMoodsList = explode(',', get_param('projectMoodsList'));
+    //if ($newMood) $projectMoodsList[] = $newMood->id;
+    $projectMoodsList = array_merge($projectMoodsList, $newMoodsList);
     $projectMoodsList = array_unique($projectMoodsList);
 
     if ($project->id) {

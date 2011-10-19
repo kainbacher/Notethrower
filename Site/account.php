@@ -184,7 +184,7 @@ if ($userIsLoggedIn) { // it's an update
             'propName'               => 'attributes',
             'label'                  => 'Skills',
             'mandatory'              => false,
-            'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
+            'cssClassSuffix'         => 'chzn-select chzn-modify', // this triggers a conversion to a "chosen" select field
             'obj'                    => $user,
             'unpersistedObj'         => $unpersistedUser,
             'selectOptions'          => $selectOptions,
@@ -215,7 +215,7 @@ if ($userIsLoggedIn) { // it's an update
             'propName'               => 'genres',
             'label'                  => 'Genres',
             'mandatory'              => false,
-            'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
+            'cssClassSuffix'         => 'chzn-select chzn-modify', // this triggers a conversion to a "chosen" select field
             'obj'                    => $user,
             'unpersistedObj'         => $unpersistedUser,
             'selectOptions'          => Genre::getSelectorOptionsArray(),

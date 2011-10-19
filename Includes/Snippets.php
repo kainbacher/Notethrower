@@ -553,7 +553,7 @@ function move_file($src, $dest, $allowOverwriting = true) {
 
 function create_directory($dir) {
     global $logger;
-
+    
     if (is_dir($dir)) return;
 
     $logger->info('creating directory: ' . $dir);

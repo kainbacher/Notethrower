@@ -629,7 +629,12 @@
     };
     Chosen.prototype.no_results = function(terms) {
       var no_results_html;
-      no_results_html = $('<li class="no-results">' + this.results_none_found + ' "<span></span>" <span style="cursor:pointer;" class="button-small grey">Add</span></li>');
+	  
+	  if($(this.form_field).hasClass('chzn-modify')){
+		no_results_html = $('<li class="no-results">' + this.results_none_found + ' "<span></span>" <span style="cursor:pointer;" class="button-small grey">Add</span></li>');
+	  } else {
+		no_results_html = $('<li class="no-results">' + this.results_none_found + ' "<span></span>"</li>');	  
+	  };
       no_results_html.find("span").first().html(terms);
 	  //var add_notfound_html;
 	  //add_notfound_html = $('<li class="add-result">Add "<span></span>"</li>');

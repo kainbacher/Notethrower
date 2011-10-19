@@ -67,7 +67,7 @@ $(function() {
 		url : 'upload.php',
 		max_file_size : '500mb',
 		max_file_count: 20, // user can add no more then 20 files at a time
-		chunk_size : '5mb',
+		//chunk_size : '5mb',
 		unique_names : true,
 		//multiple_queues : true,
 

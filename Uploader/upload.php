@@ -98,7 +98,7 @@ $logger->info('content type: ' . $contentType);
 if (strpos($contentType, "multipart") !== false) {
     if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
 	    // Open temp file
-		$logger->info('opening target file: ' . $targetDir . DIRECTORY_SEPARATOR . $fileName);
+		$logger->info('opening target file: ' . $targetDir . DIRECTORY_SEPARATOR . $fileName . ' (mode: ' . ($chunk == 0 ? "wb" : "ab") . ')');
         $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
 		if ($out) {
 		    // Read binary input stream and append it to temp file
@@ -113,7 +113,7 @@ if (strpos($contentType, "multipart") !== false) {
 			}
 			fclose($in);
 			fclose($out);
-			@unlink($_FILES['file']['tmp_name']);
+			//@unlink($_FILES['file']['tmp_name']);
 		} else {
 		    $logger->info('cp3');
 			die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
@@ -124,7 +124,7 @@ if (strpos($contentType, "multipart") !== false) {
 	}
 } else {
     // Open temp file
-	$logger->info('opening target file: ' . $targetDir . DIRECTORY_SEPARATOR . $fileName);
+	$logger->info('opening target file: ' . $targetDir . DIRECTORY_SEPARATOR . $fileName . ' (mode: ' . ($chunk == 0 ? "wb" : "ab") . ')');
     $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
 	if ($out) {
 	    // Read binary input stream and append it to temp file

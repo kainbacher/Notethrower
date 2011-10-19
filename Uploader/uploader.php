@@ -176,13 +176,13 @@ if ($singleFileOnly) {
 	function processSingleUploadedFile(filename, origFilename) {
 	    $.ajax({
             type: 'POST',
-            url: '<?= $GLOBALS['BASE_URL'] ?>Uploader/processUploadedFile.php',
-            data: 'action=process' +
+            url: '<?= $GLOBALS['BASE_URL'] ?>Uploader/processUploadedFile.php?action=process' +
                   '&pid=<?= $projectId ?>' +
                   '&filename='     + encodeURIComponent(filename) +
                   '&origFilename=' + encodeURIComponent(origFilename) +
                   '&isMixMp3=<?= $isMixMp3 ?>' +
                   '&cs=<?= md5('PoopingInTheWoods' . $projectId . '_' . $isMixMp3) ?>',
+            data: '',
             dataType: 'text',
             cache: false,
             timeout: 15000, // 15 seconds

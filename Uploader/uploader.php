@@ -2,6 +2,7 @@
 
 include_once('../Includes/Init.php');
 
+include_once('../Includes/Config.php');
 include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
 
@@ -175,7 +176,7 @@ if ($singleFileOnly) {
 	function processSingleUploadedFile(filename, origFilename) {
 	    $.ajax({
             type: 'POST',
-            url: 'processUploadedFile.php',
+            url: '<?= $GLOBALS['BASE_URL'] ?>processUploadedFile.php',
             data: 'action=process' +
                   '&pid=<?= $projectId ?>' +
                   '&filename='     + encodeURIComponent(filename) +

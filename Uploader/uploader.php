@@ -3,6 +3,10 @@
 include_once('../Includes/Init.php');
 
 include_once('../Includes/Snippets.php');
+include_once('../Includes/DB/User.php');
+
+$user = User::new_from_cookie();
+ensureUserIsLoggedIn($user);
 
 $projectId      = get_numeric_param('pid');
 $singleFileOnly = get_numeric_param('sf');

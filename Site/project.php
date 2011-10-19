@@ -16,6 +16,8 @@ include_once('../Includes/DB/ProjectMood.php');
 include_once('../Includes/DB/ProjectUserVisibility.php');
 include_once('../Includes/DB/User.php');
 
+$logger->set_debug_level();
+
 // FIXME - use this in upload form:
 // <input type="hidden" name="MAX_FILE_SIZE" value="524288001">
 
@@ -455,11 +457,11 @@ function getUploadedFilesSection(&$project, $messageList) {
 
     $masterFound = ProjectFile::master_mp3_file_found_for_project_id($project->id);
     if ($masterFound) {
-        $project->status = 'active';
+        if ($project->status == 'inactive') $project->status = 'active';
         $project->save();
 
     } else {
-        $project->status = 'inactive';
+        if ($project->status == 'active') $project->status = 'inactive';
         $project->save();
         $messageList .= processTpl('Common/message_notice.html', array(
             '${msg}' => 'Please upload a mix MP3 file to make sure your project is activated.<br />' .

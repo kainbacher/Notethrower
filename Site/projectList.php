@@ -7,6 +7,8 @@ include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/User.php');
 
+$logger->set_debug_level();
+
 $user = User::new_from_cookie();
 ensureUserIsLoggedIn($user);
 

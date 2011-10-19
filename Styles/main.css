@@ -962,100 +962,8 @@ a.nohighlight:hover {
     margin-bottom: 10px;
 }
 
-/* !contentTop Startpage */
-/* ---------------------------------------------------------------------- */
-
-#contentTopStart {
-    height: 522px;
-    left: 0px;
-    overflow: hidden;
-}
-
-.contentTopStartOuter {
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
-    width: 998px;
-}
-
-.contentTopStartInner {
-    left: 0px;
-    position: absolute;
-    width: 8000px;
-}
-
-#startpagePaginatorWrapper {
-    margin-top: 35px;
-}
-
-#startpagePaginatorWrapper ul {
-    list-style: none;
-}
-
-#startpagePaginatorWrapper li {
-    float: left;
-}
-
-#startpagePaginatorWrapper a {
-    display: block;
-    height: 70px;
-    margin-right: 20px;
-    width: 70px;
-}
-
-
-#startpagePaginatorBack a {
-    background-image: url(../Images/paginator/paginator_back.png);
-}
-
-#startpagePaginatorBack a:hover {
-    background-image: url(../Images/paginator/paginator_back_hover.png);
-}
-
-#startpagePaginatorBackAct a {
-    background-image: url(../Images/paginator/paginator_back_hover.png);
-}
-
-#startpagePaginator1 a {
-    background-image: url(../Images/paginator/paginator_01.png);
-}
-
-#startpagePaginator1 a:hover {
-    background-image: url(../Images/paginator/paginator_01_hover.png);
-}
-
-#startpagePaginator1Act a {
-    background-image: url(../Images/paginator/paginator_01_hover.png);
-}
-
-#startpagePaginator2 a {
-    background-image: url(../Images/paginator/paginator_02.png);
-}
-
-#startpagePaginator2 a:hover {
-    background-image: url(../Images/paginator/paginator_02_hover.png);
-}
-
-#startpagePaginator2Act a {
-    background-image: url(../Images/paginator/paginator_02_hover.png);
-}
-
-#startpagePaginator3 a {
-    background-image: url(../Images/paginator/paginator_03.png);
-}
-
-#startpagePaginator3 a:hover {
-    background-image: url(../Images/paginator/paginator_03_hover.png);
-}
-
-#startpagePaginator3Act a {
-    background-image: url(../Images/paginator/paginator_03_hover.png);
-}
-
-
 /* !userProfil Form */
 /* ---------------------------------------------------------------------- */
-
 
 #userFormDiv {
     background-color: #f9f9f9;
@@ -1817,6 +1725,40 @@ a.nohighlight:hover {
     margin-top: 18px;
 }
 
+
+
+/* !startpage */
+/* ---------------------------------------------------------------------- */
+
+.startListenSorting {
+    font-size: 12px;
+}
+
+.startListen {
+    border-top: 1px solid #ccc;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.startListen li {
+    border-bottom: 1px solid #ccc;
+}
+
+.startListenTitle {
+    float: left;
+    width: 100px;
+}
+
+.startListenPlay {
+    float: left;
+    width: 80px;
+}
+
+.startListenMusicians {
+    float: left;
+    width: 240px;
+}
 
 
 

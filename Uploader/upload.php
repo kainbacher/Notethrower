@@ -113,7 +113,8 @@ if (strpos($contentType, "multipart") !== false) {
 			}
 			fclose($in);
 			fclose($out);
-			//@unlink($_FILES['file']['tmp_name']);
+			$logger->info('deleting file: ' . $_FILES['file']['tmp_name']);
+			@unlink($_FILES['file']['tmp_name']);
 		} else {
 		    $logger->info('cp3');
 			die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');

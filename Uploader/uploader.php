@@ -2,6 +2,7 @@
 
 include_once('../Includes/Init.php');
 
+include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/User.php');
 

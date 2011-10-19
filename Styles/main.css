@@ -655,6 +655,7 @@ a.nohighlight:hover {
 .topMenuItem a {
     color: #cccccc;
 	display: block;
+    padding-bottom: 4px;
 	padding-top: 10px;
 	padding-left: 15px;
 	padding-right: 15px;

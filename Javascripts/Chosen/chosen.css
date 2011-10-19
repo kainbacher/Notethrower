@@ -146,7 +146,7 @@
   background-image: -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eeeeee',GradientType=0 );
   background-image: linear-gradient(top, #ffffff 85%,#eeeeee 99%);
-  border: 1px solid #aaa;
+  border: 1px solid #ddd;
   margin: 0;
   padding: 0;
   cursor: text;

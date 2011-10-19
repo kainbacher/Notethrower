@@ -32,6 +32,17 @@ if (md5('PoopingInTheWoods' . $projectId) != $checksum) {
 		background:url(bg.jpg);
 	}
 </style>
+
+<!-- new:
+<style type="text/css">@import url(js/jquery.ui.plupload/css/jquery.ui.plupload.css);</style>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+
+<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
+
+<script type="text/javascript" src="js/plupload.full.js"></script>
+<script type="text/javascript" src="js/jquery.ui.plupload/jquery.ui.plupload.js"></script>
+-->
+
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" type="text/css" />
 <link rel="stylesheet" href="js/jquery.ui.plupload/css/jquery.ui.plupload.css" type="text/css" />
 
@@ -48,12 +59,10 @@ if (md5('PoopingInTheWoods' . $projectId) != $checksum) {
 <script type="text/javascript" src="js/plupload.html5.js"></script>
 <script type="text/javascript" src="js/jquery.ui.plupload/jquery.ui.plupload.js"></script>
 
-</head>
-<body>
 
-<form action="upload.php">
+<link rel="sty<form action="upload.php">
   <div id="uploader">
-    <p>You browser doesn't have Silverlight, Gears, BrowserPlus or HTML5 support.</p>
+    <p>You browser doesn't have Silverlight, Gears, BrowserPlus, Flash or HTML5 support.</p>
   </div>
 </form>
 

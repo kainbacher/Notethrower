@@ -1,7 +1,10 @@
 <?php
 
 include_once('../Includes/Init.php');
+
 include_once('../Includes/Snippets.php');
+
+$logger->set_debug_level();
 
 /**
  * upload.php
@@ -19,6 +22,8 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
+
+$logger->info('headers sent');
 
 // Settings
 //$targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
@@ -55,9 +60,13 @@ if ($chunks < 2 && file_exists($targetDir . DIRECTORY_SEPARATOR . $fileName)) {
 	$fileName = $fileName_a . '_' . $count . $fileName_b;
 }
 
+$logger->info('fileName: ' . $fileName);
+
 // Create target dir
-if (!file_exists($targetDir))
+if (!file_exists($targetDir)) {
+    $logger->info('creating targetDir: ' . $targetDir);
 	@mkdir($targetDir);
+}
 
 // Remove old temp files
 /* this doesn't really work by now
@@ -83,8 +92,11 @@ if (isset($_SERVER["HTTP_CONTENT_TYPE"]))
 if (isset($_SERVER["CONTENT_TYPE"]))
 	$contentType = $_SERVER["CONTENT_TYPE"];
 
+$logger->info('content type: ' . $contentType);
+
 // Handle non multipart uploads older WebKit versions didn't support multipart in HTML5
 if (strpos($contentType, "multipart") !== false) {
+    $logger->info('cp1');
     if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
 	    // Open temp file
 		$out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
@@ -95,15 +107,21 @@ if (strpos($contentType, "multipart") !== false) {
 			if ($in) {
 				while ($buff = fread($in, 4096))
 					fwrite($out, $buff);
-			} else
+			} else {
+			    $logger->info('cp2');
 				die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+			}
 			fclose($in);
 			fclose($out);
 			@unlink($_FILES['file']['tmp_name']);
-		} else
+		} else {
+		    $logger->info('cp3');
 			die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
-	} else
+		}
+	} else {
+	    $logger->info('cp4');
 		die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
+	}
 } else {
     // Open temp file
 	$out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
@@ -114,18 +132,23 @@ if (strpos($contentType, "multipart") !== false) {
 		if ($in) {
 			while ($buff = fread($in, 4096))
 				fwrite($out, $buff);
-		} else
+		} else {
+		    $logger->info('cp5');
 			die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+        }
 
 		fclose($in);
 		fclose($out);
-	} else
+	} else {
+	    $logger->info('cp6');
 		die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
+	}
 }
 
 //chmod($targetDir . DIRECTORY_SEPARATOR . $fileName, 0666);
 
 // Return JSON-RPC response
+$logger->info('cp7');
 die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
 
 ?>

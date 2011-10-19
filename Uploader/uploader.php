@@ -176,7 +176,7 @@ if ($singleFileOnly) {
 	function processSingleUploadedFile(filename, origFilename) {
 	    $.ajax({
             type: 'POST',
-            url: '<?= $GLOBALS['BASE_URL'] ?>processUploadedFile.php',
+            url: '<?= $GLOBALS['BASE_URL'] ?>Uploader/processUploadedFile.php',
             data: 'action=process' +
                   '&pid=<?= $projectId ?>' +
                   '&filename='     + encodeURIComponent(filename) +

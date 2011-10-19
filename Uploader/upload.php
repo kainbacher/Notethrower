@@ -96,10 +96,10 @@ $logger->info('content type: ' . $contentType);
 
 // Handle non multipart uploads older WebKit versions didn't support multipart in HTML5
 if (strpos($contentType, "multipart") !== false) {
-    $logger->info('cp1');
     if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
 	    // Open temp file
-		$out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
+		$logger->info('opening target file: ' . $targetDir . DIRECTORY_SEPARATOR . $fileName);
+        $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
 		if ($out) {
 		    // Read binary input stream and append it to temp file
 			$in = fopen($_FILES['file']['tmp_name'], "rb");
@@ -124,7 +124,8 @@ if (strpos($contentType, "multipart") !== false) {
 	}
 } else {
     // Open temp file
-	$out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
+	$logger->info('opening target file: ' . $targetDir . DIRECTORY_SEPARATOR . $fileName);
+    $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
 	if ($out) {
 	    // Read binary input stream and append it to temp file
 		$in = fopen("php://input", "rb");

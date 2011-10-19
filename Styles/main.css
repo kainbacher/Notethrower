@@ -790,7 +790,7 @@ a.nohighlight:hover {
 
 #mainMenu li {
     background-image: url(../Images/menu-spacer.png);
-    background-position: right center;
+    background-position: left center;
     background-repeat: no-repeat;
 	float: left;
 	text-align: center;

@@ -27,7 +27,7 @@ $logger->info('headers sent');
 
 // Settings
 //$targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
-$targetDir = 'uploads/';
+$targetDir = 'uploads';
 
 //$cleanupTargetDir = false; // Remove old files
 //$maxFileAge = 60 * 60; // Temp file age in seconds
@@ -146,7 +146,7 @@ if (strpos($contentType, "multipart") !== false) {
 	}
 }
 
-//chmod($targetDir . DIRECTORY_SEPARATOR . $fileName, 0666);
+chmod($targetDir . DIRECTORY_SEPARATOR . $fileName, 0666);
 
 // Return JSON-RPC response
 $logger->info('cp7');

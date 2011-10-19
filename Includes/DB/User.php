@@ -81,6 +81,7 @@ class User {
             }
 
         } else {
+            $logger->info('auth cookie not found');
             return null;
         }
     }

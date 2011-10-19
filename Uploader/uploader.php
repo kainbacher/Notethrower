@@ -70,7 +70,6 @@ $(function() {
 		chunk_size : '5mb',
 		unique_names : true,
 		multiple_queues : true,
-		urlstream_upload: true,
 
 		<?= $singleFileOnly ? 'multi_selection : false,' : '' ?>
 
@@ -177,7 +176,7 @@ if ($singleFileOnly) {
 	function processSingleUploadedFile(filename, origFilename) {
 	    $.ajax({
             type: 'POST',
-            url:  '<?= $GLOBALS['BASE_URL'] ?>Uploader/processUploadedFile.php',
+            url:  'processUploadedFile.php',
             data: 'action=process' +
                   '&pid=<?= $projectId ?>' +
                   '&filename='     + encodeURIComponent(filename) +

@@ -353,7 +353,6 @@ class User {
             $u = null;
             while ($row = mysql_fetch_array($result)) {
                 if ($previousUid != $row['id']) {
-                    $u = new User();
                     $u = User::_read_row($u, $row);
                     $u->offersAttributeIdsList   = array();
                     $u->offersAttributeNamesList = array();

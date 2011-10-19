@@ -441,7 +441,7 @@ function refreshProjectFilesSection(projectId) {
 
 function openUploaderPopup(isMixMp3File) {
     window.open(
-            '../Uploader/uploader.php?sf=0&pid=${projectId}&isMixMp3=' + (isMixMp3File ? 1 : 0),
+            '../Uploader/uploader.php?sf=0&pid=${projectId}&isMixMp3=' + (isMixMp3File ? 1 : 0) + '&cs=${uploaderChecksum}',
             'ONELOUDR_UPLOADER',
             'scrollbars=0,status=0,width=640,height=350'
     );

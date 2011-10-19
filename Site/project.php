@@ -436,6 +436,7 @@ processAndPrintTpl('Project/index.html', array(
     '${projectNeeds}'                           => escape(implode(', ', $projectNeedsList)),
     '${projectAdditionalInfo}'                  => escape($project->additionalInfo),
     '${type}'                                   => get_param('type') == 'remix' ? 'remix' : 'original',
+    '${uploaderChecksum}'                       => md5('PoopingInTheWoods' . $project->id),
     '${submitButtonValue}'                      => 'Save',
     '${Common/formElement_list}'                => $formElementsList,
     '${Project/uploadedFilesSection}'           => getUploadedFilesSection($project, $projectFilesMessageList),
@@ -560,7 +561,7 @@ function inputDataOk(&$errorFields, &$project) {
         $result = false;
     }
     */
-   
+
     if (get_numeric_param('mainGenre') && get_param('projectSubGenresList')) {
         $subGenres = explode(',', get_param('projectSubGenresList'));
         if (in_array(get_numeric_param('mainGenre'), $subGenres)) {
@@ -574,7 +575,7 @@ function inputDataOk(&$errorFields, &$project) {
         $errorFields['moods'] = 'Invalid moods list'; // can only happen when someone plays around with the post data
         $result = false;
     }
-    */ 
+    */
 
 // currently hidden, but maybe a candidate for pro users
 //    if (strlen(get_param('visibility')) < 1) {
@@ -645,7 +646,7 @@ function processParams(&$project, &$loggedInUser) {
     foreach($subgenres as $subgenre){
         $newCheck = strstr($subgenre, 'new_');
         if($newCheck){
-            
+
             $newGenre = Genre::fetchForName($subgenre);
             if (!$newGenre || !$newGenre->id) {
                 $newGenre = new Genre();
@@ -666,7 +667,7 @@ function processParams(&$project, &$loggedInUser) {
     foreach($moods as $mood){
         $newCheck = strstr($mood, 'new_');
         if($newCheck){
-            
+
             $newMood = Mood::fetchForName($mood);
             if (!$newMood || !$newMood->id) {
                 $newMood = new Mood();
@@ -706,7 +707,7 @@ function processParams(&$project, &$loggedInUser) {
     //if ($newGenre) $projectSubGenresList[] = $newGenre->id;
     $projectSubGenresList = array_merge($projectSubGenresList, $newGenreList);
     $projectSubGenresList = array_unique($projectSubGenresList);
-    
+
     if ($project->id) {
         ProjectGenre::deleteForProjectId($project->id); // first, delete all existing genres
         if (get_numeric_param('mainGenre')) ProjectGenre::addAll(array(get_numeric_param('mainGenre')), $project->id, 1); // then save the selected main genre

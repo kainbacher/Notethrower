@@ -4,17 +4,18 @@ include_once('../Includes/Init.php');
 
 include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
-include_once('../Includes/DB/User.php');
-
-$user = User::new_from_cookie();
-ensureUserIsLoggedIn($user);
 
 $projectId      = get_numeric_param('pid');
 $singleFileOnly = get_numeric_param('sf');
 $isMixMp3       = get_numeric_param('isMixMp3');
+$checksum       = get_param('cs');
 
 if (!$projectId) {
     show_fatal_error_and_exit('pid param is missing!');
+}
+
+if (md5('PoopingInTheWoods' . $projectId) != $checksum) {
+    show_fatal_error_and_exit('checksum failure!');
 }
 
 ?>
@@ -62,7 +63,7 @@ if (!$projectId) {
 $(function() {
 	$("#uploader").plupload({
 		// General settings
-		runtimes : 'browserplus,silverlight,gears,html5,flash,html4', // TODO - test all runtimes (html 4 makes problems in chrome, flash sometimes makes problems (error #2032))
+		runtimes : 'browserplus,silverlight,gears,flash,html5,html4', // TODO - test all runtimes (html 4 makes problems in chrome, flash sometimes makes problems (error #2032))
 		url : 'upload.php',
 		max_file_size : '500mb',
 		max_file_count: 20, // user can add no more then 20 files at a time
@@ -179,7 +180,8 @@ if ($singleFileOnly) {
                   '&pid=<?= $projectId ?>' +
                   '&filename='     + encodeURIComponent(filename) +
                   '&origFilename=' + encodeURIComponent(origFilename) +
-                  '&isMixMp3=' + <?= $isMixMp3 ?>,
+                  '&isMixMp3=<?= $isMixMp3 ?>' +
+                  '&cs=<?= md5('PoopingInTheWoods' . $projectId . '_' . $isMixMp3) ?>',
             dataType: 'text',
             cache: false,
             timeout: 15000, // 15 seconds

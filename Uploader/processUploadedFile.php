@@ -7,16 +7,20 @@ include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectFile.php');
-include_once('../Includes/DB/User.php');
-
-$user = User::new_from_cookie();
-ensureUserIsLoggedIn($user);
 
 if (get_param('action') == 'process') {
     $projectId    = get_numeric_param('pid');
     $filename     = get_param('filename');
     $origFilename = get_param('origFilename');
     $isMixMp3     = get_numeric_param('isMixMp3');
+    $checksum     = get_param('cs');
+
+    if (
+        md5('PoopingInTheWoods' . $projectId . '_' . $isMixMp3) !=
+        $checksum
+    ) {
+        show_fatal_error_and_exit('checksum failure!');
+    }
 
     if (!$projectId) {
         show_fatal_error_and_exit('pid param is missing!');
@@ -30,9 +34,12 @@ if (get_param('action') == 'process') {
         show_fatal_error_and_exit('origFilename param is missing!');
     }
 
-    ensureProjectIdBelongsToUserId($projectId, $user->id);
+    $project = Project::fetch_for_id($projectId);
+    if (!$project || !$project->id) {
+        show_fatal_error_and_exit('project not found for id: ' . $projectId);
+    }
 
-    handleNewFileUpload($projectId, $user->id, $filename, $origFilename, $isMixMp3);
+    handleNewFileUpload($projectId, $project->user_id, $filename, $origFilename, $isMixMp3);
 }
 
 // END

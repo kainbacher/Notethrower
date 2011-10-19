@@ -12,7 +12,7 @@ function ensureUserIsLoggedIn($user) {
 
     } else {
         $logger->info('user is NOT logged in');
-        header('Location: pleaseLogin.php');
+        header('Location: ../Site/pleaseLogin.php');
         exit;
     }
 }

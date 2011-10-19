@@ -69,7 +69,7 @@ $(function() {
 		max_file_count: 20, // user can add no more then 20 files at a time
 		chunk_size : '5mb',
 		unique_names : true,
-		multiple_queues : true,
+		//multiple_queues : true,
 
 		<?= $singleFileOnly ? 'multi_selection : false,' : '' ?>
 

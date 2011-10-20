@@ -425,9 +425,9 @@ class User {
 
                 $previousUid = $row['id'];
             }
-        }
 
-        mysql_free_result($result);
+            mysql_free_result($result);
+        }
 
         return $objs;
     }

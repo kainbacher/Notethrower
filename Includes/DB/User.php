@@ -357,7 +357,6 @@ class User {
                     $u->offersAttributeIdsList   = array();
                     $u->offersAttributeNamesList = array();
                     $objs[] = $u;
-                    echo '<pre>' . print_r($objs, true) . '</pre>';
                 }
 
                 $u->offersAttributeIdsList[]   = $row['attribute_id'];

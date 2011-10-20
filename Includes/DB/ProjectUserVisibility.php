@@ -199,7 +199,7 @@ class ProjectUserVisibility {
             'is_request                tinyint(1), ' .
             'primary key (user_id, project_id), ' .
             'key user_id (user_id), ' .
-            'index project_id (project_id), ' .
+            'index project_id (project_id) ' .
             ') default charset=utf8'
         );
 

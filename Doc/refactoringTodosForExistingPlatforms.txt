@@ -117,6 +117,7 @@ alter table pp_project drop column orig_preview_mp3_filename;
 alter table pp_project drop column price;
 
 alter table pp_project_user_visibility change track_id project_id int(10) not null;
+alter table pp_project_user_visibility add is_request tinyint(1);
 alter table pp_project_file change track_id project_id int(10) not null;
 alter table pp_project_attribute change track_id project_id int(10) not null;
 
@@ -126,6 +127,8 @@ alter table pp_project_attribute change track_id project_id int(10) not null;
 -> manually rename index pp_stats.artist_id to user_id
 -> manually rename index pp_project_file.track_id to project_id
 -> manually rename index pp_project_attribute.track_id to project_id
+
+-> manually create index pp_project_user_visibility.project_id
 
 
 #### change path on existing platforms:

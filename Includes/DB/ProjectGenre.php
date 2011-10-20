@@ -40,6 +40,27 @@ class ProjectGenre {
         return $objs;
     }
 
+    function fetchAllOfProject($project_id) {
+        $objs = array();
+
+        $result = _mysql_query(
+            'select pg.* ' .
+            'from pp_project_genre pg ' .
+            'where pg.project_id = ' . n($project_id)
+        );
+
+        while ($row = mysql_fetch_array($result)) {
+            $pg = new ProjectGenre();
+            ProjectGenre::_read_row($pg, $row);
+
+            $objs[] = $pg;
+        }
+
+        mysql_free_result($result);
+
+        return $objs;
+    }
+
     function addAll($genreIds, $projectId, $relevance = 0) {
         foreach ($genreIds as $id) {
             if ($id) {

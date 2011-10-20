@@ -63,6 +63,28 @@ class ProjectAttribute {
         return $objs;
     }
 
+    function fetchAllWithStatusOfProject($project_id, $status) {
+        $objs = array();
+
+        $result = _mysql_query(
+            'select pa.* ' .
+            'from pp_project_attribute pa ' .
+            'where pa.project_id = ' . n($project_id) . ' ' .
+            'and pa.status = ' . qq($status)
+        );
+
+        while ($row = mysql_fetch_array($result)) {
+            $f = new ProjectAttribute();
+            ProjectAttribute::_read_row($f, $row);
+
+            $objs[] = $f;
+        }
+
+        mysql_free_result($result);
+
+        return $objs;
+    }
+
     function addAll($attributeIds, $projectId, $status) {
         foreach ($attributeIds as $id) {
             if ($id) {

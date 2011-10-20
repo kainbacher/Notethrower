@@ -62,7 +62,7 @@ if (md5('PoopingInTheWoods' . $projectId) != $checksum) {
 
 <link rel="sty<form action="upload.php">
   <div id="uploader">
-    <p>You browser doesn't have Silverlight, Gears, BrowserPlus, Flash or HTML5 support.</p>
+    <p>You browser doesn't have BrowserPlus, Silverlight, Gears, Flash or HTML5 support.</p>
   </div>
 </form>
 
@@ -72,7 +72,7 @@ if (md5('PoopingInTheWoods' . $projectId) != $checksum) {
 $(function() {
 	$("#uploader").plupload({
 		// General settings
-		runtimes : 'browserplus,silverlight,gears,flash,html5,html4', // TODO - test all runtimes (html 4 makes problems in chrome, flash sometimes makes problems (error #2032))
+		runtimes : 'browserplus,silverlight,gears,flash,html5,html4', // TODO - test all runtimes (html 5/4 makes problems in chrome, flash sometimes makes problems (error #2032))
 		url : 'upload.php',
 		max_file_size : '500mb',
 		max_file_count: 20, // user can add no more then 20 files at a time

@@ -399,8 +399,8 @@ class User {
             'join pp_attribute a on a.id = ua.attribute_id ' .
             'left join pp_user_genre ug on ug.user_id = u.id ' .
             'where ' .
-            'ua.attribute_id in (' . implode(',', $attribute_id_list[$project_id]) . ') ' .
-            'and (ug.genre_id is null or ug.genre_id in (' . implode(',', $projects_genre_id_list[$project_id]) . ')) ' .
+            'ua.attribute_id in (' . implode(',', $attribute_id_list[$projectId]) . ') ' .
+            'and (ug.genre_id is null or ug.genre_id in (' . implode(',', $projects_genre_id_list[$projectId]) . ')) ' .
             'and ua.status = "offers" ' .
             'and u.status = "active" ' .
             'and u.id != ' . n($ownerUserId) . ' ' .

@@ -350,13 +350,14 @@ class User {
             );
 
             $previousUid = null;
-            $u = null;
             while ($row = mysql_fetch_array($result)) {
                 if ($previousUid != $row['id']) {
+                    $u = new User();
                     $u = User::_read_row($u, $row);
                     $u->offersAttributeIdsList   = array();
                     $u->offersAttributeNamesList = array();
                     $objs[] = $u;
+                    echo '<pre>' . print_r($objs, true) . '</pre>';
                 }
 
                 $u->offersAttributeIdsList[]   = $row['attribute_id'];
@@ -411,9 +412,9 @@ class User {
             );
 
             $previousUid = null;
-            $u = null;
             while ($row = mysql_fetch_array($result)) {
                 if ($previousUid != $row['id']) {
+                    $u = new User();
                     $u = User::_read_row($u, $row);
                     $u->offersAttributeIdsList   = array();
                     $u->offersAttributeNamesList = array();

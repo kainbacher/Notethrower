@@ -392,42 +392,40 @@ class User {
 
         // TODO - all this can most likely be done cleaner with a single select
 
-        if (count($clauses) > 0) {
-            $result = _mysql_query(
-                'select u.*, a.id as attribute_id, a.name as attribute_name ' .
-                'from pp_user u ' .
-                'join pp_user_attribute ua on ua.user_id = u.id ' .
-                'join pp_attribute a on a.id = ua.attribute_id ' .
-                'left join pp_user_genre ug on ug.user_id = u.id ' .
-                'where ' .
-                'ua.attribute_id in (' . implode(',', $attribute_id_list[$project_id]) . ') ' .
-                'and (ug.genre_id is null or ug.genre_id in (' . implode(',', $projects_genre_id_list[$project_id]) . ')) ' .
-                'and ua.status = "offers" ' .
-                'and u.status = "active" ' .
-                'and u.id != ' . n($ownerUserId) . ' ' .
-                // FIXME - limit/paging?
-                'group by u.id ' .
-                'order by u.name asc' // FIXME - sort by rating as soon as we have one?
-            );
+        $result = _mysql_query(
+            'select u.*, a.id as attribute_id, a.name as attribute_name ' .
+            'from pp_user u ' .
+            'join pp_user_attribute ua on ua.user_id = u.id ' .
+            'join pp_attribute a on a.id = ua.attribute_id ' .
+            'left join pp_user_genre ug on ug.user_id = u.id ' .
+            'where ' .
+            'ua.attribute_id in (' . implode(',', $attribute_id_list[$project_id]) . ') ' .
+            'and (ug.genre_id is null or ug.genre_id in (' . implode(',', $projects_genre_id_list[$project_id]) . ')) ' .
+            'and ua.status = "offers" ' .
+            'and u.status = "active" ' .
+            'and u.id != ' . n($ownerUserId) . ' ' .
+            // FIXME - limit/paging?
+            'group by u.id ' .
+            'order by u.name asc' // FIXME - sort by rating as soon as we have one?
+        );
 
-            $previousUid = null;
-            while ($row = mysql_fetch_array($result)) {
-                if ($previousUid != $row['id']) {
-                    $u = new User();
-                    $u = User::_read_row($u, $row);
-                    $u->offersAttributeIdsList   = array();
-                    $u->offersAttributeNamesList = array();
-                    $objs[] = $u;
-                }
-
-                $u->offersAttributeIdsList[]   = $row['attribute_id'];
-                $u->offersAttributeNamesList[] = $row['attribute_name'];
-
-                $previousUid = $row['id'];
+        $previousUid = null;
+        while ($row = mysql_fetch_array($result)) {
+            if ($previousUid != $row['id']) {
+                $u = new User();
+                $u = User::_read_row($u, $row);
+                $u->offersAttributeIdsList   = array();
+                $u->offersAttributeNamesList = array();
+                $objs[] = $u;
             }
 
-            mysql_free_result($result);
+            $u->offersAttributeIdsList[]   = $row['attribute_id'];
+            $u->offersAttributeNamesList[] = $row['attribute_name'];
+
+            $previousUid = $row['id'];
         }
+
+        mysql_free_result($result);
 
         return $objs;
     }

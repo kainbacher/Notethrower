@@ -225,7 +225,7 @@ var fileSelected = false;
 
     $files = ProjectFile::fetch_all_for_project_id($project->id, false);
     foreach ($files as $file) {
-        echo '<input type="radio" name="atfid" value="' . $file->id . '" onClick="fileSelected=true; checkInputs();">&nbsp;' . escape($file->orig_filename . ($file->is_master ? ' (Master/Mix file)' : '')) . '<br>' . "\n";
+        echo '<input type="radio" name="atfid" value="' . $file->id . '" onClick="fileSelected=true; checkInputs();">&nbsp;' . escape($file->orig_filename . ' (' . $file->type . ')') . '<br>' . "\n";
     }
 
 ?>

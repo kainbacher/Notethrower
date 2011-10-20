@@ -24,12 +24,11 @@ foreach ($newbornProjectIdList as $nbpid) {
     Project::delete_with_id($nbpid);
 }
 
-$originalProjects = Project::fetch_all_originals_of_user_id_from_to($user->id, 0, 999999999, true, true, -1);
-$remixedProjects  = Project::fetch_all_remixes_of_user_id_from_to($user->id, 0, 999999999, true, true, -1); // FIXME - this should go away, right?
+$projects = Project::fetch_all_unfinished_projects_of_user($user->id); // FIXME - deal with finished projects somehow
 
-$originalProjectsList = '';
-foreach ($originalProjects as $t) {
-    $originalProjectsList .= processTpl('ProjectList/projectListItem.html', array(
+$projectsList = '';
+foreach ($projects as $t) {
+    $projectsList .= processTpl('ProjectList/projectListItem.html', array(
         '${projectId}'           => $t->id,
         '${projectTitle}'        => escape($t->title),
         '${projectTitleEscaped}' => escape_and_rewrite_single_quotes($t->title)
@@ -37,30 +36,15 @@ foreach ($originalProjects as $t) {
     ));
 }
 
-if (count($originalProjects) == 0) {
-    $originalProjectsList = 'No projects found';
-}
-
-$remixedProjectsList = '';
-foreach ($remixedProjects as $t) {
-    $remixedProjectsList .= processTpl('ProjectList/projectListItem.html', array(
-        '${projectId}'           => $t->id,
-        '${projectTitle}'        => escape($t->title),
-        '${projectTitleEscaped}' => escape_and_rewrite_single_quotes($t->title)
-        // FIXME - later - visibility? facebook sharing? (see old script)
-    ));
-}
-
-if (count($remixedProjects) == 0) {
-    $remixedProjectsList = 'No projects found';
+if (count($projects) == 0) {
+    $projectsList = 'No projects found';
 }
 
 processAndPrintTpl('ProjectList/index.html', array(
     '${Common/pageHeader}'                          => buildPageHeader('My projects'),
     '${Common/bodyHeader}'                          => buildBodyHeader($user),
     '${Common/message_choice_optional}'             => $message,
-    '${ProjectList/projectListItem_originals_list}' => $originalProjectsList,
-    '${ProjectList/projectListItem_remixes_list}'   => $remixedProjectsList,
+    '${ProjectList/projectListItem_list}'           => $projectsList,
     '${Common/bodyFooter}'                          => buildBodyFooter(),
     '${Common/pageFooter}'                          => buildPageFooter()
 ));

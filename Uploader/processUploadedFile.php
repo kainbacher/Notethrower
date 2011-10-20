@@ -70,7 +70,7 @@ function handleNewFileUpload($projectId, $userId, $filename, $origFilename, $isM
     $newProjectFile->project_id    = $projectId;
     $newProjectFile->filename      = $userSubdir . $upload_filename;
     $newProjectFile->orig_filename = $origFilename;
-    $newProjectFile->is_master     = $isMixMp3 == 1 ? true : false;
+    $newProjectFile->type          = $isMixMp3 == 1 ? 'mix' : 'raw';
     $newProjectFile->status        = 'active';
     $newProjectFile->save();
 }

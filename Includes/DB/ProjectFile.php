@@ -9,8 +9,8 @@ class ProjectFile {
     var $project_id;
     var $filename;
     var $orig_filename;
-    var $is_master; // defines if the project file is a master/mix file (there can be more than one)
-    var $status;
+    var $type; // raw, mix, release
+    var $status; // inactive or active
     var $entry_date;
 
     // fields from referenced tables
@@ -73,7 +73,7 @@ class ProjectFile {
         $f->project_id            = $row['project_id'];
         $f->filename              = $row['filename'];
         $f->orig_filename         = $row['orig_filename'];
-        $f->is_master             = $row['is_master'];
+        $f->type                  = $row['type'];
         $f->status                = $row['status'];
         $f->entry_date            = reformat_sql_date($row['entry_date']);
 
@@ -94,7 +94,7 @@ class ProjectFile {
             'project_id            int(10)      not null, ' .
             'filename              varchar(255) not null, ' .
             'orig_filename         varchar(255) not null, ' .
-            'is_master             tinyint(1)   not null, ' .
+            'type                  varchar(10)  not null, ' .
             'status                varchar(20)  not null, ' .
             'entry_date            datetime     not null default "1970-01-01 00:00:00", ' .
             'primary key (id), ' .
@@ -127,7 +127,7 @@ class ProjectFile {
             'from pp_project_file ' .
             'where project_id = ' . n($tid) . ' ' .
             'and orig_filename like "%mp3" ' .
-            'and is_master = 1 ' .
+            'and type = "mix" ' .
             ($count_inactive_items ? 'and status in ("active", "inactive")' : 'and status = "active"')
         );
 
@@ -223,13 +223,12 @@ class ProjectFile {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_project_file ' .
-            '(project_id, filename, orig_filename, is_master, ' .
-            'status, entry_date) ' .
+            '(project_id, filename, orig_filename, type, status, entry_date) ' .
             'values (' .
             n($this->project_id)             . ', ' .
             qq($this->filename)              . ', ' .
             qq($this->orig_filename)         . ', ' .
-            b($this->is_master)              . ', ' .
+            qq($this->type)                  . ', ' .
             qq($this->status)                . ', ' .
             'now()'                          .
             ')'
@@ -250,7 +249,7 @@ class ProjectFile {
             'set project_id = ' . n($this->project_id)     . ', ' .
             'filename = '       . qq($this->filename)      . ', ' .
             'orig_filename = '  . qq($this->orig_filename) . ', ' .
-            'is_master = '      . qq($this->is_master)     . ', ' .
+            'type = '           . qq($this->type)          . ', ' .
             'status = '         . qq($this->status)        . ' ' .
             // entry_date intentionally not set here
             'where id = '       . n($this->id)

@@ -15,8 +15,8 @@ class Project {
     var $user_id;
     var $title; // the project name
     var $sorting; // not used at the moment but maybe useful in the future
-    var $type; // old: original or remix, new: drop this! but only after the old live data has been successfully converted into the new projects concept!
-    var $originating_user_id; // new: drop this! but only after the old live data has been successfully converted into the new projects concept!
+    //var $type; // old: original or remix, new: drop this! but only after the old live data has been successfully converted into the new projects concept!
+    //var $originating_user_id; // new: drop this! but only after the old live data has been successfully converted into the new projects concept!
     var $currency;
     var $rating_count;
     var $rating_value;
@@ -142,167 +142,167 @@ class Project {
         return $objs;
     }
 
-    function fetch_all_originals_of_user_id_from_to($aid, $from, $to, $show_inactive_items, $ignore_visibility, $visitorUserId) {
-        $objs = array();
-
-        $result = null;
-
-        if ($visitorUserId >= 0) {
-            $result = _mysql_query(
-                'select distinct t.*, a.name as user_name, a.image_filename as user_img_filename ' .
-                'from pp_project t, pp_user a, pp_project_user_visibility puv ' .
-                'where t.user_id = ' . n($aid) . ' ' .
-                'and t.type = "original" ' .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" ' .
-                                           'or t.visibility = "private" ' .
-                                           'and t.id = puv.project_id ' .
-                                           'and (puv.is_request is null or puv.is_request = 0) ' .
-                                           'and puv.user_id = ' . n($visitorUserId) . ') ') .
-                ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
-                'and t.user_id = a.id ' .
-                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
-                // why was that here? 'and t.id = puv.project_id ' .
-                'order by t.playback_count desc ' .
-                'limit ' . $from . ', ' . ($to - $from + 1)
-            );
-
-        } else {
-            $result = _mysql_query(
-                'select t.*, a.name as user_name, a.image_filename as user_img_filename ' .
-                'from pp_project t, pp_user a ' .
-                'where t.user_id = ' . n($aid) . ' ' .
-                'and t.type = "original" ' .
-                ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
-                ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
-                'and t.user_id = a.id ' .
-                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
-                'order by t.playback_count desc ' .
-                'limit ' . $from . ', ' . ($to - $from + 1)
-            );
-        }
-
-        $ind = 0;
-
-        while ($row = mysql_fetch_array($result)) {
-            $a = new Project();
-            $a = Project::_read_row($a, $row);
-
-            $objs[$ind] = $a;
-            $ind++;
-        }
-
-        mysql_free_result($result);
-
-        return $objs;
-    }
-
-    function fetch_all_remixes_of_user_id_from_to($aid, $from, $to, $show_inactive_items, $ignore_visibility, $visitorUserId) {
-        $objs = array();
-
-        $result = null;
-
-        if ($visitorUserId >= 0) {
-            $result = _mysql_query(
-                'select distinct t.* ' .
-                'from pp_project t, pp_user a, pp_project_user_visibility puv ' .
-                'where t.user_id = ' . n($aid) . ' ' .
-                'and t.type = "remix" ' .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" ' .
-                                           'or t.visibility = "private" ' .
-                                           'and t.id = puv.project_id ' .
-                                           'and (puv.is_request is null or puv.is_request = 0) ' .
-                                           'and puv.user_id = ' . n($visitorUserId) . ') ') .
-                ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
-                'and t.originating_user_id = a.id ' .
-                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
-                // why was that here? 'and t.id = puv.project_id ' .
-                'order by t.playback_count desc ' .
-                'limit ' . $from . ', ' . ($to - $from + 1)
-            );
-
-        } else {
-            $result = _mysql_query(
-                'select t.* ' .
-                'from pp_project t, pp_user a ' .
-                'where t.user_id = ' . n($aid) . ' ' .
-                'and t.type = "remix" ' .
-                ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
-                ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
-                'and t.originating_user_id = a.id ' .
-                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
-                'order by t.playback_count desc ' .
-                'limit ' . $from . ', ' . ($to - $from + 1)
-            );
-        }
-
-        $ind = 0;
-
-        while ($row = mysql_fetch_array($result)) {
-            $a = new Project();
-            $a = Project::_read_row($a, $row);
-
-            $objs[$ind] = $a;
-            $ind++;
-        }
-
-        mysql_free_result($result);
-
-        return $objs;
-    }
-
-    function fetch_all_remixes_for_originating_user_id_from_to($oaid, $from, $to, $show_inactive_items, $ignore_visibility, $visitorUserId) {
-        $objs = array();
-
-        $result = null;
-
-        if ($visitorUserId >= 0) {
-            $result = _mysql_query(
-                'select distinct t.*, a.name as user_name, a.image_filename as user_img_filename ' .
-                'from pp_project t, pp_user a, pp_project_user_visibility puv ' .
-                'where t.originating_user_id = ' . n($oaid) . ' ' .
-                'and t.type = "remix" ' .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" ' .
-                                           'or t.visibility = "private" ' .
-                                           'and t.id = puv.project_id ' .
-                                           'and (puv.is_request is null or puv.is_request = 0) ' .
-                                           'and puv.user_id = ' . n($visitorUserId) . ') ') .
-                ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
-                'and t.user_id = a.id ' .
-                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
-                // why was that here? 'and t.id = puv.project_id ' .
-                'order by t.playback_count desc ' .
-                'limit ' . $from . ', ' . ($to - $from + 1)
-            );
-
-        } else {
-            $result = _mysql_query(
-                'select t.*, a.name as user_name, a.image_filename as user_img_filename ' .
-                'from pp_project t, pp_user a ' .
-                'where t.originating_user_id = ' . n($oaid) . ' ' .
-                'and t.type = "remix" ' .
-                ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
-                ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
-                'and t.user_id = a.id ' .
-                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
-                'order by t.playback_count desc ' .
-                'limit ' . $from . ', ' . ($to - $from + 1)
-            );
-        }
-
-        $ind = 0;
-
-        while ($row = mysql_fetch_array($result)) {
-            $a = new Project();
-            $a = Project::_read_row($a, $row);
-
-            $objs[$ind] = $a;
-            $ind++;
-        }
-
-        mysql_free_result($result);
-
-        return $objs;
-    }
+//    function fetch_all_originals_of_user_id_from_to($aid, $from, $to, $show_inactive_items, $ignore_visibility, $visitorUserId) {
+//        $objs = array();
+//
+//        $result = null;
+//
+//        if ($visitorUserId >= 0) {
+//            $result = _mysql_query(
+//                'select distinct t.*, a.name as user_name, a.image_filename as user_img_filename ' .
+//                'from pp_project t, pp_user a, pp_project_user_visibility puv ' .
+//                'where t.user_id = ' . n($aid) . ' ' .
+//                'and t.type = "original" ' .
+//                ($ignore_visibility ? '' : 'and (t.visibility = "public" ' .
+//                                           'or t.visibility = "private" ' .
+//                                           'and t.id = puv.project_id ' .
+//                                           'and (puv.is_request is null or puv.is_request = 0) ' .
+//                                           'and puv.user_id = ' . n($visitorUserId) . ') ') .
+//                ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
+//                'and t.user_id = a.id ' .
+//                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
+//                // why was that here? 'and t.id = puv.project_id ' .
+//                'order by t.playback_count desc ' .
+//                'limit ' . $from . ', ' . ($to - $from + 1)
+//            );
+//
+//        } else {
+//            $result = _mysql_query(
+//                'select t.*, a.name as user_name, a.image_filename as user_img_filename ' .
+//                'from pp_project t, pp_user a ' .
+//                'where t.user_id = ' . n($aid) . ' ' .
+//                'and t.type = "original" ' .
+//                ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
+//                ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
+//                'and t.user_id = a.id ' .
+//                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
+//                'order by t.playback_count desc ' .
+//                'limit ' . $from . ', ' . ($to - $from + 1)
+//            );
+//        }
+//
+//        $ind = 0;
+//
+//        while ($row = mysql_fetch_array($result)) {
+//            $a = new Project();
+//            $a = Project::_read_row($a, $row);
+//
+//            $objs[$ind] = $a;
+//            $ind++;
+//        }
+//
+//        mysql_free_result($result);
+//
+//        return $objs;
+//    }
+//
+//    function fetch_all_remixes_of_user_id_from_to($aid, $from, $to, $show_inactive_items, $ignore_visibility, $visitorUserId) {
+//        $objs = array();
+//
+//        $result = null;
+//
+//        if ($visitorUserId >= 0) {
+//            $result = _mysql_query(
+//                'select distinct t.* ' .
+//                'from pp_project t, pp_user a, pp_project_user_visibility puv ' .
+//                'where t.user_id = ' . n($aid) . ' ' .
+//                'and t.type = "remix" ' .
+//                ($ignore_visibility ? '' : 'and (t.visibility = "public" ' .
+//                                           'or t.visibility = "private" ' .
+//                                           'and t.id = puv.project_id ' .
+//                                           'and (puv.is_request is null or puv.is_request = 0) ' .
+//                                           'and puv.user_id = ' . n($visitorUserId) . ') ') .
+//                ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
+//                'and t.originating_user_id = a.id ' .
+//                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
+//                // why was that here? 'and t.id = puv.project_id ' .
+//                'order by t.playback_count desc ' .
+//                'limit ' . $from . ', ' . ($to - $from + 1)
+//            );
+//
+//        } else {
+//            $result = _mysql_query(
+//                'select t.* ' .
+//                'from pp_project t, pp_user a ' .
+//                'where t.user_id = ' . n($aid) . ' ' .
+//                'and t.type = "remix" ' .
+//                ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
+//                ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
+//                'and t.originating_user_id = a.id ' .
+//                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
+//                'order by t.playback_count desc ' .
+//                'limit ' . $from . ', ' . ($to - $from + 1)
+//            );
+//        }
+//
+//        $ind = 0;
+//
+//        while ($row = mysql_fetch_array($result)) {
+//            $a = new Project();
+//            $a = Project::_read_row($a, $row);
+//
+//            $objs[$ind] = $a;
+//            $ind++;
+//        }
+//
+//        mysql_free_result($result);
+//
+//        return $objs;
+//    }
+//
+//    function fetch_all_remixes_for_originating_user_id_from_to($oaid, $from, $to, $show_inactive_items, $ignore_visibility, $visitorUserId) {
+//        $objs = array();
+//
+//        $result = null;
+//
+//        if ($visitorUserId >= 0) {
+//            $result = _mysql_query(
+//                'select distinct t.*, a.name as user_name, a.image_filename as user_img_filename ' .
+//                'from pp_project t, pp_user a, pp_project_user_visibility puv ' .
+//                'where t.originating_user_id = ' . n($oaid) . ' ' .
+//                'and t.type = "remix" ' .
+//                ($ignore_visibility ? '' : 'and (t.visibility = "public" ' .
+//                                           'or t.visibility = "private" ' .
+//                                           'and t.id = puv.project_id ' .
+//                                           'and (puv.is_request is null or puv.is_request = 0) ' .
+//                                           'and puv.user_id = ' . n($visitorUserId) . ') ') .
+//                ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
+//                'and t.user_id = a.id ' .
+//                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
+//                // why was that here? 'and t.id = puv.project_id ' .
+//                'order by t.playback_count desc ' .
+//                'limit ' . $from . ', ' . ($to - $from + 1)
+//            );
+//
+//        } else {
+//            $result = _mysql_query(
+//                'select t.*, a.name as user_name, a.image_filename as user_img_filename ' .
+//                'from pp_project t, pp_user a ' .
+//                'where t.originating_user_id = ' . n($oaid) . ' ' .
+//                'and t.type = "remix" ' .
+//                ($ignore_visibility ? '' : 'and t.visibility = "public" ') .
+//                ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
+//                'and t.user_id = a.id ' .
+//                ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
+//                'order by t.playback_count desc ' .
+//                'limit ' . $from . ', ' . ($to - $from + 1)
+//            );
+//        }
+//
+//        $ind = 0;
+//
+//        while ($row = mysql_fetch_array($result)) {
+//            $a = new Project();
+//            $a = Project::_read_row($a, $row);
+//
+//            $objs[$ind] = $a;
+//            $ind++;
+//        }
+//
+//        mysql_free_result($result);
+//
+//        return $objs;
+//    }
 
     function fetch_project_details($tid, $visitorUserId) {
         $result = null;
@@ -619,8 +619,8 @@ class Project {
         $a->title                     = $row['title'];
         $a->currency                  = $row['currency'];
         $a->sorting                   = $row['sorting'];
-        $a->type                      = $row['type'];
-        $a->originating_user_id       = $row['originating_user_id'];
+        //$a->type                      = $row['type'];
+        //$a->originating_user_id       = $row['originating_user_id'];
         $a->rating_count              = $row['rating_count'];
         $a->rating_value              = $row['rating_value'];
         $a->competition_points        = $row['competition_points'];
@@ -651,8 +651,8 @@ class Project {
             'title                     varchar(255) not null, ' .
             'currency                  varchar(3)   not null, ' .
             'sorting                   int(5), ' .
-            'type                      varchar(10)  not null, ' .
-            'originating_user_id       int(10), ' .
+            //'type                      varchar(10)  not null, ' .
+            //'originating_user_id       int(10), ' .
             'rating_count              int(10)      not null, ' .
             'rating_value              float        not null, ' .
             'competition_points        int(10)      not null, ' .
@@ -666,7 +666,7 @@ class Project {
             'entry_date                datetime     not null default "1970-01-01 00:00:00", ' .
             'primary key (id), ' .
             'key user_id (user_id), ' .
-            'key type (type), ' .
+            //'key type (type), ' .
             'key rating_value (rating_value), ' .
             'key entry_date (entry_date) ' .
             ') default charset=utf8'
@@ -778,7 +778,10 @@ class Project {
         $ok = _mysql_query(
             'insert into pp_project ' .
             '(user_id, title, ' .
-            'currency, sorting, type, originating_user_id, rating_count, ' .
+            'currency, sorting, ' .
+            //'type, ' .
+            //'originating_user_id, ' .
+            'rating_count, ' .
             'rating_value, competition_points, visibility, playback_count, download_count, ' .
             'status, contains_others, needs_others, additional_info, entry_date) ' .
             'values (' .
@@ -786,8 +789,8 @@ class Project {
             qq($this->title)                     . ', ' .
             qq($this->currency)                  . ', ' .
             n($this->sorting)                    . ', ' .
-            qq($this->type)                      . ', ' .
-            n($this->originating_user_id)        . ', ' .
+            //qq($this->type)                      . ', ' .
+            //n($this->originating_user_id)        . ', ' .
             n($this->rating_count)               . ', ' .
             n($this->rating_value)               . ', ' .
             n($this->competition_points)         . ', ' .
@@ -818,8 +821,8 @@ class Project {
             'title = '                     . qq($this->title)                     . ', ' .
             'currency = '                  . qq($this->currency)                  . ', ' .
             'sorting = '                   . n($this->sorting)                    . ', ' .
-            'type = '                      . qq($this->type)                      . ', ' .
-            'originating_user_id = '       . n($this->originating_user_id)        . ', ' .
+            //'type = '                      . qq($this->type)                      . ', ' .
+            //'originating_user_id = '       . n($this->originating_user_id)        . ', ' .
             'rating_count = '              . n($this->rating_count)               . ', ' .
             'rating_value = '              . n($this->rating_value)               . ', ' .
             'competition_points = '        . n($this->competition_points)         . ', ' .

@@ -2,153 +2,165 @@
 #### manually create a list of all remixes (and their originating artists), then delete these tracks. joe will contact them to
 explain what happens.
 
-select t.id, t.status, t.type, t.title, a.username, a.name, a.email_address from pp_audio_track t, pp_artist a where t.type="remix" and t.status = "active" and t.artist_id = a.id
+select t.id, t.status, t.type, t.title, t.originating_artist_id, a.username, a.name, a.email_address from pp_audio_track t, pp_artist a where t.type="remix" and t.status = "active" and t.artist_id = a.id
 //update pp_audio_track set status = 'banned' where status="inactive" and type="remix" and artist_id in (3,5,30,52,64,98);
 
+338	active	remix	Awake	127	Jason Standing (a.k.a Apostate Jay)	Experidigm	jason.standing@yahoo.ca
+244	active	remix	Knights Of The Club (Trance Remix)	89	Lon	iGoreByMayhem	Lonely@aon.at
+379	active	remix	MoreIce	17	ahmadkeyes	Ahmad L. Keyes	ahmad.keyes@yahoo.com
+556	active	remix	More Ice Remix	17	jcpzero	Mill Pond Studios	jcpzero@yahoo.com
+
 -> joe is informed. he will contact the artists: https://docs.google.com/spreadsheet/ccc?key=0Aje2y_YIOn5RdEhzM1RTaHRfdTh4YVgyZUZHc2dqQmc#gid=0
+
+-> proceed, but write down the project/track id's. mark the project files as releases and make associations with the originating users
 
 ++++ launch steps:
 ###### change table names and table columns on existing platforms:
 execute:
 
-rename table pp_artist to pp_user;
-rename table pp_audio_track_artist_visibility to pp_audio_track_user_visibility;
+#DONE#rename table pp_artist to pp_user;
+#DONE#rename table pp_audio_track_artist_visibility to pp_audio_track_user_visibility;
 
-alter table pp_audio_track change artist_id user_id int(10) not null;
-alter table pp_audio_track change originating_artist_id originating_user_id int(10);
+#DONE#alter table pp_audio_track change artist_id user_id int(10) not null;
+#DONE#alter table pp_audio_track change originating_artist_id originating_user_id int(10);
 
-alter table pp_audio_track_user_visibility change artist_id user_id int(10);
+#DONE#alter table pp_audio_track_user_visibility change artist_id user_id int(10);
 
-alter table pp_message change sender_artist_id sender_user_id int(10) not null;
-alter table pp_message change recipient_artist_id recipient_user_id int(10) not null;
+#DONE#alter table pp_message change sender_artist_id sender_user_id int(10) not null;
+#DONE#alter table pp_message change recipient_artist_id recipient_user_id int(10) not null;
 
-alter table pp_stats change artist_id user_id int(10) not null;
+#DONE#alter table pp_stats change artist_id user_id int(10) not null;
 
-alter table pp_user add activity_points int(10) after paypal_account;
-alter table pp_user add is_artist tinyint(1) after activity_points;
-alter table pp_user add is_pro tinyint(1) after is_artist;
-alter table pp_user add influences text after additional_info;
-alter table pp_user add video_url varchar(255) after additional_info;
-alter table pp_user add latitude double after artist_info;
-alter table pp_user add longitude double after artist_info;
-alter table pp_user add facebook_url varchar(255) after webpage_url;
-alter table pp_user add twitter_username varchar(255) after facebook_url;
+#DONE#alter table pp_user add activity_points int(10) after paypal_account;
+#DONE#alter table pp_user add is_artist tinyint(1) after activity_points;
+#DONE#alter table pp_user add is_pro tinyint(1) after is_artist;
+#DONE#alter table pp_user add influences text after additional_info;
+#DONE#alter table pp_user add video_url varchar(255) after additional_info;
+#DONE#alter table pp_user add latitude double after artist_info;
+#DONE#alter table pp_user add longitude double after artist_info;
+#DONE#alter table pp_user add facebook_url varchar(255) after webpage_url;
+#DONE#alter table pp_user add twitter_username varchar(255) after facebook_url;
 
-update pp_user set is_artist=1;
+#DONE#update pp_user set is_artist=1;
 
-alter table pp_audio_track add competition_points int(10) not null after rating_value;
+#DONE#alter table pp_audio_track add competition_points int(10) not null after rating_value;
 
-create table if not exists pp_nonce
-(
-nonce_str           varchar(255) not null,
-creation_date       datetime     not null,
-primary key (nonce_str)
-key date (creation_date)
-);
+#DONE#create table if not exists pp_nonce
+#DONE#(
+#DONE#nonce_str           varchar(255) not null,
+#DONE#creation_date       datetime     not null,
+#DONE#primary key (nonce_str),
+#DONE#key date (creation_date)
+#DONE#);
 
-create table if not exists pp_user_attribute
-(
-user_id                    int(10) not null,
-attribute_id               int(10) not null,
-status                     varchar(6) not null,
-primary key (user_id, attribute_id),
-index (user_id),
-index (attribute_id)
-) default charset=utf8;
+#DONE#create table if not exists pp_user_attribute
+#DONE#(
+#DONE#user_id                    int(10) not null,
+#DONE#attribute_id               int(10) not null,
+#DONE#status                     varchar(6) not null,
+#DONE#primary key (user_id, attribute_id),
+#DONE#index (user_id),
+#DONE#index (attribute_id)
+#DONE#) default charset=utf8;
 
-create table if not exists pp_genre
-(
-id                        int(10)      not null auto_increment,
-name                      varchar(255) not null,
-primary key (id)
-) default charset=utf8
+#DONE#create table if not exists pp_genre
+#DONE#(
+#DONE#id                        int(10)      not null auto_increment,
+#DONE#name                      varchar(255) not null,
+#DONE#primary key (id)
+#DONE#) default charset=utf8
 
-create table if not exists pp_project_genre
-(
-project_id int(10) not null,
-genre_id   int(10) not null,
-relevance  int(1)  not null,
-primary key (project_id, genre_id),
-index (project_id),
-index (genre_id)
-) default charset=utf8
+#DONE#create table if not exists pp_project_genre
+#DONE#(
+#DONE#project_id int(10) not null,
+#DONE#genre_id   int(10) not null,
+#DONE#relevance  int(1)  not null,
+#DONE#primary key (project_id, genre_id),
+#DONE#index (project_id),
+#DONE#index (genre_id)
+#DONE#) default charset=utf8
 
-create table if not exists pp_mood
-(
-id                        int(10)      not null auto_increment,
-name                      varchar(255) not null,
-primary key (id)
-) default charset=utf8
+#DONE#create table if not exists pp_mood
+#DONE#(
+#DONE#id                        int(10)      not null auto_increment,
+#DONE#name                      varchar(255) not null,
+#DONE#primary key (id)
+#DONE#) default charset=utf8
 
-create table if not exists pp_project_mood
-(
-project_id int(10) not null,
-mood_id    int(10) not null,
-primary key (project_id, mood_id),
-index (project_id),
-index (mood_id)
-) default charset=utf8
+#DONE#create table if not exists pp_project_mood
+#DONE#(
+#DONE#project_id int(10) not null,
+#DONE#mood_id    int(10) not null,
+#DONE#primary key (project_id, mood_id),
+#DONE#index (project_id),
+#DONE#index (mood_id)
+#DONE#) default charset=utf8
 
-create table if not exists pp_user_genre
-(
-user_id  int(10) not null,
-genre_id int(10) not null,
-primary key (user_id, genre_id),
-index (user_id),
-index (genre_id)
-) default charset=utf8
+#DONE#create table if not exists pp_user_genre
+#DONE#(
+#DONE#user_id  int(10) not null,
+#DONE#genre_id int(10) not null,
+#DONE#primary key (user_id, genre_id),
+#DONE#index (user_id),
+#DONE#index (genre_id)
+#DONE#) default charset=utf8
 
-alter table pp_audio_track_file add is_master tinyint(1) not null after type;
-update pp_audio_track_file set is_master = 1 where orig_filename like '%mp3';
+#DONE#alter table pp_audio_track_file add is_master tinyint(1) not null after type;
+#DONE#update pp_audio_track_file set is_master = 1 where orig_filename like '%mp3';
 
-alter table pp_audio_track_file drop column type;
+#DONE#alter table pp_audio_track_file drop column type;
 
-rename table pp_audio_track_file to pp_project_file;
-rename table pp_audio_track_attribute to pp_attribute;
-rename table pp_audio_track_audio_track_attribute to pp_project_attribute;
-rename table pp_audio_track to pp_project;
-rename table pp_audio_track_user_visibility to pp_project_user_visibility;
+#DONE#rename table pp_audio_track_file to pp_project_file;
+#DONE#rename table pp_audio_track_attribute to pp_attribute;
+#DONE#rename table pp_audio_track_audio_track_attribute to pp_project_attribute;
+#DONE#rename table pp_audio_track to pp_project;
+#DONE#rename table pp_audio_track_user_visibility to pp_project_user_visibility;
 
-alter table pp_project drop column is_full_song;
-alter table pp_project drop column parent_track_id;
-alter table pp_project drop column originator_notified;
-alter table pp_project drop column preview_mp3_filename;
-alter table pp_project drop column orig_preview_mp3_filename;
-alter table pp_project drop column price;
+#DONE#alter table pp_project drop column is_full_song;
+#DONE#alter table pp_project drop column parent_track_id;
+#DONE#alter table pp_project drop column originator_notified;
+#DONE#alter table pp_project drop column preview_mp3_filename;
+#DONE#alter table pp_project drop column orig_preview_mp3_filename;
+#DONE#alter table pp_project drop column price;
 
-alter table pp_project_user_visibility change track_id project_id int(10) not null;
-alter table pp_project_user_visibility add is_request tinyint(1);
-alter table pp_project_file change track_id project_id int(10) not null;
-alter table pp_project_attribute change track_id project_id int(10) not null;
+#DONE#alter table pp_project_user_visibility change track_id project_id int(10) not null;
+#DONE#alter table pp_project_user_visibility add is_request tinyint(1);
+#DONE#alter table pp_project_file change track_id project_id int(10) not null;
+#DONE#alter table pp_project_attribute change track_id project_id int(10) not null;
 
 #### change indizes on existing platforms:
--> manually rename index pp_project_user_visibility.artist_id to user_id
--> manually rename index pp_message.aid_del to ruid_del
--> manually rename index pp_stats.artist_id to user_id
--> manually rename index pp_project_file.track_id to project_id
--> manually rename index pp_project_attribute.track_id to project_id
+#DONE#-> manually rename index pp_project_user_visibility.artist_id to user_id
+#DONE#-> manually rename index pp_message.aid_del to ruid_del
+#DONE#-> manually rename index pp_stats.artist_id to user_id
+#DONE#-> manually rename index pp_project_file.track_id to project_id
+#DONE#-> manually rename index pp_project_attribute.track_id to project_id
 
--> manually create index pp_project_user_visibility.project_id
+#DONE#-> manually create index pp_project_user_visibility.project_id
 
 
 #### change path on existing platforms:
-path /ArtistImages/ should be changed to /UserImages/
+#DONE#path /ArtistImages/ should be changed to /UserImages/
 
 
-#### manually add/change indizes on user table to this:
-'unique key username (username), ' .
-'unique key email (email_address), ' .
-'unique key username_pwd (username, password_md5), ' .
-'unique key email_pwd (email_address, password_md5), ' .
+#DONE#### manually add/change indizes on user table to this:
+#DONE#'unique key username (username), ' .
+#DONE#'unique key email (email_address), ' .
+#DONE#'unique key username_pwd (username, password_md5), ' .
+#DONE#'unique key email_pwd (email_address, password_md5), ' .
 
 
-#### make sure the new widget with the corrected config and php script urls is published
+#### make sure the new widget with the corrected config and php script urls is published????
 
+#### manually make all existing audio tracks full songs(?) and remove the parent track id association. this is no longer used.
 
-#### manually make all existing audio tracks full songs and remove the parent track id association. this is no longer used.
+#DONE#### change config on live system to point to live db
+
+#DONE#### manually execute /Install/dbsetup.php to fill genre and mood table
 
 #### manually execute /Install/rewriteGenres.php, then drop the project.genres column with this stmt:
-alter table pp_project drop column genres;
+#DONE#alter table pp_project drop column genres;
+
+#### manually move the subscriptions table from test to live and reconfigure the invitation page code to talk to the live db!
 
 NB:
 param names like aid don't change at the moment!

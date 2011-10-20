@@ -37,7 +37,7 @@ if (get_param('action') == 'create') {
     $project = new Project();
     $project->user_id                   = $loggedInUser->id;
     $project->title                     = '(New project)';
-    $project->type                      = 'original';
+    //$project->type                      = 'original';
     $project->currency                  = 'USD'; // TODO - take from config - check other occurences as well
     $project->visibility                = 'public';
     $project->playback_count            = 0;
@@ -437,7 +437,7 @@ processAndPrintTpl('Project/index.html', array(
     '${projectMoods}'                           => escape(implode(', ', $projectMoodList)),
     '${projectNeeds}'                           => escape(implode(', ', $projectNeedsList)),
     '${projectAdditionalInfo}'                  => escape($project->additionalInfo),
-    '${type}'                                   => get_param('type') == 'remix' ? 'remix' : 'original',
+    //'${type}'                                   => get_param('type') == 'remix' ? 'remix' : 'original',
     '${uploaderChecksum}'                       => md5('PoopingInTheWoods' . $project->id),
     '${submitButtonValue}'                      => 'Save',
     '${Common/formElement_list}'                => $formElementsList,
@@ -489,7 +489,7 @@ function getUploadedFilesSection(&$project, $messageList) {
 
         $checkbox = '';
         $mixMp3OrRawFileIcon = '';
-        if ($file->is_master && strpos($file->orig_filename, '.mp3') !== false) {
+        if ($file->type == 'mix') {
             $mixMp3OrRawFileIcon = processTpl('Project/mixMp3FileIcon.html', array());
 
         } else {
@@ -514,7 +514,7 @@ function getUploadedFilesSection(&$project, $messageList) {
             '${uploaderUserImg}'                     => $uploaderUserImg
         ));
 
-        if ($file->is_master && strpos($file->orig_filename, '.mp3') !== false) {
+        if ($file->type == 'mix') {
             $projectFilesMixesHtml .= $snippet;
         } else {
             $projectFilesStemsHtml .= $snippet;
@@ -606,7 +606,7 @@ function processParams(&$project, &$loggedInUser) {
 
     $project->user_id                 = $loggedInUser->id;
     $project->title                   = get_param('title');
-    $project->type                    = get_param('type') == 'remix' ? 'remix' : 'original'; // this is a hidden field, popuplated with a url param
+    //$project->type                    = get_param('type') == 'remix' ? 'remix' : 'original'; // this is a hidden field, popuplated with a url param
     //$project->visibility              = get_param('visibility'); // currently hidden, but maybe a candidate for pro users
     //$project->status                  = 'active';
     //$project->sorting                 = get_numeric_param('sorting');

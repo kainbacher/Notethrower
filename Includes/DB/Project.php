@@ -52,10 +52,14 @@ class Project {
                 'select distinct t.*, a.name as user_name, a.image_filename as user_img_filename ' .
                 'from pp_project t, pp_user a, pp_project_user_visibility puv ' .
                 ($show_inactive_items ? 'where t.status in ("finished", "active", "inactive") ' : 'where t.status in ("finished", "active") ') .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" ' .
+                                           'or t.visibility = "private" ' .
+                                           'and t.id = puv.project_id ' .
+                                           'and (puv.is_request is null or puv.is_request = 0) ' .
+                                           'and puv.user_id = ' . n($visitorUserId) . ') ') .
                 'and t.user_id = a.id ' .
                 ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
-                'and t.id = puv.project_id ' .
+                // why was this here? 'and t.id = puv.project_id ' .
                 'order by t.entry_date desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
             );
@@ -98,10 +102,14 @@ class Project {
                 'select distinct t.*, a.name as user_name, a.image_filename as user_img_filename ' .
                 'from pp_project t, pp_user a, pp_project_user_visibility puv ' .
                 ($show_inactive_items ? 'where t.status in ("finished", "active", "inactive") ' : 'where t.status in ("finished", "active") ') .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" ' .
+                                           'or t.visibility = "private" ' .
+                                           'and t.id = puv.project_id ' .
+                                           'and (puv.is_request is null or puv.is_request = 0) ' .
+                                           'and puv.user_id = ' . n($visitorUserId) . ') ') .
                 'and t.user_id = a.id ' .
                 ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
-                'and t.id = puv.project_id ' .
+                // why was that here? 'and t.id = puv.project_id ' .
                 'order by t.download_count desc, t.entry_date desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
             );
@@ -145,11 +153,15 @@ class Project {
                 'from pp_project t, pp_user a, pp_project_user_visibility puv ' .
                 'where t.user_id = ' . n($aid) . ' ' .
                 'and t.type = "original" ' .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" ' .
+                                           'or t.visibility = "private" ' .
+                                           'and t.id = puv.project_id ' .
+                                           'and (puv.is_request is null or puv.is_request = 0) ' .
+                                           'and puv.user_id = ' . n($visitorUserId) . ') ') .
                 ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 'and t.user_id = a.id ' .
                 ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
-                'and t.id = puv.project_id ' .
+                // why was that here? 'and t.id = puv.project_id ' .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
             );
@@ -195,11 +207,15 @@ class Project {
                 'from pp_project t, pp_user a, pp_project_user_visibility puv ' .
                 'where t.user_id = ' . n($aid) . ' ' .
                 'and t.type = "remix" ' .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" ' .
+                                           'or t.visibility = "private" ' .
+                                           'and t.id = puv.project_id ' .
+                                           'and (puv.is_request is null or puv.is_request = 0) ' .
+                                           'and puv.user_id = ' . n($visitorUserId) . ') ') .
                 ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 'and t.originating_user_id = a.id ' .
                 ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
-                'and t.id = puv.project_id ' .
+                // why was that here? 'and t.id = puv.project_id ' .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
             );
@@ -245,11 +261,15 @@ class Project {
                 'from pp_project t, pp_user a, pp_project_user_visibility puv ' .
                 'where t.originating_user_id = ' . n($oaid) . ' ' .
                 'and t.type = "remix" ' .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" ' .
+                                           'or t.visibility = "private" ' .
+                                           'and t.id = puv.project_id ' .
+                                           'and (puv.is_request is null or puv.is_request = 0) ' .
+                                           'and puv.user_id = ' . n($visitorUserId) . ') ') .
                 ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
                 'and t.user_id = a.id ' .
                 ($show_inactive_items ? 'and a.status in ("active", "inactive") ' : 'and a.status in ("active") ') .
-                'and t.id = puv.project_id ' .
+                // why was that here? 'and t.id = puv.project_id ' .
                 'order by t.playback_count desc ' .
                 'limit ' . $from . ', ' . ($to - $from + 1)
             );
@@ -292,7 +312,11 @@ class Project {
                 'select distinct t.* ' .
                 'from pp_project t, pp_project_user_visibility puv, pp_user u ' .
                 'where t.id = ' . n($tid) . ' ' .
-                'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ' .
+                'and (t.visibility = "public" ' .
+                'or t.visibility = "private" ' .
+                'and t.id = puv.project_id ' .
+                'and (puv.is_request is null or puv.is_request = 0) ' .
+                'and puv.user_id = ' . n($visitorUserId) . ') ' .
                 'and t.status in ("finished", "active") ' .
                 'and t.id = puv.project_id ' .
                 'and t.user_id = u.id ' .
@@ -354,7 +378,11 @@ class Project {
                 ($needsOthers == '' ? '' : 'and t.needs_others like ' . qqLike($needsOthers) . ' ') .
                 ($containsOthers == '' ? '' : 'and t.contains_others like ' . qqLike($containsOthers) . ' ') .
                 ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" ' .
+                                           'or t.visibility = "private" ' .
+                                           'and t.id = puv.project_id ' .
+                                           'and (puv.is_request is null or puv.is_request = 0) ' .
+                                           'and puv.user_id = ' . n($visitorUserId) . ') ') .
                 ($needsAttributeIds == '' ? '' : ' and t.id=(select max(attr.project_id) from pp_project_attribute attr where attr.project_id = t.id and attr.attribute_id in (' .
                 nList($needsAttributeIds) . ') and attr.status="needs") ') .
                 ($containsAttributeIds == '' ? '' : ' and t.id=(select max(attr.project_id) from pp_project_attribute attr where attr.project_id = t.id and attr.attribute_id in (' .
@@ -393,7 +421,11 @@ class Project {
                 ($needsOthers == '' ? '' : 'and t.needs_others like ' . qqLike($needsOthers) . ' ') .
                 ($containsOthers == '' ? '' : 'and t.contains_others like ' . qqLike($containsOthers) . ' ') .
                 ($show_inactive_items ? 'and t.status in ("finished", "active", "inactive") ' : 'and t.status in ("finished", "active") ') .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" ' .
+                                           'or t.visibility = "private" ' .
+                                           'and t.id = puv.project_id ' .
+                                           'and (puv.is_request is null or puv.is_request = 0) ' .
+                                           'and puv.user_id = ' . n($visitorUserId) . ') ') .
                 ($needsAttributeIds == '' ? '' : ' and t.id=(select max(attr.project_id) from pp_project_attribute attr where attr.project_id = t.id and attr.attribute_id in (' .
                 nList($needsAttributeIds) . ') and attr.status="needs") ') .
                 ($containsAttributeIds == '' ? '' : ' and t.id=(select max(attr.project_id) from pp_project_attribute attr where attr.project_id = t.id and attr.attribute_id in (' .
@@ -418,6 +450,7 @@ class Project {
             'from pp_project t, pp_user a, pp_project_user_visibility puv ' .
             'where puv.user_id = ' . n($aid) . ' ' .
             'and puv.project_id = t.id ' .
+            'and (puv.is_request is null or puv.is_request = 0) ' .
             'and t.status in ("finished", "active") ' .
             'and t.visibility = "private" ' .
             'and t.user_id != ' . n($aid) . ' ' .
@@ -650,7 +683,11 @@ class Project {
                 'select count(distinct t.id) as cnt ' .
                 'from pp_project t, pp_project_user_visibility puv, pp_user u ' .
                 'where t.id = puv.project_id ' .
-                ($ignore_visibility ? '' : 'and (t.visibility = "public" or t.visibility = "private" and t.id = puv.project_id and puv.user_id = ' . n($visitorUserId) . ') ') .
+                ($ignore_visibility ? '' : 'and (t.visibility = "public" ' .
+                                           'or t.visibility = "private" ' .
+                                           'and t.id = puv.project_id ' .
+                                           'and (puv.is_request is null or puv.is_request = 0) ' .
+                                           'and puv.user_id = ' . n($visitorUserId) . ') ') .
                 ($count_inactive_items ? 'and t.status in ("finished", "active", "inactive")' : 'and t.status in ("finished", "active")') . ' ' .
                 'and t.user_id = u.id ' .
                 ($count_inactive_items ? 'and u.status in ("active", "inactive")' : 'and u.status in ("active")')
@@ -680,6 +717,7 @@ class Project {
             'from pp_project t, pp_project_user_visibility puv, pp_user u ' .
             'where puv.user_id = ' . n($aid) . ' ' .
             'and puv.project_id = t.id ' .
+            'and (puv.is_request is null or puv.is_request = 0) ' .
             'and t.user_id != ' . n($aid) . ' ' .
             'and t.status in ("finished", "active") ' .
             'and t.visibility = "private" ' .

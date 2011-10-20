@@ -93,7 +93,10 @@ class Mood {
     }
 
     function populateTable() {
+        global $logger;
+        $logger->info('populating mood table');
         $existingMoods = Mood::fetchAll();
+        $logger->info('existing moods: ' . count($existingMoods));
         if (count($existingMoods) == 0) {
             $initialMoods = array(
                 'Down/Dark/Melancholic',

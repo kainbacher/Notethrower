@@ -425,6 +425,23 @@ if ($project) {
     $projectNeedsList = ProjectAttribute::getAttributeNamesForProjectIdAndState($project->id, 'needs');
 }
 
+$projectRecommendedArtists = User::fetchAllThatOfferSkillsForProjectId($loggedInUser->id, $project->id);
+
+$projectRecommendedArtistsList = null;
+foreach($projectRecommendedArtists as $projectRecommendedArtist){
+    //attribute list
+    $recommendedArtistAttributes = implode(',', $projectRecommendedArtist->offersAttributeNamesList);
+
+    //userimagepath
+    $recommendedArtistImage = (!empty($projectRecommendedArtist->image_filename) ? '../Content/UserImages/'.$projectRecommendedArtist->image_filename : '../Images/testimages/profile-testimg-75x75.png' );
+    $projectRecommendedArtistsList .= processTpl('Project/recommendedArtistElement.html', array(
+        '${recommendedArtistId}'             => $projectRecommendedArtist->id,
+        '${recommendedArtistName}'           => $projectRecommendedArtist->name,
+        '${recommendedArtistAttributes}'     => $recommendedArtistAttributes,
+        '${recommendedArtistProfileImage}'   => $recommendedArtistImage
+    ));
+}
+
 processAndPrintTpl('Project/index.html', array(
     '${Common/pageHeader}'                      => buildPageHeader(($projectId ? 'Edit project' : 'Create project'), false, false, true),
     '${Common/bodyHeader}'                      => buildBodyHeader($loggedInUser),
@@ -438,6 +455,7 @@ processAndPrintTpl('Project/index.html', array(
     '${projectNeeds}'                           => escape(implode(', ', $projectNeedsList)),
     '${projectAdditionalInfo}'                  => escape($project->additionalInfo),
     //'${type}'                                   => get_param('type') == 'remix' ? 'remix' : 'original',
+    '${recommendedArtistElement_list}'          => $projectRecommendedArtistsList,
     '${uploaderChecksum}'                       => md5('PoopingInTheWoods' . $project->id),
     '${submitButtonValue}'                      => 'Save',
     '${Common/formElement_list}'                => $formElementsList,
@@ -445,8 +463,6 @@ processAndPrintTpl('Project/index.html', array(
     '${Common/bodyFooter}'                      => buildBodyFooter(),
     '${Common/pageFooter}'                      => buildPageFooter()
 ));
-
-exit;
 
 // END
 

@@ -27,7 +27,7 @@ class ProjectUserVisibility {
             'select * ' .
             'from pp_project_user_visibility ' .
             'where user_id = ' . n($aid) . ' ' .
-            'and is_request != 1'
+            'and (is_request is null or is_request = 0)'
         );
 
         $ind = 0;
@@ -78,7 +78,7 @@ class ProjectUserVisibility {
             'from pp_project_user_visibility atav, pp_user a ' .
             'where atav.project_id = ' . n($tid) . ' ' .
             'and atav.user_id = a.id ' .
-            'and atav.is_request != 1'
+            'and (atav.is_request is null or atav.is_request = 0)'
         );
 
         $ind = 0;
@@ -128,7 +128,7 @@ class ProjectUserVisibility {
             'from pp_project_user_visibility ' .
             'where user_id = ' . n($aid) . ' ' .
             'and project_id = ' . n($tid) . ' ' .
-            'and is_request != 1'
+            'and (is_request is null or is_request = 0)'
         );
 
         $a = new ProjectUserVisibility();
@@ -154,7 +154,7 @@ class ProjectUserVisibility {
             'where t.user_id = ' . n($aid) . ' ' .
             'and t.id = atav.project_id ' .
             'and atav.user_id = a.id ' .
-            'and atav.is_request != 1 ' .
+            'and (atav.is_request is null or atav.is_request = 0) ' .
             'and a.id != ' . n($aid) . ' ' .
             'order by user_name asc ' .
             $limitClause

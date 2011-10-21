@@ -15,19 +15,23 @@ select p.id, p.user_id, p.status, p.type, p.title, u.username, u.name, u.email_a
 
 -> joe is informed. he will contact the artists: https://docs.google.com/spreadsheet/ccc?key=0Aje2y_YIOn5RdEhzM1RTaHRfdTh4YVgyZUZHc2dqQmc#gid=0
 
--> proceed, but write down the project/track id's. mark the project files as releases and make associations with the originating users
+#DONE#-> proceed, but write down the project/track id's. mark the project files as releases and make associations with the originating users
 
-update pp_project set user_id = 127 where id = 338 and user_id = 69;
-insert into pp_project_user_visibility (project_id, user_id, is_request) values (324, 69, null);
-
-update pp_project set user_id = 89 where id = 244 and user_id = 97;
-insert into pp_project_user_visibility (project_id, user_id, is_request) values (?, 97, null);
-
-update pp_project set user_id = 17 where id = 379 and user_id = 141;
-insert into pp_project_user_visibility (project_id, user_id, is_request) values (?, 141, null);
-
-update pp_project set user_id = 17 where id = 556 and user_id = 241;
-insert into pp_project_user_visibility (project_id, user_id, is_request) values (?, 241, null);
+#DONE#update pp_project set user_id = 127 where id = 338 and user_id = 69;
+#DONE#insert into pp_project_user_visibility (project_id, user_id, is_request) values (338, 127, null);
+#DONE#update pp_project_file set originator_user_id = 69 where id = 228;
+#DONE#
+#DONE#update pp_project set user_id = 89 where id = 244 and user_id = 97;
+#DONE#insert into pp_project_user_visibility (project_id, user_id, is_request) values (244, 89, null);
+#DONE#update pp_project_file set originator_user_id = 97 where id = 149;
+#DONE#
+#DONE#update pp_project set user_id = 17 where id = 379 and user_id = 141;
+#DONE#insert into pp_project_user_visibility (project_id, user_id, is_request) values (379, 17, null);
+#DONE#update pp_project_file set originator_user_id = 141 where id = 267;
+#DONE#
+#DONE#update pp_project set user_id = 17 where id = 556 and user_id = 241;
+#DONE#insert into pp_project_user_visibility (project_id, user_id, is_request) values (556, 17, null);
+#DONE#update pp_project_file set originator_user_id = 241 where id in (419, 421);
 
 ++++ launch steps:
 ###### change table names and table columns on existing platforms:

@@ -132,59 +132,35 @@ if ($user->additional_info) {
 //	                                </object>
 //
 
-// track lists
-//$mySongs         = Project::fetch_all_originals_of_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
-$mySongs         = Project::fetch_all_unfinished_projects_of_user($user_id); // FIXME - deal with finished projects somehow
-//$remixes           = Project::fetch_all_remixes_of_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
-//$remixed_by_others = Project::fetch_all_remixes_for_originating_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
+// project lists
+$unfinishedProjects = Project::fetch_all_unfinished_projects_of_user($user_id); // FIXME - deal with finished projects somehow
 
-//$rows = max(count($mySongs), count($remixes)), count($remixed_by_others));
-$rows = count($mySongs);
+$rows = count($unfinishedProjects);
 
-$mySongsList = '';
-//$myRemixesList = '';
-//$remixedByOthersList = '';
+$unfinishedProjectsList = '';
 for ($i = 0; $i < $rows; $i++) {
-    if (isset($mySongs[$i])) {
-        $mySongsList .= processTpl('Artist/trackListElement.html', array(
+    if (isset($unfinishedProjects[$i])) {
+        $unfinishedProjectsList .= processTpl('Artist/trackListElement.html', array(
             '${userId}'  => $user_id,
-            '${trackId}' => $mySongs[$i]->id,
-            '${title}'   => escape($mySongs[$i]->title)
+            '${trackId}' => $unfinishedProjects[$i]->id,
+            '${title}'   => escape($unfinishedProjects[$i]->title)
         ), $showMobileVersion);
     }
-
-//    if (isset($remixes[$i])) {
-//        $myRemixesList .= processTpl('Artist/trackListElement.html', array(
-//            '${userId}'  => $user_id,
-//            '${trackId}' => $remixes[$i]->id,
-//            '${title}'   => escape($remixes[$i]->title)
-//        ), $showMobileVersion);
-//    }
-//
-//    if (isset($remixed_by_others[$i])) {
-//        $remixedByOthersList .= processTpl('Artist/trackListElement.html', array(
-//            '${userId}'  => $user_id,
-//            '${trackId}' => $remixed_by_others[$i]->id,
-//            '${title}'   => escape($remixed_by_others[$i]->title)
-//        ), $showMobileVersion);
-//    }
 }
 
 processAndPrintTpl('Artist/index.html', array(
-    '${Common/pageHeader}'                              => buildPageHeader('User Info', false, false, false, $showMobileVersion),
-    '${Common/bodyHeader}'                              => buildBodyHeader($visitorUser, $showMobileVersion),
-    '${userId}'                                         => $user->id,
-    '${userName}'                                       => escape($user->name),
-    '${userImgUrl}'                                     => $userImgUrl,
-    '${Common/externalWebLink_optional}'                => $webpageLink,
-    '${Common/sendMessage_optional}'                    => $sendMessageBlock,
-    '${Artist/artistInfo_optional}'                     => $artistInfo,
-    '${Artist/additionalInfo_optional}'                 => $additionalInfo,
-    '${Artist/trackListElement_list_mySongs}'           => $mySongsList,
-    //'${Artist/trackListElement_list_myRemixes}'         => $myRemixesList, // FIXME - cleanup
-    //'${Artist/trackListElement_list_remixedByOthers}'   => $remixedByOthersList,
-    '${Common/bodyFooter}'                              => buildBodyFooter($showMobileVersion),
-    '${Common/pageFooter}'                              => buildPageFooter()
+    '${Common/pageHeader}'                               => buildPageHeader('User Info', false, false, false, $showMobileVersion),
+    '${Common/bodyHeader}'                               => buildBodyHeader($visitorUser, $showMobileVersion),
+    '${userId}'                                          => $user->id,
+    '${userName}'                                        => escape($user->name),
+    '${userImgUrl}'                                      => $userImgUrl,
+    '${Common/externalWebLink_optional}'                 => $webpageLink,
+    '${Common/sendMessage_optional}'                     => $sendMessageBlock,
+    '${Artist/artistInfo_optional}'                      => $artistInfo,
+    '${Artist/additionalInfo_optional}'                  => $additionalInfo,
+    '${Artist/trackListElement_list_unfinishedProjects}' => $unfinishedProjectsList,
+    '${Common/bodyFooter}'                               => buildBodyFooter($showMobileVersion),
+    '${Common/pageFooter}'                               => buildPageFooter()
 ), $showMobileVersion);
 
 // END

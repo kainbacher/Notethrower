@@ -49,10 +49,10 @@ if ($track) { // could be empty if wrong id or not visible for logged in user
 
     if ($track->type == 'remix') {
         echo 'Remix';
-        $oa = User::fetch_for_id($track->originating_user_id);
-        if ($oa) {
-            echo ' | Originating user: <a href="artist.php?aid=' . $oa->id . '" target="_blank">' . escape($oa->name) . '</a>' . "\n";
-        }
+        //$oa = User::fetch_for_id($track->originating_user_id);
+        //if ($oa) {
+        //    echo ' | Originating user: <a href="artist.php?aid=' . $oa->id . '" target="_blank">' . escape($oa->name) . '</a>' . "\n";
+        //}
 
     } else {
         echo 'Original';

@@ -81,7 +81,7 @@ function processTrack(&$xml, &$track, $remixedByOthersMode) {
     if ($track->type == 'remix') {
         $xml .= '<remixerArtistId>' . $track->user_id . '</remixerArtistId>';
         $xml .= '<remixerArtistName>' . $track->user_name . '</remixerArtistName>';
-        $xml .= '<originatingArtistId>' . $track->originating_user_id . '</originatingArtistId>';
+        //$xml .= '<originatingArtistId>' . $track->originating_user_id . '</originatingArtistId>'; // FIXME - that attrib. doesn't exist anymore
         //$xml .= '<originatingArtistName>' . $track->originating_user_name . '</originatingArtistName>'; // FIXME - that attrib. doesn't exist anymore
         $xml .= '<originatingArtistName>n/a</originatingArtistName>'; // FIXME - that attrib. doesn't exist anymore
 

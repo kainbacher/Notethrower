@@ -719,10 +719,19 @@ a.nohighlight:hover {
     width: 130px;
 }
 
+.topMenuSubItemIcon {
+    float: left;
+    width: 40px;
+}
+
+.topMenuSubItemText {
+    float: left;
+    width: 180px;
+}
 
 #loginStatusDiv a {
     color: #ffffff;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 #loginStatusDiv a:hover {

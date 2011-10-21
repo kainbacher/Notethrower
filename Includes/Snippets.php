@@ -190,6 +190,7 @@ function buildBodyHeader($loggedInUser, $useMobileVersion = false) {
             '${userId}'                         => $loggedInUser->id,
             '${dashboardActiveMenuItemClass}'   => strpos($_SERVER['PHP_SELF'], 'dashboard.php')   !== false ? ' mainMenuItemAct' : '',
             '${artistActiveMenuItemClass}'      => strpos($_SERVER['PHP_SELF'], 'artist.php')      !== false ? ' mainMenuItemAct' : '',
+            '${artistListActiveMenuItemClass}'  => strpos($_SERVER['PHP_SELF'], 'artistList.php')  !== false ? ' mainMenuItemAct' : '',
             '${projectListActiveMenuItemClass}' => strpos($_SERVER['PHP_SELF'], 'projectList.php') !== false ? ' mainMenuItemAct' : '',
             '${projectActiveMenuItemClass}'     => strpos($_SERVER['PHP_SELF'], 'project.php')     !== false ? ' mainMenuItemAct' : '',
             '${accountActiveMenuItemClass}'     => strpos($_SERVER['PHP_SELF'], 'account.php')     !== false ? ' mainMenuItemAct' : ''
@@ -553,7 +554,7 @@ function move_file($src, $dest, $allowOverwriting = true) {
 
 function create_directory($dir) {
     global $logger;
-    
+
     if (is_dir($dir)) return;
 
     $logger->info('creating directory: ' . $dir);

@@ -12,11 +12,11 @@ if (get_param('action') == 'process') {
     $projectId    = get_numeric_param('pid');
     $filename     = get_param('filename');
     $origFilename = get_param('origFilename');
-    $isMixMp3     = get_numeric_param('isMixMp3');
+    $isMix        = get_numeric_param('isMix');
     $checksum     = get_param('cs');
 
     if (
-        md5('PoopingInTheWoods' . $projectId . '_' . $isMixMp3) !=
+        md5('PoopingInTheWoods' . $projectId . '_' . $isMix) !=
         $checksum
     ) {
         show_fatal_error_and_exit('checksum failure!');
@@ -39,13 +39,13 @@ if (get_param('action') == 'process') {
         show_fatal_error_and_exit('project not found for id: ' . $projectId);
     }
 
-    handleNewFileUpload($projectId, $project->user_id, $filename, $origFilename, $isMixMp3);
+    handleNewFileUpload($projectId, $project->user_id, $filename, $origFilename, $isMix);
 }
 
 // END
 
 // functions
-function handleNewFileUpload($projectId, $userId, $filename, $origFilename, $isMixMp3) {
+function handleNewFileUpload($projectId, $userId, $filename, $origFilename, $isMix) {
     global $logger;
 
     $logger->info('processing new project file upload: ' . $filename . ' (orig filename: ' . $origFilename . ')');
@@ -70,7 +70,7 @@ function handleNewFileUpload($projectId, $userId, $filename, $origFilename, $isM
     $newProjectFile->project_id    = $projectId;
     $newProjectFile->filename      = $userSubdir . $upload_filename;
     $newProjectFile->orig_filename = $origFilename;
-    $newProjectFile->type          = $isMixMp3 == 1 ? 'mix' : 'raw';
+    $newProjectFile->type          = $isMix == 1 ? 'mix' : 'raw';
     $newProjectFile->status        = 'active';
     $newProjectFile->save();
 }

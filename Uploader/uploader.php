@@ -7,7 +7,7 @@ include_once('../Includes/Snippets.php');
 
 $projectId      = get_numeric_param('pid');
 $singleFileOnly = get_numeric_param('sf');
-$isMixMp3       = get_numeric_param('isMixMp3');
+$isMix          = get_numeric_param('isMix');
 $checksum       = get_param('cs');
 
 if (!$projectId) {
@@ -190,8 +190,8 @@ if ($singleFileOnly) {
                   '&pid=<?= $projectId ?>' +
                   '&filename='     + encodeURIComponent(filename) +
                   '&origFilename=' + encodeURIComponent(origFilename) +
-                  '&isMixMp3=<?= $isMixMp3 ?>' +
-                  '&cs=<?= md5('PoopingInTheWoods' . $projectId . '_' . $isMixMp3) ?>',
+                  '&isMix=<?= $isMix ?>' +
+                  '&cs=<?= md5('PoopingInTheWoods' . $projectId . '_' . $isMix) ?>',
             dataType: 'text',
             cache: false,
             timeout: 15000, // 15 seconds

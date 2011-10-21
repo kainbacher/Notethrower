@@ -39,22 +39,23 @@ $xml .= '<webpageUrl>' . xmlentities($GLOBALS['BASE_URL'] . 'Site/artist.php?aid
 $xml .= '<tracks>';
 
 // load originals
-$tracks = Project::fetch_all_originals_of_user_id_from_to($uid, 0, 9999, false, false, $visitorUserId); // FIXME - paging - use Paginator
+//$tracks = Project::fetch_all_originals_of_user_id_from_to($uid, 0, 9999, false, false, $visitorUserId); // FIXME - paging - use Paginator
+$tracks = Project::fetch_all_unfinished_projects_of_user($uid); // FIXME - deal with finished projects somehow
 foreach ($tracks as $track) {
     processTrack($xml, $track, false);
 }
 
-// load the remixes
-$tracks = Project::fetch_all_remixes_of_user_id_from_to($uid, 0, 9999, false, false, $visitorUserId); // FIXME - paging - use Paginator
-foreach ($tracks as $track) {
-    processTrack($xml, $track, true);
-}
-
-// load the songs which were remixed by others
-$tracks = Project::fetch_all_remixes_for_originating_user_id_from_to($uid, 0, 9999, false, false, $visitorUserId); // FIXME - paging - use Paginator
-foreach ($tracks as $track) {
-    processTrack($xml, $track, true);
-}
+//// load the remixes
+//$tracks = Project::fetch_all_remixes_of_user_id_from_to($uid, 0, 9999, false, false, $visitorUserId); // FIXME - paging - use Paginator
+//foreach ($tracks as $track) {
+//    processTrack($xml, $track, true);
+//}
+//
+//// load the songs which were remixed by others
+//$tracks = Project::fetch_all_remixes_for_originating_user_id_from_to($uid, 0, 9999, false, false, $visitorUserId); // FIXME - paging - use Paginator
+//foreach ($tracks as $track) {
+//    processTrack($xml, $track, true);
+//}
 
 $xml .= '</tracks>';
 $xml .= '</ppArtistData>';

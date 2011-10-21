@@ -133,39 +133,41 @@ if ($user->additional_info) {
 //
 
 // track lists
-$originals         = Project::fetch_all_originals_of_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
-$remixes           = Project::fetch_all_remixes_of_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
-$remixed_by_others = Project::fetch_all_remixes_for_originating_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
+//$mySongs         = Project::fetch_all_originals_of_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
+$mySongs         = Project::fetch_all_unfinished_projects_of_user($user_id); // FIXME - deal with finished projects somehow
+//$remixes           = Project::fetch_all_remixes_of_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
+//$remixed_by_others = Project::fetch_all_remixes_for_originating_user_id_from_to($user_id, 0, 99999999, false, false, $visitorUserId);
 
-$rows = max(max(count($originals), count($remixes)), count($remixed_by_others));
+//$rows = max(count($mySongs), count($remixes)), count($remixed_by_others));
+$rows = count($mySongs);
 
 $mySongsList = '';
-$myRemixesList = '';
-$remixedByOthersList = '';
+//$myRemixesList = '';
+//$remixedByOthersList = '';
 for ($i = 0; $i < $rows; $i++) {
-    if (isset($originals[$i])) {
+    if (isset($mySongs[$i])) {
         $mySongsList .= processTpl('Artist/trackListElement.html', array(
             '${userId}'  => $user_id,
-            '${trackId}' => $originals[$i]->id,
-            '${title}'   => escape($originals[$i]->title)
+            '${trackId}' => $mySongs[$i]->id,
+            '${title}'   => escape($mySongs[$i]->title)
         ), $showMobileVersion);
     }
 
-    if (isset($remixes[$i])) {
-        $myRemixesList .= processTpl('Artist/trackListElement.html', array(
-            '${userId}'  => $user_id,
-            '${trackId}' => $remixes[$i]->id,
-            '${title}'   => escape($remixes[$i]->title)
-        ), $showMobileVersion);
-    }
-
-    if (isset($remixed_by_others[$i])) {
-        $remixedByOthersList .= processTpl('Artist/trackListElement.html', array(
-            '${userId}'  => $user_id,
-            '${trackId}' => $remixed_by_others[$i]->id,
-            '${title}'   => escape($remixed_by_others[$i]->title)
-        ), $showMobileVersion);
-    }
+//    if (isset($remixes[$i])) {
+//        $myRemixesList .= processTpl('Artist/trackListElement.html', array(
+//            '${userId}'  => $user_id,
+//            '${trackId}' => $remixes[$i]->id,
+//            '${title}'   => escape($remixes[$i]->title)
+//        ), $showMobileVersion);
+//    }
+//
+//    if (isset($remixed_by_others[$i])) {
+//        $remixedByOthersList .= processTpl('Artist/trackListElement.html', array(
+//            '${userId}'  => $user_id,
+//            '${trackId}' => $remixed_by_others[$i]->id,
+//            '${title}'   => escape($remixed_by_others[$i]->title)
+//        ), $showMobileVersion);
+//    }
 }
 
 processAndPrintTpl('Artist/index.html', array(
@@ -179,8 +181,8 @@ processAndPrintTpl('Artist/index.html', array(
     '${Artist/artistInfo_optional}'                     => $artistInfo,
     '${Artist/additionalInfo_optional}'                 => $additionalInfo,
     '${Artist/trackListElement_list_mySongs}'           => $mySongsList,
-    '${Artist/trackListElement_list_myRemixes}'         => $myRemixesList,
-    '${Artist/trackListElement_list_remixedByOthers}'   => $remixedByOthersList,
+    //'${Artist/trackListElement_list_myRemixes}'         => $myRemixesList, // FIXME - cleanup
+    //'${Artist/trackListElement_list_remixedByOthers}'   => $remixedByOthersList,
     '${Common/bodyFooter}'                              => buildBodyFooter($showMobileVersion),
     '${Common/pageFooter}'                              => buildPageFooter()
 ), $showMobileVersion);

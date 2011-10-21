@@ -1,6 +1,6 @@
 <div>
     ${projectFileElementCheckbox_optional}
-    ${mixMp3OrRawFileIcon}&nbsp;
+    ${mixOrRawFileIcon}&nbsp;
     <a href="${fileDownloadUrl}" target="_blank">${filename}</a><br />
     <small>Uploaded by ${uploaderUserImg}&nbsp;<b>${uploadedByName}</b></small><br />
     <a href="javascript:askForConfirmationAndExecute('Do you really want to delete this file?', '${filenameEscaped}', 'project.php?pid=${projectId}&action=deleteProjectFile&fid=${projectFileId}', 'checkDeleteResponseAndRefreshFileList', false);">Delete</a><br />

@@ -22,7 +22,7 @@ $logger->set_debug_level();
 // <input type="hidden" name="MAX_FILE_SIZE" value="524288001">
 
 $loggedInUser = User::new_from_cookie();
-ensureUserIsLoggedIn($loggedInUser);
+ensureUserIsLoggedIn($loggedInUser); // FIXME - open this page for non-logged in users?
 
 $project = null;
 $unpersistedProject = null;
@@ -121,7 +121,7 @@ if (get_param('action') == 'create') {
     header('Location: projectList.php');
     exit;
 
-} else if (get_param('action') == 'toggleTrackState') { // not used currently - projects are always active as long as at least the mp3 version was uploaded, otherwise they are inactive until this is done
+} else if (get_param('action') == 'toggleTrackState') { // not used currently - projects are always active as long as at least the mp3 version was uploaded, otherwise they are inactive until this is done FIXME
     $logger->info('changing project state ...');
     if (!$projectId) {
         show_fatal_error_and_exit('cannot modify project state without a project id!');
@@ -141,6 +141,7 @@ if (get_param('action') == 'create') {
             $project->status = 'active';
 
         } else {
+            // FIXME
             $msg = 'The project status cannot be set to \'Active\' because no mix MP3 file was uploaded yet! ' .
                    'Without a mix MP3 file the project will not be visible for other users. ' .
                    'Please make sure the file is of high quality, at least 128kbps at 44.1kHz';
@@ -471,6 +472,7 @@ processAndPrintTpl('Project/index.html', array(
 function getUploadedFilesSection(&$project, $messageList) {
     global $logger;
 
+// FIXME
     $masterFound = ProjectFile::master_mp3_file_found_for_project_id($project->id);
     if ($masterFound) {
         if ($project->status == 'inactive') $project->status = 'active';
@@ -504,9 +506,9 @@ function getUploadedFilesSection(&$project, $messageList) {
         $uploaderUserImg = getUserImageHtml($file->userImageFilename, $file->userName, 'tiny');
 
         $checkbox = '';
-        $mixMp3OrRawFileIcon = '';
+        $mixOrRawFileIcon = '';
         if ($file->type == 'mix') {
-            $mixMp3OrRawFileIcon = processTpl('Project/mixMp3FileIcon.html', array());
+            $mixOrRawFileIcon = processTpl('Project/mixFileIcon.html', array());
 
         } else {
             $checkbox = processTpl('Project/projectFileElementCheckbox.html', array(
@@ -514,12 +516,12 @@ function getUploadedFilesSection(&$project, $messageList) {
                 '${name}'  => 'selectedStems',
                 '${value}' => $file->id
             ));
-            $mixMp3OrRawFileIcon = processTpl('Project/rawFileIcon.html', array());
+            $mixOrRawFileIcon = processTpl('Project/rawFileIcon.html', array());
         } // FIXME - deal with releases here, too
 
         $snippet = processTpl('Project/projectFileElement.html', array(
             '${projectFileElementCheckbox_optional}' => $checkbox,
-            '${mixMp3OrRawFileIcon}'                 => $mixMp3OrRawFileIcon,
+            '${mixOrRawFileIcon}'                 => $mixOrRawFileIcon,
             '${filename}'                            => escape($file->orig_filename),
             '${filenameEscaped}'                     => escape_and_rewrite_single_quotes($file->orig_filename),
             '${fileDownloadUrl}'                     => '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $file->id,

@@ -7,6 +7,7 @@ include_once('../Includes/Snippets.php');
 class ProjectFile {
     var $id;
     var $project_id;
+    var $originator_user_id; // this is null when the file was uploaded by the project owner, otherwise it references the collaborating user who uploaded the file
     var $filename;
     var $orig_filename;
     var $type; // raw, mix, release
@@ -71,6 +72,7 @@ class ProjectFile {
     function _read_row($f, $row) {
         $f->id                    = $row['id'];
         $f->project_id            = $row['project_id'];
+        $f->originator_user_id    = $row['originator_user_id'];
         $f->filename              = $row['filename'];
         $f->orig_filename         = $row['orig_filename'];
         $f->type                  = $row['type'];
@@ -92,6 +94,7 @@ class ProjectFile {
             '(' .
             'id                    int(10)      not null auto_increment, ' .
             'project_id            int(10)      not null, ' .
+            'originator_user_id    int(10), ' .
             'filename              varchar(255) not null, ' .
             'orig_filename         varchar(255) not null, ' .
             'type                  varchar(10)  not null, ' .
@@ -126,7 +129,6 @@ class ProjectFile {
             'select count(*) as cnt ' .
             'from pp_project_file ' .
             'where project_id = ' . n($tid) . ' ' .
-            'and orig_filename like "%mp3" ' .
             'and type = "mix" ' .
             ($count_inactive_items ? 'and status in ("active", "inactive")' : 'and status = "active"')
         );
@@ -173,8 +175,13 @@ class ProjectFile {
         mysql_free_result($result);
 
         if ($f) {
-            $logger->info('deleting project file: ' . $GLOBALS['CONTENT_BASE_PATH'] . $f);
-            @unlink($GLOBALS['CONTENT_BASE_PATH'] . $f); // suppress errors because this negatively influences ajax/json communication
+            $file = $GLOBALS['CONTENT_BASE_PATH'] . $f;
+            $logger->info('deleting project file: ' . $file);
+            $ok = @unlink($file); // suppress errors because this negatively influences ajax/json communication
+            if (!$ok) {
+                $logger->error('failed to delete file: ' . $file);
+            }
+
         } else {
             $logger->error('unable to get filename for project file id: ' . $id);
         }
@@ -223,9 +230,10 @@ class ProjectFile {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_project_file ' .
-            '(project_id, filename, orig_filename, type, status, entry_date) ' .
+            '(project_id, originator_user_id, filename, orig_filename, type, status, entry_date) ' .
             'values (' .
             n($this->project_id)             . ', ' .
+            n($this->originator_user_id)     . ', ' .
             qq($this->filename)              . ', ' .
             qq($this->orig_filename)         . ', ' .
             qq($this->type)                  . ', ' .
@@ -246,13 +254,14 @@ class ProjectFile {
     function update() {
         $ok = _mysql_query(
             'update pp_project_file ' .
-            'set project_id = ' . n($this->project_id)     . ', ' .
-            'filename = '       . qq($this->filename)      . ', ' .
-            'orig_filename = '  . qq($this->orig_filename) . ', ' .
-            'type = '           . qq($this->type)          . ', ' .
-            'status = '         . qq($this->status)        . ' ' .
+            'set project_id = '     . n($this->project_id)         . ', ' .
+            'originator_user_id = ' . n($this->originator_user_id) . ', ' .
+            'filename = '           . qq($this->filename)          . ', ' .
+            'orig_filename = '      . qq($this->orig_filename)     . ', ' .
+            'type = '               . qq($this->type)              . ', ' .
+            'status = '             . qq($this->status)            . ' ' .
             // entry_date intentionally not set here
-            'where id = '       . n($this->id)
+            'where id = '           . n($this->id)
         );
 
         return $ok;

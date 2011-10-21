@@ -69,7 +69,7 @@ ${Common/bodyHeader}
                     <div class="box-grey">
 
                             <h2>Recommended Artists</h2>
-                            
+
                             <ul class="recommendedList">
                                 ${recommendedArtistElement_list}
                             </ul>
@@ -270,9 +270,9 @@ function refreshProjectFilesSection(projectId) {
     });
 }
 
-function openUploaderPopup(isMixMp3File) {
+function openUploaderPopup(isMixFile) {
     window.open(
-            '../Uploader/uploader.php?sf=0&pid=${projectId}&isMixMp3=' + (isMixMp3File ? 1 : 0) + '&cs=${uploaderChecksum}',
+            '../Uploader/uploader.php?sf=0&pid=${projectId}&isMix=' + (isMixFile ? 1 : 0) + '&cs=${uploaderChecksum}',
             'ONELOUDR_UPLOADER',
             'scrollbars=0,status=0,width=640,height=350'
     );

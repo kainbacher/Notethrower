@@ -18,6 +18,22 @@ function showSelectFriendsPopup() {
     window.open('selectFriends.php?tid=${projectId}', 'NT_SELECT_FRIENDS', 'scrollbars=yes,resizable=yes,status=0,width=400,height=600');
 }
 
+$(document).ready(function () {
+    /* !invite */
+    /* ---------------------------------------------------------------------- */
+    $("input[rel=invite]").click(function(e) {
+        e.preventDefault();
+        alert('invite User Function');
+    });
+    
+    $("input[rel=search_name]").click(function(e){
+        e.preventDefault();
+        alert('search for '+$('#search_name').val()+' Function');
+    });
+    
+    
+});
+
 </script>
 
 <body>
@@ -90,10 +106,11 @@ ${Common/bodyHeader}
                         <br />
 
                         <h2>Search an Artist:</h2>
-                        <input type="text" id="title" name="title" value="Artist Name" maxlength="255">
+                        <input type="text" id="search_name" name="search_name" value="Artist Name" maxlength="255">
 
                         <input class="button-small blue"
                             type="submit"
+                            rel="search_name"
                             value="search">
 
 

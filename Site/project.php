@@ -18,9 +18,6 @@ include_once('../Includes/DB/User.php');
 
 $logger->set_debug_level();
 
-// FIXME - use this in upload form:
-// <input type="hidden" name="MAX_FILE_SIZE" value="524288001">
-
 $loggedInUser = User::new_from_cookie();
 ensureUserIsLoggedIn($loggedInUser); // FIXME - open this page for non-logged in users?
 
@@ -64,7 +61,7 @@ if (get_param('action') == 'create') {
     //ensureProjectBelongsToUserId($project, $loggedInUser->id);
     ensureProjectIdIsAssociatedWithUserId($project->id, $loggedInUser->id);
 
-} else if (get_param('action') == 'save') { // FIXME - clarify if this can only be called by the project owner or all collab. artists
+} else if (get_param('action') == 'save') { // can only be called by the project owner
     $logger->info('attempting to save project data ...');
     if (!$projectId) {
         show_fatal_error_and_exit('cannot save without a project id!');
@@ -121,7 +118,7 @@ if (get_param('action') == 'create') {
     header('Location: projectList.php');
     exit;
 
-} else if (get_param('action') == 'toggleTrackState') { // not used currently - projects are always active as long as at least the mp3 version was uploaded, otherwise they are inactive until this is done FIXME
+} else if (get_param('action') == 'toggleTrackState') { // not used currently - projects are always active
     $logger->info('changing project state ...');
     if (!$projectId) {
         show_fatal_error_and_exit('cannot modify project state without a project id!');
@@ -136,16 +133,15 @@ if (get_param('action') == 'create') {
         $project->status = 'inactive';
 
     } else {
-        $masterFound = ProjectFile::master_mp3_file_found_for_project_id($project->id);
-        if ($masterFound) {
+//        $masterFound = ProjectFile::master_mp3_file_found_for_project_id($project->id);
+//        if ($masterFound) {
             $project->status = 'active';
 
-        } else {
-            // FIXME
-            $msg = 'The project status cannot be set to \'Active\' because no mix MP3 file was uploaded yet! ' .
-                   'Without a mix MP3 file the project will not be visible for other users. ' .
-                   'Please make sure the file is of high quality, at least 128kbps at 44.1kHz';
-        }
+//        } else {
+//            $msg = 'The project status cannot be set to \'Active\' because no mix MP3 file was uploaded yet! ' .
+//                   'Without a mix MP3 file the project will not be visible for other users. ' .
+//                   'Please make sure the file is of high quality, at least 128kbps at 44.1kHz';
+//        }
     }
 
     $project->save();
@@ -472,21 +468,20 @@ processAndPrintTpl('Project/index.html', array(
 function getUploadedFilesSection(&$project, $messageList) {
     global $logger;
 
-// FIXME
-    $masterFound = ProjectFile::master_mp3_file_found_for_project_id($project->id);
-    if ($masterFound) {
-        if ($project->status == 'inactive') $project->status = 'active';
-        $project->save();
-
-    } else {
-        if ($project->status == 'active') $project->status = 'inactive';
-        $project->save();
-        $messageList .= processTpl('Common/message_notice.html', array(
-            '${msg}' => 'Please upload a mix MP3 file to make sure your project is activated.<br />' .
-                        'Without a mix MP3 file the project will not be visible for other users.<br />' .
-                        'Please make sure the file is of high quality, at least 128kbps at 44.1kHz'
-        ));
-    }
+//    $masterFound = ProjectFile::master_mp3_file_found_for_project_id($project->id);
+//    if ($masterFound) {
+//        if ($project->status == 'inactive') $project->status = 'active';
+//        $project->save();
+//
+//    } else {
+//        if ($project->status == 'active') $project->status = 'inactive';
+//        $project->save();
+//        $messageList .= processTpl('Common/message_notice.html', array(
+//            '${msg}' => 'Please upload a mix MP3 file to make sure your project is activated.<br />' .
+//                        'Without a mix MP3 file the project will not be visible for other users.<br />' .
+//                        'Please make sure the file is of high quality, at least 128kbps at 44.1kHz'
+//        ));
+//    }
 
     $masterFileFoundHtml    = '';
     $masterFileNotFoundHtml = '';
@@ -506,22 +501,25 @@ function getUploadedFilesSection(&$project, $messageList) {
         $uploaderUserImg = getUserImageHtml($file->userImageFilename, $file->userName, 'tiny');
 
         $checkbox = '';
-        $mixOrRawFileIcon = '';
+        $fileIcon = '';
         if ($file->type == 'mix') {
-            $mixOrRawFileIcon = processTpl('Project/mixFileIcon.html', array());
+            $fileIcon = processTpl('Project/fileIcon_mix.html', array());
 
-        } else {
+        } else if ($file->type == 'release') {
+            $fileIcon = processTpl('Project/fileIcon_release.html', array());
+
+        } else { // stem
             $checkbox = processTpl('Project/projectFileElementCheckbox.html', array(
                 '${id}'    => 'selectedStems',
                 '${name}'  => 'selectedStems',
                 '${value}' => $file->id
             ));
-            $mixOrRawFileIcon = processTpl('Project/rawFileIcon.html', array());
-        } // FIXME - deal with releases here, too
+            $fileIcon = processTpl('Project/fileIcon_stem.html', array());
+        }
 
         $snippet = processTpl('Project/projectFileElement.html', array(
             '${projectFileElementCheckbox_optional}' => $checkbox,
-            '${mixOrRawFileIcon}'                 => $mixOrRawFileIcon,
+            '${fileIcon_choice}'                     => $fileIcon,
             '${filename}'                            => escape($file->orig_filename),
             '${filenameEscaped}'                     => escape_and_rewrite_single_quotes($file->orig_filename),
             '${fileDownloadUrl}'                     => '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $file->id,
@@ -534,9 +532,11 @@ function getUploadedFilesSection(&$project, $messageList) {
 
         if ($file->type == 'mix') {
             $projectFilesMixesHtml .= $snippet;
+        } else if ($file->type == 'release') {
+            $projectFilesReleasesHtml .= $snippet;
         } else {
             $projectFilesStemsHtml .= $snippet;
-        } // FIXME - deal with releases here, too
+        }
     }
 
     if (!$projectFilesStemsHtml) {

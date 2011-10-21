@@ -15,8 +15,6 @@ class Project {
     var $user_id;
     var $title; // the project name
     var $sorting; // not used at the moment but maybe useful in the future
-    //var $type; // old: original or remix, new: drop this! but only after the old live data has been successfully converted into the new projects concept!
-    //var $originating_user_id; // new: drop this! but only after the old live data has been successfully converted into the new projects concept!
     var $currency;
     var $rating_count;
     var $rating_value;
@@ -24,7 +22,7 @@ class Project {
     var $visibility; // new: drop this? maybe useful in the future (pro feature - private projects)
     var $playback_count;
     var $download_count;
-    var $status; // old: newborn, active and inactive (mp3 file missing) - new: newborn, active, inactive (mp3 file missing), banned and finished
+    var $status; // newborn, active, inactive (mp3 file missing), banned and finished
     var $entry_date;
     var $containsOthers; // check this if we need it here
     var $needsOthers; // check this if we need it here
@@ -619,8 +617,6 @@ class Project {
         $a->title                     = $row['title'];
         $a->currency                  = $row['currency'];
         $a->sorting                   = $row['sorting'];
-        //$a->type                      = $row['type'];
-        //$a->originating_user_id       = $row['originating_user_id'];
         $a->rating_count              = $row['rating_count'];
         $a->rating_value              = $row['rating_value'];
         $a->competition_points        = $row['competition_points'];
@@ -651,8 +647,6 @@ class Project {
             'title                     varchar(255) not null, ' .
             'currency                  varchar(3)   not null, ' .
             'sorting                   int(5), ' .
-            //'type                      varchar(10)  not null, ' .
-            //'originating_user_id       int(10), ' .
             'rating_count              int(10)      not null, ' .
             'rating_value              float        not null, ' .
             'competition_points        int(10)      not null, ' .
@@ -666,7 +660,6 @@ class Project {
             'entry_date                datetime     not null default "1970-01-01 00:00:00", ' .
             'primary key (id), ' .
             'key user_id (user_id), ' .
-            //'key type (type), ' .
             'key rating_value (rating_value), ' .
             'key entry_date (entry_date) ' .
             ') default charset=utf8'
@@ -777,11 +770,7 @@ class Project {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_project ' .
-            '(user_id, title, ' .
-            'currency, sorting, ' .
-            //'type, ' .
-            //'originating_user_id, ' .
-            'rating_count, ' .
+            '(user_id, title, currency, sorting, rating_count, ' .
             'rating_value, competition_points, visibility, playback_count, download_count, ' .
             'status, contains_others, needs_others, additional_info, entry_date) ' .
             'values (' .
@@ -789,8 +778,6 @@ class Project {
             qq($this->title)                     . ', ' .
             qq($this->currency)                  . ', ' .
             n($this->sorting)                    . ', ' .
-            //qq($this->type)                      . ', ' .
-            //n($this->originating_user_id)        . ', ' .
             n($this->rating_count)               . ', ' .
             n($this->rating_value)               . ', ' .
             n($this->competition_points)         . ', ' .
@@ -821,8 +808,6 @@ class Project {
             'title = '                     . qq($this->title)                     . ', ' .
             'currency = '                  . qq($this->currency)                  . ', ' .
             'sorting = '                   . n($this->sorting)                    . ', ' .
-            //'type = '                      . qq($this->type)                      . ', ' .
-            //'originating_user_id = '       . n($this->originating_user_id)        . ', ' .
             'rating_count = '              . n($this->rating_count)               . ', ' .
             'rating_value = '              . n($this->rating_value)               . ', ' .
             'competition_points = '        . n($this->competition_points)         . ', ' .

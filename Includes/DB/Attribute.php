@@ -188,6 +188,14 @@ class Attribute {
             $a->shown_for = 'both';
             $a->save();
             $a = new Attribute();
+            $a->name = 'Lyrics';
+            $a->shown_for = 'both';
+            $a->save();
+            $a = new Attribute();
+            $a->name = 'Mixer/Sound engineer';
+            $a->shown_for = 'both';
+            $a->save();
+            $a = new Attribute();
             $a->name = 'surprise me';
             $a->shown_for = 'needs';
             $a->save();

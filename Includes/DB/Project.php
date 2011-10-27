@@ -19,7 +19,7 @@ class Project {
     var $rating_count;
     var $rating_value;
     var $competition_points; // when two songs are compared and one is chosen as the better song, its comp. points are incremented by 1
-    var $visibility; // new: drop this? maybe useful in the future (pro feature - private projects)
+    var $visibility; // 'private' or 'public'
     var $playback_count;
     var $download_count;
     var $status; // newborn, active, inactive (mp3 file missing), banned and finished

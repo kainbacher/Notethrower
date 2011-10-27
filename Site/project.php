@@ -36,7 +36,6 @@ if (get_param('action') == 'create') {
     $project = new Project();
     $project->user_id                   = $loggedInUser->id;
     $project->title                     = '(New project)';
-    //$project->type                      = 'original';
     $project->currency                  = 'USD'; // TODO - take from config - check other occurences as well
     $project->visibility                = 'public';
     $project->playback_count            = 0;
@@ -80,17 +79,6 @@ if (get_param('action') == 'create') {
         }
 
         $project->save();
-
-        // if the project is private, make sure that the owner can see it
-        if ($project->visibility == 'private') {
-            $atav = ProjectUserVisibility::fetch_for_user_id_project_id($loggedInUser->id, $project->id);
-            if (!$atav) {
-                $atav = new ProjectUserVisibility();
-                $atav->user_id = $loggedInUser->id;
-                $atav->project_id = $project->id;
-                $atav->save();
-            }
-        }
 
         $generalMessageList .= processTpl('Common/message_success.html', array(
             '${msg}' => 'Successfully saved project data.'
@@ -376,19 +364,24 @@ $formElementsList .= getFormFieldForParams(array(
     'infoText'               => 'Add comments, etc. about this project here.'
 ));
 
-// currently hidden, but maybe a candidate for pro users
-//$formElementsList .= getFormFieldForParams(array(
-//    'inputType'              => 'select',
-//    'propName'               => 'visibility',
-//    'label'                  => 'Visibility',
-//    'mandatory'              => true,
-//    'selectOptions'          => array('public' => 'Public', 'private' => 'Private'),
-//    'obj'                    => $project,
-//    'unpersistedObj'         => $unpersistedProject,
-//    'errorFields'            => $errorFields,
-//    'workWithUnpersistedObj' => $problemOccured,
-//    'infoText'               => 'If you only want certain oneloudr artist\'s to have access to your track choose PRIVATE.  If you want to make music with the world, choose; you guessed it, PUBLIC.  Your choice. You can change this at any time.'
-//));
+// is private?
+$value            = null;
+$unpersistedValue = null;
+if ($project)            $value            = $project->visibility            == 'private' ? true : false;
+if ($unpersistedProject) $unpersistedValue = $unpersistedProject->visibility == 'private' ? true : false;
+$objValue = $problemOccured ? $unpersistedValue : $value;
+$formElementsList .= getFormFieldForParams(array(
+    'inputType'              => 'checkbox',
+    'propName'               => 'isPrivate',
+    'objValueOverride'       => $objValue, // this is a checkbox but the value is stored as a string, thus the override
+    'label'                  => 'Project is private',
+    'mandatory'              => true,
+    'obj'                    => $project,
+    'unpersistedObj'         => $unpersistedProject,
+    'errorFields'            => $errorFields,
+    'workWithUnpersistedObj' => $problemOccured,
+    'infoText'               => 'If you choose the project to be private, you need to manually invite other musicians on oneloudr so they can see stems and participate in your project. You can also release previous finished works using this option.'
+));
 
 // FIXME - start
 $hidden = true;
@@ -648,16 +641,6 @@ function inputDataOk(&$errorFields, &$project) {
         }
     }
 
-// currently hidden, but maybe a candidate for pro users
-//    if (strlen(get_param('visibility')) < 1) {
-//        $errorFields['visibility'] = 'Visibility is missing!';
-//        $result = false;
-//
-//    } else if (get_param('visibility') != 'private' && get_param('visibility') != 'public') {
-//        $errorFields['visibility'] = 'Visibility is invalid!';
-//        $result = false;
-//    }
-
     if (strlen(get_param('projectAttributesList')) < 1) {
         $errorFields['attributes'] = 'Please choose at least one element here!';
         $result = false;
@@ -675,8 +658,7 @@ function processParams(&$project, &$loggedInUser) {
 
     $project->user_id                 = $loggedInUser->id;
     $project->title                   = get_param('title');
-    //$project->type                    = get_param('type') == 'remix' ? 'remix' : 'original'; // this is a hidden field, popuplated with a url param
-    //$project->visibility              = get_param('visibility'); // currently hidden, but maybe a candidate for pro users
+    $project->visibility              = get_numeric_param('isPrivate') ? 'private' : 'public';
     //$project->status                  = 'active';
     //$project->sorting                 = get_numeric_param('sorting');
     //$project->rating_count            = 0; // read-only field on this page
@@ -732,7 +714,7 @@ function processParams(&$project, &$loggedInUser) {
     }
 
     // create moods list and save new mood, if one was entered
-    $moods = explode(',', get_param('projectMoodsList'));
+    $moods = explode(',', get_param('projectMoodsList')); // FIXME - commas in new values make problems (fix all occurences in project.php and account.php)
     $newMoodsList = array();
     $projectMoodsList = array();
     foreach($moods as $mood){

@@ -6,7 +6,7 @@ include_once('../Includes/Snippets.php');
 // dao for pp_message table
 class Message {
     var $id;
-    var $sender_user_id;
+    var $sender_user_id; // can be empty in case the system has sent a message
     var $recipient_user_id;
     var $subject;
     var $text;
@@ -15,23 +15,25 @@ class Message {
     var $entry_date;
 
     // non-table fields
-    var $sender_user_name;
+    var $sender_user_name; // can be empty - see above
+    var $sender_image_filename; // can be empty - see above
 
     // constructors
     // ------------
     function Message() {
     }
 
-    function fetch_all_for_recipient_user_id($raid) {
+    function fetch_all_for_recipient_user_id($raid, $limit = null) {
         $objs = array();
 
         $result = _mysql_query(
-            'select m.*, a.name as sender_user_name ' .
-            'from pp_message m, pp_user a ' .
+            'select m.*, a.name as sender_user_name, a.image_filename as sender_image_filename ' .
+            'from pp_message m ' .
+            'left join pp_user a on m.sender_user_id = a.id ' .
             'where m.recipient_user_id = ' . n($raid) . ' ' .
             'and m.deleted = 0 ' .
-            'and m.sender_user_id = a.id ' .
-            'order by m.entry_date desc '
+            'order by m.entry_date desc ' .
+            ($limit ? 'limit ' . $limit : '')
         );
 
         $ind = 0;
@@ -51,10 +53,10 @@ class Message {
 
     function fetch_for_id($id) {
         $result = _mysql_query(
-            'select m.*, a.name as sender_user_name ' .
-            'from pp_message m, pp_user a ' .
-            'where m.id = ' . n($id) . ' ' .
-            'and m.sender_user_id = a.id'
+            'select m.*, a.name as sender_user_name, a.image_filename as sender_image_filename ' .
+            'from pp_message m ' .
+            'left join pp_user a on m.sender_user_id = a.id ' .
+            'where m.id = ' . n($id)
         );
 
         if ($row = mysql_fetch_array($result)) {
@@ -80,7 +82,8 @@ class Message {
         $m->entry_date          = reformat_sql_date($row['entry_date']);
 
         // non-table fields
-        $m->sender_user_name  = $row['sender_user_name'];
+        $m->sender_user_name      = $row['sender_user_name'];
+        $m->sender_image_filename = $row['sender_image_filename'];
 
         return $m;
     }

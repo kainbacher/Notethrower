@@ -23,7 +23,8 @@ if (!$project || !$project->id) {
     exit;
 }
 
-ensureProjectBelongsToUserId($project, $loggedInUser->id);
+//ensureProjectBelongsToUserId($project, $loggedInUser->id);
+ensureProjectIdIsAssociatedWithUserId($project->id, $loggedInUser->id);
 
 $pFile = ProjectFile::fetch_for_id(get_numeric_param('atfid'));
 if (!$pFile || !$pFile->id || $pFile->project_id != $project->id) {
@@ -94,7 +95,11 @@ function deliver_file(&$pFile) {
         exit;
     }
 
-    header('Content-Disposition: attachment; filename="' . $pFile->orig_filename . '"');
+    $extension = getFileExtension($pFile->orig_filename);
+    if ($extension != 'txt') {
+        header('Content-Disposition: attachment; filename="' . $pFile->orig_filename . '"');
+    }
+
     header('Content-Type: ' . get_mime_type($pFile->orig_filename));
     header('Content-Length: ' . filesize($filepath));
 
@@ -102,23 +107,19 @@ function deliver_file(&$pFile) {
 }
 
 function get_mime_type($filename) {
-    $filename = strtolower($filename);
+    $ext = getFileExtension($filename);
 
-    if (strpos($filename, '.mp3') !== false) {
-        return 'audio/mp3';
-    } else if (strpos($filename, '.aiff') !== false) {
-        return 'audio/x-aiff';
-    } else if (strpos($filename, '.flac') !== false) {
-        return 'audio/flac';
-    } else if (strpos($filename, '.ogg') !== false) {
-        return 'audio/ogg';
-    } else if (strpos($filename, '.wav') !== false) {
-        return 'audio/x-wav';
-    } else if (strpos($filename, '.zip') !== false) {
-        return 'application/zip';
-    } else {
-        return 'application/octet-stream'; // using this mimetype always ensures that no browser players are opened? FIXME
-    }
+    if      ($ext == 'txt')  return 'text/plain';
+    else if ($ext == 'mp3')  return 'audio/mp3';
+    else if ($ext == 'aif')  return 'audio/x-aiff';
+    else if ($ext == 'aiff') return 'audio/x-aiff';
+    else if ($ext == 'mid')  return 'audio/midi';
+    else if ($ext == 'midi') return 'audio/midi';
+    else if ($ext == 'flac') return 'audio/flac';
+    else if ($ext == 'ogg')  return 'audio/ogg';
+    else if ($ext == 'wav')  return 'audio/x-wav';
+    else if ($ext == 'zip')  return 'application/zip';
+    else                     return 'application/octet-stream';
 }
 
 ?>

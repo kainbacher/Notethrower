@@ -9,9 +9,11 @@ include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/Attribute.php');
 include_once('../Includes/DB/Genre.php');
+include_once('../Includes/DB/Tool.php');
 include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/UserAttribute.php');
 include_once('../Includes/DB/UserGenre.php');
+include_once('../Includes/DB/UserTool.php');
 
 $logger->set_debug_level();
 
@@ -208,6 +210,22 @@ if ($userIsLoggedIn) { // it's an update
             'infoText'               => 'If you can\'t find your skill in the selection above, you can add it here. It will be added to the skills list, when you click "Update account".'
         ));
         */
+
+        // tools
+        $formElementsSection1 .= getFormFieldForParams(array(
+            'inputType'              => 'multiselect2',
+            'propName'               => 'tools',
+            'label'                  => 'Tools',
+            'mandatory'              => false,
+            'cssClassSuffix'         => 'chzn-select chzn-modify', // this triggers a conversion to a "chosen" select field
+            'obj'                    => $user,
+            'unpersistedObj'         => $unpersistedUser,
+            'selectOptions'          => Tool::getSelectorOptionsArray(),
+            'objValues'              => $problemOccured ? $unpersistedUser->unpersistedUserTools : UserTool::getToolIdsForUserId($user->id),
+            'errorFields'            => $errorFields,
+            'workWithUnpersistedObj' => $problemOccured,
+            'infoText'               => 'List the tools you use here.'
+        ));
 
         // user genres
         $formElementsSection1 .= getFormFieldForParams(array(
@@ -745,23 +763,26 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
         }
 
         if ($userIsLoggedIn) {
-            /*
-            if (preg_match('/[^0-9,]/', get_param('userAttributesList'))) {
-                $errorFields['attributes'] = 'Invalid attributes list'; // can only happen when someone plays around with the post data
-                $result = false;
+            if (strpos(get_param('userAttributesList'), 'new_') === false) { // if no new value was added
+                if (preg_match('/[^0-9,]/', get_param('userAttributesList'))) {
+                    $errorFields['attributes'] = 'Invalid attributes list'; // can only happen when someone plays around with the post data
+                    $result = false;
+                }
             }
 
-//            if (!get_param('userGenresList')) {
-//                $errorFields['genres'] = 'Please pick at least one genre.';
-//                $result = false;
-//
-//            } else
-            if (preg_match('/[^0-9,]/', get_param('userGenresList'))) {
-                $errorFields['genres'] = 'Invalid genres list'; // can only happen when someone plays around with the post data
-                $result = false;
+            if (strpos(get_param('userToolsList'), 'new_') === false) { // if no new value was added
+                if (preg_match('/[^0-9,]/', get_param('userToolsList'))) {
+                    $errorFields['tools'] = 'Invalid tools list'; // can only happen when someone plays around with the post data
+                    $result = false;
+                }
             }
-             *
-             */
+
+            if (strpos(get_param('userGenresList'), 'new_') === false) { // if no new value was added
+                if (preg_match('/[^0-9,]/', get_param('userGenresList'))) {
+                    $errorFields['genres'] = 'Invalid genres list'; // can only happen when someone plays around with the post data
+                    $result = false;
+                }
+            }
         }
     }
 
@@ -812,7 +833,7 @@ function processParams(&$user, $userIsLoggedIn) {
             $newAttributeList = array();
             foreach($attributes as $attribute){
                 $newCheck = strstr($attribute, 'new_');
-                if($newCheck){
+                if ($newCheck){
                     $newAttribute = new Attribute();
                     $newAttribute->name = substr($newCheck,4,strlen($newCheck));
                     $newAttribute->shown_for = "both";
@@ -821,6 +842,22 @@ function processParams(&$user, $userIsLoggedIn) {
 
                 } else {
                     $userAttributesList[] = $attribute;
+                }
+            }
+
+            // create tools list and save new tools if entered
+            $tools = explode(',', get_param('userToolsList'));
+            $newToolList = array();
+            foreach($tools as $tool) {
+                $newCheck = strstr($tool, 'new_');
+                if ($newCheck) {
+                    $newTool = new Tool();
+                    $newTool->name = substr($newCheck, 4, strlen($newCheck));
+                    $newTool->insert();
+                    $newToolList[] = $newTool->id;
+
+                } else {
+                    $userToolsList[] = $tool;
                 }
             }
 
@@ -852,9 +889,12 @@ function processParams(&$user, $userIsLoggedIn) {
                 }
             }
 
-            // handle user attributes & genres
+            // handle user attributes, tools & genres
             $userAttributesList = array_merge($userAttributesList, $newAttributeList);
             $userAttributesList = array_unique($userAttributesList);
+
+            $userToolsList = array_merge($userToolsList, $newToolList);
+            $userToolsList = array_unique($userToolsList);
 
             $userGenresList = array_merge($userGenresList, $newGenreList);
             $userGenresList = array_unique($userGenresList);
@@ -863,11 +903,15 @@ function processParams(&$user, $userIsLoggedIn) {
                 UserAttribute::deleteForUserId($user->id); // first, delete all existing
                 UserAttribute::addAll($userAttributesList, $user->id, 'offers'); // then save the selected attributes (including the new one, if one was entered)
 
+                UserTool::deleteForUserId($user->id); // first, delete all existing
+                UserTool::addAll($userToolsList, $user->id); // then save the selected tools (including the new one, if one was entered)
+
                 UserGenre::deleteForUserId($user->id); // first, delete all existing genres
                 UserGenre::addAll($userGenresList, $user->id); // then save the selected genres (including the new one, if one was entered)
 
             } else { // work with unpersisted obj
                 $user->unpersistedUserAttributes = $userAttributesList;
+                $user->unpersistedUserTools      = $userToolsList;
                 $user->unpersistedUserGenres     = $userGenresList;
             }
 

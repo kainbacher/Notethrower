@@ -90,7 +90,7 @@ $(function() {
 
 		// Specify what files to browse for
 		filters : [
-			{title : "Audio files and ZIP archives", extensions : "mp3,wav,aiff,flac,zip"}
+			{title : "Audio files and lyrics", extensions : "<?= join(',', $GLOBALS['ALLOWED_UPLOAD_EXTENSIONS']) ?>"}
 		],
 
 		// Flash settings

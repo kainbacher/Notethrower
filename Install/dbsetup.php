@@ -20,9 +20,11 @@ include_once('../Includes/DB/ProjectMood.php');
 include_once('../Includes/DB/ProjectUserVisibility.php');
 include_once('../Includes/DB/Stats.php');
 include_once('../Includes/DB/Subscription.php');
+include_once('../Includes/DB/Tool.php');
 include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/UserAttribute.php');
 include_once('../Includes/DB/UserGenre.php');
+include_once('../Includes/DB/UserTool.php');
 
 header('Content-type: text/plain');
 
@@ -40,15 +42,18 @@ ProjectGenre::createTable();
 ProjectMood::createTable();
 ProjectUserVisibility::create_table();
 Stats::create_table();
+Tool::createTable();
 User::create_table();
 UserAttribute::createTable();
 UserGenre::createTable();
+UserTool::createTable();
 Subscription::create_table();
 
 echo 'creation done.' . "\n";
 
 Attribute::populateTable();
 Genre::populateTable();
+Tool::populateTable();
 Mood::populateTable();
 
 echo 'population done.' . "\n";

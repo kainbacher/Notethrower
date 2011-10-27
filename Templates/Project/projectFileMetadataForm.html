@@ -1,0 +1,10 @@
+<form name="projectFilesForm_${projectFileId}" action="${formAction}" method="POST" style="display:inline-block;">
+  <input type="hidden" name="action" value="saveProjectFileMetadata">
+  <input type="hidden" name="pid" value="${projectId}">
+  <input type="hidden" name="fid" value="${projectFileId}">
+  Comment:&nbsp;<input type="text" name="comment" id="comment" value="${comment}" />&nbsp;
+  <input class="button blue"
+         type="submit"
+         value="Save"
+         onClick="document.projectFilesForm_${projectFileId}.submit();"><br />
+</form>

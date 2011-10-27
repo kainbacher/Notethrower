@@ -19,6 +19,7 @@ ${Common/bodyHeader}
             <input type="hidden" name="signupAs" value="${signupAs}">
             <input type="hidden" name="facebook_id" value="${facebookId}">
             <input type="hidden" name="userAttributesList" id="userAttributesList" value="">
+            <input type="hidden" name="userToolsList" id="userToolsList" value="">
             <input type="hidden" name="userGenresList" id="userGenresList" value="">
             <input type="hidden" name="latitude" value="${latitude}">
             <input type="hidden" name="longitude" value="${longitude}">
@@ -36,7 +37,7 @@ ${Common/bodyHeader}
             ${Common/formElement_section2_list}
 
             <div class="prepend-6 span-6 last">
-                <input type="submit" class="${submitButtonClass} button blue" value="${submitButtonValue}" onClick="buildUserAttributesAndGenresLists();">
+                <input type="submit" class="${submitButtonClass} button blue" value="${submitButtonValue}" onClick="buildUserAttributesToolsAndGenresLists();">
             </div>
         </form>
 
@@ -74,10 +75,15 @@ function showTermsAndConditions() {
     window.open('termsAndConditions.php','TERMS_AND_CONDITIONS','scrollbars=yes,resizable=yes,status=0,width=1100,height=600');
 }
 
-function buildUserAttributesAndGenresLists() {
+function buildUserAttributesToolsAndGenresLists() {
     if ($('#attributes').val()) {
         var aList = $('#attributes').val().join(','); // create comma separated list string ...
         $('#userAttributesList').val(aList); // ... and save the string in the hidden field
+    }
+
+    if ($('#tools').val()) {
+        var tList = $('#tools').val().join(','); // create comma separated list string ...
+        $('#userToolsList').val(tList); // ... and save the string in the hidden field
     }
 
     if ($('#genres').val()) {

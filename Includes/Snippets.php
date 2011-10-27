@@ -12,6 +12,15 @@ for($i = 128; $i < 256; $i++){
 }
 
 // functions
+function getFileExtension($fileName) {
+    $pos = strrpos($fileName, '.');
+    $extension = null;
+    if ($pos !== false) {
+        $extension = strtolower(substr($fileName, $pos + 1));
+    }
+    return $extension;
+}
+
 function deleteOldTempFiles($extension) {
     global $logger;
 

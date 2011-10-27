@@ -25,13 +25,13 @@ $(document).ready(function () {
         e.preventDefault();
         alert('invite User Function');
     });
-    
+
     $("input[rel=search_name]").click(function(e){
         e.preventDefault();
         alert('search for '+$('#search_name').val()+' Function');
     });
-    
-    
+
+
 });
 
 </script>
@@ -46,14 +46,14 @@ ${Common/bodyHeader}
 
             <div class="span-24 last">
                 <ul class="tabs">
-                    <li class="tabsItem"><a href="#" class="tab-1 tabsAct">Basics</a></li>
-                    <li class="tabsItem"><a href="#" class="tab-2">Invite</a></li>
-                    <li class="tabsItem"><a href="#" class="tab-3">Upload</a></li>
-                    <li class="tabsItem"><a href="#" class="tab-4">Publish</a></li>
+                    <li class="tabsItem"><a href="#" class="tab-1${tabsAct_basics}">Basics</a></li>
+                    <li class="tabsItem"><a href="#" class="tab-2${tabsAct_invite}">Invite</a></li>
+                    <li class="tabsItem"><a href="#" class="tab-3${tabsAct_upload}">Upload</a></li>
+                    <li class="tabsItem"><a href="#" class="tab-4${tabsAct_publish}">Publish</a></li>
                 </ul>
             </div>
 
-            <div class="span-24 last tabcontent-1 tabcontentAct">
+            <div class="span-24 last tabcontent-1${tabcontentAct_basics}">
                 <div class="span-16 last">
                     <div class="box-grey">
                         <h2>Basic Project Information</h2>
@@ -80,7 +80,7 @@ ${Common/bodyHeader}
             </div>
 
 
-            <div class="span-24 last tabcontent-2">
+            <div class="span-24 last tabcontent-2${tabcontentAct_invite}">
                 <div class="span-16">
                     <div class="box-grey">
 
@@ -118,7 +118,7 @@ ${Common/bodyHeader}
                 </div>
             </div>
 
-            <div class="span-24 last tabcontent-3">
+            <div class="span-24 last tabcontent-3${tabcontentAct_upload}">
                 <div class="span-16">
                     <div class="box-grey">
                         <h2>${projectTitle}</h2>
@@ -134,57 +134,6 @@ ${Common/bodyHeader}
                         <br />
 
                         ${Project/uploadedFilesSection}
-
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-
-                            <h2>stems list</h2>
-                            <p>
-                                - textfeld<br />
-                                - name vom künstler<br />
-                                - instrument<br />
-                                - boolean<br />
-
-                            </p>
-                            <br />
-
-                            <div class="prepend-6 span-6 last">
-                                <input class="button blue"
-                                    type="submit"
-                                    value="Download selected Stems">
-                            </div>
-
-                            <br />
-                            <br />
-                            <br />
-
-                            <h2>releases list</h2>
-                            <p>
-                                - title<br />
-                            </p>
-
-
-                            <br />
-                            <br />
-                            <br />
-
-                            <h2>mixes list</h2>
-                            <p>
-                                - title<br />
-                                - stems<br />
-                            </p>
-
-
-
-                            <div class="prepend-6 span-6 last">
-                                <input class="button blue"
-                                    type="submit"
-                                    value="${submitButtonValue}">
-                            </div>
 
                     </div>
                 </div>
@@ -204,7 +153,7 @@ ${Common/bodyHeader}
 
 
 
-            <div class="span-24 last tabcontent-4">
+            <div class="span-24 last tabcontent-4${tabcontentAct_publish}">
                 <div class="span-16">
                     <div class="box-grey">
 

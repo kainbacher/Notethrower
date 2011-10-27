@@ -1,47 +1,48 @@
 <div id="projectFilesSection">
   ${Common/message_choice_list}
 
-  <div id="stemsSection">
-    <br />
-    <h2>Stems:</h2>
-    <div>
-      ${Project/projectFileElement_list_stems}
-      ${Project/projectFilesNotFound_optional_stems}
+    <div id="stemsSection">
+        <br />
+        <h2>Stems:</h2>
+        <div>
+          ${Project/projectFileElement_list_stems}
+          ${Project/projectFilesNotFound_optional_stems}
+        </div>
+        <br />
+        <input class="button-small blue" type="submit" value="Upload stems" onClick="openUploaderPopup(false);"><br />
+
+        <div class="prepend-6 span-6 last">
+            <input class="button blue"
+                type="submit"
+                value="Download selected stems"
+                onClick="downloadSelectedStems();">
+        </div>
+        <br />
     </div>
-    <br />
-    <input class="button-small blue" type="submit" value="Upload stems" onClick="openUploaderPopup(false);"><br />
 
-    <div class="prepend-6 span-6 last">
-        <input class="button blue"
-            type="submit"
-            value="Download selected stems"
-            onClick="downloadSelectedStems();">
+    <br />
+
+    <div id="releasesSection">
+      <br />
+      <h2>Releases:</h2>
+      <div>
+        ${Project/projectFileElement_list_releases}
+        ${Project/projectFilesNotFound_optional_releases}
+      </div>
+      <br />
     </div>
-    <br />
-  </div>
 
-  <br />
-
-  <div id="releasesSection">
     <br />
-    <h2>Releases:</h2>
-    <div>
-      ${Project/projectFileElement_list_releases}
-      ${Project/projectFilesNotFound_optional_releases}
+
+    <div id="mixesSection">
+      <br />
+      <h2>Mixes:</h2>
+      <div>
+        ${Project/projectFileElement_list_mixes}
+        ${Project/projectFilesNotFound_optional_mixes}
+      </div>
+      <br />
+      <input class="button-small blue" type="submit" value="Upload mix files" onClick="openUploaderPopup(true);">
     </div>
-    <br />
-  </div>
 
-  <br />
-
-  <div id="mixesSection">
-    <br />
-    <h2>Mixes:</h2>
-    <div>
-      ${Project/projectFileElement_list_mixes}
-      ${Project/projectFilesNotFound_optional_mixes}
-    </div>
-    <br />
-    <input class="button-small blue" type="submit" value="Upload mix files" onClick="openUploaderPopup(true);">
-  </div>
 </div>

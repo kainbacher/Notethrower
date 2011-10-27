@@ -12,6 +12,7 @@ class ProjectFile {
     var $orig_filename;
     var $type; // raw, mix, release
     var $status; // inactive or active
+    var $comment;
     var $entry_date;
 
     // fields from referenced tables
@@ -77,6 +78,7 @@ class ProjectFile {
         $f->orig_filename         = $row['orig_filename'];
         $f->type                  = $row['type'];
         $f->status                = $row['status'];
+        $f->comment               = $row['comment'];
         $f->entry_date            = reformat_sql_date($row['entry_date']);
 
         // fields from referenced tables
@@ -99,6 +101,7 @@ class ProjectFile {
             'orig_filename         varchar(255) not null, ' .
             'type                  varchar(10)  not null, ' .
             'status                varchar(20)  not null, ' .
+            'comment               text, ' .
             'entry_date            datetime     not null default "1970-01-01 00:00:00", ' .
             'primary key (id), ' .
             'key project_id (project_id), ' .
@@ -230,7 +233,7 @@ class ProjectFile {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_project_file ' .
-            '(project_id, originator_user_id, filename, orig_filename, type, status, entry_date) ' .
+            '(project_id, originator_user_id, filename, orig_filename, type, status, comment, entry_date) ' .
             'values (' .
             n($this->project_id)             . ', ' .
             n($this->originator_user_id)     . ', ' .
@@ -238,6 +241,7 @@ class ProjectFile {
             qq($this->orig_filename)         . ', ' .
             qq($this->type)                  . ', ' .
             qq($this->status)                . ', ' .
+            qq($this->comment)               . ', ' .
             'now()'                          .
             ')'
         );
@@ -259,7 +263,8 @@ class ProjectFile {
             'filename = '           . qq($this->filename)          . ', ' .
             'orig_filename = '      . qq($this->orig_filename)     . ', ' .
             'type = '               . qq($this->type)              . ', ' .
-            'status = '             . qq($this->status)            . ' ' .
+            'status = '             . qq($this->status)            . ', ' .
+            'comment = '            . qq($this->comment)           . ' ' .
             // entry_date intentionally not set here
             'where id = '           . n($this->id)
         );

@@ -2,6 +2,7 @@
 
 include_once('../Includes/Init.php');
 
+include_once('../Includes/Config.php');
 include_once('../Includes/Snippets.php');
 
 $logger->set_debug_level();
@@ -46,6 +47,16 @@ $fileName = isset($_REQUEST["name"]) ? $_REQUEST["name"] : '';
 
 // Clean the fileName for security reasons
 $fileName = preg_replace('/[^\w\._]+/', '', $fileName);
+
+// get the extension
+$extension = getFileExtension($fileName);
+$logger->info('file extension: ' . $extension);
+
+// check the extension
+if (!$extension || !in_array($extension, $GLOBALS['ALLOWED_UPLOAD_EXTENSIONS'])) {
+    $logger->warn('illegal file extension for upload found! filename: ' . $fileName);
+    die('{"jsonrpc" : "2.0", "error" : {"code": 199, "message": "Illegal file extension: $extension"}, "id" : "id"}');
+}
 
 // Make sure the fileName is unique but only if chunking is disabled
 if ($chunks < 2 && file_exists($targetDir . DIRECTORY_SEPARATOR . $fileName)) {

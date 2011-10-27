@@ -30,6 +30,8 @@ $errorFields = Array();
 
 $projectId = get_numeric_param('pid'); // this is only set in an update scenario
 
+$activeTab = 'basics';
+
 if (get_param('action') == 'create') {
     $project = new Project();
     $project->user_id                   = $loggedInUser->id;
@@ -238,6 +240,26 @@ if (get_param('action') == 'create') {
     }
 
     exit;
+
+} else if (get_param('action') == 'saveProjectFileMetadata') {
+    if (!$projectId) {
+        show_fatal_error_and_exit('cannot save project file metadata without a project id!');
+    }
+
+    $project = Project::fetch_for_id($projectId);
+    ensureProjectIdIsAssociatedWithUserId($project->id, $loggedInUser->id);
+
+    $file = ProjectFile::fetch_for_id(get_numeric_param('fid'));
+    if (!$file) {
+        show_fatal_error_and_exit('project file not found for id: ' . get_numeric_param('fid'));
+    }
+
+    ensureProjectFileBelongsToProjectId($file, $projectId);
+
+    $file->comment = get_param('comment');
+    $file->save();
+
+    $activeTab = 'upload'; // jump to the correct tab when the page was reloaded
 }
 
 // form fields
@@ -442,6 +464,14 @@ foreach($projectRecommendedArtists as $projectRecommendedArtist){
 processAndPrintTpl('Project/index.html', array(
     '${Common/pageHeader}'                      => buildPageHeader(($projectId ? 'Edit project' : 'Create project'), false, false, true),
     '${Common/bodyHeader}'                      => buildBodyHeader($loggedInUser),
+    '${tabcontentAct_basics}'                   => $activeTab == 'basics'  ? ' tabcontentAct' : '',
+    '${tabcontentAct_invite}'                   => $activeTab == 'invite'  ? ' tabcontentAct' : '',
+    '${tabcontentAct_upload}'                   => $activeTab == 'upload'  ? ' tabcontentAct' : '',
+    '${tabcontentAct_publish}'                  => $activeTab == 'publish' ? ' tabcontentAct' : '',
+    '${tabsAct_basics}'                         => $activeTab == 'basics'  ? ' tabsAct' : '',
+    '${tabsAct_invite}'                         => $activeTab == 'invite'  ? ' tabsAct' : '',
+    '${tabsAct_upload}'                         => $activeTab == 'upload'  ? ' tabsAct' : '',
+    '${tabsAct_publish}'                        => $activeTab == 'publish' ? ' tabsAct' : '',
     '${headline}'                               => $projectId ? 'Edit project' : 'Create project',
     '${Common/message_choice_list}'             => $generalMessageList,
     '${formAction}'                             => $_SERVER['PHP_SELF'],
@@ -517,17 +547,37 @@ function getUploadedFilesSection(&$project, $messageList) {
             $fileIcon = processTpl('Project/fileIcon_stem.html', array());
         }
 
+        $metadataBlock = '';
+        $metadataForm  = '';
+        if ($file->comment) {
+            $metadataBlock = processTpl('Project/projectFileMetadata.html', array(
+                '${comment}' => escape($file->comment)
+            ));
+
+        } else {
+            $metadataForm = processTpl('Project/projectFileMetadataForm.html', array(
+                '${formAction}'    => $_SERVER['PHP_SELF'],
+                '${projectId}'     => $project->id,
+                '${projectFileId}' => $file->id,
+                '${comment}'       => escape($file->comment)
+            ));
+        }
+
         $snippet = processTpl('Project/projectFileElement.html', array(
-            '${projectFileElementCheckbox_optional}' => $checkbox,
-            '${fileIcon_choice}'                     => $fileIcon,
-            '${filename}'                            => escape($file->orig_filename),
-            '${filenameEscaped}'                     => escape_and_rewrite_single_quotes($file->orig_filename),
-            '${fileDownloadUrl}'                     => '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $file->id,
-            '${status}'                              => $file->status == 'active' ? 'Active' : 'Inactive', // TODO - currently not used
-            '${projectId}'                           => $project->id,
-            '${projectFileId}'                       => $file->id,
-            '${uploadedByName}'                      => $file->userName,
-            '${uploaderUserImg}'                     => $uploaderUserImg
+            '${formAction}'                               => $_SERVER['PHP_SELF'],
+            '${projectFileId}'                            => $file->id,
+            '${projectFileElementCheckbox_optional}'      => $checkbox,
+            '${fileIcon_choice}'                          => $fileIcon,
+            '${filename}'                                 => escape($file->orig_filename),
+            '${filenameEscaped}'                          => escape_and_rewrite_single_quotes($file->orig_filename),
+            '${fileDownloadUrl}'                          => '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $file->id,
+            '${status}'                                   => $file->status == 'active' ? 'Active' : 'Inactive', // TODO - currently not used
+            '${projectId}'                                => $project->id,
+            '${projectFileId}'                            => $file->id,
+            '${uploadedByName}'                           => $file->userName,
+            '${uploaderUserImg}'                          => $uploaderUserImg,
+            '${Project/projectFileMetadataForm_optional}' => $metadataForm,
+            '${Project/projectFileMetadata_optional}'     => $metadataBlock
         ));
 
         if ($file->type == 'mix') {

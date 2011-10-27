@@ -2,9 +2,10 @@
   <input type="hidden" name="action" value="saveProjectFileMetadata">
   <input type="hidden" name="pid" value="${projectId}">
   <input type="hidden" name="fid" value="${projectFileId}">
-  Comment:&nbsp;<input type="text" name="comment" id="comment" value="${comment}" />&nbsp;
+  Comment:<br><textarea name="comment" id="comment" rows="3" cols="40" maxlength="500" style="height:60px;">${comment}</textarea>&nbsp;
   <input class="button blue"
          type="submit"
          value="Save"
          onClick="document.projectFilesForm_${projectFileId}.submit();"><br />
+  <p class="smallText charsRemaining"></p>
 </form>

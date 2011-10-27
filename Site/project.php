@@ -244,7 +244,11 @@ if (get_param('action') == 'create') {
 
     ensureProjectFileBelongsToProjectId($file, $projectId);
 
-    $file->comment = get_param('comment');
+    if (strlen(get_param('comment')) > 500) {
+        $file->comment = substr(get_param('comment'), 0, 500); // truncate if too long. the ui takes care that the input is not too long.
+    } else {
+        $file->comment = get_param('comment');
+    }
     $file->save();
 
     $activeTab = 'upload'; // jump to the correct tab when the page was reloaded

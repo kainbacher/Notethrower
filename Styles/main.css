@@ -147,6 +147,10 @@ textarea {
     line-height: 11px;
 }
 
+.line {
+    border-top: 1px solid #ccc;
+}
+
 
 /* !tooltip */
 /* ---------------------------------------------------------------------- */
@@ -1770,7 +1774,20 @@ a.nohighlight:hover {
 }
 
 
+/* !sidetwo */
+/* ---------------------------------------------------------------------- */
 
+.sidetwo {
+    display: inline-block;
+}
+.sidetwoLeft {
+    float: left;
+    width: 70px;
+}
+.sidetwoRight {
+    float: left;
+    width: 215px;
+}
 
 
 

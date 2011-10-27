@@ -132,8 +132,8 @@ class ProjectAttribute {
         $result = _mysql_query(
             'select attribute_id ' .
             'from pp_project_attribute ' .
-            'where project_id = ' . n($project_id) . ' and ' .
-            'status = ' . qq($status)
+            'where project_id = ' . n($project_id) . ' ' .
+            'and status = ' . qq($status)
         );
 
         while ($row = mysql_fetch_array($result)) {
@@ -151,9 +151,9 @@ class ProjectAttribute {
         $result = _mysql_query(
             'select a.name as attribute_name ' .
             'from pp_project_attribute pa, pp_attribute a ' .
-            'where pa.project_id = ' . n($project_id) . ' and ' .
-            'pa.status = ' . qq($status) . ' and ' .
-            'pa.attribute_id = a.id ' .
+            'where pa.project_id = ' . n($project_id) . ' ' .
+            'and pa.status = ' . qq($status) . ' ' .
+            'and pa.attribute_id = a.id ' .
             'order by attribute_name asc'
         );
 

@@ -262,6 +262,13 @@ function buildProjectAttributesAndSubGenresAndMoodsLists() {
     }
 }
 
+function buildProjectFileAttributesLists(pfId) {
+    if ($('#fileAttributes_' + pfId).val()) {
+        var aList = $('#fileAttributes_' + pfId).val().join(','); // create comma separated list string ...
+        $('#projectFileAttributesList_' + pfId).val(aList); // ... and save the string in the hidden field
+    }
+}
+
 function downloadSelectedStems() {
     if ($('input:checkbox[id=selectedStems]:checked').val()) {
         var idList = [];

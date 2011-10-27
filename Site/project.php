@@ -11,6 +11,7 @@ include_once('../Includes/DB/Mood.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectAttribute.php');
 include_once('../Includes/DB/ProjectFile.php');
+include_once('../Includes/DB/ProjectFileAttribute.php');
 include_once('../Includes/DB/ProjectGenre.php');
 include_once('../Includes/DB/ProjectMood.php');
 include_once('../Includes/DB/ProjectUserVisibility.php');
@@ -250,6 +251,10 @@ if (get_param('action') == 'create') {
         $file->comment = get_param('comment');
     }
     $file->save();
+
+    // handle attributes
+    ProjectFileAttribute::deleteForProjectFileId($file->id); // first, delete all existing attributes
+    ProjectFileAttribute::addAll(explode(',', get_param('projectFileAttributesList_' . $file->id)), $file->id); // then save the selected attributes
 
     $activeTab = 'upload'; // jump to the correct tab when the page was reloaded
 }
@@ -544,19 +549,52 @@ function getUploadedFilesSection(&$project, $messageList) {
             $fileIcon = processTpl('Project/fileIcon_stem.html', array());
         }
 
+        $fileAttributeNames = ProjectFileAttribute::getAttributeNamesForProjectFileId($file->id);
+
         $metadataBlock = '';
         $metadataForm  = '';
-        if ($file->comment) {
+        if ($file->comment && count($fileAttributeNames) > 0) {
             $metadataBlock = processTpl('Project/projectFileMetadata.html', array(
-                '${comment}' => escape($file->comment)
+                '${comment}' => escape($file->comment),
+                '${skills}'  => escape(join(', ', $fileAttributeNames))
             ));
 
         } else {
+            // no comment found -> show form
+            $pfFormElementsList = getFormFieldForParams(array(
+                'inputType'                => 'textarea',
+                'propName'                 => 'comment',
+                'label'                    => 'Comment',
+                'maxlength'                => 500,
+                'customStyleForInputField' => 'height:60px;', // FIXME - should not be needed
+                'mandatory'                => true,
+                'obj'                      => $file,
+                'unpersistedObj'           => null,
+                'errorFields'              => array(),
+                'workWithUnpersistedObj'   => false,
+                'infoText'                 => 'Add a comment about the file here.'
+            ));
+
+            $pfFormElementsList .= getFormFieldForParams(array(
+                'inputType'              => 'multiselect2',
+                'propName'               => 'fileAttributes_' . $file->id,
+                'label'                  => 'Instrument/Skills',
+                'mandatory'              => true,
+                'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
+                'obj'                    => $file,
+                'unpersistedObj'         => null,
+                'selectOptions'          => Attribute::getIdNameMapShownFor('both'),
+                'objValues'              => ProjectFileAttribute::getAttributeIdsForProjectFileId($file->id),
+                'errorFields'            => array(),
+                'workWithUnpersistedObj' => false,
+                'infoText'               => 'List here what this file consists of. Eg. "Bass" for a bass track.'
+            ));
+
             $metadataForm = processTpl('Project/projectFileMetadataForm.html', array(
-                '${formAction}'    => $_SERVER['PHP_SELF'],
-                '${projectId}'     => $project->id,
-                '${projectFileId}' => $file->id,
-                '${comment}'       => escape($file->comment)
+                '${formAction}'              => $_SERVER['PHP_SELF'],
+                '${projectId}'               => $project->id,
+                '${projectFileId}'           => $file->id,
+                '${Common/formElement_list}' => $pfFormElementsList,
             ));
         }
 

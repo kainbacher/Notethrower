@@ -75,7 +75,7 @@ foreach ($msgs as $msg) {
         '${senderImgUrl}' => $senderImgUrl,
         '${senderName}'   => escape($msg->sender_user_name),
         '${subject}'      => escape($msg->subject),
-        '${text}'         => escape(strlen($msg->text) > 200 ? substr($msg->text, 0, 200) . ' ...' : $msg->text)
+        '${text}'         => escape($msg->text) // FIXME - ensure this cannot be more than 500 chars when the text is created
     ));
 }
 

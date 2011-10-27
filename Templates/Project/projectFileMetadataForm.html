@@ -1,11 +1,12 @@
-<form name="projectFilesForm_${projectFileId}" action="${formAction}" method="POST" style="display:inline-block;">
+<form name="projectFileForm_${projectFileId}" action="${formAction}" method="POST" style="display:inline-block;">
   <input type="hidden" name="action" value="saveProjectFileMetadata">
   <input type="hidden" name="pid" value="${projectId}">
   <input type="hidden" name="fid" value="${projectFileId}">
-  Comment:<br><textarea name="comment" id="comment" rows="3" cols="40" maxlength="500" style="height:60px;">${comment}</textarea>&nbsp;
+  <input type="hidden" name="projectFileAttributesList_${projectFileId}" id="projectFileAttributesList_${projectFileId}" value="">
+  ${Common/formElement_list}
   <input class="button blue"
          type="submit"
          value="Save"
-         onClick="document.projectFilesForm_${projectFileId}.submit();"><br />
+         onClick="buildProjectFileAttributesLists(${projectFileId});"><br />
   <p class="smallText charsRemaining"></p>
 </form>

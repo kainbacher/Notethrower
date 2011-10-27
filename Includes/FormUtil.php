@@ -124,7 +124,7 @@ function getFormFieldForParams($params) {
             '${name}'                                            => $propName,
             '${prefix}'                                          => ($inputFieldPrefix ? escape($inputFieldPrefix) . '&nbsp;' : ''),
             '${suffix}'                                          => ($inputFieldSuffix ? '&nbsp;' . escape($inputFieldSuffix) : ''),
-            '${size_optional}'                                   => ' size="' . $size . '"',
+            '${size_optional}'                                   => ($size ? ' size="' . $size . '"' : ''),
             '${multiple_optional}'                               => ' multiple',
             '${disabled_optional}'                               => ($disabled ? ' disabled' : ''),
             '${onChangeCallback_optional}'                       => ($onChangeCallback ? ' onChange="' . $onChangeCallback . '"' : ''),
@@ -201,9 +201,6 @@ function getFormFieldForParams($params) {
         }
 
     } else if ($inputType == 'textarea') {
-        //if ($maxlength > 0) { // FIXME - add maxlength support with javascript - see: http://www.jex-treme.de/forum/archive/5920/thread.html
-        //}
-
         $val            = null;
         $unpersistedVal = null;
         eval('if ($obj) $val = $obj->' . $propName . ';');
@@ -215,12 +212,14 @@ function getFormFieldForParams($params) {
             '${name}'                      => $propName,
             '${rows}'                      => $rows,
             '${cols}'                      => $cols,
+            '${maxlength_optional}'        => ($maxlength > 0 ? ' maxlength="' . $maxlength . '"' : ''),
             '${text}'                      => escape($text),
             '${prefix}'                    => ($inputFieldPrefix ? escape($inputFieldPrefix) . '&nbsp;' : ''),
             '${suffix}'                    => ($inputFieldSuffix ? '&nbsp;' . escape($inputFieldSuffix) : ''),
             '${disabled_optional}'         => ($disabled ? ' disabled="disabled"' : ''),
             '${readonly_optional}'         => ($readonly ? ' readonly="readonly"' : ''),
-            '${onChangeCallback_optional}' => ($onChangeCallback ? ' onChange="' . $onChangeCallback . '"' : '')
+            '${onChangeCallback_optional}' => ($onChangeCallback ? ' onChange="' . $onChangeCallback . '"' : ''),
+            '${customStyle}'               => ($customStyleForInputField ? ' style="' . $customStyleForInputField . '"' : '')
         ));
 
 //    } else if ($inputType == 'dateSelection') { // ATTENTION - this requires some jquery stuff to be loaded (jquery lib, jquery-ui lib, jquery-ui stylesheet+images, a calendar icon)

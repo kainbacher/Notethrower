@@ -575,7 +575,7 @@ processAndPrintTpl('Account/index.html', array(
     '${userImage_choice}'                     => $userImage,
     '${Common/formElement_section2_list}'     => $formElementsSection2,
     '${submitButtonClass}'                    => $userIsLoggedIn ? 'updateAccountButton' : 'createAccountButton',
-    '${submitButtonValue}'                    => $userIsLoggedIn ? 'update Account' : 'create Account',
+    //'${submitButtonValue}'                    => $userIsLoggedIn ? 'update Account' : 'create Account',
     '${userName}'                             => $userIsLoggedIn ? escape($user->name) : '',
     '${userImgUrl}'                           => $userImgUrl,
     '${Common/externalWebLink_optional}'      => $webpageLink,

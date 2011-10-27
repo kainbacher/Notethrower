@@ -243,21 +243,6 @@ if ($userIsLoggedIn) { // it's an update
             'infoText'               => 'Please choose the genres that best describe what type of musician you are. We will provide recommendations on which projects to work on based on your selections.'
         ));
 
-        // "create new genre"
-        /* handled with chosen.js
-        $formElementsSection1 .= getFormFieldForParams(array(
-            'propName'               => 'newGenre',
-            'label'                  => 'Add new genre',
-            'mandatory'              => false,
-            'maxlength'              => 50,
-            'obj'                    => $user,
-            'unpersistedObj'         => $unpersistedUser,
-            'errorFields'            => $errorFields,
-            'workWithUnpersistedObj' => $problemOccured,
-            'infoText'               => 'If you can\'t find your genre in the selection above, you can add it here. It will be added to the genre list, when you click "Update account".'
-        ));
-        */
-
         $formElementsSection1 .= getFormFieldForParams(array(
             'propName'               => 'webpage_url',
             'label'                  => 'Webpage URL',
@@ -831,12 +816,13 @@ function processParams(&$user, $userIsLoggedIn) {
             // create attributes list and save new skills if entered
             $attributes = explode(',', get_param('userAttributesList'));
             $newAttributeList = array();
-            foreach($attributes as $attribute){
+            $userAttributesList = array();
+            foreach ($attributes as $attribute) {
                 $newCheck = strstr($attribute, 'new_');
                 if ($newCheck){
                     $newAttribute = new Attribute();
-                    $newAttribute->name = substr($newCheck,4,strlen($newCheck));
-                    $newAttribute->shown_for = "both";
+                    $newAttribute->name = substr($newCheck, 4, strlen($newCheck));
+                    $newAttribute->shown_for = 'both';
                     $newAttribute->insert();
                     $newAttributeList[] = $newAttribute->id;
 
@@ -848,7 +834,8 @@ function processParams(&$user, $userIsLoggedIn) {
             // create tools list and save new tools if entered
             $tools = explode(',', get_param('userToolsList'));
             $newToolList = array();
-            foreach($tools as $tool) {
+            $userToolsList = array();
+            foreach ($tools as $tool) {
                 $newCheck = strstr($tool, 'new_');
                 if ($newCheck) {
                     $newTool = new Tool();
@@ -864,28 +851,17 @@ function processParams(&$user, $userIsLoggedIn) {
             // create genre list and save new genres if entered
             $genres = explode(',', get_param('userGenresList'));
             $newGenreList = array();
-
-            foreach($genres as $genre){
+            $userGenresList = array();
+            foreach ($genres as $genre) {
                 $newCheck = strstr($genre, 'new_');
-                if($newCheck){
+                if ($newCheck) {
                     $newGenre = new Genre();
-                    $newGenre->name = substr($newCheck,4,strlen($newCheck));
+                    $newGenre->name = substr($newCheck, 4, strlen($newCheck));
                     $newGenre->insert();
                     $newGenreList[] = $newGenre->id;
 
                 } else {
                     $userGenresList[] = $genre;
-                }
-            }
-
-            // save new genre, if one was entered
-            $newGenre = null;
-            if (get_param('newGenre')) {
-                $newGenre = Genre::fetchForName(get_param('newGenre'));
-                if (!$newGenre || !$newGenre->id) {
-                    $newGenre = new Genre();
-                    $newGenre->name = get_param('newGenre');
-                    $newGenre->insert();
                 }
             }
 

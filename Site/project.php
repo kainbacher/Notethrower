@@ -625,12 +625,13 @@ function inputDataOk(&$errorFields, &$project) {
         $errorFields['mainGenre'] = 'Please choose a main genre here!';
         $result = false;
     }
-    /*
-    if (preg_match('/[^0-9,]/', get_param('projectSubGenresList'))) {
-        $errorFields['subGenres'] = 'Invalid genres list'; // can only happen when someone plays around with the post data
-        $result = false;
+
+    if (strpos(get_param('projectSubGenresList'), 'new_') === false) { // if no new value was added
+        if (preg_match('/[^0-9,]/', get_param('projectSubGenresList'))) {
+            $errorFields['subGenres'] = 'Invalid genres list'; // can only happen when someone plays around with the post data
+            $result = false;
+        }
     }
-    */
 
     if (get_numeric_param('mainGenre') && get_param('projectSubGenresList')) {
         $subGenres = explode(',', get_param('projectSubGenresList'));
@@ -640,12 +641,12 @@ function inputDataOk(&$errorFields, &$project) {
         }
     }
 
-    /*
-    if (preg_match('/[^0-9,]/', get_param('projectMoodsList'))) {
-        $errorFields['moods'] = 'Invalid moods list'; // can only happen when someone plays around with the post data
-        $result = false;
+    if (strpos(get_param('projectSubGenresList'), 'new_') === false) { // if no new value was added
+        if (preg_match('/[^0-9,]/', get_param('projectMoodsList'))) {
+            $errorFields['moods'] = 'Invalid moods list'; // can only happen when someone plays around with the post data
+            $result = false;
+        }
     }
-    */
 
 // currently hidden, but maybe a candidate for pro users
 //    if (strlen(get_param('visibility')) < 1) {
@@ -750,31 +751,8 @@ function processParams(&$project, &$loggedInUser) {
             $projectMoodsList[] = $mood;
         }
     }
-    /*
-    $newGenre = null;
-    if (get_param('newGenre')) {
-        $newGenre = Genre::fetchForName(get_param('newGenre'));
-        if (!$newGenre || !$newGenre->id) {
-            $newGenre = new Genre();
-            $newGenre->name = get_param('newGenre');
-            $newGenre->insert();
-        }
-    }
 
-    // save new mood, if one was entered
-    $newMood = null;
-    if (get_param('newMood')) {
-        $newMood = Mood::fetchForName(get_param('newMood'));
-        if (!$newMood || !$newMood->id) {
-            $newMood = new Mood();
-            $newMood->name = get_param('newMood');
-            $newMood->insert();
-        }
-    }
-    */
     // handle project main & sub genres
-    //$projectSubGenresList = explode(',', get_param('projectSubGenresList'));
-    //if ($newGenre) $projectSubGenresList[] = $newGenre->id;
     $projectSubGenresList = array_merge($projectSubGenresList, $newGenreList);
     $projectSubGenresList = array_unique($projectSubGenresList);
 
@@ -789,8 +767,6 @@ function processParams(&$project, &$loggedInUser) {
     }
 
     // handle project moods
-    //$projectMoodsList = explode(',', get_param('projectMoodsList'));
-    //if ($newMood) $projectMoodsList[] = $newMood->id;
     $projectMoodsList = array_merge($projectMoodsList, $newMoodsList);
     $projectMoodsList = array_unique($projectMoodsList);
 

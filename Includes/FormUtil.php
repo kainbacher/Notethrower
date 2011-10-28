@@ -212,14 +212,15 @@ function getFormFieldForParams($params) {
             '${name}'                      => $propName,
             '${rows}'                      => $rows,
             '${cols}'                      => $cols,
-            '${maxlength_optional}'        => ($maxlength > 0 ? ' maxlength="' . $maxlength . '"' : ''),
+            '${maxlength_optional}'        => ($maxlength ? ' maxlength="' . $maxlength . '"' : ''),
             '${text}'                      => escape($text),
             '${prefix}'                    => ($inputFieldPrefix ? escape($inputFieldPrefix) . '&nbsp;' : ''),
             '${suffix}'                    => ($inputFieldSuffix ? '&nbsp;' . escape($inputFieldSuffix) : ''),
             '${disabled_optional}'         => ($disabled ? ' disabled="disabled"' : ''),
             '${readonly_optional}'         => ($readonly ? ' readonly="readonly"' : ''),
             '${onChangeCallback_optional}' => ($onChangeCallback ? ' onChange="' . $onChangeCallback . '"' : ''),
-            '${customStyle}'               => ($customStyleForInputField ? ' style="' . $customStyleForInputField . '"' : '')
+            '${customStyle}'               => ($customStyleForInputField ? ' style="' . $customStyleForInputField . '"' : ''),
+            '${charsRemaining_optional}'   => ($maxlength ? processTpl('Common/formElementInputField_textArea_charsRemaining.html', array()) : '')
         ));
 
 //    } else if ($inputType == 'dateSelection') { // ATTENTION - this requires some jquery stuff to be loaded (jquery lib, jquery-ui lib, jquery-ui stylesheet+images, a calendar icon)

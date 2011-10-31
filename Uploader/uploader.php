@@ -5,16 +5,17 @@ include_once('../Includes/Init.php');
 include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
 
-$projectId      = get_numeric_param('pid');
-$singleFileOnly = get_numeric_param('sf');
-$isMix          = get_numeric_param('isMix');
-$checksum       = get_param('cs');
+$projectId        = get_numeric_param('pid');
+$singleFileOnly   = get_numeric_param('sf');
+$isMix            = get_numeric_param('isMix');
+$originatorUserId = get_numeric_param('originatorUserId');
+$checksum         = get_param('cs');
 
 if (!$projectId) {
     show_fatal_error_and_exit('pid param is missing!');
 }
 
-if (md5('PoopingInTheWoods' . $projectId) != $checksum) {
+if (md5('PoopingInTheWoods' . $projectId . '_' . $originatorUserId) != $checksum) {
     show_fatal_error_and_exit('checksum failure!');
 }
 
@@ -191,7 +192,8 @@ if ($singleFileOnly) {
                   '&filename='     + encodeURIComponent(filename) +
                   '&origFilename=' + encodeURIComponent(origFilename) +
                   '&isMix=<?= $isMix ?>' +
-                  '&cs=<?= md5('PoopingInTheWoods' . $projectId . '_' . $isMix) ?>',
+                  '&originatorUserId=<?= $originatorUserId ?>' +
+                  '&cs=<?= md5('PoopingInTheWoods' . $projectId . '_' . $isMix . '_' . $originatorUserId) ?>',
             dataType: 'text',
             cache: false,
             timeout: 15000, // 15 seconds

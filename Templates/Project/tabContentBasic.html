@@ -1,0 +1,24 @@
+<div class="span-24 last tabcontent-1${tabcontentAct_basics}">
+    <div class="span-16 last">
+        <div class="box-grey">
+            <h2>Basic Project Information</h2>
+            <br />
+            ${Common/message_choice_list}
+            <form name="projectForm" action="${formAction}" method="POST" style="display:inline-block;">
+                <input type="hidden" name="action" value="save">
+                <input type="hidden" name="pid" value="${projectId}">
+                <input type="hidden" name="projectSubGenresList" id="projectSubGenresList" value="">
+                <input type="hidden" name="projectMoodsList" id="projectMoodsList" value="">
+                <input type="hidden" name="projectAttributesList" id="projectAttributesList" value="">
+                ${Common/formElement_list}
+
+                <div class="prepend-6 span-6 last">
+                    <input class="button blue"
+                        type="submit"
+                        value="${submitButtonValue}"
+                        onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

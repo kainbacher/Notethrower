@@ -1,0 +1,1197 @@
+<div id="associated_users_row" style="display:none";>
+<a href="javascript:showSelectFriendsPopup();">Select the artists you want to have access to this project</a>
+</div>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:fb="http://www.facebook.com/2008/fbml">
+
+  <head>
+
+    <title>Edit project - ONELOUDR.COM</title>
+
+    <!-- <base href="http://www.oneloudr.com/" target="_blank" /> -->
+
+	<meta charset="UTF-8" /> 
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Music Collaboration made easy"/>
+    <meta name="keywords" content="Music Collaboration, Co-Create, Discover, Find Music, Find Musicians, Artists, Create Projects, Find Artists,"/>        
+
+    <meta name="author" content="oneloudr.com" />
+    <meta name="revisit-after" content="10 days" />
+    <meta name="robots" content="index, follow" />
+    <meta name="copyright" content="oneloudr.com" />
+
+	<meta name="viewport" content="width=1200px" />
+
+    <link rel="stylesheet" href="../Styles/bp-print.css" type="text/css" media="print" />
+    <link rel="stylesheet" href="../Styles/bp-screen.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="../Styles/bp-forms.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="../Styles/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="../Styles/bp-ie.css" type="text/css" media="screen, projection" />
+    <![endif]-->
+
+    <link rel="stylesheet" href="../Styles/buttons.css" type="text/css" />
+    <link rel="stylesheet" href="../Styles/main.css" type="text/css" />
+    
+    
+    <!-- css for "chosen" -->
+<link href="../Javascripts/Chosen/chosen.css" rel="stylesheet" type="text/css" />
+
+
+    <script type="text/javascript" src="../Javascripts/jquery-1.6.1.min.js"></script>
+    <script type="text/javascript" src="../Javascripts/galleria-1.2.3.min.js"></script>
+    <script type="text/javascript" src="../Javascripts/jquery.main.js"></script>
+    <script type="text/javascript" src="../Javascripts/jquery.fancybox-1.3.4.pack.js"></script>
+    <script type="text/javascript" src="../Javascripts/Snippets.js"></script>
+    
+    
+    <!-- script for "chosen" -->
+<script type="text/javascript" src="../Javascripts/Chosen/chosen.jquery.js"></script>
+
+
+    <script type="text/javascript">
+
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-716626-7']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
+    </script>
+
+  <head>
+
+
+<script type="text/javascript">
+
+// currently hidden, but maybe a candidate for pro users
+//function visibilityHasChanged(elt) {
+//    if (document.getElementById('associated_users_row')) {
+//        var sel = elt.options[elt.selectedIndex].value;
+//        if (sel == 'private') {
+//            document.getElementById('associated_users_row').style.display = '';
+//        } else {
+//            document.getElementById('associated_users_row').style.display = 'none';
+//        }
+//    }
+//}
+
+function showSelectFriendsPopup() {
+    window.open('selectFriends.php?tid=1', 'NT_SELECT_FRIENDS', 'scrollbars=yes,resizable=yes,status=0,width=400,height=600');
+}
+
+$(document).ready(function () {
+    /* !invite */
+    /* ---------------------------------------------------------------------- */
+    $("input[rel=invite]").click(function(e) {
+        e.preventDefault();
+        alert('invite User Function');
+    });
+
+    $("input[rel=search_name]").click(function(e){
+        e.preventDefault();
+        alert('search for '+$('#search_name').val()+' Function');
+    });
+
+
+});
+
+</script>
+<script type="text/javascript" src="../Javascripts/jquery.textareaMaxlength.js"></script>
+
+<body>
+
+
+<div id="pageHeaderWrapper">
+    <div id="pageHeader">
+
+        <div id="logo">
+            <a href="index.php" alt="Home">
+                <a href="http://ntdev.com/Site/dashboard.php"><img src="../Images/logo.png" alt="oneloudr logo" width="180" height="36" /></a>
+            </a>
+        </div>
+
+        <div id="signUpTeaser">
+            <a href="account.php">...</a>
+        </div>
+
+        <div id="loginWrapper">
+            <div id="loginStatusDiv">
+
+                
+                
+<div class="topMenuItem">
+    <a href="logout.php">Logout</a>
+</div>
+
+
+                <div class="topMenuItemSearch">
+                    <div class="topSearch">
+                        <form action="search.php" method="get">
+                            <input name="s" id="topSearchInput" onclick="ClearInput(this.id);" type="text" value="Search" class="field" maxlength="50" />
+                            <input type="submit" value="" id="topSearchSubmit" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- loginWrapper -->
+    </div> <!-- pageHeader -->
+</div><!-- pageHeaderWrapper -->
+
+
+
+<div id="mainMenuWrapper">
+    <div id="mainMenu">
+        <nav>
+    	<ul>
+    		<li class="mainMenuItem">
+                <a href="dashboard.php?aid=4">
+                    <span class="mainMenuIcon">
+                        <img src="../Images/icons/mail.png" alt="messages" width="24" height="24" />
+                    </span>
+                    <span class="mainMenuLink">Messages</span>
+                </a>
+            </li>
+    		<li class="mainMenuItem">
+                <a href="projectList.php">
+                    <span class="mainMenuIcon">
+                        <img src="../Images/icons/inbox-document-music.png" alt="project" width="24" height="24" />
+                    </span>
+                    <span class="mainMenuLink">Projects</span>
+                </a>
+            </li>
+    		<li class="mainMenuItem">
+                <a href="artistList.php">
+                    <span class="mainMenuIcon">
+                        <img src="../Images/icons/megaphone.png" alt="megaphone" width="24" height="24" />
+                    </span>
+                    <span class="mainMenuLink">Find</span>
+                </a>
+            </li>
+
+    		<li class="mainMenuItem">
+                <a href="artist.php?aid=4">
+                    <span class="mainMenuIcon">
+                        <img src="../Images/icons/profile.png" alt="profile" width="24" height="24" />
+                    </span>
+                    <span class="mainMenuLink">Profile</span>
+                </a>
+            </li>
+
+    	</ul>
+    	</nav>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div id="pageContent" class="container">
+
+
+            <div class="span-24 last">
+                <ul class="tabs">
+                    
+                    
+                    <li class="tabsItem"><a href="#" class="tab-3 tabsAct">Upload</a></li>
+                    
+                </ul>
+            </div>
+
+            
+
+            
+
+            <div class="span-24 last tabcontent-3 tabcontentAct">
+                <div class="span-16">
+                    <div class="box-grey">
+                        <h2>Guitar test project - search drums, keyboard - experimental</h2>
+                        <p>
+                            Genres: Experimental, Grunge, Hip-Hop, Pop<br />
+                            <br />
+                            Moods: Aggressive/Edgy, Hypochondric<br />
+                            <br />
+                            Project needs: Drums, Keyboard<br />
+                            <br />
+                            abc
+                        </p>
+                        <br />
+
+                        <div id="projectFilesSection">
+  
+
+    <div id="stemsSection">
+        <br />
+        <h2>Stems:</h2>
+        <div>
+          <div style="border:1px solid black;padding:5px;margin-bottom:5px;background-color:#eeeeee"> <!-- hallo roland! ;) den krempel hier hab ich nur termporär eingebaut. kannst ihn gern wegschmeissen. lgh -->
+    <input type="checkbox" id="selectedStems" name="selectedStems" value="41" title="Check this to download several files in one zip.">&nbsp;
+
+    [S]&nbsp;
+    <a href="../Backend/downloadFile.php?mode=download&project_id=1&atfid=41" target="_blank">short.mp3</a><br />
+    <small>Uploaded by <img title="Pete (Drummer) - Rock" src="http://ntdev.com/Content/UserImages/35bcbd79ef6af7e77b95cc9e54b055dd/35bcbd79ef6af7e77b95cc9e54b055dd_thumb.jpg" height="30">&nbsp;<b>Pete (Drummer) - Rock</b></small><br />
+    <a href="javascript:askForConfirmationAndExecute('Do you really want to delete this file?', 'short.mp3', 'project.php?pid=1&action=deleteProjectFile&fid=41', 'checkDeleteResponseAndRefreshFileList', false);">Delete</a><br />
+
+    <form name="projectFileForm_41" action="/Site/project.php" method="POST" style="display:inline-block;">
+  <input type="hidden" name="action" value="saveProjectFileMetadata">
+  <input type="hidden" name="pid" value="1">
+  <input type="hidden" name="fid" value="41">
+  <input type="hidden" name="projectFileAttributesList_41" id="projectFileAttributesList_41" value="">
+  <div id="formElt_comment" class=" formElement span-15 last">
+
+    <div class="span-6">
+        <b>Comment:</b>
+    </div>
+
+    <div class="span-8">
+        
+        <textarea id="comment" name="comment" rows="3" cols="30" style="height:60px;" maxlength="500"></textarea><p class="smallText charsRemaining"></p>
+
+        
+    </div>
+
+    <div class="span-1 last">
+        <div class="toolTipWrapper">
+    <div class="toolTip">
+        <img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" />
+    </div>
+    <div class="toolTipContent">
+        Add a comment about the file here.
+    </div>
+</div>
+
+    </div>
+
+    
+
+</div><div id="formElt_fileAttributes_41" class=" formElement span-15 last">
+
+    <div class="span-6">
+        <b>Instrument/Skills:</b>
+    </div>
+
+    <div class="span-8">
+        
+        <select data-placeholder=" " id="fileAttributes_41" name="fileAttributes_41" class=" chzn-select" multiple>
+  <option value="1">Acoustic Guitar</option>
+<option value="2">Bass</option>
+<option value="3">Drums</option>
+<option value="4">Electric Guitar</option>
+<option value="5">Horns</option>
+<option value="6">Keyboard</option>
+<option value="14">Lyrics</option>
+<option value="7">Midi</option>
+<option value="15">Mixer/Sound engineer</option>
+<option value="13">Pan Flute</option>
+<option value="8">Piano</option>
+<option value="9">Synth</option>
+<option value="10">Vinyl</option>
+<option value="11">Vocals</option>
+
+</select>
+
+        
+    </div>
+
+    <div class="span-1 last">
+        <div class="toolTipWrapper">
+    <div class="toolTip">
+        <img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" />
+    </div>
+    <div class="toolTipContent">
+        List here what this file consists of. Eg. &quot;Bass&quot; for a bass track.
+    </div>
+</div>
+
+    </div>
+
+    
+
+</div>
+  <input class="button blue"
+         type="submit"
+         value="Save"
+         onClick="buildProjectFileAttributesLists(41);"><br />
+  <p class="smallText charsRemaining"></p>
+</form>
+    
+    <br />
+</div>
+<div style="border:1px solid black;padding:5px;margin-bottom:5px;background-color:#eeeeee"> <!-- hallo roland! ;) den krempel hier hab ich nur termporär eingebaut. kannst ihn gern wegschmeissen. lgh -->
+    <input type="checkbox" id="selectedStems" name="selectedStems" value="40" title="Check this to download several files in one zip.">&nbsp;
+
+    [S]&nbsp;
+    <a href="../Backend/downloadFile.php?mode=download&project_id=1&atfid=40" target="_blank">TRI9.WAV</a><br />
+    <small>Uploaded by <img title="Pete (Drummer) - Rock" src="http://ntdev.com/Content/UserImages/35bcbd79ef6af7e77b95cc9e54b055dd/35bcbd79ef6af7e77b95cc9e54b055dd_thumb.jpg" height="30">&nbsp;<b>Pete (Drummer) - Rock</b></small><br />
+    <a href="javascript:askForConfirmationAndExecute('Do you really want to delete this file?', 'TRI9.WAV', 'project.php?pid=1&action=deleteProjectFile&fid=40', 'checkDeleteResponseAndRefreshFileList', false);">Delete</a><br />
+
+    <form name="projectFileForm_40" action="/Site/project.php" method="POST" style="display:inline-block;">
+  <input type="hidden" name="action" value="saveProjectFileMetadata">
+  <input type="hidden" name="pid" value="1">
+  <input type="hidden" name="fid" value="40">
+  <input type="hidden" name="projectFileAttributesList_40" id="projectFileAttributesList_40" value="">
+  <div id="formElt_comment" class=" formElement span-15 last">
+
+    <div class="span-6">
+        <b>Comment:</b>
+    </div>
+
+    <div class="span-8">
+        
+        <textarea id="comment" name="comment" rows="3" cols="30" style="height:60px;" maxlength="500"></textarea><p class="smallText charsRemaining"></p>
+
+        
+    </div>
+
+    <div class="span-1 last">
+        <div class="toolTipWrapper">
+    <div class="toolTip">
+        <img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" />
+    </div>
+    <div class="toolTipContent">
+        Add a comment about the file here.
+    </div>
+</div>
+
+    </div>
+
+    
+
+</div><div id="formElt_fileAttributes_40" class=" formElement span-15 last">
+
+    <div class="span-6">
+        <b>Instrument/Skills:</b>
+    </div>
+
+    <div class="span-8">
+        
+        <select data-placeholder=" " id="fileAttributes_40" name="fileAttributes_40" class=" chzn-select" multiple>
+  <option value="1">Acoustic Guitar</option>
+<option value="2">Bass</option>
+<option value="3">Drums</option>
+<option value="4">Electric Guitar</option>
+<option value="5">Horns</option>
+<option value="6">Keyboard</option>
+<option value="14">Lyrics</option>
+<option value="7">Midi</option>
+<option value="15">Mixer/Sound engineer</option>
+<option value="13">Pan Flute</option>
+<option value="8">Piano</option>
+<option value="9">Synth</option>
+<option value="10">Vinyl</option>
+<option value="11">Vocals</option>
+
+</select>
+
+        
+    </div>
+
+    <div class="span-1 last">
+        <div class="toolTipWrapper">
+    <div class="toolTip">
+        <img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" />
+    </div>
+    <div class="toolTipContent">
+        List here what this file consists of. Eg. &quot;Bass&quot; for a bass track.
+    </div>
+</div>
+
+    </div>
+
+    
+
+</div>
+  <input class="button blue"
+         type="submit"
+         value="Save"
+         onClick="buildProjectFileAttributesLists(40);"><br />
+  <p class="smallText charsRemaining"></p>
+</form>
+    
+    <br />
+</div>
+<div style="border:1px solid black;padding:5px;margin-bottom:5px;background-color:#eeeeee"> <!-- hallo roland! ;) den krempel hier hab ich nur termporär eingebaut. kannst ihn gern wegschmeissen. lgh -->
+    <input type="checkbox" id="selectedStems" name="selectedStems" value="38" title="Check this to download several files in one zip.">&nbsp;
+
+    [S]&nbsp;
+    <a href="../Backend/downloadFile.php?mode=download&project_id=1&atfid=38" target="_blank">rubber_ducky.wav</a><br />
+    <small>Uploaded by <img title="Hanno (Guitar Player - Rock, Instrumental)" src="http://ntdev.com/Content/UserImages/8eff4cfd5daeb056a10b74887b21c454/8eff4cfd5daeb056a10b74887b21c454_thumb.jpg" height="30">&nbsp;<b>Hanno (Guitar Player - Rock, Instrumental)</b></small><br />
+    
+    <form name="projectFileForm_38" action="/Site/project.php" method="POST" style="display:inline-block;">
+  <input type="hidden" name="action" value="saveProjectFileMetadata">
+  <input type="hidden" name="pid" value="1">
+  <input type="hidden" name="fid" value="38">
+  <input type="hidden" name="projectFileAttributesList_38" id="projectFileAttributesList_38" value="">
+  <div id="formElt_comment" class=" formElement span-15 last">
+
+    <div class="span-6">
+        <b>Comment:</b>
+    </div>
+
+    <div class="span-8">
+        
+        <textarea id="comment" name="comment" rows="3" cols="30" style="height:60px;" maxlength="500"></textarea><p class="smallText charsRemaining"></p>
+
+        
+    </div>
+
+    <div class="span-1 last">
+        <div class="toolTipWrapper">
+    <div class="toolTip">
+        <img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" />
+    </div>
+    <div class="toolTipContent">
+        Add a comment about the file here.
+    </div>
+</div>
+
+    </div>
+
+    
+
+</div><div id="formElt_fileAttributes_38" class=" formElement span-15 last">
+
+    <div class="span-6">
+        <b>Instrument/Skills:</b>
+    </div>
+
+    <div class="span-8">
+        
+        <select data-placeholder=" " id="fileAttributes_38" name="fileAttributes_38" class=" chzn-select" multiple>
+  <option value="1">Acoustic Guitar</option>
+<option value="2">Bass</option>
+<option value="3">Drums</option>
+<option value="4">Electric Guitar</option>
+<option value="5">Horns</option>
+<option value="6">Keyboard</option>
+<option value="14">Lyrics</option>
+<option value="7">Midi</option>
+<option value="15">Mixer/Sound engineer</option>
+<option value="13">Pan Flute</option>
+<option value="8">Piano</option>
+<option value="9">Synth</option>
+<option value="10">Vinyl</option>
+<option value="11">Vocals</option>
+
+</select>
+
+        
+    </div>
+
+    <div class="span-1 last">
+        <div class="toolTipWrapper">
+    <div class="toolTip">
+        <img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" />
+    </div>
+    <div class="toolTipContent">
+        List here what this file consists of. Eg. &quot;Bass&quot; for a bass track.
+    </div>
+</div>
+
+    </div>
+
+    
+
+</div>
+  <input class="button blue"
+         type="submit"
+         value="Save"
+         onClick="buildProjectFileAttributesLists(38);"><br />
+  <p class="smallText charsRemaining"></p>
+</form>
+    
+    <br />
+</div>
+<div style="border:1px solid black;padding:5px;margin-bottom:5px;background-color:#eeeeee"> <!-- hallo roland! ;) den krempel hier hab ich nur termporär eingebaut. kannst ihn gern wegschmeissen. lgh -->
+    <input type="checkbox" id="selectedStems" name="selectedStems" value="24" title="Check this to download several files in one zip.">&nbsp;
+
+    [S]&nbsp;
+    <a href="../Backend/downloadFile.php?mode=download&project_id=1&atfid=24" target="_blank">short.mp3</a><br />
+    <small>Uploaded by <img title="Hanno (Guitar Player - Rock, Instrumental)" src="http://ntdev.com/Content/UserImages/8eff4cfd5daeb056a10b74887b21c454/8eff4cfd5daeb056a10b74887b21c454_thumb.jpg" height="30">&nbsp;<b>Hanno (Guitar Player - Rock, Instrumental)</b></small><br />
+    
+    <form name="projectFileForm_24" action="/Site/project.php" method="POST" style="display:inline-block;">
+  <input type="hidden" name="action" value="saveProjectFileMetadata">
+  <input type="hidden" name="pid" value="1">
+  <input type="hidden" name="fid" value="24">
+  <input type="hidden" name="projectFileAttributesList_24" id="projectFileAttributesList_24" value="">
+  <div id="formElt_comment" class=" formElement span-15 last">
+
+    <div class="span-6">
+        <b>Comment:</b>
+    </div>
+
+    <div class="span-8">
+        
+        <textarea id="comment" name="comment" rows="3" cols="30" style="height:60px;" maxlength="500"></textarea><p class="smallText charsRemaining"></p>
+
+        
+    </div>
+
+    <div class="span-1 last">
+        <div class="toolTipWrapper">
+    <div class="toolTip">
+        <img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" />
+    </div>
+    <div class="toolTipContent">
+        Add a comment about the file here.
+    </div>
+</div>
+
+    </div>
+
+    
+
+</div><div id="formElt_fileAttributes_24" class=" formElement span-15 last">
+
+    <div class="span-6">
+        <b>Instrument/Skills:</b>
+    </div>
+
+    <div class="span-8">
+        
+        <select data-placeholder=" " id="fileAttributes_24" name="fileAttributes_24" class=" chzn-select" multiple>
+  <option value="1">Acoustic Guitar</option>
+<option value="2">Bass</option>
+<option value="3">Drums</option>
+<option value="4">Electric Guitar</option>
+<option value="5">Horns</option>
+<option value="6">Keyboard</option>
+<option value="14">Lyrics</option>
+<option value="7">Midi</option>
+<option value="15">Mixer/Sound engineer</option>
+<option value="13">Pan Flute</option>
+<option value="8">Piano</option>
+<option value="9">Synth</option>
+<option value="10">Vinyl</option>
+<option value="11">Vocals</option>
+
+</select>
+
+        
+    </div>
+
+    <div class="span-1 last">
+        <div class="toolTipWrapper">
+    <div class="toolTip">
+        <img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" />
+    </div>
+    <div class="toolTipContent">
+        List here what this file consists of. Eg. &quot;Bass&quot; for a bass track.
+    </div>
+</div>
+
+    </div>
+
+    
+
+</div>
+  <input class="button blue"
+         type="submit"
+         value="Save"
+         onClick="buildProjectFileAttributesLists(24);"><br />
+  <p class="smallText charsRemaining"></p>
+</form>
+    
+    <br />
+</div>
+<div style="border:1px solid black;padding:5px;margin-bottom:5px;background-color:#eeeeee"> <!-- hallo roland! ;) den krempel hier hab ich nur termporär eingebaut. kannst ihn gern wegschmeissen. lgh -->
+    <input type="checkbox" id="selectedStems" name="selectedStems" value="23" title="Check this to download several files in one zip.">&nbsp;
+
+    [S]&nbsp;
+    <a href="../Backend/downloadFile.php?mode=download&project_id=1&atfid=23" target="_blank">ChatLOL.wav</a><br />
+    <small>Uploaded by <img title="Hanno (Guitar Player - Rock, Instrumental)" src="http://ntdev.com/Content/UserImages/8eff4cfd5daeb056a10b74887b21c454/8eff4cfd5daeb056a10b74887b21c454_thumb.jpg" height="30">&nbsp;<b>Hanno (Guitar Player - Rock, Instrumental)</b></small><br />
+    
+    <form name="projectFileForm_23" action="/Site/project.php" method="POST" style="display:inline-block;">
+  <input type="hidden" name="action" value="saveProjectFileMetadata">
+  <input type="hidden" name="pid" value="1">
+  <input type="hidden" name="fid" value="23">
+  <input type="hidden" name="projectFileAttributesList_23" id="projectFileAttributesList_23" value="">
+  <div id="formElt_comment" class=" formElement span-15 last">
+
+    <div class="span-6">
+        <b>Comment:</b>
+    </div>
+
+    <div class="span-8">
+        
+        <textarea id="comment" name="comment" rows="3" cols="30" style="height:60px;" maxlength="500"></textarea><p class="smallText charsRemaining"></p>
+
+        
+    </div>
+
+    <div class="span-1 last">
+        <div class="toolTipWrapper">
+    <div class="toolTip">
+        <img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" />
+    </div>
+    <div class="toolTipContent">
+        Add a comment about the file here.
+    </div>
+</div>
+
+    </div>
+
+    
+
+</div><div id="formElt_fileAttributes_23" class=" formElement span-15 last">
+
+    <div class="span-6">
+        <b>Instrument/Skills:</b>
+    </div>
+
+    <div class="span-8">
+        
+        <select data-placeholder=" " id="fileAttributes_23" name="fileAttributes_23" class=" chzn-select" multiple>
+  <option value="1">Acoustic Guitar</option>
+<option value="2">Bass</option>
+<option value="3">Drums</option>
+<option value="4">Electric Guitar</option>
+<option value="5">Horns</option>
+<option value="6">Keyboard</option>
+<option value="14">Lyrics</option>
+<option value="7">Midi</option>
+<option value="15">Mixer/Sound engineer</option>
+<option value="13">Pan Flute</option>
+<option value="8">Piano</option>
+<option value="9">Synth</option>
+<option value="10">Vinyl</option>
+<option value="11">Vocals</option>
+
+</select>
+
+        
+    </div>
+
+    <div class="span-1 last">
+        <div class="toolTipWrapper">
+    <div class="toolTip">
+        <img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" />
+    </div>
+    <div class="toolTipContent">
+        List here what this file consists of. Eg. &quot;Bass&quot; for a bass track.
+    </div>
+</div>
+
+    </div>
+
+    
+
+</div>
+  <input class="button blue"
+         type="submit"
+         value="Save"
+         onClick="buildProjectFileAttributesLists(23);"><br />
+  <p class="smallText charsRemaining"></p>
+</form>
+    
+    <br />
+</div>
+<div style="border:1px solid black;padding:5px;margin-bottom:5px;background-color:#eeeeee"> <!-- hallo roland! ;) den krempel hier hab ich nur termporär eingebaut. kannst ihn gern wegschmeissen. lgh -->
+    <input type="checkbox" id="selectedStems" name="selectedStems" value="2" title="Check this to download several files in one zip.">&nbsp;
+
+    [S]&nbsp;
+    <a href="../Backend/downloadFile.php?mode=download&project_id=1&atfid=2" target="_blank">alarm-clock-1.wav</a><br />
+    <small>Uploaded by <img title="Hanno (Guitar Player - Rock, Instrumental)" src="http://ntdev.com/Content/UserImages/8eff4cfd5daeb056a10b74887b21c454/8eff4cfd5daeb056a10b74887b21c454_thumb.jpg" height="30">&nbsp;<b>Hanno (Guitar Player - Rock, Instrumental)</b></small><br />
+    
+    <form name="projectFileForm_2" action="/Site/project.php" method="POST" style="display:inline-block;">
+  <input type="hidden" name="action" value="saveProjectFileMetadata">
+  <input type="hidden" name="pid" value="1">
+  <input type="hidden" name="fid" value="2">
+  <input type="hidden" name="projectFileAttributesList_2" id="projectFileAttributesList_2" value="">
+  <div id="formElt_comment" class=" formElement span-15 last">
+
+    <div class="span-6">
+        <b>Comment:</b>
+    </div>
+
+    <div class="span-8">
+        
+        <textarea id="comment" name="comment" rows="3" cols="30" style="height:60px;" maxlength="500"></textarea><p class="smallText charsRemaining"></p>
+
+        
+    </div>
+
+    <div class="span-1 last">
+        <div class="toolTipWrapper">
+    <div class="toolTip">
+        <img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" />
+    </div>
+    <div class="toolTipContent">
+        Add a comment about the file here.
+    </div>
+</div>
+
+    </div>
+
+    
+
+</div><div id="formElt_fileAttributes_2" class=" formElement span-15 last">
+
+    <div class="span-6">
+        <b>Instrument/Skills:</b>
+    </div>
+
+    <div class="span-8">
+        
+        <select data-placeholder=" " id="fileAttributes_2" name="fileAttributes_2" class=" chzn-select" multiple>
+  <option value="1">Acoustic Guitar</option>
+<option value="2">Bass</option>
+<option value="3">Drums</option>
+<option value="4">Electric Guitar</option>
+<option value="5">Horns</option>
+<option value="6">Keyboard</option>
+<option value="14">Lyrics</option>
+<option value="7">Midi</option>
+<option value="15">Mixer/Sound engineer</option>
+<option value="13">Pan Flute</option>
+<option value="8">Piano</option>
+<option value="9">Synth</option>
+<option value="10">Vinyl</option>
+<option value="11">Vocals</option>
+
+</select>
+
+        
+    </div>
+
+    <div class="span-1 last">
+        <div class="toolTipWrapper">
+    <div class="toolTip">
+        <img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" />
+    </div>
+    <div class="toolTipContent">
+        List here what this file consists of. Eg. &quot;Bass&quot; for a bass track.
+    </div>
+</div>
+
+    </div>
+
+    
+
+</div>
+  <input class="button blue"
+         type="submit"
+         value="Save"
+         onClick="buildProjectFileAttributesLists(2);"><br />
+  <p class="smallText charsRemaining"></p>
+</form>
+    
+    <br />
+</div>
+
+          
+        </div>
+        <br />
+        <input class="button-small blue" type="submit" value="Upload stems" onClick="openUploaderPopup(false);"><br />
+
+        <div class="prepend-6 span-6 last">
+            <input class="button blue"
+                type="submit"
+                value="Download selected stems"
+                onClick="downloadSelectedStems();">
+        </div>
+        <br />
+    </div>
+
+    <br />
+
+    <div id="releasesSection">
+      <br />
+      <h2>Releases:</h2>
+      <div>
+        
+        <div>
+    No files found.
+</div>
+      </div>
+      <br />
+    </div>
+
+    <br />
+
+    <div id="mixesSection">
+      <br />
+      <h2>Mixes:</h2>
+      <div>
+        <div style="border:1px solid black;padding:5px;margin-bottom:5px;background-color:#eeeeee"> <!-- hallo roland! ;) den krempel hier hab ich nur termporär eingebaut. kannst ihn gern wegschmeissen. lgh -->
+    
+    [M]&nbsp;
+    <a href="../Backend/downloadFile.php?mode=download&project_id=1&atfid=22" target="_blank">short.mp3</a><br />
+    <small>Uploaded by <img title="Hanno (Guitar Player - Rock, Instrumental)" src="http://ntdev.com/Content/UserImages/8eff4cfd5daeb056a10b74887b21c454/8eff4cfd5daeb056a10b74887b21c454_thumb.jpg" height="30">&nbsp;<b>Hanno (Guitar Player - Rock, Instrumental)</b></small><br />
+    
+    <form name="projectFileForm_22" action="/Site/project.php" method="POST" style="display:inline-block;">
+  <input type="hidden" name="action" value="saveProjectFileMetadata">
+  <input type="hidden" name="pid" value="1">
+  <input type="hidden" name="fid" value="22">
+  <input type="hidden" name="projectFileAttributesList_22" id="projectFileAttributesList_22" value="">
+  <div id="formElt_comment" class=" formElement span-15 last">
+
+    <div class="span-6">
+        <b>Comment:</b>
+    </div>
+
+    <div class="span-8">
+        
+        <textarea id="comment" name="comment" rows="3" cols="30" style="height:60px;" maxlength="500"></textarea><p class="smallText charsRemaining"></p>
+
+        
+    </div>
+
+    <div class="span-1 last">
+        <div class="toolTipWrapper">
+    <div class="toolTip">
+        <img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" />
+    </div>
+    <div class="toolTipContent">
+        Add a comment about the file here.
+    </div>
+</div>
+
+    </div>
+
+    
+
+</div><div id="formElt_fileAttributes_22" class=" formElement span-15 last">
+
+    <div class="span-6">
+        <b>Instrument/Skills:</b>
+    </div>
+
+    <div class="span-8">
+        
+        <select data-placeholder=" " id="fileAttributes_22" name="fileAttributes_22" class=" chzn-select" multiple>
+  <option value="1">Acoustic Guitar</option>
+<option value="2">Bass</option>
+<option value="3">Drums</option>
+<option value="4">Electric Guitar</option>
+<option value="5">Horns</option>
+<option value="6">Keyboard</option>
+<option value="14">Lyrics</option>
+<option value="7">Midi</option>
+<option value="15">Mixer/Sound engineer</option>
+<option value="13">Pan Flute</option>
+<option value="8">Piano</option>
+<option value="9">Synth</option>
+<option value="10">Vinyl</option>
+<option value="11">Vocals</option>
+
+</select>
+
+        
+    </div>
+
+    <div class="span-1 last">
+        <div class="toolTipWrapper">
+    <div class="toolTip">
+        <img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" />
+    </div>
+    <div class="toolTipContent">
+        List here what this file consists of. Eg. &quot;Bass&quot; for a bass track.
+    </div>
+</div>
+
+    </div>
+
+    
+
+</div>
+  <input class="button blue"
+         type="submit"
+         value="Save"
+         onClick="buildProjectFileAttributesLists(22);"><br />
+  <p class="smallText charsRemaining"></p>
+</form>
+    
+    <br />
+</div>
+<div style="border:1px solid black;padding:5px;margin-bottom:5px;background-color:#eeeeee"> <!-- hallo roland! ;) den krempel hier hab ich nur termporär eingebaut. kannst ihn gern wegschmeissen. lgh -->
+    
+    [M]&nbsp;
+    <a href="../Backend/downloadFile.php?mode=download&project_id=1&atfid=17" target="_blank">117952_SOUNDDOGS__ga.mp3</a><br />
+    <small>Uploaded by <img title="Hanno (Guitar Player - Rock, Instrumental)" src="http://ntdev.com/Content/UserImages/8eff4cfd5daeb056a10b74887b21c454/8eff4cfd5daeb056a10b74887b21c454_thumb.jpg" height="30">&nbsp;<b>Hanno (Guitar Player - Rock, Instrumental)</b></small><br />
+    
+    <form name="projectFileForm_17" action="/Site/project.php" method="POST" style="display:inline-block;">
+  <input type="hidden" name="action" value="saveProjectFileMetadata">
+  <input type="hidden" name="pid" value="1">
+  <input type="hidden" name="fid" value="17">
+  <input type="hidden" name="projectFileAttributesList_17" id="projectFileAttributesList_17" value="">
+  <div id="formElt_comment" class=" formElement span-15 last">
+
+    <div class="span-6">
+        <b>Comment:</b>
+    </div>
+
+    <div class="span-8">
+        
+        <textarea id="comment" name="comment" rows="3" cols="30" style="height:60px;" maxlength="500"></textarea><p class="smallText charsRemaining"></p>
+
+        
+    </div>
+
+    <div class="span-1 last">
+        <div class="toolTipWrapper">
+    <div class="toolTip">
+        <img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" />
+    </div>
+    <div class="toolTipContent">
+        Add a comment about the file here.
+    </div>
+</div>
+
+    </div>
+
+    
+
+</div><div id="formElt_fileAttributes_17" class=" formElement span-15 last">
+
+    <div class="span-6">
+        <b>Instrument/Skills:</b>
+    </div>
+
+    <div class="span-8">
+        
+        <select data-placeholder=" " id="fileAttributes_17" name="fileAttributes_17" class=" chzn-select" multiple>
+  <option value="1">Acoustic Guitar</option>
+<option value="2">Bass</option>
+<option value="3">Drums</option>
+<option value="4">Electric Guitar</option>
+<option value="5">Horns</option>
+<option value="6">Keyboard</option>
+<option value="14">Lyrics</option>
+<option value="7">Midi</option>
+<option value="15">Mixer/Sound engineer</option>
+<option value="13">Pan Flute</option>
+<option value="8">Piano</option>
+<option value="9">Synth</option>
+<option value="10">Vinyl</option>
+<option value="11">Vocals</option>
+
+</select>
+
+        
+    </div>
+
+    <div class="span-1 last">
+        <div class="toolTipWrapper">
+    <div class="toolTip">
+        <img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" />
+    </div>
+    <div class="toolTipContent">
+        List here what this file consists of. Eg. &quot;Bass&quot; for a bass track.
+    </div>
+</div>
+
+    </div>
+
+    
+
+</div>
+  <input class="button blue"
+         type="submit"
+         value="Save"
+         onClick="buildProjectFileAttributesLists(17);"><br />
+  <p class="smallText charsRemaining"></p>
+</form>
+    
+    <br />
+</div>
+
+        
+      </div>
+      <br />
+      <input class="button-small blue" type="submit" value="Upload mix files" onClick="openUploaderPopup(true);">
+    </div>
+
+</div>
+
+                    </div>
+                </div>
+
+                <div class="span-8 last">
+                    <div class="box-grey">
+                        <h2>Edit project</h2>
+                        <br />
+
+                        ...
+                        <br />
+                        &nbsp;
+                    </div>
+                </div>
+
+            </div>
+
+            
+
+            <br />
+            <br />
+            <br />
+            <a href="projectList.php">&larr; back to project list</a>
+
+</div>
+
+
+<div id="footerWrapper">
+    <div id="footer" class="container">
+
+        <div class="span-8">
+            <h3>About Us</h3>
+            <ul class="footerMenu">
+                <li><a href="about.php">About Page</a></li>
+                <li><a href="blog.php">Blog</a></li>
+                <li>&copy; Copyright 2011 oneloudr</li>
+            </ul>
+        </div>
+
+        <div class="span-8">
+        
+            <h3>Connect with Us</h3>
+            <ul class="footerMenu">
+                <li><a href="contact.php">Contact</a></li>
+                <li><a href="termsandconditions.php">Terms of use</a></li>
+                <li><a href="faq.php" target="_blank">Help and Feedback</a></li>
+            </ul>
+
+
+            <ul class="footerSocialmedia">
+                <li>
+                    <a href="https://www.facebook.com/oneloudr" title="Facebook">
+                        <img src="../Images/socialmedia/facebook.png" alt="Facebook" title="Facebook" width="32" height="32px" />
+                    </a>
+                </li>
+                <li>
+                    <a href="http://twitter.com/#!/oneloudr" title="Twitter">
+                        <img src="../Images/socialmedia/twitter.png" alt="Twitter" title="Twitter" width="32" height="32px" />
+                    </a>
+                </li>
+<!--
+                <li>
+                    <a href="#" title="Linkedin">
+                        <img src="../Images/socialmedia/linkedin.png" alt="Linkedin" title="Linkedin" width="32" height="32px" />
+                    </a>
+                </li>
+-->
+                <li>
+                    <a href="http://www.youtube.com/user/notethrower" title="Youtube">
+                        <img src="../Images/socialmedia/youtube.png" alt="Youtube" title="Youtube" width="32" height="32px" />
+                    </a>
+                </li>
+                <li>
+                    <a href="#" title="Rss">
+                        <img src="../Images/socialmedia/rss.png" alt="Rss" title="Rss" width="32" height="32px" />
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="span-8 last">
+            <h3>oneloudr.com</h3>
+            <p>Supportet by Impulse XL Programm AWS.</p>
+            <img src="../Images/logo-impulseaws-01.png" alt="logo-impulseaws" width="60" height="41" />
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+
+<script type="text/javascript" src="../Javascripts/Snippets.js"></script>
+
+<script type="text/javascript">
+
+function checkDeleteResponseAndRefreshFileList(deleteWasOk, data) {
+    if (deleteWasOk) {
+        //document.projectForm.submit();
+        refreshProjectFilesSection(data.projectId);
+    } else {
+        alert('File deletion failed: ' + data.error);
+    }
+}
+
+function refreshProjectFilesSection(projectId) {
+    $.ajax({
+        type: 'GET',
+        url: 'project.php',
+        data: 'action=getProjectFilesHtml' +
+              '&pid=' + projectId,
+        dataType: 'html',
+        cache: false,
+        timeout: 15000, // 15 seconds
+        async: false,
+        error: function(xmlHttpRequest, textStatus, errorThrown) {
+            alert('ERROR: ' + textStatus + ' - ' + errorThrown);
+        },
+        success: function(data, textStatus, dummy) {
+            $('#projectFilesSection').html(data);
+        }
+    });
+}
+
+function openUploaderPopup(isMixFile) {
+    window.open(
+            '../Uploader/uploader.php?sf=0&pid=1&isMix=' + (isMixFile ? 1 : 0) + '&originatorUserId=4&cs=58ec98dc63d989056b2c57a801f018a7',
+            'ONELOUDR_UPLOADER',
+            'scrollbars=0,status=0,width=640,height=350'
+    );
+}
+
+function buildProjectAttributesAndSubGenresAndMoodsLists() {
+    if ($('#attributes').val()) {
+        var aList = $('#attributes').val().join(','); // create comma separated list string ...
+        $('#projectAttributesList').val(aList); // ... and save the string in the hidden field
+    }
+
+    if ($('#subGenres').val()) {
+        var gList = $('#subGenres').val().join(','); // create comma separated list string ...
+        $('#projectSubGenresList').val(gList); // ... and save the string in the hidden field
+    }
+
+    if ($('#moods').val()) {
+        var mList = $('#moods').val().join(','); // create comma separated list string ...
+        $('#projectMoodsList').val(mList); // ... and save the string in the hidden field
+    }
+}
+
+function buildProjectFileAttributesLists(pfId) {
+    if ($('#fileAttributes_' + pfId).val()) {
+        var aList = $('#fileAttributes_' + pfId).val().join(','); // create comma separated list string ...
+        $('#projectFileAttributesList_' + pfId).val(aList); // ... and save the string in the hidden field
+    }
+}
+
+function downloadSelectedStems() {
+    if ($('input:checkbox[id=selectedStems]:checked').val()) {
+        var idList = [];
+        $('input:checkbox[id=selectedStems]:checked').each(function() {
+            idList.push($(this).val());
+        });
+
+        openInNewWindow('project.php?action=downloadProjectFiles&pid=1&fileIds=' + idList);
+    }
+}
+
+function openInNewWindow(href) {
+    // Change "_blank" to something like "newWindow" to load all links in the same new window
+    var newWindow = window.open(href, '_blank');
+    newWindow.focus();
+    return false;
+}
+
+// convert all select fields with special class to chosen thingies
+$(".chzn-select").chosen();
+
+</script>
+
+</html>

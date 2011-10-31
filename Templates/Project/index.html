@@ -47,77 +47,16 @@ ${Common/bodyHeader}
 
             <div class="span-24 last">
                 <ul class="tabs">
-                    <li class="tabsItem"><a href="#" class="tab-1${tabsAct_basics}">Basics</a></li>
-                    <li class="tabsItem"><a href="#" class="tab-2${tabsAct_invite}">Invite</a></li>
+                    ${Project/tabBasic_optional}
+                    ${Project/tabInvite_optional}
                     <li class="tabsItem"><a href="#" class="tab-3${tabsAct_upload}">Upload</a></li>
-                    <li class="tabsItem"><a href="#" class="tab-4${tabsAct_publish}">Publish</a></li>
+                    ${Project/tabPublish_optional}
                 </ul>
             </div>
 
-            <div class="span-24 last tabcontent-1${tabcontentAct_basics}">
-                <div class="span-16 last">
-                    <div class="box-grey">
-                        <h2>Basic Project Information</h2>
-                        <br />
-                        ${Common/message_choice_list}
-                        <form name="projectForm" action="${formAction}" method="POST" style="display:inline-block;">
-                            <input type="hidden" name="action" value="save">
-                            <input type="hidden" name="pid" value="${projectId}">
-                            <!--<input type="hidden" name="type" value="${type}">this was dropped-->
-                            <input type="hidden" name="projectSubGenresList" id="projectSubGenresList" value="">
-                            <input type="hidden" name="projectMoodsList" id="projectMoodsList" value="">
-                            <input type="hidden" name="projectAttributesList" id="projectAttributesList" value="">
-                            ${Common/formElement_list}
+            ${Project/tabContentBasic_optional}
 
-                            <div class="prepend-6 span-6 last">
-                                <input class="button blue"
-                                    type="submit"
-                                    value="${submitButtonValue}"
-                                    onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="span-24 last tabcontent-2${tabcontentAct_invite}">
-                <div class="span-16">
-                    <div class="box-grey">
-
-                            <h2>Recommended Artists</h2>
-
-                            <ul class="recommendedList">
-                                ${recommendedArtistElement_list}
-                            </ul>
-
-                    </div>
-                </div>
-                <div class="span-8 last">
-                    <div class="box-grey">
-
-                        <h2>Invite a Friend:</h2>
-                        <input type="text" id="title" name="title" value="E-Mail" maxlength="255">
-                        <input class="button-small blue"
-                            type="submit"
-                            value="send">
-
-                        <br />
-                        <br />
-                        <br />
-
-                        <h2>Search an Artist:</h2>
-                        <input type="text" id="search_name" name="search_name" value="Artist Name" maxlength="255">
-
-                        <input class="button-small blue"
-                            type="submit"
-                            rel="search_name"
-                            value="search">
-
-
-                    </div>
-                </div>
-            </div>
+            ${Project/tabContentInvite_optional}
 
             <div class="span-24 last tabcontent-3${tabcontentAct_upload}">
                 <div class="span-16">
@@ -152,46 +91,7 @@ ${Common/bodyHeader}
 
             </div>
 
-
-
-            <div class="span-24 last tabcontent-4${tabcontentAct_publish}">
-                <div class="span-16">
-                    <div class="box-grey">
-
-
-                            <h2>Share</h2>
-                            <br />
-                            <p>List with Names</p>
-                            <p>Aufteilung in %</p>
-
-                            <h2>Opitons</h2>
-                            <input type="checkbox" name="needsAttributIds" id="needsAttributIds" value="1"> iTunes<br />
-                            <input type="checkbox" name="needsAttributIds" id="needsAttributIds" value="1"> sptify<br />
-                            <input type="checkbox" name="needsAttributIds" id="needsAttributIds" value="1"> Soundcloud<br />
-
-                            <br />
-                            <br />
-
-                            <div id="formElt_artist_info" class=" formElement span-15 last">
-                                <div class="span-6">Artist/Band information:</div>
-                                <div class="span-8">
-                                    <textarea id="artist_info" name="artist_info" rows="3" cols="30"></textarea>
-                                </div>
-                                <div class="span-1 last"></div>
-                            </div>
-
-
-
-                            <div class="prepend-6 span-6 last">
-                                <input class="button blue"
-                                    type="submit"
-                                    value="${submitButtonValue}">
-                            </div>
-
-
-                    </div>
-                </div>
-            </div>
+            ${Project/tabContentPublish_optional}
 
             <br />
             <br />
@@ -219,27 +119,30 @@ function checkDeleteResponseAndRefreshFileList(deleteWasOk, data) {
 }
 
 function refreshProjectFilesSection(projectId) {
-    $.ajax({
-        type: 'GET',
-        url: 'project.php',
-        data: 'action=getProjectFilesHtml' +
-              '&pid=' + projectId,
-        dataType: 'html',
-        cache: false,
-        timeout: 15000, // 15 seconds
-        async: false,
-        error: function(xmlHttpRequest, textStatus, errorThrown) {
-            alert('ERROR: ' + textStatus + ' - ' + errorThrown);
-        },
-        success: function(data, textStatus, dummy) {
-            $('#projectFilesSection').html(data);
-        }
-    });
+    document.location.href = '${baseUrl}Site/project.php?action=edit&pid=' + projectId + '&tab=upload';
+
+    // FIXME - this doesn't work properly. the chosen select fields are broken after a refresh of the project files div
+    //$.ajax({
+    //    type: 'GET',
+    //    url: 'project.php',
+    //    data: 'action=getProjectFilesHtml' +
+    //          '&pid=' + projectId,
+    //    dataType: 'html',
+    //    cache: false,
+    //    timeout: 15000, // 15 seconds
+    //    async: false,
+    //    error: function(xmlHttpRequest, textStatus, errorThrown) {
+    //        alert('ERROR: ' + textStatus + ' - ' + errorThrown);
+    //    },
+    //    success: function(data, textStatus, dummy) {
+    //        $('#projectFilesSection').html(data);
+    //    }
+    //});
 }
 
 function openUploaderPopup(isMixFile) {
     window.open(
-            '../Uploader/uploader.php?sf=0&pid=${projectId}&isMix=' + (isMixFile ? 1 : 0) + '&cs=${uploaderChecksum}',
+            '../Uploader/uploader.php?sf=0&pid=${projectId}&isMix=' + (isMixFile ? 1 : 0) + '&originatorUserId=${originatorUserId}&cs=${uploaderChecksum}',
             'ONELOUDR_UPLOADER',
             'scrollbars=0,status=0,width=640,height=350'
     );

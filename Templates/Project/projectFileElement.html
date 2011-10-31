@@ -1,9 +1,9 @@
-<div style="border:1px solid black;padding:5px;margin-bottom:5px;background-color:#eeeeee"> <!-- hallo roland! ;) -->
+<div style="border:1px solid black;padding:5px;margin-bottom:5px;background-color:#eeeeee"> <!-- hallo roland! ;) den krempel hier hab ich nur termporär eingebaut. kannst ihn gern wegschmeissen. lgh -->
     ${projectFileElementCheckbox_optional}
     ${fileIcon_choice}&nbsp;
     <a href="${fileDownloadUrl}" target="_blank">${filename}</a><br />
     <small>Uploaded by ${uploaderUserImg}&nbsp;<b>${uploadedByName}</b></small><br />
-    <a href="javascript:askForConfirmationAndExecute('Do you really want to delete this file?', '${filenameEscaped}', 'project.php?pid=${projectId}&action=deleteProjectFile&fid=${projectFileId}', 'checkDeleteResponseAndRefreshFileList', false);">Delete</a><br />
+    ${Project/deleteFileLink_optional}
     ${Project/projectFileMetadataForm_optional}
     ${Project/projectFileMetadata_optional}
     <br />

@@ -32,6 +32,9 @@ $errorFields = Array();
 $projectId = get_numeric_param('pid'); // this is only set in an update scenario
 
 $activeTab = 'basics';
+if (get_param('tab')) {
+    $activeTab = get_param('tab');
+}
 
 if (get_param('action') == 'create') {
     $project = new Project();
@@ -173,7 +176,6 @@ if (get_param('action') == 'create') {
     }
 
     $project = Project::fetch_for_id($projectId);
-    ensureProjectBelongsToUserId($project, $loggedInUser->id);
 
     $file = ProjectFile::fetch_for_id(get_numeric_param('fid'));
     if (!$file) {
@@ -187,13 +189,25 @@ if (get_param('action') == 'create') {
 
     ensureProjectFileBelongsToProjectId($file, $projectId);
 
-    ProjectFile::delete_with_id(get_numeric_param('fid'));
+    if (
+        $file->originator_user_id && $file->originator_user_id == $loggedInUser->id || // file was contributed by the person which is logged in OR
+        $project->user_id == $loggedInUser->id                                         // owner is logged in
+    ) {
+        // FIXME - shall we send notifications (messaging system) to the originator if the owner has deleted his file?
+        // -> task created with this question
 
-    $jsonReponse = array(
-        'result'    => 'OK',
-        'projectId' => $projectId
-    );
-    sendJsonResponseAndExit($jsonReponse);
+        ProjectFile::delete_with_id(get_numeric_param('fid'));
+
+        $jsonReponse = array(
+            'result'    => 'OK',
+            'projectId' => $projectId
+        );
+        sendJsonResponseAndExit($jsonReponse);
+
+    } else {
+        show_fatal_error_and_exit('user with id ' . $loggedInUser->id . ' is not allowed to delete project ' .
+                'file with id: ' . $file->id . ' (originator user id: ' . $file->originator_user_id . ')');
+    }
 
 } else if (get_param('action') == 'getProjectFilesHtml') {
     if (!$projectId) {
@@ -201,10 +215,9 @@ if (get_param('action') == 'create') {
     }
 
     $project = Project::fetch_for_id($projectId);
-    //ensureProjectBelongsToUserId($project, $loggedInUser->id);
     ensureProjectIdIsAssociatedWithUserId($project->id, $loggedInUser->id);
 
-    echo getUploadedFilesSection($project, $projectFilesMessageList);
+    echo getUploadedFilesSection($project, $projectFilesMessageList, $loggedInUser);
     exit;
 
 } else if (get_param('action') == 'downloadProjectFiles') {
@@ -244,6 +257,20 @@ if (get_param('action') == 'create') {
     }
 
     ensureProjectFileBelongsToProjectId($file, $projectId);
+
+    // check if user has edit permissions for this file
+    $loggedInUserMayEdit = false;
+    if (
+        $file->originator_user_id && $file->originator_user_id == $loggedInUser->id || // file was contributed by the person which is logged in
+        !$file->originator_user_id && $project->user_id == $loggedInUser->id           // file was uploaded by owner and owner is logged in
+    ) {
+        $loggedInUserMayEdit = true;
+    }
+
+    if (!$loggedInUserMayEdit) {
+        show_fatal_error_and_exit('user with id ' . $loggedInUser->id . ' must not edit metadata of project ' .
+                'file with id: ' . $file->id . ' (originator user id: ' . $file->originator_user_id . ')');
+    }
 
     if (strlen(get_param('comment')) > 500) {
         $file->comment = substr(get_param('comment'), 0, 500); // truncate if too long. the ui takes care that the input is not too long.
@@ -463,32 +490,70 @@ foreach($projectRecommendedArtists as $projectRecommendedArtist){
     ));
 }
 
+$originatorUserId = $loggedInUser->id;
+
+$tabBasicHtml   = '';
+$tabInviteHtml  = '';
+$tabPublishHtml = '';
+
+$tabContentBasicHtml   = '';
+$tabContentInviteHtml  = '';
+$tabContentPublishHtml = '';
+if ($project->user_id == $loggedInUser->id) { // logged-in user is the project owner
+    $originatorUserId = '';
+
+    $tabBasicHtml   = processTpl('Project/tabBasic.html', array());
+    $tabInviteHtml  = processTpl('Project/tabInvite.html', array());
+    $tabPublishHtml = processTpl('Project/tabPublish.html', array());
+
+    $tabContentBasicHtml   = processTpl('Project/tabContentBasic.html', array(
+        '${tabcontentAct_basics}'       => $activeTab == 'basics'  ? ' tabcontentAct' : '',
+        '${Common/message_choice_list}' => $generalMessageList,
+        '${formAction}'                 => $_SERVER['PHP_SELF'],
+        '${projectId}'                  => $project->id,
+        '${Common/formElement_list}'    => $formElementsList,
+        '${submitButtonValue}'          => 'Save'
+    ));
+
+    $tabContentInviteHtml  = processTpl('Project/tabContentInvite.html', array(
+        '${tabcontentAct_invite}'          => $activeTab == 'invite'  ? ' tabcontentAct' : '',
+        '${recommendedArtistElement_list}' => $projectRecommendedArtistsList
+    ));
+
+    $tabContentPublishHtml = processTpl('Project/tabContentPublish.html', array(
+        '${tabcontentAct_publish}' => $activeTab == 'publish' ? ' tabcontentAct' : '',
+        '${submitButtonValue}'     => 'Save'
+    ));
+
+} else {
+    $activeTab = 'upload';
+}
+
 processAndPrintTpl('Project/index.html', array(
     '${Common/pageHeader}'                      => buildPageHeader(($projectId ? 'Edit project' : 'Create project'), false, false, true),
     '${Common/bodyHeader}'                      => buildBodyHeader($loggedInUser),
-    '${tabcontentAct_basics}'                   => $activeTab == 'basics'  ? ' tabcontentAct' : '',
-    '${tabcontentAct_invite}'                   => $activeTab == 'invite'  ? ' tabcontentAct' : '',
+    '${Project/tabBasic_optional}'              => $tabBasicHtml,
+    '${Project/tabInvite_optional}'             => $tabInviteHtml,
+    '${Project/tabPublish_optional}'            => $tabPublishHtml,
+    '${Project/tabContentBasic_optional}'       => $tabContentBasicHtml,
+    '${Project/tabContentInvite_optional}'      => $tabContentInviteHtml,
+    '${Project/tabContentPublish_optional}'     => $tabContentPublishHtml,
     '${tabcontentAct_upload}'                   => $activeTab == 'upload'  ? ' tabcontentAct' : '',
-    '${tabcontentAct_publish}'                  => $activeTab == 'publish' ? ' tabcontentAct' : '',
     '${tabsAct_basics}'                         => $activeTab == 'basics'  ? ' tabsAct' : '',
     '${tabsAct_invite}'                         => $activeTab == 'invite'  ? ' tabsAct' : '',
     '${tabsAct_upload}'                         => $activeTab == 'upload'  ? ' tabsAct' : '',
     '${tabsAct_publish}'                        => $activeTab == 'publish' ? ' tabsAct' : '',
     '${headline}'                               => $projectId ? 'Edit project' : 'Create project',
-    '${Common/message_choice_list}'             => $generalMessageList,
-    '${formAction}'                             => $_SERVER['PHP_SELF'],
     '${projectId}'                              => $project && $project->id ? $project->id : '',
     '${projectTitle}'                           => $project && $project->title ? $project->title : '(No title)',
     '${projectGenres}'                          => escape(implode(', ', $projectGenreList)),
     '${projectMoods}'                           => escape(implode(', ', $projectMoodList)),
     '${projectNeeds}'                           => escape(implode(', ', $projectNeedsList)),
     '${projectAdditionalInfo}'                  => escape($project->additionalInfo),
-    //'${type}'                                   => get_param('type') == 'remix' ? 'remix' : 'original',
-    '${recommendedArtistElement_list}'          => $projectRecommendedArtistsList,
-    '${uploaderChecksum}'                       => md5('PoopingInTheWoods' . $project->id),
-    '${submitButtonValue}'                      => 'Save',
-    '${Common/formElement_list}'                => $formElementsList,
-    '${Project/uploadedFilesSection}'           => getUploadedFilesSection($project, $projectFilesMessageList),
+    '${originatorUserId}'                       => $originatorUserId,
+    '${uploaderChecksum}'                       => md5('PoopingInTheWoods' . $project->id . '_' . $originatorUserId),
+    '${baseUrl}'                                => $GLOBALS['BASE_URL'],
+    '${Project/uploadedFilesSection}'           => getUploadedFilesSection($project, $projectFilesMessageList, $loggedInUser),
     '${Common/bodyFooter}'                      => buildBodyFooter(),
     '${Common/pageFooter}'                      => buildPageFooter()
 ));
@@ -497,7 +562,7 @@ processAndPrintTpl('Project/index.html', array(
 
 // functions
 // -----------------------------------------------------------------------------
-function getUploadedFilesSection(&$project, $messageList) {
+function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
     global $logger;
 
 //    $masterFound = ProjectFile::master_mp3_file_found_for_project_id($project->id);
@@ -529,8 +594,32 @@ function getUploadedFilesSection(&$project, $messageList) {
 
     $logger->info(count($projectFiles) . ' project files found');
 
+    $uploaders = array(); // cache
+
     foreach ($projectFiles as $file) {
-        $uploaderUserImg = getUserImageHtml($file->userImageFilename, $file->userName, 'tiny');
+        // check if user has edit permissions for this file
+        $loggedInUserMayEdit = false;
+        if (
+            $file->originator_user_id && $file->originator_user_id == $loggedInUser->id || // file was contributed by the person which is logged in OR
+            $project->user_id == $loggedInUser->id                                         // owner is logged in
+        ) {
+            $loggedInUserMayEdit = true;
+        }
+
+        if ($file->originator_user_id) { // file was uploaded by collaborator
+            if (!isset($uploaders[$file->originator_user_id])) { // if not in cache
+                $uploaders[$file->originator_user_id] = User::fetch_for_id($file->originator_user_id);
+            }
+            $uploader = $uploaders[$file->originator_user_id];
+
+        } else { // file was uploaded by project owner
+            if (!isset($uploaders[$project->user_id])) { // if not in cache
+                $uploaders[$project->user_id] = User::fetch_for_id($project->user_id);
+            }
+            $uploader = $uploaders[$project->user_id];
+        }
+
+        $uploaderUserImg = getUserImageHtml($uploader->image_filename, $uploader->name, 'tiny');
 
         $checkbox = '';
         $fileIcon = '';
@@ -553,14 +642,10 @@ function getUploadedFilesSection(&$project, $messageList) {
 
         $metadataBlock = '';
         $metadataForm  = '';
-        if ($file->comment && count($fileAttributeNames) > 0) {
-            $metadataBlock = processTpl('Project/projectFileMetadata.html', array(
-                '${comment}' => escape($file->comment),
-                '${skills}'  => escape(join(', ', $fileAttributeNames))
-            ));
-
-        } else {
-            // no comment found -> show form
+        if (
+            $loggedInUserMayEdit &&                              // user has edit permissions and
+            (!$file->comment || count($fileAttributeNames) == 0) // no data was entered so far
+        ) {
             $pfFormElementsList = getFormFieldForParams(array(
                 'inputType'                => 'textarea',
                 'propName'                 => 'comment',
@@ -596,6 +681,21 @@ function getUploadedFilesSection(&$project, $messageList) {
                 '${projectFileId}'           => $file->id,
                 '${Common/formElement_list}' => $pfFormElementsList,
             ));
+
+        } else { // data already entered or no permissions to see the form
+            $metadataBlock = processTpl('Project/projectFileMetadata.html', array(
+                '${comment}' => escape($file->comment),
+                '${skills}'  => escape(join(', ', $fileAttributeNames))
+            ));
+        }
+
+        $deleteFileLinkHtml = '';
+        if ($loggedInUserMayEdit) {
+            $deleteFileLinkHtml = processTpl('Project/deleteFileLink.html', array(
+                '${projectFileId}'   => $file->id,
+                '${filenameEscaped}' => escape_and_rewrite_single_quotes($file->orig_filename),
+                '${projectId}'       => $project->id
+            ));
         }
 
         $snippet = processTpl('Project/projectFileElement.html', array(
@@ -604,12 +704,11 @@ function getUploadedFilesSection(&$project, $messageList) {
             '${projectFileElementCheckbox_optional}'      => $checkbox,
             '${fileIcon_choice}'                          => $fileIcon,
             '${filename}'                                 => escape($file->orig_filename),
-            '${filenameEscaped}'                          => escape_and_rewrite_single_quotes($file->orig_filename),
+            '${Project/deleteFileLink_optional}'          => $deleteFileLinkHtml,
             '${fileDownloadUrl}'                          => '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $file->id,
             '${status}'                                   => $file->status == 'active' ? 'Active' : 'Inactive', // TODO - currently not used
             '${projectId}'                                => $project->id,
-            '${projectFileId}'                            => $file->id,
-            '${uploadedByName}'                           => $file->userName,
+            '${uploadedByName}'                           => $uploader->name,
             '${uploaderUserImg}'                          => $uploaderUserImg,
             '${Project/projectFileMetadataForm_optional}' => $metadataForm,
             '${Project/projectFileMetadata_optional}'     => $metadataBlock

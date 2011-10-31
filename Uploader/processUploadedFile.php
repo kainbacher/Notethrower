@@ -9,14 +9,15 @@ include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectFile.php');
 
 if (get_param('action') == 'process') {
-    $projectId    = get_numeric_param('pid');
-    $filename     = get_param('filename');
-    $origFilename = get_param('origFilename');
-    $isMix        = get_numeric_param('isMix');
-    $checksum     = get_param('cs');
+    $projectId        = get_numeric_param('pid');
+    $filename         = get_param('filename');
+    $origFilename     = get_param('origFilename');
+    $isMix            = get_numeric_param('isMix');
+    $originatorUserId = get_numeric_param('originatorUserId');
+    $checksum         = get_param('cs');
 
     if (
-        md5('PoopingInTheWoods' . $projectId . '_' . $isMix) !=
+        md5('PoopingInTheWoods' . $projectId . '_' . $isMix . '_' . $originatorUserId) !=
         $checksum
     ) {
         show_fatal_error_and_exit('checksum failure!');
@@ -39,13 +40,13 @@ if (get_param('action') == 'process') {
         show_fatal_error_and_exit('project not found for id: ' . $projectId);
     }
 
-    handleNewFileUpload($projectId, $project->user_id, $filename, $origFilename, $isMix);
+    handleNewFileUpload($projectId, $project->user_id, $filename, $origFilename, $isMix, $originatorUserId);
 }
 
 // END
 
 // functions
-function handleNewFileUpload($projectId, $userId, $filename, $origFilename, $isMix) {
+function handleNewFileUpload($projectId, $userId, $filename, $origFilename, $isMix, $originatorUserId) {
     global $logger;
 
     $logger->info('processing new project file upload: ' . $filename . ' (orig filename: ' . $origFilename . ')');
@@ -72,6 +73,11 @@ function handleNewFileUpload($projectId, $userId, $filename, $origFilename, $isM
     $newProjectFile->orig_filename = $origFilename;
     $newProjectFile->type          = $isMix == 1 ? 'mix' : 'raw';
     $newProjectFile->status        = 'active';
+
+    if ($originatorUserId) {
+        $newProjectFile->originator_user_id = $originatorUserId;
+    }
+    
     $newProjectFile->save();
 }
 

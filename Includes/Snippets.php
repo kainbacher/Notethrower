@@ -627,11 +627,13 @@ function xmlentities($str){
     return $str;
 }
 
-function send_email($recipient_email, $subject, $text, $filename = '', $data = '', $mime_type = '') {
+function send_email($recipient_email, $subject, $text, $filename = '', $data = '', $mime_type = '', $reply_to = null) {
     global $logger;
+    
 
     $logger->info('sending email with subject "' . $subject . '" to ' . $recipient_email . ' ...');
 
+   
     if (!email_syntax_ok($recipient_email)) {
         $logger->error('cannot send email to invalid address: ' . $recipient_email);
         return false;
@@ -649,6 +651,11 @@ function send_email($recipient_email, $subject, $text, $filename = '', $data = '
 
     $header = 'From: ' . $GLOBALS['MAIL_FROM'] . "\r\n" .
               'X-Mailer: PHP/' . phpversion();
+    
+    if($reply_to){
+        $header .= "\r\nReply-To: ".$reply_to;
+    }
+              
 
     if ($with_attachment) {
         $header     .= "\r\nMIME-Version: 1.0\r\n" .
@@ -681,8 +688,8 @@ function send_email($recipient_email, $subject, $text, $filename = '', $data = '
         $logger->debug('text: ' . $final_text);
         $logger->debug('header: ' . $header);
 
-        // limit line length to 70 - FIXME - check if this truncates urls
-        $message = wordwrap($message, 70);
+        // limit line length to 70 - does not cut words that are larger than the given width (ex: urls > 70 chars don't get cut)
+        $final_text = wordwrap($final_text, 70);
 
         $ok = @mail(
             ($GLOBALS['EMAIL_DELIVERY_MODE'] == 'override' ? $GLOBALS['EMAIL_DELIVERY_OVERRIDE_ADDR'] : $recipient_email),

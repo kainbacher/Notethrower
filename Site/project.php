@@ -7,6 +7,7 @@ include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/Attribute.php');
 include_once('../Includes/DB/Genre.php');
+include_once('../Includes/DB/Message.php');
 include_once('../Includes/DB/Mood.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectAttribute.php');
@@ -176,6 +177,9 @@ if (get_param('action') == 'create') {
     }
 
     $project = Project::fetch_for_id($projectId);
+    if (!$project || !$project->id) {
+        show_fatal_error_and_exit('project not found for id: ' . $projectId);
+    }
 
     $file = ProjectFile::fetch_for_id(get_numeric_param('fid'));
     if (!$file) {
@@ -193,10 +197,17 @@ if (get_param('action') == 'create') {
         $file->originator_user_id && $file->originator_user_id == $loggedInUser->id || // file was contributed by the person which is logged in OR
         $project->user_id == $loggedInUser->id                                         // owner is logged in
     ) {
-        // FIXME - shall we send notifications (messaging system) to the originator if the owner has deleted his file?
-        // -> task created with this question
-
         ProjectFile::delete_with_id(get_numeric_param('fid'));
+
+        // if file was contributed by another user and the owner is logged in, notify that other user that his file was deleted.
+        if ($file->originator_user_id && $file->originator_user_id != $loggedInUser->id) {
+            $m = new Message();
+            $m->sender_user_id    = $loggedInUser->id;
+            $m->recipient_user_id = $file->originator_user_id;
+            $m->subject           = 'One of your uploaded project files was deleted by the project owner.';
+            $m->text              = 'Your project file "' . $file->orig_filename . '" was deleted from project "' . $project->title . '" by the project owner "' . $loggedInUser->name . '".';
+            $m->save();
+        }
 
         $jsonReponse = array(
             'result'    => 'OK',

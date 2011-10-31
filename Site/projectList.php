@@ -24,14 +24,15 @@ foreach ($newbornProjectIdList as $nbpid) {
     Project::delete_with_id($nbpid);
 }
 
+// own projects
 $projects = Project::fetch_all_unfinished_projects_of_user($user->id); // FIXME - deal with finished projects somehow
 
 $projectsList = '';
-foreach ($projects as $t) {
+foreach ($projects as $p) {
     $projectsList .= processTpl('ProjectList/projectListItem.html', array(
-        '${projectId}'           => $t->id,
-        '${projectTitle}'        => escape($t->title),
-        '${projectTitleEscaped}' => escape_and_rewrite_single_quotes($t->title)
+        '${projectId}'           => $p->id,
+        '${projectTitle}'        => escape($p->title),
+        '${projectTitleEscaped}' => escape_and_rewrite_single_quotes($p->title)
         // FIXME - later - visibility? facebook sharing?
     ));
 }
@@ -40,13 +41,31 @@ if (count($projects) == 0) {
     $projectsList = 'No projects found';
 }
 
+// projects, where the user is associated
+$associatedProjects = Project::fetch_all_associated_projects_of_user($user->id);
+
+$associatedProjectsList = '';
+foreach ($associatedProjects as $p) {
+    $associatedProjectsList .= processTpl('ProjectList/projectListItem.html', array(
+        '${projectId}'           => $p->id,
+        '${projectTitle}'        => escape($p->title),
+        '${projectTitleEscaped}' => escape_and_rewrite_single_quotes($p->title)
+        // FIXME - later - visibility? facebook sharing?
+    ));
+}
+
+if (count($associatedProjects) == 0) {
+    $associatedProjectsList = 'No projects found';
+}
+
 processAndPrintTpl('ProjectList/index.html', array(
-    '${Common/pageHeader}'                          => buildPageHeader('My projects'),
-    '${Common/bodyHeader}'                          => buildBodyHeader($user),
-    '${Common/message_choice_optional}'             => $message,
-    '${ProjectList/projectListItem_list}'           => $projectsList,
-    '${Common/bodyFooter}'                          => buildBodyFooter(),
-    '${Common/pageFooter}'                          => buildPageFooter()
+    '${Common/pageHeader}'                           => buildPageHeader('My projects'),
+    '${Common/bodyHeader}'                           => buildBodyHeader($user),
+    '${Common/message_choice_optional}'              => $message,
+    '${ProjectList/projectListItem_list_own}'        => $projectsList,
+    '${ProjectList/projectListItem_list_associated}' => $associatedProjectsList,
+    '${Common/bodyFooter}'                           => buildBodyFooter(),
+    '${Common/pageFooter}'                           => buildPageFooter()
 ));
 
 // END

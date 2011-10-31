@@ -237,11 +237,7 @@ class ProjectUserVisibility {
     // object methods
     // --------------
     function save() {
-        if (isset($this->id)) {
-            return $this->update();
-        } else {
-            return $this->insert();
-        }
+        return $this->insert();
     }
 
     function insert() {

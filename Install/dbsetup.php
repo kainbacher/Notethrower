@@ -7,6 +7,7 @@ include_once('../Includes/Init.php');
 include_once('../Includes/DbConnect.php');
 include_once('../Includes/DB/Attribute.php');
 include_once('../Includes/DB/Genre.php');
+include_once('../Includes/DB/Invitation.php');
 include_once('../Includes/DB/Message.php');
 include_once('../Includes/DB/Mood.php');
 include_once('../Includes/DB/News.php');
@@ -31,6 +32,7 @@ header('Content-type: text/plain');
 
 Attribute::createTable();
 Genre::createTable();
+Invitation::createTable();
 Message::create_table();
 Mood::createTable();
 News::create_table();

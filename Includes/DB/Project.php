@@ -501,6 +501,36 @@ class Project {
         return $objs;
     }
 
+    function fetch_all_associated_projects_of_user($uid) {
+        $objs = array();
+
+        $result = _mysql_query(
+            'select p.* ' .
+            'from pp_project p, pp_project_user_visibility puv, pp_user u ' .
+            'where puv.user_id = ' . n($uid) . ' ' .
+            'and puv.project_id = p.id ' .
+            'and p.status != "finished" ' .
+            'and p.user_id = u.id ' .
+            'and p.user_id != ' . n($uid) . ' ' . // exclude users own projects
+            'and u.status = "active" ' .
+            'order by p.entry_date desc'
+        );
+
+        $ind = 0;
+
+        while ($row = mysql_fetch_array($result)) {
+            $a = new Project();
+            $a = Project::_read_row($a, $row);
+
+            $objs[$ind] = $a;
+            $ind++;
+        }
+
+        mysql_free_result($result);
+
+        return $objs;
+    }
+
     function fetchAllNewbornProjectIdsForUserId($aid) {
         if (!$aid) return array();
 

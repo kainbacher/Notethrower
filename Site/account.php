@@ -9,6 +9,9 @@ include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/Attribute.php');
 include_once('../Includes/DB/Genre.php');
+include_once('../Includes/DB/Invitation.php');
+include_once('../Includes/DB/Project.php');
+include_once('../Includes/DB/ProjectUserVisibility.php');
 include_once('../Includes/DB/Tool.php');
 include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/UserAttribute.php');
@@ -77,6 +80,12 @@ if (get_param('action') == 'save') {
 
         } else {
             $logger->info('created user record with id: ' . $user->id);
+
+            if (get_numeric_param('invitedToProject')) {
+                processPendingInvitations($user);
+            }
+
+            $logger->info('sending account creation confirmation email');
 
             $email_sent = send_email($user->email_address, 'Please activate your oneloudr.com account',
                     'Please click the link below to confirm your oneloudr.com account creation:' . "\n\n" .
@@ -551,6 +560,7 @@ processAndPrintTpl('Account/index.html', array(
     '${headline}'                             => $headline,
     '${Common/message_choice_list}'           => $messageList,
     '${formAction}'                           => $_SERVER['PHP_SELF'],
+    '${invitedToProject}'                     => get_numeric_param('invitedToProject'),
     '${signupAs}'                             => get_param('signupAs'),
     '${facebookId}'                           => get_param('facebook_id'),
     '${Common/formElement_section1_list}'     => $formElementsSection1,
@@ -990,6 +1000,35 @@ function getPageMode($userIsLoggedIn, &$user) {
     if ($userIsLoggedIn && $user->is_artist) $mode = 'artist';
 
     return $mode;
+}
+
+function processPendingInvitations(&$user) {
+    global $logger;
+
+    // check if there are invitations for this new user and accept all of them
+    $invs = Invitation::fetchAllForRecipientEmailAddress($user->email_address);
+    foreach ($invs as $inv) {
+        // check if project is is still valid
+        $checkProject = Project::fetch_for_id($inv->project_id);
+        if ($checkProject && $checkProject->id) {
+            $logger->info('accepting invitation with id: ' . $inv->id);
+            $puv = ProjectUserVisibility::fetch_for_user_id_project_id($user->id, $inv->project_id);
+            if (!$puv || !$puv->project_id) {
+                $puv = new ProjectUserVisibility();
+                $puv->user_id    = $user->id;
+                $puv->project_id = $inv->project_id;
+                $puv->save();
+
+                $logger->info('saved project/user visibility record');
+
+            } else {
+                $logger->info('invited user is already associated with project');
+            }
+
+        } else {
+            $logger->warn('project with id ' . $inv->project_id . ' doesn\'t exist anymore! ignoring invitation.');
+        }
+    }
 }
 
 ?>

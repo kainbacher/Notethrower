@@ -111,7 +111,7 @@ ${Common/bodyFooter}
 
 function checkDeleteResponseAndRefreshFileList(deleteWasOk, data) {
     if (deleteWasOk) {
-        //document.projectForm.submit();
+        alert(data.projectId);
         refreshProjectFilesSection(data.projectId);
     } else {
         alert('File deletion failed: ' + data.error);
@@ -119,6 +119,7 @@ function checkDeleteResponseAndRefreshFileList(deleteWasOk, data) {
 }
 
 function refreshProjectFilesSection(projectId) {
+    alert('${baseUrl}Site/project.php?action=edit&pid=' + projectId + '&tab=upload');
     document.location.href = '${baseUrl}Site/project.php?action=edit&pid=' + projectId + '&tab=upload';
 
     // FIXME - this doesn't work properly. the chosen select fields are broken after a refresh of the project files div

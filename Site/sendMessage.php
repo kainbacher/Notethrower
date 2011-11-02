@@ -37,8 +37,6 @@ $action = get_param('action');
 if ($action == 'send') {
     $subject = get_param('subject');
     $text    = get_param('text');
-    $text   .= "\n\nSee ".$senderUser->name."'s profile page on Oneloudr.com\n--\nOneloudr - Social Music Making";
-    $text   .= "\n\nYou can directly reply to this email to contact the sender";
 
     if ($subject || $text) {
         $msg = new Message();
@@ -49,7 +47,11 @@ if ($action == 'send') {
         $msg->marked_as_read      = false;
         $msg->save();
 
-        $email_sent = send_email($recipientUser->email_address, 
+        // append some footer text for the email
+        $text   .= "\n\nSee ".$senderUser->name."'s profile page on Oneloudr.com\n--\nOneloudr - Social Music Making";
+        $text   .= "\n\nYou can directly reply to this email to contact the sender";
+
+        $email_sent = send_email($recipientUser->email_address,
                 'Message from ' . $senderUser->name,
                 'Hey ' . $recipientUser->name . "\n" .
                 $senderUser->name . ' has just sent you a private Message.'. "\n" .
@@ -68,8 +70,8 @@ if ($action == 'send') {
         $statusMessage = 'Your message is empty.';
     }
     echo $statusMessage;
-} else {
 
+} else {
     processAndPrintTpl('SendMessage/index.html', array(
         '${Common/pageHeader}'            => buildPageHeader('Send message', false, false, false, $showMobileVersion),
         '${Common/bodyHeader}'            => buildBodyHeader($user),

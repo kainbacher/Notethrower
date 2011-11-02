@@ -14,7 +14,7 @@
 
 body {
 	font-family: Arial, Sans-Serif;
-	font-size: 14px;
+	font-size: 12px;
     color: #444444;
 	line-height: 20px;
 	text-align: left;
@@ -24,30 +24,28 @@ body {
 p {
     font-family: Arial, Arial, sans;
     font-weight: normal;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 20px;
 }
 
 h1 {
     color: #444444;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
-    line-height: 28px;
-    text-transform: uppercase;
+    line-height: 22px;
 }
 
 h2 {
     color: #444444;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: normal;
     line-height: 24px;
     margin-bottom: 12px;
-    text-transform: uppercase;
 }
 
 h3 {
     color: #444444;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     line-height: 18px;
     text-transform: uppercase;
@@ -55,7 +53,7 @@ h3 {
 
 h4 {
     color: #444444;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: bold;
     line-height: 24px;
     margin-bottom: 0px;
@@ -1609,6 +1607,24 @@ a.nohighlight:hover {
     width: 500px;
 }
 
+.statusMessage {
+    margin-bottom: 0px;
+}
+
+.sendMessageFormLine {
+}
+
+.sendMessageFormLabel {
+    float: left;
+    width: 100px;
+}
+
+.sendMessageFormInput {
+    float: left;
+    width: 330px;
+}
+
+
 
 /* !uploadMusicButton */
 /* ---------------------------------------------------------------------- */
@@ -1911,5 +1927,28 @@ a.nohighlight:hover {
 }
 
 
+/* !fancybox */
+/* ---------------------------------------------------------------------- */
+#fancybox-overlay {
+    background-color: transparent !important;
+}
 
+#fancybox-outer {
+    border: 10px solid rgba(10,10,10,0.5); 
+    border-radius: 5px;
+}
+
+#fancybox-close {
+    background: none;
+    background-image: url(../Images/icons/message-close.png);
+    background-repeat: no-repeat;
+    top: 5px;
+    right: 0px;
+    width: 20px;
+    height: 20px;
+}
+
+#fancybox-close:hover {
+    background-image: url(../Images/icons/message-close-hover.png);
+}
 

@@ -53,7 +53,7 @@ textarea, select {
 input.text,
 input.title   { width: 300px; padding:5px; }
 input.title   { font-size:1.5em; }
-textarea      { width: 295px; max-width: 295px; height: 250px; line-height: 20px; padding:5px; }
+textarea      { width: 295px; max-width: 295px; height: 80px; line-height: 20px; padding:5px; }
 
 /* 
   This is to be used on forms where a variety of elements are 

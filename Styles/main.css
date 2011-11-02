@@ -605,12 +605,11 @@ a.nohighlight:hover {
 }
 
 #logo {
-    /* background: url(../Images/logo_01.png);	 */
     color: #ffffff;
     font-size: 18px;
     float: left;
     width: 170px;
-    height: 26px;
+    height: 40px;
     margin-top: 0px;
     cursor: pointer;
 }

@@ -68,7 +68,6 @@ $msgListHtml = '';
 $noMessagesFound = '';
 $msgs = Message::fetch_all_for_recipient_user_id($user->id, 20);
 foreach ($msgs as $msg) {
-    echo '##############' . $msg->sender_image_filename;
     $senderImgUrl = getUserImageUri($msg->sender_image_filename, 'tiny');
 
     $showMoreLink = '';

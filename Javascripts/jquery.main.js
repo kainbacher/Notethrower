@@ -69,13 +69,6 @@ $(document).ready(function(){
     });
 
 
-/*
-if ($("...").is(":focus")) {
-  ...
-}
-*/
-
-
 
     /* !startpage */
     /* ---------------------------------------------------------------------- */
@@ -261,4 +254,31 @@ if ($("...").is(":focus")) {
         'hideOnOverlayClick' : 'false'
     });
 
+
+    /* !message */
+    /* ---------------------------------------------------------------------- */
+
+    $('.messageItem').hover(function(){
+        console.log('hover');
+        $(this).children().find('.messageItemDelete').show();
+    },function(){
+        $(this).children().find('.messageItemDelete').hide();
+    });
+
+    $('.messageItemShortTextMore a').bind('click', function(){
+        $(this).hide();
+        $(this).parent().prev().prev().fadeOut(function(){
+            $(this).next().slideDown(); 
+        });
+        return false;
+    });
+
 });
+
+
+
+
+
+
+
+

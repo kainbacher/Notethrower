@@ -1,6 +1,25 @@
-<div>
-    <img src="${senderImgUrl}" height="25" />&nbsp;<b>${senderName}</b><br />
-    <b>${subject}</b><br />
-    ${text}<br />
-    <a href="dashboard.php?action=deleteMsg&mid=${messageId}">Delete</a><br />
-</div>
+<div class="span-15 last messageItem">
+    <div class="span-2">
+        <img src="${senderImgUrl}" width="60" />
+    </div>
+    <div class="span-13 last messageItemContent">
+        <h3>${senderName}</h3>
+        <h2>${subject}</h2>
+        <div class="messageItemShortText">
+            <p>
+                Hier kommt der kurztext her, der sollte nicht allzu lange sein ... 
+                Hier kommt der kurztext her, der sollte nicht allzu lange sein ... 
+                Hier kommt der kurztext her, der sollte nicht allzu lange sein ...
+            </p>
+        </div>
+        <div class="messageItemText">
+            <p>${text}</p>
+        </div>
+        <div class="messageItemShortTextMore">
+            <a href="#" >show more</a>
+        </div>
+        <div class="messageItemDelete">
+            <a href="dashboard.php?action=deleteMsg&mid=${messageId}">&nbsp;</a>
+        </div>
+    </div>
+</div>    

@@ -1830,5 +1830,74 @@ a.nohighlight:hover {
     width: 215px;
 }
 
+/* !message board, dashboard */
+/* ---------------------------------------------------------------------- */
+
+.messageItem {
+    border-bottom: 1px solid #ededed;
+    margin-bottom: 30px;
+}
+
+.messageItemContent {
+    position: relative;
+}
+
+.messageItemContent h2 {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 0px;
+    text-transform: none;
+}
+
+.messageItemContent h3 {
+    font-size: 12px;
+    color: #62487C;
+    margin-bottom: 0px;
+    text-transform: none;
+}
+
+.messageItemContent p {
+    font-size: 12px;
+    margin-bottom: 0px;
+}
+
+.messageItemShortText {
+}
+
+.messageItemShortTextMore {
+    height: 30px;
+}
+
+.messageItemShortTextMore a {
+    font-size: 12px;
+}
+
+.messageItemText {
+    display: none;
+}
+
+.messageItemDelete {
+    display: none;
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.messageItemDelete a {
+    background-image: url(../Images/icons/message-close.png);
+    background-repeat: no-repeat;
+    display: block;
+    height: 20px;
+    width: 20px;
+}
+
+.messageItemDelete a:hover {
+    background-image: url(../Images/icons/message-close-hover.png);
+    text-decoration: none;
+}
+
+
 
 

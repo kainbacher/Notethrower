@@ -548,7 +548,7 @@ if ($userIsLoggedIn) {
     // twitter url
     $twitterLink = '';
     if ($user->twitter_username) {
-        $twitterUrl = $user->twitter_username; // FIXME
+        $twitterUrl = 'http://twitter.com/' . $user->twitter_username;
         $twitterLink = processTpl('Common/externalWebLink.html', array(
             '${href}'  => escape($twitterUrl),
             '${label}' => 'Twitter'

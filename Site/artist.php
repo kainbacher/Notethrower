@@ -36,6 +36,11 @@ if (!$user) {
 // user image
 $userImgUrl = getUserImageUri($user->image_filename, 'regular');
 
+$editProfileLink = '';
+if ($visitorUser && $visitorUserId == $user->id) {
+    $editProfileLink = processTpl('Artist/editProfileLink.html', array());
+}
+
 // webpage url
 $webpageLink = '';
 if ($user->webpage_url) {
@@ -209,6 +214,7 @@ processAndPrintTpl('Artist/index.html', array(
     //'${Artist/additionalInfo_optional}'                  => $additionalInfo, // currently hidden
     '${Artist/video_optional}'                           => $video,
     '${Artist/trackListElement_list_unfinishedProjects}' => $unfinishedProjectsList,
+    '${Artist/editProfileLink_optional}'                 => $editProfileLink,
     '${skills}'                                          => $skills,
     '${genres}'                                          => $genres,
     '${tools}'                                           => $tools,

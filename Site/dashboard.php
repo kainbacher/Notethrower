@@ -68,14 +68,23 @@ $msgListHtml = '';
 $noMessagesFound = '';
 $msgs = Message::fetch_all_for_recipient_user_id($user->id, 20);
 foreach ($msgs as $msg) {
+    echo '##############' . $msg->sender_image_filename;
     $senderImgUrl = getUserImageUri($msg->sender_image_filename, 'tiny');
 
+    $showMoreLink = '';
+    if (strlen($msg->text) > 200) {
+        $showMoreLink = processTpl('Dashboard/messageListItemShowMoreLink.html', array());
+    }
+
     $msgListHtml .= processTpl('Dashboard/messageListItem.html', array(
-        '${messageId}'    => $msg->id,
-        '${senderImgUrl}' => $senderImgUrl,
-        '${senderName}'   => escape($msg->sender_user_name),
-        '${subject}'      => escape($msg->subject),
-        '${text}'         => escape($msg->text) // FIXME - ensure this cannot be more than 500 chars when the text is created
+        '${messageId}'                                      => $msg->id,
+        '${timestamp}'                                      => reformat_sql_date($msg->entry_date),
+        '${senderImgUrl}'                                   => $senderImgUrl,
+        '${senderName}'                                     => escape($msg->sender_user_name),
+        '${Dashboard/messageListItemShowMoreLink_optional}' => $showMoreLink,
+        '${subject}'                                        => escape($msg->subject),
+        '${textShort}'                                      => $showMoreLink ? substr($msg->text, 0, 200) . ' ...' : $msg->text,
+        '${text}'                                           => $showMoreLink ? escape($msg->text) : '' // FIXME - ensure this cannot be more than 500 chars when the text is created
     ));
 }
 

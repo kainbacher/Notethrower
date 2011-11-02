@@ -4,16 +4,25 @@ include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectUserVisibility.php');
 
-function ensureUserIsLoggedIn($user) {
+function ensureUserIsLoggedIn(&$user) {
+    global $logger;
+
+    if (!userIsLoggedIn($user)) {
+        header('Location: ../Site/pleaseLogin.php');
+        exit;
+    }
+}
+
+function userIsLoggedIn(&$user) {
     global $logger;
 
     if ($user) {
         $logger->info('user is logged in');
+        return true;
 
     } else {
         $logger->info('user is NOT logged in');
-        header('Location: ../Site/pleaseLogin.php');
-        exit;
+        return false;
     }
 }
 
@@ -62,6 +71,12 @@ function ensureProjectFileBelongsToProjectId(&$projectFile, $projectId) {
 }
 
 function ensureProjectIdIsAssociatedWithUserId($projectId, $userId) {
+    if (!projectIdIsAssociatedWithUserId($projectId, $userId)) {
+        show_fatal_error_and_exit('Project with ID ' . $projectId . ' cannot be access by user with ID ' . $userId);
+    }
+}
+
+function projectIdIsAssociatedWithUserId($projectId, $userId) {
     if (!$projectId) {
         show_fatal_error_and_exit('Project ID not specified!');
     }
@@ -72,8 +87,10 @@ function ensureProjectIdIsAssociatedWithUserId($projectId, $userId) {
 
     $puv = ProjectUserVisibility::fetch_for_user_id_project_id($userId, $projectId);
     if (!$puv || !$puv->project_id) {
-        show_fatal_error_and_exit('Project with ID ' . $projectId . ' cannot be access by user with ID ' . $userId);
+        return false;
     }
+
+    return true;
 }
 
 function ensureMessageIdBelongsToUser($mid, $user) {

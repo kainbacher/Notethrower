@@ -9,6 +9,7 @@ include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectFile.php');
 
 if (get_param('action') == 'process') {
+    $userId           = get_numeric_param('uid');
     $projectId        = get_numeric_param('pid');
     $filename         = get_param('filename');
     $origFilename     = get_param('origFilename');
@@ -17,7 +18,7 @@ if (get_param('action') == 'process') {
     $checksum         = get_param('cs');
 
     if (
-        md5('PoopingInTheWoods' . $projectId . '_' . $isMix . '_' . $originatorUserId) !=
+        md5('PoopingInTheWoods' . $userId . '_' . $projectId . '_' . $isMix . '_' . $originatorUserId) !=
         $checksum
     ) {
         show_fatal_error_and_exit('checksum failure!');
@@ -38,6 +39,10 @@ if (get_param('action') == 'process') {
     $project = Project::fetch_for_id($projectId);
     if (!$project || !$project->id) {
         show_fatal_error_and_exit('project not found for id: ' . $projectId);
+    }
+
+    if ($project->visibility == 'private' && !projectIdIsAssociatedWithUserId($projectId, $userId)) {
+        show_fatal_error_and_exit('user with id ' . $userId . ' is not allowed to upload a file to project with id: ' . $projectId);
     }
 
     handleNewFileUpload($projectId, $project->user_id, $filename, $origFilename, $isMix, $originatorUserId);

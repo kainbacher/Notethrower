@@ -18,10 +18,14 @@ include_once('../Includes/DB/ProjectMood.php');
 include_once('../Includes/DB/ProjectUserVisibility.php');
 include_once('../Includes/DB/User.php');
 
-$logger->set_debug_level();
+// some notes on permissions:
+// + a private project can only be seen and modified by invited (=associated) users
+// + everyone which is logged in can upload files to a public project
+// + everyone which is not logged in can view public projects and download files
+
+$logger->set_info_level();
 
 $loggedInUser = User::new_from_cookie();
-ensureUserIsLoggedIn($loggedInUser); // FIXME - open this page for non-logged in users?
 
 $project = null;
 $unpersistedProject = null;
@@ -38,6 +42,8 @@ if (get_param('tab')) {
 }
 
 if (get_param('action') == 'create') {
+    ensureUserIsLoggedIn($loggedInUser);
+
     $project = new Project();
     $project->user_id                   = $loggedInUser->id;
     $project->title                     = '(New project)';
@@ -58,22 +64,40 @@ if (get_param('action') == 'create') {
     $atav->project_id = $project->id;
     $atav->save();
 
-} else if (get_param('action') == 'edit') { // can be called by both the project owner and collaboration artists for this project
+} else if (get_param('action') == 'edit') {
+    // this can be called by:
+    //   + if the project is public:
+    //     + everyone
+    //   + if the project is private:
+    //     + both the project owner and collaboration artists for this project
+
     if (!$projectId) {
         show_fatal_error_and_exit('cannot save without a project id!');
     }
 
     $project = Project::fetch_for_id($projectId);
-    //ensureProjectBelongsToUserId($project, $loggedInUser->id);
-    ensureProjectIdIsAssociatedWithUserId($project->id, $loggedInUser->id);
+    if (!$project || !$project->id) {
+        show_fatal_error_and_exit('found no project with id: ' . $projectId);
+    }
+
+    if ($project->visibility == 'private') {
+        ensureUserIsLoggedIn($loggedInUser);
+        ensureProjectIdIsAssociatedWithUserId($project->id, $loggedInUser->id);
+    }
 
 } else if (get_param('action') == 'save') { // can only be called by the project owner
+    ensureUserIsLoggedIn($loggedInUser);
+
     $logger->info('attempting to save project data ...');
     if (!$projectId) {
         show_fatal_error_and_exit('cannot save without a project id!');
     }
 
     $project = Project::fetch_for_id($projectId);
+    if (!$project || !$project->id) {
+        show_fatal_error_and_exit('project not found for id: ' . $projectId);
+    }
+
     ensureProjectBelongsToUserId($project, $loggedInUser->id);
 
     if (inputDataOk($errorFields, $project)) {
@@ -100,11 +124,17 @@ if (get_param('action') == 'create') {
     }
 
 } else if (get_param('action') == 'delete') {
+    ensureUserIsLoggedIn($loggedInUser);
+
     if (!$projectId) {
         show_fatal_error_and_exit('cannot delete without a project id!');
     }
 
     $project = Project::fetch_for_id($projectId);
+    if (!$project || !$project->id) {
+        show_fatal_error_and_exit('project not found for id: ' . $projectId);
+    }
+
     ensureProjectBelongsToUserId($project, $loggedInUser->id);
 
     Project::delete_with_id($projectId);
@@ -113,59 +143,9 @@ if (get_param('action') == 'create') {
     header('Location: projectList.php');
     exit;
 
-} else if (get_param('action') == 'toggleTrackState') { // not used currently - projects are always active
-    $logger->info('changing project state ...');
-    if (!$projectId) {
-        show_fatal_error_and_exit('cannot modify project state without a project id!');
-    }
-
-    $msg = '';
-
-    $project = Project::fetch_for_id($projectId);
-    ensureProjectBelongsToUserId($project, $loggedInUser->id);
-
-    if ($project->status == 'active') {
-        $project->status = 'inactive';
-
-    } else {
-//        $masterFound = ProjectFile::master_mp3_file_found_for_project_id($project->id);
-//        if ($masterFound) {
-            $project->status = 'active';
-
-//        } else {
-//            $msg = 'The project status cannot be set to \'Active\' because no mix MP3 file was uploaded yet! ' .
-//                   'Without a mix MP3 file the project will not be visible for other users. ' .
-//                   'Please make sure the file is of high quality, at least 128kbps at 44.1kHz';
-//        }
-    }
-
-    $project->save();
-
-    header('Location: projectList.php?msg=' . urlencode($msg));
-    exit;
-
-} else if (get_param('action') == 'toggleFileState') { // not used currently - project files are always active
-    $logger->info('changing project file state ...');
-    if (!$projectId) {
-        show_fatal_error_and_exit('cannot modify file state without a project id!');
-    }
-
-    $project = Project::fetch_for_id($projectId);
-    ensureProjectBelongsToUserId($project, $loggedInUser->id);
-
-    $file = ProjectFile::fetch_for_id(get_numeric_param('fid'));
-    if (!$file) {
-        show_fatal_error_and_exit('project file not found!');
-    }
-
-    ensureProjectFileBelongsToProjectId($file, $projectId);
-
-    if ($file->status == 'active') $file->status = 'inactive';
-    else $file->status = 'active';
-
-    $file->save();
-
 } else if (get_param('action') == 'deleteProjectFile') { // ajax action
+    ensureUserIsLoggedIn($loggedInUser);
+
     $logger->info('deleting project file ...');
     if (!$projectId) {
         //show_fatal_error_and_exit('cannot delete project file without a project id!');
@@ -220,23 +200,45 @@ if (get_param('action') == 'create') {
                 'file with id: ' . $file->id . ' (originator user id: ' . $file->originator_user_id . ')');
     }
 
-} else if (get_param('action') == 'getProjectFilesHtml') {
+} else if (get_param('action') == 'getProjectFilesHtml') { // ajax action, called after a project file upload or delete
+    ensureUserIsLoggedIn($loggedInUser);
+
     if (!$projectId) {
         show_fatal_error_and_exit('pid param is missing!');
     }
 
     $project = Project::fetch_for_id($projectId);
-    ensureProjectIdIsAssociatedWithUserId($project->id, $loggedInUser->id);
+    if (!$project || !$project->id) {
+        show_fatal_error_and_exit('project not found for id: ' . $projectId);
+    }
+
+    if ($project->visibility == 'private') {
+        ensureProjectIdIsAssociatedWithUserId($project->id, $loggedInUser->id);
+    }
 
     echo getUploadedFilesSection($project, $projectFilesMessageList, $loggedInUser);
     exit;
 
 } else if (get_param('action') == 'downloadProjectFiles') {
+    // this can be called by:
+    //   + if the project is public:
+    //     + everyone
+    //   + if the project is private:
+    //     + both the project owner and collaboration artists for this project
+
     deleteOldTempFiles('zip'); // cleanup old temp zip files first
 
     $idListStr = get_param('fileIds');
     if ($idListStr) {
-        ensureProjectIdIsAssociatedWithUserId($projectId, $loggedInUser->id);
+        $project = Project::fetch_for_id($projectId);
+        if (!$project || !$project->id) {
+            show_fatal_error_and_exit('project not found for id: ' . $projectId);
+        }
+
+        if ($project->visibility == 'private') {
+            ensureUserIsLoggedIn($loggedInUser);
+            ensureProjectIdIsAssociatedWithUserId($project->id, $loggedInUser->id);
+        }
 
         $idList = explode(',', $idListStr);
 
@@ -255,12 +257,20 @@ if (get_param('action') == 'create') {
     exit;
 
 } else if (get_param('action') == 'saveProjectFileMetadata') {
+    ensureUserIsLoggedIn($loggedInUser);
+
     if (!$projectId) {
         show_fatal_error_and_exit('cannot save project file metadata without a project id!');
     }
 
     $project = Project::fetch_for_id($projectId);
-    ensureProjectIdIsAssociatedWithUserId($project->id, $loggedInUser->id);
+    if (!$project || !$project->id) {
+        show_fatal_error_and_exit('project not found for id: ' . $projectId);
+    }
+
+    if ($project->visibility == 'private') {
+        ensureProjectIdIsAssociatedWithUserId($project->id, $loggedInUser->id);
+    }
 
     $file = ProjectFile::fetch_for_id(get_numeric_param('fid'));
     if (!$file) {
@@ -298,176 +308,179 @@ if (get_param('action') == 'create') {
 }
 
 // form fields
-$formElementsList .= getFormFieldForParams(array(
-    'propName'               => 'title',
-    'label'                  => 'Project title',
-    'mandatory'              => true,
-    'maxlength'              => 255,
-    'obj'                    => $project,
-    'unpersistedObj'         => $unpersistedProject,
-    'errorFields'            => $errorFields,
-    'workWithUnpersistedObj' => $problemOccured
-));
+$formElementsList == '';
+if ($project->user_id == $loggedInUser->id) { // logged-in user is the project owner
+    $formElementsList .= getFormFieldForParams(array(
+        'propName'               => 'title',
+        'label'                  => 'Project title',
+        'mandatory'              => true,
+        'maxlength'              => 255,
+        'obj'                    => $project,
+        'unpersistedObj'         => $unpersistedProject,
+        'errorFields'            => $errorFields,
+        'workWithUnpersistedObj' => $problemOccured
+    ));
 
-// main genre
-$formElementsList .= getFormFieldForParams(array(
-    'inputType'              => 'select2',
-    'propName'               => 'mainGenre',
-    'label'                  => 'Main genre',
-    'mandatory'              => true,
-    'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
-    'obj'                    => $project,
-    'unpersistedObj'         => $unpersistedProject,
-    'selectOptions'          => Genre::getSelectorOptionsArray(true),
-    'objValue'               => $problemOccured ? $unpersistedProject->unpersistedProjectMainGenre : ProjectGenre::getMainGenreIdForProjectId($project->id),
-    'errorFields'            => $errorFields,
-    'workWithUnpersistedObj' => $problemOccured
-));
+    // main genre
+    $formElementsList .= getFormFieldForParams(array(
+        'inputType'              => 'select2',
+        'propName'               => 'mainGenre',
+        'label'                  => 'Main genre',
+        'mandatory'              => true,
+        'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
+        'obj'                    => $project,
+        'unpersistedObj'         => $unpersistedProject,
+        'selectOptions'          => Genre::getSelectorOptionsArray(true),
+        'objValue'               => $problemOccured ? $unpersistedProject->unpersistedProjectMainGenre : ProjectGenre::getMainGenreIdForProjectId($project->id),
+        'errorFields'            => $errorFields,
+        'workWithUnpersistedObj' => $problemOccured
+    ));
 
-// sub genres
-$formElementsList .= getFormFieldForParams(array(
-    'inputType'              => 'multiselect2',
-    'propName'               => 'subGenres',
-    'label'                  => 'Sub genres',
-    'mandatory'              => false,
-    'cssClassSuffix'         => 'chzn-select chzn-modify', // this triggers a conversion to a "chosen" select field
-    'obj'                    => $project,
-    'unpersistedObj'         => $unpersistedProject,
-    'selectOptions'          => Genre::getSelectorOptionsArray(),
-    'objValues'              => $problemOccured ? $unpersistedProject->unpersistedProjectSubGenres : ProjectGenre::getSubGenreIdsForProjectId($project->id),
-    'errorFields'            => $errorFields,
-    'workWithUnpersistedObj' => $problemOccured
-));
+    // sub genres
+    $formElementsList .= getFormFieldForParams(array(
+        'inputType'              => 'multiselect2',
+        'propName'               => 'subGenres',
+        'label'                  => 'Sub genres',
+        'mandatory'              => false,
+        'cssClassSuffix'         => 'chzn-select chzn-modify', // this triggers a conversion to a "chosen" select field
+        'obj'                    => $project,
+        'unpersistedObj'         => $unpersistedProject,
+        'selectOptions'          => Genre::getSelectorOptionsArray(),
+        'objValues'              => $problemOccured ? $unpersistedProject->unpersistedProjectSubGenres : ProjectGenre::getSubGenreIdsForProjectId($project->id),
+        'errorFields'            => $errorFields,
+        'workWithUnpersistedObj' => $problemOccured
+    ));
 
-/* DEPRECATED - handled by chosen.js
-// "create new genre"
-$formElementsList .= getFormFieldForParams(array(
-    'propName'               => 'newGenre',
-    'label'                  => 'Add new genre',
-    'mandatory'              => false,
-    'maxlength'              => 50,
-    'obj'                    => $project,
-    'unpersistedObj'         => $unpersistedProject,
-    'errorFields'            => $errorFields,
-    'workWithUnpersistedObj' => $problemOccured,
-    'infoText'               => 'If you can\'t find the right genre in the selection above, you can add it here. It will be added to the sub genres list, when you click "Save".'
-));
-*/
+    /* DEPRECATED - handled by chosen.js
+    // "create new genre"
+    $formElementsList .= getFormFieldForParams(array(
+        'propName'               => 'newGenre',
+        'label'                  => 'Add new genre',
+        'mandatory'              => false,
+        'maxlength'              => 50,
+        'obj'                    => $project,
+        'unpersistedObj'         => $unpersistedProject,
+        'errorFields'            => $errorFields,
+        'workWithUnpersistedObj' => $problemOccured,
+        'infoText'               => 'If you can\'t find the right genre in the selection above, you can add it here. It will be added to the sub genres list, when you click "Save".'
+    ));
+    */
 
-// mood
-$formElementsList .= getFormFieldForParams(array(
-    'inputType'              => 'multiselect2',
-    'propName'               => 'moods',
-    'label'                  => 'Moods',
-    'mandatory'              => false,
-    'cssClassSuffix'         => 'chzn-select chzn-modify', // this triggers a conversion to a "chosen" select field
-    'obj'                    => $project,
-    'unpersistedObj'         => $unpersistedProject,
-    'selectOptions'          => Mood::getSelectorOptionsArray(true),
-    'objValues'              => $problemOccured ? $unpersistedProject->unpersistedProjectMoods : ProjectMood::getMoodIdsForProjectId($project->id),
-    'errorFields'            => $errorFields,
-    'workWithUnpersistedObj' => $problemOccured
-));
+    // mood
+    $formElementsList .= getFormFieldForParams(array(
+        'inputType'              => 'multiselect2',
+        'propName'               => 'moods',
+        'label'                  => 'Moods',
+        'mandatory'              => false,
+        'cssClassSuffix'         => 'chzn-select chzn-modify', // this triggers a conversion to a "chosen" select field
+        'obj'                    => $project,
+        'unpersistedObj'         => $unpersistedProject,
+        'selectOptions'          => Mood::getSelectorOptionsArray(true),
+        'objValues'              => $problemOccured ? $unpersistedProject->unpersistedProjectMoods : ProjectMood::getMoodIdsForProjectId($project->id),
+        'errorFields'            => $errorFields,
+        'workWithUnpersistedObj' => $problemOccured
+    ));
 
-/* DEPRECATED - handled by chosen.js
-// "create new mood"
-$formElementsList .= getFormFieldForParams(array(
-    'propName'               => 'newMood',
-    'label'                  => 'Add new mood',
-    'mandatory'              => false,
-    'maxlength'              => 255,
-    'obj'                    => $project,
-    'unpersistedObj'         => $unpersistedProject,
-    'errorFields'            => $errorFields,
-    'workWithUnpersistedObj' => $problemOccured,
-    'infoText'               => 'If you can\'t find the right mood in the selection above, you can add it here. It will be added to the moods list, when you click "Save".'
-));
-*/
-// project attributes
-$formElementsList .= getFormFieldForParams(array(
-    'inputType'              => 'multiselect2',
-    'propName'               => 'attributes',
-    'label'                  => 'This project needs',
-    'mandatory'              => true,
-    'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
-    'obj'                    => $project,
-    'unpersistedObj'         => $unpersistedProject,
-    'selectOptions'          => Attribute::getIdNameMapShownFor('needs'),
-    'objValues'              => $problemOccured ? $unpersistedProject->unpersistedProjectAttributes : ProjectAttribute::getAttributeIdsForProjectIdAndState($project->id, 'needs'),
-    'errorFields'            => $errorFields,
-    'workWithUnpersistedObj' => $problemOccured,
-    'infoText'               => 'Make a list of what\'s needed for this project to be finished. Other artists will find your project based on this information.'
-));
+    /* DEPRECATED - handled by chosen.js
+    // "create new mood"
+    $formElementsList .= getFormFieldForParams(array(
+        'propName'               => 'newMood',
+        'label'                  => 'Add new mood',
+        'mandatory'              => false,
+        'maxlength'              => 255,
+        'obj'                    => $project,
+        'unpersistedObj'         => $unpersistedProject,
+        'errorFields'            => $errorFields,
+        'workWithUnpersistedObj' => $problemOccured,
+        'infoText'               => 'If you can\'t find the right mood in the selection above, you can add it here. It will be added to the moods list, when you click "Save".'
+    ));
+    */
+    // project attributes
+    $formElementsList .= getFormFieldForParams(array(
+        'inputType'              => 'multiselect2',
+        'propName'               => 'attributes',
+        'label'                  => 'This project needs',
+        'mandatory'              => true,
+        'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
+        'obj'                    => $project,
+        'unpersistedObj'         => $unpersistedProject,
+        'selectOptions'          => Attribute::getIdNameMapShownFor('needs'),
+        'objValues'              => $problemOccured ? $unpersistedProject->unpersistedProjectAttributes : ProjectAttribute::getAttributeIdsForProjectIdAndState($project->id, 'needs'),
+        'errorFields'            => $errorFields,
+        'workWithUnpersistedObj' => $problemOccured,
+        'infoText'               => 'Make a list of what\'s needed for this project to be finished. Other artists will find your project based on this information.'
+    ));
 
-$formElementsList .= getFormFieldForParams(array(
-    'inputType'              => 'textarea',
-    'propName'               => 'additionalInfo',
-    'label'                  => 'Additional info',
-    'mandatory'              => false,
-    'obj'                    => $project,
-    'unpersistedObj'         => $unpersistedProject,
-    'errorFields'            => $errorFields,
-    'workWithUnpersistedObj' => $problemOccured,
-    'infoText'               => 'Add comments, etc. about this project here.'
-));
+    $formElementsList .= getFormFieldForParams(array(
+        'inputType'              => 'textarea',
+        'propName'               => 'additionalInfo',
+        'label'                  => 'Additional info',
+        'mandatory'              => false,
+        'obj'                    => $project,
+        'unpersistedObj'         => $unpersistedProject,
+        'errorFields'            => $errorFields,
+        'workWithUnpersistedObj' => $problemOccured,
+        'infoText'               => 'Add comments, etc. about this project here.'
+    ));
 
-// is private?
-$value            = null;
-$unpersistedValue = null;
-if ($project)            $value            = $project->visibility            == 'private' ? true : false;
-if ($unpersistedProject) $unpersistedValue = $unpersistedProject->visibility == 'private' ? true : false;
-$objValue = $problemOccured ? $unpersistedValue : $value;
-$formElementsList .= getFormFieldForParams(array(
-    'inputType'              => 'checkbox',
-    'propName'               => 'isPrivate',
-    'objValueOverride'       => $objValue, // this is a checkbox but the value is stored as a string, thus the override
-    'label'                  => 'Project is private',
-    'mandatory'              => true,
-    'obj'                    => $project,
-    'unpersistedObj'         => $unpersistedProject,
-    'errorFields'            => $errorFields,
-    'workWithUnpersistedObj' => $problemOccured,
-    'infoText'               => 'If you choose the project to be private, you need to manually invite other musicians on oneloudr so they can see stems and participate in your project. You can also release previous finished works using this option.'
-));
+    // is private?
+    $value            = null;
+    $unpersistedValue = null;
+    if ($project)            $value            = $project->visibility            == 'private' ? true : false;
+    if ($unpersistedProject) $unpersistedValue = $unpersistedProject->visibility == 'private' ? true : false;
+    $objValue = $problemOccured ? $unpersistedValue : $value;
+    $formElementsList .= getFormFieldForParams(array(
+        'inputType'              => 'checkbox',
+        'propName'               => 'isPrivate',
+        'objValueOverride'       => $objValue, // this is a checkbox but the value is stored as a string, thus the override
+        'label'                  => 'Project is private',
+        'mandatory'              => true,
+        'obj'                    => $project,
+        'unpersistedObj'         => $unpersistedProject,
+        'errorFields'            => $errorFields,
+        'workWithUnpersistedObj' => $problemOccured,
+        'infoText'               => 'If you choose the project to be private, you need to manually invite other musicians on oneloudr so they can see stems and participate in your project. You can also release previous finished works using this option.'
+    ));
 
-// FIXME - start
-$hidden = true;
+    // FIXME - start
+    $hidden = true;
 
-// currently hidden, but maybe a candidate for pro users
-//if ($errorFields['visibility'] || ($project && $project->visibility == 'private') || ($unpersistedProject && $unpersistedProject->visibility == 'private')) $hidden = false;
+    // currently hidden, but maybe a candidate for pro users
+    //if ($errorFields['visibility'] || ($project && $project->visibility == 'private') || ($unpersistedProject && $unpersistedProject->visibility == 'private')) $hidden = false;
 
-echo '<div id="associated_users_row"' . ($hidden ? ' style="display:none";' : '') . '>' . "\n";
-//echo '<td>Artists who have access to this project:</td>' . "\n";
-//echo '<td>&nbsp;</td>' . "\n";
+    echo '<div id="associated_users_row"' . ($hidden ? ' style="display:none";' : '') . '>' . "\n";
+    //echo '<td>Artists who have access to this project:</td>' . "\n";
+    //echo '<td>&nbsp;</td>' . "\n";
 
-//$usersWithAccessListStr = '';
-//$usersWithAccessList = ProjectUserVisibility::fetch_all_for_project_id($project->id);
-//$ac = count($usersWithAccessList);
-//if ($ac > 20) {
-//    for ($ai = 0; $ai < 20; $ai++) {
-//        if ($usersWithAccessList[$ai]->user_id != $loggedInUser->id) {
-//            $usersWithAccessListStr .= '<a href="artist.php?aid=' . $usersWithAccessList[$ai]->user_id . '" target="_blank">' .
-//                    escape($usersWithAccessList[$ai]->user_name) . '</a>, ';
-//        }
-//    }
-//    $usersWithAccessListStr .= 'and some more ...';
-//
-//} else if ($ac > 1) {
-//    foreach ($usersWithAccessList as $a) {
-//        if ($a->user_id != $loggedInUser->id) {
-//            $usersWithAccessListStr .= '<a href="artist.php?aid=' . $a->user_id . '" target="_blank">' .
-//                    escape($a->user_name) . '</a>, ';
-//        }
-//    }
-//    $usersWithAccessListStr = substr($usersWithAccessListStr, 0, -2);
-//
-//} else {
-//    $usersWithAccessListStr = '(none)';
-//}
-//echo '<td>' . $usersWithAccessListStr . '<br><a href="javascript:showSelectFriendsPopup();">Select artists</a></td>' . "\n";
-echo '<a href="javascript:showSelectFriendsPopup();">Select the artists you want to have access to this project</a>' . "\n";
-echo '</div>' . "\n";
-// FIXME - end
+    //$usersWithAccessListStr = '';
+    //$usersWithAccessList = ProjectUserVisibility::fetch_all_for_project_id($project->id);
+    //$ac = count($usersWithAccessList);
+    //if ($ac > 20) {
+    //    for ($ai = 0; $ai < 20; $ai++) {
+    //        if ($usersWithAccessList[$ai]->user_id != $loggedInUser->id) {
+    //            $usersWithAccessListStr .= '<a href="artist.php?aid=' . $usersWithAccessList[$ai]->user_id . '" target="_blank">' .
+    //                    escape($usersWithAccessList[$ai]->user_name) . '</a>, ';
+    //        }
+    //    }
+    //    $usersWithAccessListStr .= 'and some more ...';
+    //
+    //} else if ($ac > 1) {
+    //    foreach ($usersWithAccessList as $a) {
+    //        if ($a->user_id != $loggedInUser->id) {
+    //            $usersWithAccessListStr .= '<a href="artist.php?aid=' . $a->user_id . '" target="_blank">' .
+    //                    escape($a->user_name) . '</a>, ';
+    //        }
+    //    }
+    //    $usersWithAccessListStr = substr($usersWithAccessListStr, 0, -2);
+    //
+    //} else {
+    //    $usersWithAccessListStr = '(none)';
+    //}
+    //echo '<td>' . $usersWithAccessListStr . '<br><a href="javascript:showSelectFriendsPopup();">Select artists</a></td>' . "\n";
+    echo '<a href="javascript:showSelectFriendsPopup();">Select the artists you want to have access to this project</a>' . "\n";
+    echo '</div>' . "\n";
+    // FIXME - end
+}
 
 $projectGenreList = array();
 if ($project) {
@@ -484,21 +497,23 @@ if ($project) {
     $projectNeedsList = ProjectAttribute::getAttributeNamesForProjectIdAndState($project->id, 'needs');
 }
 
-$projectRecommendedArtists = User::fetchAllThatOfferSkillsForProjectId($loggedInUser->id, $project->id);
+$projectRecommendedArtistsList = '';
+if ($project->user_id == $loggedInUser->id) { // logged-in user is the project owner
+    $projectRecommendedArtists = User::fetchAllThatOfferSkillsForProjectId($loggedInUser->id, $project->id);
 
-$projectRecommendedArtistsList = null;
-foreach($projectRecommendedArtists as $projectRecommendedArtist){
-    //attribute list
-    $recommendedArtistAttributes = implode(',', $projectRecommendedArtist->offersAttributeNamesList);
+    foreach($projectRecommendedArtists as $projectRecommendedArtist){
+        //attribute list
+        $recommendedArtistAttributes = implode(',', $projectRecommendedArtist->offersAttributeNamesList);
 
-    //userimagepath
-    $recommendedArtistImage = (!empty($projectRecommendedArtist->image_filename) ? '../Content/UserImages/'.$projectRecommendedArtist->image_filename : '../Images/testimages/profile-testimg-75x75.png' );
-    $projectRecommendedArtistsList .= processTpl('Project/recommendedArtistElement.html', array(
-        '${recommendedArtistId}'             => $projectRecommendedArtist->id,
-        '${recommendedArtistName}'           => $projectRecommendedArtist->name,
-        '${recommendedArtistAttributes}'     => $recommendedArtistAttributes,
-        '${recommendedArtistProfileImage}'   => $recommendedArtistImage
-    ));
+        //userimagepath
+        $recommendedArtistImage = (!empty($projectRecommendedArtist->image_filename) ? '../Content/UserImages/'.$projectRecommendedArtist->image_filename : '../Images/testimages/profile-testimg-75x75.png' );
+        $projectRecommendedArtistsList .= processTpl('Project/recommendedArtistElement.html', array(
+            '${recommendedArtistId}'             => $projectRecommendedArtist->id,
+            '${recommendedArtistName}'           => $projectRecommendedArtist->name,
+            '${recommendedArtistAttributes}'     => $recommendedArtistAttributes,
+            '${recommendedArtistProfileImage}'   => $recommendedArtistImage
+        ));
+    }
 }
 
 $originatorUserId = $loggedInUser->id;
@@ -561,8 +576,9 @@ processAndPrintTpl('Project/index.html', array(
     '${projectMoods}'                           => escape(implode(', ', $projectMoodList)),
     '${projectNeeds}'                           => escape(implode(', ', $projectNeedsList)),
     '${projectAdditionalInfo}'                  => escape($project->additionalInfo),
+    '${userId}'                                 => $loggedInUser ? $loggedInUser->id : '',
     '${originatorUserId}'                       => $originatorUserId,
-    '${uploaderChecksum}'                       => md5('PoopingInTheWoods' . $project->id . '_' . $originatorUserId),
+    '${uploaderChecksum}'                       => md5('PoopingInTheWoods' . ($loggedInUser ? $loggedInUser->id : '') . '_' . $project->id . '_' . $originatorUserId),
     '${baseUrl}'                                => $GLOBALS['BASE_URL'],
     '${Project/uploadedFilesSection}'           => getUploadedFilesSection($project, $projectFilesMessageList, $loggedInUser),
     '${Common/bodyFooter}'                      => buildBodyFooter(),
@@ -611,6 +627,7 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
         // check if user has edit permissions for this file
         $loggedInUserMayEdit = false;
         if (
+            userIsLoggedIn($loggedInUser) &&
             $file->originator_user_id && $file->originator_user_id == $loggedInUser->id || // file was contributed by the person which is logged in OR
             $project->user_id == $loggedInUser->id                                         // owner is logged in
         ) {
@@ -744,6 +761,18 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
         $projectFilesNotFoundMixesHtml = processTpl('Project/projectFilesNotFound.html', array());
     }
 
+    $uploadStemsButtonHtml    = '';
+    $uploadMixFilesButtonHtml = '';
+    if (
+        userIsLoggedIn($loggedInUser) && (
+            $project->visibility == 'public' ||
+            $project->visibility == 'private' && projectIdIsAssociatedWithUserId($project->id, $loggedInUser->id)
+        )
+    ) {
+        $uploadStemsButtonHtml    = processTpl('Project/uploadStemsButton.html',    array());
+        $uploadMixFilesButtonHtml = processTpl('Project/uploadMixFilesButton.html', array());
+    }
+
     return processTpl('Project/uploadedFilesSection.html', array(
         '${Common/message_choice_list}'                      => $messageList,
         '${Project/projectFileElement_list_stems}'           => $projectFilesStemsHtml,
@@ -752,6 +781,8 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
         '${Project/projectFilesNotFound_optional_releases}'  => $projectFilesNotFoundReleasesHtml,
         '${Project/projectFileElement_list_mixes}'           => $projectFilesMixesHtml,
         '${Project/projectFilesNotFound_optional_mixes}'     => $projectFilesNotFoundMixesHtml,
+        '${Project/uploadStemsButton_optional}'              => $uploadStemsButtonHtml,
+        '${Project/uploadMixFilesButton_optional}'           => $uploadMixFilesButtonHtml,
         '${projectId}'                                       => $project->id
     ));
 }

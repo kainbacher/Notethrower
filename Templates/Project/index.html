@@ -116,7 +116,6 @@ ${Common/bodyFooter}
 
 function checkDeleteResponseAndRefreshFileList(deleteWasOk, data) {
     if (deleteWasOk) {
-        alert(data.projectId);
         refreshProjectFilesSection(data.projectId);
     } else {
         alert('File deletion failed: ' + data.error);
@@ -124,7 +123,6 @@ function checkDeleteResponseAndRefreshFileList(deleteWasOk, data) {
 }
 
 function refreshProjectFilesSection(projectId) {
-    alert('${baseUrl}Site/project.php?action=edit&pid=' + projectId + '&tab=upload');
     document.location.href = '${baseUrl}Site/project.php?action=edit&pid=' + projectId + '&tab=upload';
 
     // FIXME - this doesn't work properly. the chosen select fields are broken after a refresh of the project files div
@@ -148,7 +146,7 @@ function refreshProjectFilesSection(projectId) {
 
 function openUploaderPopup(isMixFile) {
     window.open(
-            '../Uploader/uploader.php?sf=0&pid=${projectId}&isMix=' + (isMixFile ? 1 : 0) + '&originatorUserId=${originatorUserId}&cs=${uploaderChecksum}',
+            '../Uploader/uploader.php?sf=0&uid=${userId}&pid=${projectId}&isMix=' + (isMixFile ? 1 : 0) + '&originatorUserId=${originatorUserId}&cs=${uploaderChecksum}',
             'ONELOUDR_UPLOADER',
             'scrollbars=0,status=0,width=640,height=350'
     );

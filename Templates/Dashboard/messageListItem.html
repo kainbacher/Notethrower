@@ -5,21 +5,16 @@
     <div class="span-13 last messageItemContent">
         <h3>${senderName}</h3>
         <h2>${subject}</h2>
+        <small>${timestamp}</small><br />
         <div class="messageItemShortText">
-            <p>
-                Hier kommt der kurztext her, der sollte nicht allzu lange sein ... 
-                Hier kommt der kurztext her, der sollte nicht allzu lange sein ... 
-                Hier kommt der kurztext her, der sollte nicht allzu lange sein ...
-            </p>
+            <p>${textShort}</p>
         </div>
         <div class="messageItemText">
             <p>${text}</p>
         </div>
-        <div class="messageItemShortTextMore">
-            <a href="#" >show more</a>
-        </div>
+        ${Dashboard/messageListItemShowMoreLink_optional}
         <div class="messageItemDelete">
             <a href="dashboard.php?action=deleteMsg&mid=${messageId}">&nbsp;</a>
         </div>
     </div>
-</div>    
+</div>

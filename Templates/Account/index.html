@@ -47,20 +47,47 @@ ${Common/bodyHeader}
 
     <div class="span-8 last">
         <div  class="box-grey">
+            <div class="sidetwo">
+                <div class="sidetwoLeft">
+                    <img src="${userImgUrl}" width="55" />
+                </div>
+                <div class="sidetwoRight">
+                    <h1>${userName}</h1>
+                </div>
+                <div class="clear"></div>
+            </div>
 
-            <div class="span-2">
-                <img src="${userImgUrl}" width="55" />
-            </div>
-            <div class="span-4 last">
-                <h2>${userName}</h2>
-            </div>
-            <div class="span-7 last">
-                more Profile Infos goes here
-                ${Common/externalWebLink_optional}
-                ${Common/sendMessage_optional}
-                ${Artist/artistInfo_optional}
-                ${Artist/additionalInfo_optional}
-            </div>
+            <div class="line">&nbsp;</div>
+
+            <p>
+              Skills:<br />
+              ${skills}
+            </p>
+
+            <div class="line">&nbsp;</div>
+
+            <p>
+              Genres:<br />
+              ${genres}
+            </p>
+
+            <div class="line">&nbsp;</div>
+
+            <p>
+              Tools:<br />
+              ${tools}
+            </p>
+
+            <div class="line">&nbsp;</div>
+
+            ${Account/video_optional}
+
+            ${Account/artistInfo_optional}
+
+            ${Account/influences_optional}
+
+            ${Common/externalWebLink_list}
+
         </div>
     </div>
 

@@ -526,32 +526,73 @@ if ($userIsLoggedIn && $user->webpage_url) {
     $webpageLink = processTpl('Common/externalWebLink.html', array(
         '${href}'  => escape($webpageUrl),
         '${label}' => escape($user->webpage_url)
-    ), $showMobileVersion) . '<br /><br />'; // we don't put the newlines into the template because we probably need the link without them on a different page.
+    )) . '<br />'; // we don't put the newlines into the template because we probably need the link without them on a different page.
 }
 
-// send message
-$sendMessageBlock = '';
-if ($userIsLoggedIn && $visitorUser && $user->id != $visitorUser->id) {
-    $sendMessageBlock = processTpl('Common/sendMessage.html', array(
-        '${recipientUserId}' => $user->id,
-        '${recipientName}'   => escape($user->name)
-    ), $showMobileVersion);
+// facebook url
+$facebookLink = '';
+if ($userIsLoggedIn && $user->facebook_url) {
+    $facebookUrl = $user->facebook_url;
+    if (substr($user->facebook_url, 0, 7) != 'http://' && substr($user->facebook_url, 0, 8) != 'https://') {
+        $facebookUrl = 'http://' . $user->facebook_url;
+    }
+
+    $facebookLink = processTpl('Common/externalWebLink.html', array(
+        '${href}'  => escape($facebookUrl),
+        '${label}' => 'Facebook'
+    )) . '<br />'; // we don't put the newlines into the template because we probably need the link without them on a different page.
+}
+
+// twitter url
+$twitterLink = '';
+if ($userIsLoggedIn && $user->twitter_username) {
+    $twitterUrl = $user->twitter_username; // FIXME
+    $twitterLink = processTpl('Common/externalWebLink.html', array(
+        '${href}'  => escape($twitterUrl),
+        '${label}' => 'Twitter'
+    )) . '<br />'; // we don't put the newlines into the template because we probably need the link without them on a different page.
 }
 
 // artist info
 $artistInfo = '';
 if ($userIsLoggedIn && $user->artist_info) {
-    $artistInfo = processTpl('Artist/artistInfo.html', array(
+    $artistInfo = processTpl('Account/artistInfo.html', array(
         '${artistInfo}' => escape($user->artist_info)
-    ), $showMobileVersion);
+    ));
 }
 
-// additional info
-$additionalInfo = '';
-if ($userIsLoggedIn && $user->additional_info) {
-    $additionalInfo = processTpl('Artist/additionalInfo.html', array(
-        '${additionalInfo}' => escape($user->additional_info)
-    ), $showMobileVersion);
+// influences
+$influences = '';
+if ($userIsLoggedIn && $user->influences) {
+    $influences = processTpl('Account/influences.html', array(
+        '${influences}' => escape($user->influences)
+    ));
+}
+
+// video
+$video = '';
+if ($userIsLoggedIn && $user->video_url) {
+    $video = processTpl('Account/video.html', array(
+        '${videoUrl}' => escape($user->video_url)
+    ));
+}
+
+// currently hidden
+//// additional info
+//$additionalInfo = '';
+//if ($userIsLoggedIn && $user->additional_info) {
+//    $additionalInfo = processTpl('Artist/additionalInfo.html', array(
+//        '${additionalInfo}' => escape($user->additional_info)
+//    ));
+//}
+
+$skills = '';
+$genres = '';
+$tools  = '';
+if ($userIsLoggedIn) {
+    $skills = implode(', ', UserAttribute::getAttributeNamesForUserIdAndState($user->id, 'offers'));
+    $genres = implode(', ', UserGenre::getGenreNamesForUserId($user->id));
+    $tools  = implode(', ', UserTool::getToolNamesForUserId($user->id));
 }
 
 processAndPrintTpl('Account/index.html', array(
@@ -573,10 +614,14 @@ processAndPrintTpl('Account/index.html', array(
     //'${submitButtonValue}'                    => $userIsLoggedIn ? 'update Account' : 'create Account',
     '${userName}'                             => $userIsLoggedIn ? escape($user->name) : '',
     '${userImgUrl}'                           => $userImgUrl,
-    '${Common/externalWebLink_optional}'      => $webpageLink,
-    '${Common/sendMessage_optional}'          => $sendMessageBlock,
-    '${Artist/artistInfo_optional}'           => $artistInfo,
-    '${Artist/additionalInfo_optional}'       => $additionalInfo,
+    '${Common/externalWebLink_list}'          => $webpageLink . $facebookLink . $twitterLink,
+    '${Account/artistInfo_optional}'          => $artistInfo,
+    '${Account/influences_optional}'          => $influences,
+    //'${Account/additionalInfo_optional}'      => $additionalInfo, // currently hidden
+    '${Account/video_optional}'               => $video,
+    '${skills}'                               => $skills,
+    '${genres}'                               => $genres,
+    '${tools}'                                => $tools,
     '${Common/bodyFooter}'                    => buildBodyFooter(),
     '${Common/pageFooter}'                    => buildPageFooter()
 ));

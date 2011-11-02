@@ -15,7 +15,7 @@ ${Common/pageHeader}
                     <div class="span-1">
                         <a href="#" title="status">
                             <img src="../Images/icons/status-offline.png" alt="status" width="16" height="16" />
-                        </a>    
+                        </a>
                     </div>
                     <div class="span-3 last">
                         <a href="#" title="rating">
@@ -32,7 +32,7 @@ ${Common/pageHeader}
                     <div class="span-1">
                         <a href="#" title="status">
                             <img src="../Images/icons/status.png" alt="status" width="16" height="16" />
-                        </a>    
+                        </a>
                     </div>
                     <div class="span-3 last">
                         <a href="#" title="rating">
@@ -49,7 +49,7 @@ ${Common/pageHeader}
                     <div class="span-1">
                         <a href="#" title="status">
                             <img src="../Images/icons/status.png" alt="status" width="16" height="16" />
-                        </a>    
+                        </a>
                     </div>
                     <div class="span-3 last">
                         <a href="#" title="rating">
@@ -184,52 +184,47 @@ ${Common/pageHeader}
                     </div>
                     <div class="sidetwoRight">
                         <h1>${userName}</h1>
-                        <a href="#">Connect</a>
+                        <!--<a href="#">Connect</a>-->
                         ${Common/sendMessage_optional}
                     </div>
                     <div class="clear"></div>
                 </div>
-                
+
 
                 <div class="line">&nbsp;</div>
-                
-                <a href="account.php">edit Profile</a>
-                
+
+                <p><a href="account.php">Edit Profile</a></p>
+
                 <div class="line">&nbsp;</div>
-                
-                <p>Skills</p>
-                
-                <div class="line">&nbsp;</div>
-                
-                <p>Genre</p>
-                
-                <div class="line">&nbsp;</div>
-                
-                <p>Tools</p>
-                
-                <div class="line">&nbsp;</div>
-                
-<object width="285" height="145"><param name="movie" value="http://www.youtube.com/v/PY2jW56o1Zo?version=3&amp;hl=de_DE"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/PY2jW56o1Zo?version=3&amp;hl=de_DE" type="application/x-shockwave-flash" width="285" height="145" allowscriptaccess="always" allowfullscreen="true"></embed></object>
-                
-                <div class="line">&nbsp;</div>
-                
+
                 <p>
-                    Band Information Text Band Information Text Band Information Text Band Information Text 
-                    Band Information Text Band Information Text Band Information Text Band Information Text 
-                    Band Information Text Band Information Text Band Information Text Band Information Text 
+                  Skills:<br />
+                  ${skills}
                 </p>
-                
+
                 <div class="line">&nbsp;</div>
-                
-                <p>Influences</p>
-                
+
+                <p>
+                  Genres:<br />
+                  ${genres}
+                </p>
+
                 <div class="line">&nbsp;</div>
-                
-                <ul>
-                    <li><a href="#">Webpage</a></li>
-                    <li><a href="#">Twitter</a></li>
-                    <li><a href="#">Facebook</a></li>
-                </ul>
+
+                <p>
+                  Tools:<br />
+                  ${tools}
+                </p>
+
+                <div class="line">&nbsp;</div>
+
+                ${Artist/video_optional}
+
+                ${Artist/artistInfo_optional}
+
+                ${Artist/influences_optional}
+
+                ${Common/externalWebLink_list}
 
             </div>
         </div>

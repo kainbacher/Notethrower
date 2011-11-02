@@ -42,7 +42,8 @@ if (get_param('action') == 'process') {
     }
 
     if ($project->visibility == 'private' && !projectIdIsAssociatedWithUserId($projectId, $userId)) {
-        show_fatal_error_and_exit('user with id ' . $userId . ' is not allowed to upload a file to project with id: ' . $projectId);
+        show_fatal_error_and_exit('user with id ' . $userId . ' is not allowed to upload a file to the ' .
+                'private project with id: ' . $projectId);
     }
 
     handleNewFileUpload($projectId, $project->user_id, $filename, $origFilename, $isMix, $originatorUserId);

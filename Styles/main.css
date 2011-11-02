@@ -1876,6 +1876,18 @@ a.nohighlight:hover {
     display: none;
 }
 
+.messageItemTimestamp {
+    color: #999;
+    font-size: 12px;
+    font-weight: normal;
+    height: 20px;
+    width: 150px;
+    position: absolute;
+    top: -2px;
+    right: 25px;
+    text-align: right;
+}
+
 .messageItemDelete {
     display: none;
     height: 20px;

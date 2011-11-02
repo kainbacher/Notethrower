@@ -511,7 +511,7 @@ class Project {
             'and puv.project_id = p.id ' .
             'and p.status != "finished" ' .
             'and p.user_id = u.id ' .
-            'and p.user_id != ' . n($uid) . ' ' . // exclude users own projects
+            'and p.user_id != ' . n($uid) . ' ' . // exclude user's own projects
             'and u.status = "active" ' .
             'order by p.entry_date desc'
         );

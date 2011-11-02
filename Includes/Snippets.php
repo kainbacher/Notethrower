@@ -197,12 +197,12 @@ function buildBodyHeader($loggedInUser, $useMobileVersion = false) {
 
         $loggedInUserInfoBlockSecondRow = processTpl('Common/loggedInUserSecondRowMenuItems.html', array(
             '${userId}'                         => $loggedInUser->id,
-            '${dashboardActiveMenuItemClass}'   => strpos($_SERVER['PHP_SELF'], 'dashboard.php')   !== false ? ' mainMenuItemAct' : '',
-            '${artistActiveMenuItemClass}'      => strpos($_SERVER['PHP_SELF'], 'artist.php')      !== false ? ' mainMenuItemAct' : '',
-            '${artistListActiveMenuItemClass}'  => strpos($_SERVER['PHP_SELF'], 'artistList.php')  !== false ? ' mainMenuItemAct' : '',
-            '${projectListActiveMenuItemClass}' => strpos($_SERVER['PHP_SELF'], 'projectList.php') !== false ? ' mainMenuItemAct' : '',
-            '${projectActiveMenuItemClass}'     => strpos($_SERVER['PHP_SELF'], 'project.php')     !== false ? ' mainMenuItemAct' : '',
-            '${accountActiveMenuItemClass}'     => strpos($_SERVER['PHP_SELF'], 'account.php')     !== false ? ' mainMenuItemAct' : ''
+            '${dashboardActiveMenuItemClass}'   => strpos($_SERVER['PHP_SELF'], 'dashboard.php')     !== false ? ' mainMenuItemAct' : '',
+            '${artistActiveMenuItemClass}'      => strpos($_SERVER['PHP_SELF'], 'artist.php')        !== false ? ' mainMenuItemAct' : '',
+            '${artistListActiveMenuItemClass}'  => strpos($_SERVER['PHP_SELF'], 'artistList.php')    !== false ? ' mainMenuItemAct' : '',
+            '${projectListActiveMenuItemClass}' => strpos(basename($_SERVER['PHP_SELF']), 'project') === 0     ? ' mainMenuItemAct' : '', // covers project.php and projectList.php
+            '${projectActiveMenuItemClass}'     => strpos($_SERVER['PHP_SELF'], 'project.php')       !== false ? ' mainMenuItemAct' : '',
+            '${accountActiveMenuItemClass}'     => strpos($_SERVER['PHP_SELF'], 'account.php')       !== false ? ' mainMenuItemAct' : ''
         ), $useMobileVersion);
     }
 
@@ -629,11 +629,11 @@ function xmlentities($str){
 
 function send_email($recipient_email, $subject, $text, $filename = '', $data = '', $mime_type = '', $reply_to = null) {
     global $logger;
-    
+
 
     $logger->info('sending email with subject "' . $subject . '" to ' . $recipient_email . ' ...');
 
-   
+
     if (!email_syntax_ok($recipient_email)) {
         $logger->error('cannot send email to invalid address: ' . $recipient_email);
         return false;
@@ -651,11 +651,11 @@ function send_email($recipient_email, $subject, $text, $filename = '', $data = '
 
     $header = 'From: ' . $GLOBALS['MAIL_FROM'] . "\r\n" .
               'X-Mailer: PHP/' . phpversion();
-    
+
     if($reply_to){
         $header .= "\r\nReply-To: ".$reply_to;
     }
-              
+
 
     if ($with_attachment) {
         $header     .= "\r\nMIME-Version: 1.0\r\n" .

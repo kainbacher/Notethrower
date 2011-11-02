@@ -420,7 +420,8 @@ function reformat_sql_date($date_str) {
     if (!$date_str) return '';
 
     //return date('j.n.Y H:i:s', strtotime($date_str));
-    return date('j.n.Y H:i', strtotime($date_str));
+    //return date('j.n.Y H:i', strtotime($date_str)); // german format
+    return date('n/j/Y g:ia', strtotime($date_str)); // us format
 }
 
 function escape($utf8_string) {

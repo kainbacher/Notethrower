@@ -41,18 +41,22 @@ $(document).ready(function () {
 
 ${Common/bodyHeader}
 
+<div id="subMenuWrapper">
+    <div class="container">
+        <div class="span-24 last">
+            <ul class="subMenu">
+                ${Project/tabBasic_optional}
+                ${Project/tabInvite_optional}
+                <li class="subMenuItem"><a href="#" class="tab-3${tabsAct_upload}">Upload</a></li>
+                ${Project/tabPublish_optional}
+            </ul>
+        </div>
+    </div>
+</div>
+
 
 <div id="pageContent" class="container">
 
-
-            <div class="span-24 last">
-                <ul class="tabs">
-                    ${Project/tabBasic_optional}
-                    ${Project/tabInvite_optional}
-                    <li class="tabsItem"><a href="#" class="tab-3${tabsAct_upload}">Upload</a></li>
-                    ${Project/tabPublish_optional}
-                </ul>
-            </div>
 
             ${Project/tabContentBasic_optional}
 

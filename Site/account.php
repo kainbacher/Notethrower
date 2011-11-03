@@ -873,7 +873,8 @@ function processParams(&$user, $userIsLoggedIn) {
         $user->name             = get_param('name');
         $user->artist_info      = get_param('artist_info');
         $user->additional_info  = get_param('additional_info');
-        $user->video_url        = (substr(get_param('video_url'),0,4)=='http' ? get_param('video_url') : 'http://'.get_param('video_url'));
+        //$user->video_url        = (substr(get_param('video_url'),0,4)=='http' ? get_param('video_url') : 'http://'.get_param('video_url'));
+        $user->video_url        = get_param('video_url');
         $user->influences       = get_param('influences');
         $user->paypal_account   = get_param('paypal_account');
 

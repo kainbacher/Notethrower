@@ -440,13 +440,13 @@ if ($userIsLoggedIn) { // it's an update
         $formElementsSection2 .= getFormFieldForParams(array(
             'inputType'              => 'text',
             'propName'               => 'video_url',
-            'label'                  => 'Video URL',
+            'label'                  => 'Youtube Video',
             'mandatory'              => false,
             'obj'                    => $user,
             'unpersistedObj'         => $unpersistedUser,
             'errorFields'            => $errorFields,
             'workWithUnpersistedObj' => $problemOccured,
-            'infoText'               => 'If you have eg. a youtube video, put the URL here.'
+            'infoText'               => 'If you have a youtube video, put the URL here.'
         ));
 
         $formElementsSection2 .= getFormFieldForParams(array(

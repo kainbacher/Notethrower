@@ -539,9 +539,8 @@ if ($userIsLoggedIn) {
             $facebookUrl = 'http://' . $user->facebook_url;
         }
 
-        $facebookLink = processTpl('Common/externalWebLink.html', array(
-            '${href}'  => escape($facebookUrl),
-            '${label}' => 'Facebook'
+        $facebookLink = processTpl('Common/externalFacebookLink.html', array(
+            '${href}'  => escape($facebookUrl)
         )) . '<br />'; // we don't put the newlines into the template because we probably need the link without them on a different page.
     }
 
@@ -549,9 +548,8 @@ if ($userIsLoggedIn) {
     $twitterLink = '';
     if ($user->twitter_username) {
         $twitterUrl = 'http://twitter.com/' . $user->twitter_username;
-        $twitterLink = processTpl('Common/externalWebLink.html', array(
-            '${href}'  => escape($twitterUrl),
-            '${label}' => 'Twitter'
+        $twitterLink = processTpl('Common/externalTwitterLink.html', array(
+            '${href}'  => escape($twitterUrl)
         )) . '<br />'; // we don't put the newlines into the template because we probably need the link without them on a different page.
     }
 
@@ -574,9 +572,10 @@ if ($userIsLoggedIn) {
     // video
     $video = '';
     if ($user->video_url) {
-        $video = processTpl('Account/video.html', array(
-            '${videoUrl}' => escape($user->video_url)
-        ));
+        preg_match("#(?<=v=)[a-zA-Z0-9-]+(?=&)|(?<=v\/)[^&\n]+|(?<=v=)[^&\n]+|(?<=youtu.be/)[^&\n]+#", $user->video_url, $video_match);
+        $video = processTpl('Artist/video.html', array(
+        '${videoId}' => escape($video_match[0])
+        ), $showMobileVersion);
     }
 
     // currently hidden
@@ -865,7 +864,7 @@ function processParams(&$user, $userIsLoggedIn) {
         $user->name             = get_param('name');
         $user->artist_info      = get_param('artist_info');
         $user->additional_info  = get_param('additional_info');
-        $user->video_url        = get_param('video_url');
+        $user->video_url        = (substr(get_param('video_url'),0,4)=='http' ? get_param('video_url') : 'http://'.get_param('video_url'));
         $user->influences       = get_param('influences');
         $user->paypal_account   = get_param('paypal_account');
 

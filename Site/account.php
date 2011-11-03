@@ -792,8 +792,17 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
         }
     }
 
-    if (isset($_FILES['image_filename']['name']) && $_FILES['image_filename']['name'] && !preg_match('/jpg$/i', $_FILES['image_filename']['name'])) {
-        $errorFields['image_filename'] = 'Image must be in JPG format!';
+    //if (isset($_FILES['image_filename']['name']) && $_FILES['image_filename']['name'] && !preg_match('/png$/i', $_FILES['image_filename']['name'])) {
+    $allowed_types = array(
+        '.jpg',
+        '.jpeg',
+        '.gif',
+        '.png'
+    );
+    preg_match('/\.[^\.]+$/i',$_FILES['image_filename']['name'],$image_ext);
+    
+    if (isset($_FILES['image_filename']['name']) && $_FILES['image_filename']['name'] && !in_array($image_ext[0], $allowed_types)) {
+        $errorFields['image_filename'] = 'Image must be in JPG, GIF or PNG format!';
         $result = false;
     }
 
@@ -997,8 +1006,9 @@ function handleUserImageUploadOrFacebookImageDownload(&$user) {
 
         $logger->info('resizing uploaded image');
         umask(0777); // most probably ignored on windows systems
-        create_resized_jpg($upload_img_file, $final_img_file, $GLOBALS['USER_IMG_MAX_WIDTH'], $GLOBALS['USER_IMG_MAX_HEIGHT']);
-        create_resized_jpg($upload_img_file, $final_thumb_img_file, $GLOBALS['USER_THUMB_MAX_WIDTH'], $GLOBALS['USER_THUMB_MAX_HEIGHT']);
+        
+        create_resized_jpg($upload_img_file, $final_img_file, $GLOBALS['USER_IMG_MAX_WIDTH'], $GLOBALS['USER_IMG_MAX_HEIGHT'], $_FILES['image_filename']['type']);
+        create_resized_jpg($upload_img_file, $final_thumb_img_file, $GLOBALS['USER_THUMB_MAX_WIDTH'], $GLOBALS['USER_THUMB_MAX_HEIGHT'], $_FILES['image_filename']['type']);
         chmod($final_img_file, 0666);
         chmod($final_thumb_img_file, 0666);
 

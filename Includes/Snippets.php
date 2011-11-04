@@ -737,21 +737,26 @@ function normalize_newlines($text) {
     return str_replace(array("\r\n", "\n", "\r"), "\r\n", $text); // extend everything to \r\n
 }
 
-function create_resized_jpg($file, $destFile, $maxWidth, $maxHeight) {
+function create_resized_jpg($file, $destFile, $maxWidth, $maxHeight, $type) {
     global $logger;
 
     list($width, $height) = getimagesize($file); // FIXME - check for too large images somewhere to avoid memory problems.
 
+    /* rewrite images instead of just copying - output should always be jpg
     if ($width <= $maxWidth && $height <= $maxHeight) {
         $logger->info('image size already ok, copying file');
         copy_file($file, $destFile);
         return;
     }
+    */
 
     $newWidth  = 0;
     $newHeight = 0;
-
-    if ($width > $maxWidth && $height <= $maxHeight) { // image too wide but not too high
+    
+    if ($width <= $maxWidth && $height <= $maxHeight) { //image size already ok - rewrite with same dimensions
+        $newWidth  = $width;
+        $newHeight = $height;
+    } else if ($width > $maxWidth && $height <= $maxHeight) { // image too wide but not too high
         $logger->info('image is too wide but not too high');
 
         $newWidth = $maxWidth;
@@ -786,10 +791,22 @@ function create_resized_jpg($file, $destFile, $maxWidth, $maxHeight) {
     }
 
     $logger->info('destination width/height: ' . $newWidth . 'x' . $newHeight);
-
+    
     // Bild neu aufbereiten
     $imageNew = imagecreatetruecolor($newWidth, $newHeight);
-    $image = imagecreatefromjpeg($file);
+    if($type == 'image/jpeg'){
+        $image = imagecreatefromjpeg($file);
+    } elseif($type == 'image/gif') {
+        $image = imagecreatefromgif($file);
+    } elseif($type == 'image/png'){
+        $image = imagecreatefrompng($file);
+    } else {
+        //fallback assuming img is jpeg
+        $image = imagecreatefromjpeg($file);
+    }
+    
+    
+    
     imagecopyresampled($imageNew, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
     imagedestroy($image); // free memory
 

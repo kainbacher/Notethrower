@@ -440,13 +440,13 @@ if ($userIsLoggedIn) { // it's an update
         $formElementsSection2 .= getFormFieldForParams(array(
             'inputType'              => 'text',
             'propName'               => 'video_url',
-            'label'                  => 'Video URL',
+            'label'                  => 'Youtube Video',
             'mandatory'              => false,
             'obj'                    => $user,
             'unpersistedObj'         => $unpersistedUser,
             'errorFields'            => $errorFields,
             'workWithUnpersistedObj' => $problemOccured,
-            'infoText'               => 'If you have eg. a youtube video, put the URL here.'
+            'infoText'               => 'If you have a youtube video, put the URL here.'
         ));
 
         $formElementsSection2 .= getFormFieldForParams(array(
@@ -539,9 +539,8 @@ if ($userIsLoggedIn) {
             $facebookUrl = 'http://' . $user->facebook_url;
         }
 
-        $facebookLink = processTpl('Common/externalWebLink.html', array(
-            '${href}'  => escape($facebookUrl),
-            '${label}' => 'Facebook'
+        $facebookLink = processTpl('Common/externalFacebookLink.html', array(
+            '${href}'  => escape($facebookUrl)
         )) . '<br />'; // we don't put the newlines into the template because we probably need the link without them on a different page.
     }
 
@@ -549,9 +548,8 @@ if ($userIsLoggedIn) {
     $twitterLink = '';
     if ($user->twitter_username) {
         $twitterUrl = 'http://twitter.com/' . $user->twitter_username;
-        $twitterLink = processTpl('Common/externalWebLink.html', array(
-            '${href}'  => escape($twitterUrl),
-            '${label}' => 'Twitter'
+        $twitterLink = processTpl('Common/externalTwitterLink.html', array(
+            '${href}'  => escape($twitterUrl)
         )) . '<br />'; // we don't put the newlines into the template because we probably need the link without them on a different page.
     }
 
@@ -574,9 +572,10 @@ if ($userIsLoggedIn) {
     // video
     $video = '';
     if ($user->video_url) {
-        $video = processTpl('Account/video.html', array(
-            '${videoUrl}' => escape($user->video_url)
-        ));
+        preg_match("#(?<=v=)[a-zA-Z0-9-]+(?=&)|(?<=v\/)[^&\n]+|(?<=v=)[^&\n]+|(?<=youtu.be/)[^&\n]+#", $user->video_url, $video_match);
+        $video = processTpl('Artist/video.html', array(
+        '${videoId}' => escape($video_match[0])
+        ), $showMobileVersion);
     }
 
     // currently hidden
@@ -793,8 +792,17 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
         }
     }
 
-    if (isset($_FILES['image_filename']['name']) && $_FILES['image_filename']['name'] && !preg_match('/jpg$/i', $_FILES['image_filename']['name'])) {
-        $errorFields['image_filename'] = 'Image must be in JPG format!';
+    //if (isset($_FILES['image_filename']['name']) && $_FILES['image_filename']['name'] && !preg_match('/png$/i', $_FILES['image_filename']['name'])) {
+    $allowed_types = array(
+        '.jpg',
+        '.jpeg',
+        '.gif',
+        '.png'
+    );
+    preg_match('/\.[^\.]+$/i',$_FILES['image_filename']['name'],$image_ext);
+    
+    if (isset($_FILES['image_filename']['name']) && $_FILES['image_filename']['name'] && !in_array($image_ext[0], $allowed_types)) {
+        $errorFields['image_filename'] = 'Image must be in JPG, GIF or PNG format!';
         $result = false;
     }
 
@@ -865,6 +873,7 @@ function processParams(&$user, $userIsLoggedIn) {
         $user->name             = get_param('name');
         $user->artist_info      = get_param('artist_info');
         $user->additional_info  = get_param('additional_info');
+        //$user->video_url        = (substr(get_param('video_url'),0,4)=='http' ? get_param('video_url') : 'http://'.get_param('video_url'));
         $user->video_url        = get_param('video_url');
         $user->influences       = get_param('influences');
         $user->paypal_account   = get_param('paypal_account');
@@ -998,8 +1007,9 @@ function handleUserImageUploadOrFacebookImageDownload(&$user) {
 
         $logger->info('resizing uploaded image');
         umask(0777); // most probably ignored on windows systems
-        create_resized_jpg($upload_img_file, $final_img_file, $GLOBALS['USER_IMG_MAX_WIDTH'], $GLOBALS['USER_IMG_MAX_HEIGHT']);
-        create_resized_jpg($upload_img_file, $final_thumb_img_file, $GLOBALS['USER_THUMB_MAX_WIDTH'], $GLOBALS['USER_THUMB_MAX_HEIGHT']);
+        
+        create_resized_jpg($upload_img_file, $final_img_file, $GLOBALS['USER_IMG_MAX_WIDTH'], $GLOBALS['USER_IMG_MAX_HEIGHT'], $_FILES['image_filename']['type']);
+        create_resized_jpg($upload_img_file, $final_thumb_img_file, $GLOBALS['USER_THUMB_MAX_WIDTH'], $GLOBALS['USER_THUMB_MAX_HEIGHT'], $_FILES['image_filename']['type']);
         chmod($final_img_file, 0666);
         chmod($final_thumb_img_file, 0666);
 

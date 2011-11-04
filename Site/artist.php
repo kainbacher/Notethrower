@@ -63,9 +63,8 @@ if ($user->facebook_url) {
         $facebookUrl = 'http://' . $user->facebook_url;
     }
 
-    $facebookLink = processTpl('Common/externalWebLink.html', array(
-        '${href}'  => escape($facebookUrl),
-        '${label}' => 'Facebook'
+    $facebookLink = processTpl('Common/externalFacebookLink.html', array(
+        '${href}'  => escape($facebookUrl)
     ), $showMobileVersion) . '<br />'; // we don't put the newlines into the template because we probably need the link without them on a different page.
 }
 
@@ -73,9 +72,8 @@ if ($user->facebook_url) {
 $twitterLink = '';
 if ($user->twitter_username) {
     $twitterUrl = 'http://twitter.com/' . $user->twitter_username;
-    $twitterLink = processTpl('Common/externalWebLink.html', array(
-        '${href}'  => escape($twitterUrl),
-        '${label}' => 'Twitter'
+    $twitterLink = processTpl('Common/externalTwitterLink.html', array(
+        '${href}'  => escape($twitterUrl)
     ), $showMobileVersion) . '<br />'; // we don't put the newlines into the template because we probably need the link without them on a different page.
 }
 
@@ -107,10 +105,12 @@ if ($user->influences) {
 // video
 $video = '';
 if ($user->video_url) {
+    preg_match("#(?<=v=)[a-zA-Z0-9-]+(?=&)|(?<=v\/)[^&\n]+|(?<=v=)[^&\n]+|(?<=youtu.be/)[^&\n]+#", $user->video_url, $video_match);
     $video = processTpl('Artist/video.html', array(
-        '${videoUrl}' => escape($user->video_url)
+        '${videoId}' => escape($video_match[0])
     ), $showMobileVersion);
 }
+
 
 // currently hidden
 //// additional info

@@ -39,6 +39,10 @@ if ($action == 'send') {
     $text    = get_param('text');
 
     if ($subject || $text) {
+        // append some footer text for the email
+        $text   .= "\n\nSee ".$senderUser->name."'s profile page on Oneloudr.com (". $GLOBALS['BASE_URL'] ."Site/artist.php?aid=".$senderUser->id.")\n--\nOneloudr - Social Music Making";
+        $text   .= "\n\nYou can directly reply to this email to contact the sender";
+
         $msg = new Message();
         $msg->sender_user_id    = $senderUser->id;
         $msg->recipient_user_id = $recipientUser->id;
@@ -46,10 +50,6 @@ if ($action == 'send') {
         $msg->text                = $text;
         $msg->marked_as_read      = false;
         $msg->save();
-
-        // append some footer text for the email
-        $text   .= "\n\nSee ".$senderUser->name."'s profile page on Oneloudr.com\n--\nOneloudr - Social Music Making";
-        $text   .= "\n\nYou can directly reply to this email to contact the sender";
 
         $email_sent = send_email($recipientUser->email_address,
                 'Message from ' . $senderUser->name,

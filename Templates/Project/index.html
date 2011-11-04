@@ -46,8 +46,8 @@ ${Common/bodyHeader}
         <div class="span-24 last">
             <ul class="subMenu">
                 ${Project/tabBasic_optional}
+                <li class="subMenuItem"><a href="#" class="tab-2${tabsAct_upload}">Upload</a></li>
                 ${Project/tabInvite_optional}
-                <li class="subMenuItem"><a href="#" class="tab-3${tabsAct_upload}">Upload</a></li>
                 ${Project/tabPublish_optional}
             </ul>
         </div>
@@ -63,7 +63,7 @@ ${Common/bodyHeader}
 
             ${Project/tabContentInvite_optional}
 
-            <div class="span-24 last tabcontent-3${tabcontentAct_upload}">
+            <div class="span-24 last tabcontent-2${tabcontentAct_upload}">
                 <div class="span-16">
                     <div class="box-grey">
                         <h2>${projectTitle}</h2>
@@ -93,15 +93,16 @@ ${Common/bodyHeader}
                         &nbsp;
                     </div>
                 </div>
-
+                <div style="clear: both;">
+                    <br />
+                    <br />
+                    <br />
+                    ${Project/uploadBackNavigation}
+                </div>
             </div>
 
             ${Project/tabContentPublish_optional}
 
-            <br />
-            <br />
-            <br />
-            <a href="projectList.php">&larr; back to project list</a>
 
 </div>
 

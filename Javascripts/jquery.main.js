@@ -194,15 +194,15 @@ $(document).ready(function(){
     /* ---------------------------------------------------------------------- */
     $('.tab-1').click(function() {
         $('*').find('.tabsAct').removeClass('tabsAct');
-        $(this).addClass('tabsAct');
+        $('.tab-1').addClass('tabsAct');
         $('*').find('.tabcontentAct').removeClass('tabcontentAct');
         $('.tabcontent-1').addClass('tabcontentAct');
         return false;
     });
 
-    $('.tab-2').click(function() {
+    $('.tab-2').click(function(e) {
         $('*').find('.tabsAct').removeClass('tabsAct');
-        $(this).addClass('tabsAct');
+        $('.tab-2').addClass('tabsAct');
         $('*').find('.tabcontentAct').removeClass('tabcontentAct');
         $('.tabcontent-2').addClass('tabcontentAct');
         return false;
@@ -210,7 +210,7 @@ $(document).ready(function(){
 
     $('.tab-3').click(function() {
         $('*').find('.tabsAct').removeClass('tabsAct');
-        $(this).addClass('tabsAct');
+        $('.tab-3').addClass('tabsAct');
         $('*').find('.tabcontentAct').removeClass('tabcontentAct');
         $('.tabcontent-3').addClass('tabcontentAct');
         return false;
@@ -218,7 +218,7 @@ $(document).ready(function(){
 
     $('.tab-4').click(function() {
         $('*').find('.tabsAct').removeClass('tabsAct');
-        $(this).addClass('tabsAct');
+        $('.tab-4').addClass('tabsAct');
         $('*').find('.tabcontentAct').removeClass('tabcontentAct');
         $('.tabcontent-4').addClass('tabcontentAct');
         return false;
@@ -226,7 +226,7 @@ $(document).ready(function(){
 
     $('.tab-5').click(function() {
         $('*').find('.tabsAct').removeClass('tabsAct');
-        $(this).addClass('tabsAct');
+        $('.tab-5').addClass('tabsAct');
         $('*').find('.tabcontentAct').removeClass('tabcontentAct');
         $('.tabcontent-5').addClass('tabcontentAct');
         return false;

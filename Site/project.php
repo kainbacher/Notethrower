@@ -112,6 +112,7 @@ if (get_param('action') == 'create') {
         $generalMessageList .= processTpl('Common/message_success.html', array(
             '${msg}' => 'Successfully saved project data.'
         ));
+        $activeTab = 'upload';
 
     } else {
         $logger->info('input data was invalid: ' . print_r($errorFields, true));
@@ -550,9 +551,12 @@ if ($project->user_id == $loggedInUser->id) { // logged-in user is the project o
         '${tabcontentAct_publish}' => $activeTab == 'publish' ? ' tabcontentAct' : '',
         '${submitButtonValue}'     => 'Save'
     ));
+    
+    $uploadBackNavigation = '<a class="tab-1" href="#">&larr; back to project basic settings</a>';
 
 } else {
     $activeTab = 'upload';
+    $uploadBackNavigation = '<a href="projectList.php">&larr; back to project list</a>';
 }
 
 processAndPrintTpl('Project/index.html', array(
@@ -580,6 +584,7 @@ processAndPrintTpl('Project/index.html', array(
     '${originatorUserId}'                       => $originatorUserId,
     '${uploaderChecksum}'                       => md5('PoopingInTheWoods' . ($loggedInUser ? $loggedInUser->id : '') . '_' . $project->id . '_' . $originatorUserId),
     '${baseUrl}'                                => $GLOBALS['BASE_URL'],
+    '${Project/uploadBackNavigation}'           => $uploadBackNavigation,
     '${Project/uploadedFilesSection}'           => getUploadedFilesSection($project, $projectFilesMessageList, $loggedInUser),
     '${Common/bodyFooter}'                      => buildBodyFooter(),
     '${Common/pageFooter}'                      => buildPageFooter()

@@ -10,7 +10,7 @@ include_once('../Includes/DB/User.php');
 
 // FIXME: temporary - delete me
 if (get_param('action') == 'test') {
-    $emailAddr = 'obermotz2@jonas-it.com';
+    $emailAddr = get_param('email');
     $senderUserId = 1;
     $projectId = 1;
     echo getUrlForInvitationToProject($senderUserId, $emailAddr, $projectId);

@@ -102,6 +102,16 @@ function handleNewFileUpload($projectId, $userId, $filename, $origFilename, $isM
     }
     
     $newProjectFile->save();
+    
+        
+    // create transcoding job
+    $fileExt = pathinfo($upload_filename, PATHINFO_EXTENSION);
+    if (strtolower($fileExt) == 'wav') {
+        $job = new TranscodingJob();
+        $job->projectFileId = $newProjectFile->id;
+        $job->status = 'PENDING';
+        $job->save();
+    }
 }
 
 ?>

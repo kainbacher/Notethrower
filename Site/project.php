@@ -80,6 +80,10 @@ if (get_param('action') == 'create') {
         show_fatal_error_and_exit('found no project with id: ' . $projectId);
     }
 
+    if ($project->status != 'active') {
+        show_fatal_error_and_exit('project is inactive!');
+    }
+
     if ($project->visibility == 'private') {
         ensureUserIsLoggedIn($loggedInUser);
         ensureProjectIdIsAssociatedWithUserId($project->id, $loggedInUser->id);
@@ -551,7 +555,7 @@ if ($project->user_id == $loggedInUser->id) { // logged-in user is the project o
         '${tabcontentAct_publish}' => $activeTab == 'publish' ? ' tabcontentAct' : '',
         '${submitButtonValue}'     => 'Save'
     ));
-    
+
     $uploadBackNavigation = '<a class="tab-1" href="#">&larr; back to project basic settings</a>';
 
 } else {

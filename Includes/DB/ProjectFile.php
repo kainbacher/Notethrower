@@ -14,6 +14,7 @@ class ProjectFile {
     var $status; // inactive or active
     var $comment;
     var $entry_date;
+    var $autocreated;
 
     // fields from referenced tables
 
@@ -76,6 +77,7 @@ class ProjectFile {
         $f->status                = $row['status'];
         $f->comment               = $row['comment'];
         $f->entry_date            = reformat_sql_date($row['entry_date']);
+        $f->autocreated           = $row['autocreated'];
 
         // fields from referenced tables
 
@@ -97,6 +99,7 @@ class ProjectFile {
             'status                varchar(20)  not null, ' .
             'comment               text, ' .
             'entry_date            datetime     not null default "1970-01-01 00:00:00", ' .
+            'autocreated           tinyint(1)   not null default 0, ' .
             'primary key (id), ' .
             'key project_id (project_id), ' .
             'key entry_date (entry_date) ' .
@@ -227,7 +230,7 @@ class ProjectFile {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_project_file ' .
-            '(project_id, originator_user_id, filename, orig_filename, type, status, comment, entry_date) ' .
+            '(project_id, originator_user_id, filename, orig_filename, type, status, comment, entry_date, autocreated) ' .
             'values (' .
             n($this->project_id)             . ', ' .
             n($this->originator_user_id)     . ', ' .
@@ -236,6 +239,7 @@ class ProjectFile {
             qq($this->type)                  . ', ' .
             qq($this->status)                . ', ' .
             qq($this->comment)               . ', ' .
+            b($this->autocreated)            . ', ' .
             'now()'                          .
             ')'
         );
@@ -258,7 +262,8 @@ class ProjectFile {
             'orig_filename = '      . qq($this->orig_filename)     . ', ' .
             'type = '               . qq($this->type)              . ', ' .
             'status = '             . qq($this->status)            . ', ' .
-            'comment = '            . qq($this->comment)           . ' ' .
+            'comment = '            . qq($this->comment)           . ', ' .
+            'autocreated = '        . b($this->autocreated)        . ' ' .
             // entry_date intentionally not set here
             'where id = '           . n($this->id)
         );

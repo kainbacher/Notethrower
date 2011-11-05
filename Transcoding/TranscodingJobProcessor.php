@@ -82,6 +82,9 @@ function transcode(&$pjob) {
         $logger->debug('executing command: ' . $command);
         $ret = exec($command, $output, $returnVar);     
         
+        $logger->debug('command returned: ' . $ret);
+        $logger->debug('command output: ' . $output);
+        
         if ($returnVar != 0) {
             throw new Exception('Failed to transcode file, command returned: ' . $ret);
         }            

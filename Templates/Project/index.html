@@ -26,11 +26,32 @@ $(document).ready(function () {
         alert('invite User Function');
     });
 
+    $("input[rel=invite_friend]").click(function(e){
+        e.preventDefault();    
+        if(isValidEmailAddress($('#search_friend').val())) {
+            $.post('projectInvite.php',{ action:'inviteExternal',email:$('#search_friend').val(),projectId:${projectId} } , function(data) {
+                if(data.type == 'userExists'){
+                    alert('method: display user id:'+data.id);
+                } else if (data.type == 'inviteSuccess') {
+                    alert('Your Invitation has successfully been sent to '+$('#search_friend').val());
+                } else if (data.type == 'inviteFail') {
+                    alert('An Error occured. Your invitation has not been sent');
+                }
+            }, "json");
+        } else {
+            alert('Invalid E-Mail Format');
+        }
+    });
+    
     $("input[rel=search_name]").click(function(e){
         e.preventDefault();
         alert('search for '+$('#search_name').val()+' Function');
     });
-
+    
+     $("input[rel=clicktest]").click(function(e) {
+        e.preventDefault();
+        updateRecommendedartistList();
+    });
 
 });
 
@@ -114,6 +135,15 @@ ${Common/bodyFooter}
 <script type="text/javascript" src="../Javascripts/Snippets.js"></script>
 
 <script type="text/javascript">
+
+function updateRecommendedartistList(){
+    
+    $('.recommendedList').children().fadeOut(500, function(){
+        $('.recommendedList').empty();
+        $('.recommendedList').append('<li>test</li>');
+    });
+    
+}
 
 function checkDeleteResponseAndRefreshFileList(deleteWasOk, data) {
     if (deleteWasOk) {

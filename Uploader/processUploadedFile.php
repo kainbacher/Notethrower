@@ -7,6 +7,7 @@ include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectFile.php');
+include_once('../Includes/DB/ProjectUserVisibility.php');
 
 if (get_param('action') == 'process') {
     $userId           = get_numeric_param('uid');
@@ -41,9 +42,25 @@ if (get_param('action') == 'process') {
         show_fatal_error_and_exit('project not found for id: ' . $projectId);
     }
 
-    if ($project->visibility == 'private' && !projectIdIsAssociatedWithUserId($projectId, $userId)) {
-        show_fatal_error_and_exit('user with id ' . $userId . ' is not allowed to upload a file to the ' .
-                'private project with id: ' . $projectId);
+    if ($project->visibility == 'private') {
+        if (!projectIdIsAssociatedWithUserId($projectId, $userId)) {
+            show_fatal_error_and_exit('user with id ' . $userId . ' is not allowed to upload a file to the ' .
+                    'private project with id: ' . $projectId);
+        }
+
+    } else { // public project
+        if ($originatorUserId) {
+            // create visibility record so that the project appears in the collaborators list of projects
+            // where he participated
+            $puv = ProjectUserVisibility::fetch_for_user_id_project_id($originatorUserId, $projectId);
+            if (!$puv || !$puv->project_id) {
+                $puv = new ProjectUserVisibility();
+                $puv->user_id    = $originatorUserId;
+                $puv->project_id = $projectId;
+                $puv->save();
+                $logger->info('saved project/user visibility record for originator user');
+            }
+        }
     }
 
     handleNewFileUpload($projectId, $project->user_id, $filename, $origFilename, $isMix, $originatorUserId);

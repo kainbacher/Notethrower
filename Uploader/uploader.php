@@ -49,16 +49,6 @@ if ($project->visibility == 'private' && !projectIdIsAssociatedWithUserId($proje
 	}
 </style>
 
-<!-- new:
-<style type="text/css">@import url(js/jquery.ui.plupload/css/jquery.ui.plupload.css);</style>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-
-<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
-
-<script type="text/javascript" src="js/plupload.full.js"></script>
-<script type="text/javascript" src="js/jquery.ui.plupload/jquery.ui.plupload.js"></script>
--->
-
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" type="text/css" />
 <link rel="stylesheet" href="js/jquery.ui.plupload/css/jquery.ui.plupload.css" type="text/css" />
 

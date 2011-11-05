@@ -8,6 +8,7 @@ include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectFile.php');
 include_once('../Includes/DB/ProjectUserVisibility.php');
+include_once('../Includes/DB/TranscodingJob.php');
 
 if (get_param('action') == 'process') {
     $userId           = get_numeric_param('uid');

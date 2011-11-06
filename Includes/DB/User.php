@@ -371,15 +371,20 @@ class User {
         return $objs;
     }
 
-    function fetchAllThatOfferSkillsForProjectId($ownerUserId, $projectId) {
+    function fetchAllThatOfferSkillsForProjectId($ownerUserId, $projectId, $additionalAttributes = null) {
         // fetch all attributes of project
         $attribute_id_list = array();
         $paList = ProjectAttribute::fetchAllWithStatusOfProject($projectId, 'needs');
+
         foreach ($paList as $pa) {
             if (!isset($attribute_id_list[$pa->project_id])) $attribute_id_list[$pa->project_id] = array();
             $attribute_id_list[$pa->project_id][] = $pa->attribute_id;
         }
-
+        
+        if($additionalAttributes){
+            $attribute_id_list[$projectId] = array_merge($attribute_id_list[$projectId], $additionalAttributes);
+        }
+        
         // fetch all genres of project
         $projects_genre_id_list = array();
         $pgList = ProjectGenre::fetchAllOfProject($projectId);

@@ -8,16 +8,6 @@ include_once('../Includes/DB/Invitation.php');
 include_once('../Includes/DB/ProjectUserVisibility.php');
 include_once('../Includes/DB/User.php');
 
-// FIXME: temporary - delete me
-if (get_param('action') == 'test') {
-    $emailAddr = get_param('email');
-    $senderUserId = 1;
-    $projectId = 1;
-    echo getUrlForInvitationToProject($senderUserId, $emailAddr, $projectId);
-    exit;
-}
-// FIXME: temporary - delete me
-
 if (isset($_GET['iid']) && isset($_GET['cs']) && md5('R.I.P.SuperSic!' . $_GET['iid']) == $_GET['cs']) {
     $logger->info('processing request for invitation id: ' . $_GET['iid']);
 

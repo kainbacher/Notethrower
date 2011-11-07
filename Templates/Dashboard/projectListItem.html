@@ -1,15 +1,12 @@
 <div class="span-16 trackListItem">
     <div class="span-2">
-        <img src="${userImgUrl}" height="25" />
+        <a href="artist.php?aid=${userId}"><img src="${userImgUrl}" height="25" /></a>
     </div>
     <div class="span-6">
-        ${userName}
+        <a href="artist.php?aid=${userId}">${userName}</a>
     </div>
     <div class="span-6">
-        ${projectTitle}<br>
+        <a href="project.php?action=edit&pid=${projectId}">${projectTitle}</a><br>
         <small>Project needs: ${projectNeeds}</small>
-    </div>
-    <div class="span-2 last">
-        <a href="playTrack(${projectId});" class="trackListButton trackListPlay">&nbsp;</a>
     </div>
 </div>

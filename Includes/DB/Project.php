@@ -347,9 +347,10 @@ class Project {
 
     function fetch_for_id($id) {
         $result = _mysql_query(
-            'select * ' .
-            'from pp_project ' .
-            'where id = ' . n($id)
+            'select p.*, u.name as user_name ' .
+            'from pp_project p, pp_user u ' .
+            'where p.id = ' . n($id) . ' ' .
+            'and p.user_id = u.id'
         );
 
         $a = new Project();

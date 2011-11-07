@@ -6,22 +6,17 @@ include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/Project.php');
 
-$userId           = get_numeric_param('uid');
-$projectId        = get_numeric_param('pid');
-$singleFileOnly   = get_numeric_param('sf');
-$isMix            = get_numeric_param('isMix');
-$originatorUserId = get_numeric_param('originatorUserId');
-$checksum         = get_param('cs');
+$projectId          = get_numeric_param('pid');
+$singleFileOnly     = get_numeric_param('sf');
+$isMix              = get_numeric_param('isMix');
+$originatorUserId   = get_numeric_param('originatorUserId');
+$checksum           = get_param('cs');
 
 if (!$projectId) {
     show_fatal_error_and_exit('pid param is missing!');
 }
 
-if (!$userId) {
-    show_fatal_error_and_exit('uid param is missing!');
-}
-
-if (md5('PoopingInTheWoods' . $userId . '_' . $projectId . '_' . $originatorUserId) != $checksum) {
+if (md5('PoopingInTheWoods' . $projectId . '_' . $originatorUserId) != $checksum) {
     show_fatal_error_and_exit('checksum failure!');
 }
 
@@ -30,8 +25,8 @@ if (!$project || !$project->id) {
     show_fatal_error_and_exit('project not found for id: ' . $projectId);
 }
 
-if ($project->visibility == 'private' && !projectIdIsAssociatedWithUserId($projectId, $userId)) {
-    show_fatal_error_and_exit('user with id ' . $userId . ' is not allowed to upload a file to project with id: ' . $projectId);
+if ($project->visibility == 'private' && !projectIdIsAssociatedWithUserId($projectId, $originatorUserId)) {
+    show_fatal_error_and_exit('user with id ' . $originatorUserId . ' is not allowed to upload a file to project with id: ' . $projectId);
 }
 
 ?>
@@ -193,13 +188,12 @@ if ($singleFileOnly) {
             type: 'POST',
             url:  'processUploadedFile.php',
             data: 'action=process' +
-                  '&uid=<?= $userId ?>' +
                   '&pid=<?= $projectId ?>' +
                   '&filename='     + encodeURIComponent(filename) +
                   '&origFilename=' + encodeURIComponent(origFilename) +
                   '&isMix=<?= $isMix ?>' +
                   '&originatorUserId=<?= $originatorUserId ?>' +
-                  '&cs=<?= md5('PoopingInTheWoods' . $userId . '_' . $projectId . '_' . $isMix . '_' . $originatorUserId) ?>',
+                  '&cs=<?= md5('PoopingInTheWoods' . $projectId . '_' . $isMix . '_' . $originatorUserId) ?>',
             dataType: 'text',
             cache: false,
             timeout: 15000, // 15 seconds

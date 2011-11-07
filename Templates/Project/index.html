@@ -64,7 +64,7 @@ $(document).ready(function () {
         updateRecommendedartistList('update',attributes);
         
     });
-    
+
 });
 
 </script>
@@ -88,7 +88,6 @@ ${Common/bodyHeader}
 </div>
 
 
-
 <div id="pageContent" class="container">
 
 
@@ -101,10 +100,9 @@ ${Common/bodyHeader}
                     <div class="box-grey">
                         <h2>${projectTitle}</h2>
                         <p>
+                            Owner: <a href="artist.php?aid=${projectOwnerUserId}">${projectOwner}</a><br />
                             Genres: ${projectGenres}<br />
-                            <br />
                             Moods: ${projectMoods}<br />
-                            <br />
                             Project needs: ${projectNeeds}<br />
                             <br />
                             ${projectAdditionalInfo}
@@ -148,8 +146,7 @@ ${Common/bodyFooter}
 
 <script type="text/javascript">
 
-function updateRecommendedartistList(method, data){
-    
+function updateRecommendedartistList(){
     if ( method == 'update' ) {
         $.post('projectInvite.php',{ action:'updateRecommendations',projectId:${projectId},attributes:data } , function(data) {
             if(data){
@@ -203,7 +200,7 @@ function refreshProjectFilesSection(projectId) {
 
 function openUploaderPopup(isMixFile) {
     window.open(
-            '../Uploader/uploader.php?sf=0&uid=${userId}&pid=${projectId}&isMix=' + (isMixFile ? 1 : 0) + '&originatorUserId=${originatorUserId}&cs=${uploaderChecksum}',
+            '../Uploader/uploader.php?sf=0&pid=${projectId}&isMix=' + (isMixFile ? 1 : 0) + '&originatorUserId=${originatorUserId}&cs=${uploaderChecksum}',
             'ONELOUDR_UPLOADER',
             'scrollbars=0,status=0,width=640,height=350'
     );

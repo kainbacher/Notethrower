@@ -42,6 +42,7 @@ foreach ($projects as $project) {
     $projectUserImgUrl = getUserImageUri($project->user_img_filename, 'tiny');
 
     $projectListHtml .= processTpl('Dashboard/projectListItem.html', array(
+        '${userId}'       => $project->user_id,
         '${userName}'     => escape($project->user_name),
         '${userImgUrl}'   => $projectUserImgUrl,
         '${projectId}'    => $project->id,

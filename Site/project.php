@@ -80,7 +80,7 @@ if (get_param('action') == 'create') {
         show_fatal_error_and_exit('found no project with id: ' . $projectId);
     }
 
-    if ($project->status != 'active') {
+    if ($project->status != 'active' && (!$loggedInUser || $loggedInUser->id != $project->user_id)) {
         show_fatal_error_and_exit('project is inactive!');
     }
 

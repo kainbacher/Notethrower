@@ -78,7 +78,7 @@ function transcode(&$pjob) {
     
         // execute the command                               
         $returnVar = 1;
-        $output = array()
+        $output = array();
         $logger->debug('executing command: ' . $command);
         $ret = system($command, $output, $returnVar);     
         

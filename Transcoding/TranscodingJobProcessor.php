@@ -80,7 +80,7 @@ function transcode(&$pjob) {
         $returnVar = 1;
         $output = array();
         $logger->debug('executing command: ' . $command);
-        $ret = system($command, $output, $returnVar);     
+        $ret = exec($command, $output, $returnVar);     
         
         if ($returnVar != 0) {
             throw new Exception('Failed to transcode file, command returned: ' . $ret);

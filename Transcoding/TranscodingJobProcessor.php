@@ -77,15 +77,21 @@ function transcode(&$pjob) {
         $command = $GLOBALS['TRANSCODER_COMMAND'] . ' ' . $sourceFile . ' ' . $destFile;
     
         // execute the command
-        $output = array();
+        $output = array();                                     
         $returnVar = 1;
         $logger->debug('executing command: ' . $command);
         $ret = system($command, $returnVar);     
         
         if ($returnVar != 0) {
             throw new Exception('Failed to transcode file, command returned: ' . $ret);
-        }            
+        }   
         
+        // chmod the new created mp3 file
+        $returnVar = chmod($mp3Filename, 0644);
+        if ($returnVar != 0) {
+            throw new Exception('Failed chmod file ' . $mp3Filename);
+        }
+                
         // clone the existing project file
         $newProjectFile = ProjectFile::fetch_for_id($pjob->projectFileId);
         // edge case, when the projectFile does not exist the fetch_for_id returns
@@ -93,6 +99,7 @@ function transcode(&$pjob) {
         if ($newProjectFile->id == $pjob->projectFileId) {
             $newProjectFile->id = null;
             $newProjectFile->filename = $mp3Filename;
+            $newProjectFile->orig_filename = getFilenameWithoutExt($newProjectFile->orig_filename) . '.mp3';
             $newProjectFile->autocreated = 1;
             $success = $newProjectFile->save();
             if (!success) {

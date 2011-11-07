@@ -5,6 +5,8 @@ include_once('../Includes/Init.php'); // must be included first
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/User.php');
+include_once('../Includes/DB/UserAttribute.php');
+include_once('../Includes/DB/UserGenre.php');
 
 $visitorUserId = -1;
 
@@ -24,20 +26,59 @@ if ($user) {
 $latestArtistsList = '';
 $latestArtists = User::fetch_all_from_to(0, 999999, false, false, false, 'order by u.entry_date desc'); // FIXME - paging?
 foreach ($latestArtists as $a) {
+    
+    $artistAttributesArray = UserAttribute::getAttributeNamesForUserIdAndState($a->id, 'offers');
+    $artistGenresArray = UserGenre::getGenreNamesForUserId($a->id);
+    $artistAttributes = '';
+    $artistGenres = '';
+    if(count($artistAttributesArray)>0){
+        $artistAttributes = implode(", ", $artistAttributesArray);
+        $artistAttributes = 'Skills: '.$artistAttributes;
+        $artistAttributes = (strlen($artistAttributes) > 50 ? substr($artistAttributes, 0, 50).'...' : $artistAttributes);
+        
+    }
+    if(count($artistGenresArray)>0){
+        $artistGenres = implode(", ", $artistGenresArray);
+        $artistGenres = 'Genres: '.$artistGenres;
+        $artistGenres = (strlen($artistGenres) > 50 ? substr($artistGenres, 0, 50).'...' : $artistGenres);
+    }
+
     $latestArtistsList .= processTpl('ArtistList/artistListItem.html', array(
         '${artistImgUrl}' => getUserImageUri($a->image_filename, 'tiny'),
         '${userId}'       => $a->id,
-        '${artistName}'   => escape($a->name)
+        '${artistName}'   => escape($a->name),
+        '${artistAttributes}'   => $artistAttributes,
+        '${artistGenres}'       => $artistGenres
     ));
 }
 
 $topArtistsList = '';
 $topArtists = User::fetch_most_listened_artists_from_to(0, 999999); // FIXME - paging?
+
 foreach ($topArtists as $a) {
+        
+    $artistAttributesArray = UserAttribute::getAttributeNamesForUserIdAndState($a->id, 'offers');
+    $artistGenresArray = UserGenre::getGenreNamesForUserId($a->id);
+    $artistAttributes = '';
+    $artistGenres = '';
+    if(count($artistAttributesArray)>0){
+        $artistAttributes = implode(", ", $artistAttributesArray);
+        $artistAttributes = 'Skills: '.$artistAttributes;
+        $artistAttributes = (strlen($artistAttributes) > 50 ? substr($artistAttributes, 0, 50).'...' : $artistAttributes);
+        
+    }
+    if(count($artistGenresArray)>0){
+        $artistGenres = implode(", ", $artistGenresArray);
+        $artistGenres = 'Genres: '.$artistGenres;
+        $artistGenres = (strlen($artistGenres) > 50 ? substr($artistGenres, 0, 50).'...' : $artistGenres);
+    }
+
     $topArtistsList .= processTpl('ArtistList/artistListItem.html', array(
-        '${artistImgUrl}' => getUserImageUri($a->image_filename, 'tiny'),
-        '${userId}'       => $a->id,
-        '${artistName}'   => escape($a->name)
+        '${artistImgUrl}'       => getUserImageUri($a->image_filename, 'tiny'),
+        '${userId}'             => $a->id,
+        '${artistName}'         => escape($a->name),
+        '${artistAttributes}'   => $artistAttributes,
+        '${artistGenres}'       => $artistGenres
     ));
 }
 

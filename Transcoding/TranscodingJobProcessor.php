@@ -12,7 +12,7 @@ include_once('../Includes/DB/TranscodingJob.php');
 
 $startTime = time();
 
-// $logger->set_debug_level();
+$logger->set_debug_level();
 
 // check if this script is currently running
 $processingFile = '../Tmp/processing';
@@ -78,7 +78,7 @@ function transcode(&$pjob) {
     
         // execute the command
         $output = array();
-        $returnVar = 0;
+        $returnVar = 1;
         $logger->debug('executing command: ' . $command);
         $ret = exec($command, $output, $returnVar);     
         

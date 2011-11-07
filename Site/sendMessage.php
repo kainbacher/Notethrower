@@ -39,10 +39,7 @@ if ($action == 'send') {
     $text    = get_param('text');
 
     if ($subject || $text) {
-        // append some footer text for the email
-        $text   .= "\n\nSee ".$senderUser->name."'s profile page on Oneloudr.com (". $GLOBALS['BASE_URL'] ."Site/artist.php?aid=".$senderUser->id.")\n--\nOneloudr - Social Music Making";
-        $text   .= "\n\nYou can directly reply to this email to contact the sender";
-
+        
         $msg = new Message();
         $msg->sender_user_id    = $senderUser->id;
         $msg->recipient_user_id = $recipientUser->id;
@@ -51,12 +48,17 @@ if ($action == 'send') {
         $msg->marked_as_read      = false;
         $msg->save();
 
+        // append some footer text in the sent mail - you dont want this in the database or to show up at the dashboard
+        $text   .= "\n\nSee ".$senderUser->name."'s profile page on Oneloudr.com (". $GLOBALS['BASE_URL'] ."Site/artist.php?aid=".$senderUser->id.")\n--\nOneloudr - Social Music Making";
+        $text   .= "\n\nYou can directly reply to this email to contact the sender";
+    
+
         $email_sent = send_email($recipientUser->email_address,
                 'Message from ' . $senderUser->name,
                 'Hey ' . $recipientUser->name . "\n" .
                 $senderUser->name . ' has just sent you a private Message.'. "\n" .
                 'Subject: ' . $msg->subject . "\n" .
-                'Message: ' . $msg->text,
+                'Message: ' . $text,
                 '','','',$senderUser->email_address);
 
         if (!$email_sent) {

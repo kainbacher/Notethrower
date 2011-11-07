@@ -110,11 +110,11 @@ class TranscodingJob {
             'insert into pp_transcoding_job ' .
             '(project_file_id, status, entry_date, updated_date, info)' .
             'values (' .
-            n($this->project_file_id)            . ', ' .
-            qq($this->status)                     . ', ' .
-            'now()'                              . ', ' .
-            'now()'                              . ', ' .
-            qq($this->info)                      .
+            n($this->projectFileId)           . ', ' .
+            qq($this->status)                 . ', ' .
+            'now()'                           . ', ' .
+            'now()'                           . ', ' .
+            qq($this->info)                   .
             ')'
         );
 

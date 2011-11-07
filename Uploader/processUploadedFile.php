@@ -8,6 +8,7 @@ include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectFile.php');
 include_once('../Includes/DB/ProjectUserVisibility.php');
+include_once('../Includes/DB/TranscodingJob.php');
 
 if (get_param('action') == 'process') {
     $userId           = get_numeric_param('uid');
@@ -102,6 +103,17 @@ function handleNewFileUpload($projectId, $userId, $filename, $origFilename, $isM
     }
     
     $newProjectFile->save();
+    
+        
+    // create transcoding job
+    $fileExt = pathinfo($upload_filename, PATHINFO_EXTENSION);
+    if (strtolower($fileExt) == 'wav') {
+        $logger->info('creating transcoding job for projectFile (id: ' . $newProjectFile->id . ')');
+        $job = new TranscodingJob();
+        $job->projectFileId = $newProjectFile->id;
+        $job->status = 'PENDING';
+        $job->save();
+    }
 }
 
 ?>

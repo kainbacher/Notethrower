@@ -859,7 +859,7 @@ a.nohighlight:hover {
     float: left;
     margin-right: 40px;
 }
-    
+
 .subMenuItem a {
     color: #fff;
     display: block;
@@ -1520,7 +1520,7 @@ a.nohighlight:hover {
 /* !search top */
 
 .topSearch {
-    background-color: #444;
+    /*background-color: #444; - search field shall be hidden for now */
     -webkit-border-radius: 12px;
     -moz-border-radius: 12px;
     border-radius: 12px;
@@ -1934,7 +1934,7 @@ a.nohighlight:hover {
 }
 
 #fancybox-outer {
-    border: 10px solid rgba(10,10,10,0.5); 
+    border: 10px solid rgba(10,10,10,0.5);
     border-radius: 5px;
 }
 

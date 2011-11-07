@@ -446,45 +446,6 @@ if ($project->user_id == $loggedInUser->id) { // logged-in user is the project o
         'workWithUnpersistedObj' => $problemOccured,
         'infoText'               => 'If you choose the project to be private, you need to manually invite other musicians on oneloudr so they can see stems and participate in your project. You can also release previous finished works using this option.'
     ));
-
-    // FIXME - start
-    $hidden = true;
-
-    // currently hidden, but maybe a candidate for pro users
-    //if ($errorFields['visibility'] || ($project && $project->visibility == 'private') || ($unpersistedProject && $unpersistedProject->visibility == 'private')) $hidden = false;
-
-    echo '<div id="associated_users_row"' . ($hidden ? ' style="display:none";' : '') . '>' . "\n";
-    //echo '<td>Artists who have access to this project:</td>' . "\n";
-    //echo '<td>&nbsp;</td>' . "\n";
-
-    //$usersWithAccessListStr = '';
-    //$usersWithAccessList = ProjectUserVisibility::fetch_all_for_project_id($project->id);
-    //$ac = count($usersWithAccessList);
-    //if ($ac > 20) {
-    //    for ($ai = 0; $ai < 20; $ai++) {
-    //        if ($usersWithAccessList[$ai]->user_id != $loggedInUser->id) {
-    //            $usersWithAccessListStr .= '<a href="artist.php?aid=' . $usersWithAccessList[$ai]->user_id . '" target="_blank">' .
-    //                    escape($usersWithAccessList[$ai]->user_name) . '</a>, ';
-    //        }
-    //    }
-    //    $usersWithAccessListStr .= 'and some more ...';
-    //
-    //} else if ($ac > 1) {
-    //    foreach ($usersWithAccessList as $a) {
-    //        if ($a->user_id != $loggedInUser->id) {
-    //            $usersWithAccessListStr .= '<a href="artist.php?aid=' . $a->user_id . '" target="_blank">' .
-    //                    escape($a->user_name) . '</a>, ';
-    //        }
-    //    }
-    //    $usersWithAccessListStr = substr($usersWithAccessListStr, 0, -2);
-    //
-    //} else {
-    //    $usersWithAccessListStr = '(none)';
-    //}
-    //echo '<td>' . $usersWithAccessListStr . '<br><a href="javascript:showSelectFriendsPopup();">Select artists</a></td>' . "\n";
-    echo '<a href="javascript:showSelectFriendsPopup();">Select the artists you want to have access to this project</a>' . "\n";
-    echo '</div>' . "\n";
-    // FIXME - end
 }
 
 $projectGenreList = array();
@@ -563,6 +524,20 @@ if ($project->user_id == $loggedInUser->id) { // logged-in user is the project o
     $uploadBackNavigation = '<a href="projectList.php">&larr; back to project list</a>';
 }
 
+// collaborator info
+$collaboratorsHtml = '';
+$collaboratorsList = ProjectUserVisibility::fetch_all_for_project_id($project->id);
+$ac = count($collaboratorsList);
+foreach ($collaboratorsList as $puv) {
+    $collaboratorsHtml .= processTpl('Project/collaboratorIcon.html', array(
+        '${artistImgUrl}' => getUserImageUri($puv->user_image_filename, 'tiny'),
+        '${userId}'       => $puv->user_id,
+        '${artistName}'   => escape($puv->user_name)
+    ));
+}
+//echo '<a href="javascript:showSelectFriendsPopup();">Select the artists you want to have access to this project</a>' . "\n";
+//echo '</div>' . "\n";
+
 processAndPrintTpl('Project/index.html', array(
     '${Common/pageHeader}'                      => buildPageHeader(($projectId ? 'Edit project' : 'Create project'), false, false, true),
     '${Common/bodyHeader}'                      => buildBodyHeader($loggedInUser),
@@ -577,7 +552,6 @@ processAndPrintTpl('Project/index.html', array(
     '${tabsAct_invite}'                         => $activeTab == 'invite'  ? ' tabsAct' : '',
     '${tabsAct_upload}'                         => $activeTab == 'upload'  ? ' tabsAct' : '',
     '${tabsAct_publish}'                        => $activeTab == 'publish' ? ' tabsAct' : '',
-    '${headline}'                               => $projectId ? 'Edit project' : 'Create project',
     '${projectId}'                              => $project && $project->id ? $project->id : '',
     '${projectTitle}'                           => $project && $project->title ? $project->title : '(No title)',
     '${projectGenres}'                          => escape(implode(', ', $projectGenreList)),
@@ -590,6 +564,7 @@ processAndPrintTpl('Project/index.html', array(
     '${baseUrl}'                                => $GLOBALS['BASE_URL'],
     '${Project/uploadBackNavigation}'           => $uploadBackNavigation,
     '${Project/uploadedFilesSection}'           => getUploadedFilesSection($project, $projectFilesMessageList, $loggedInUser),
+    '${Project/collaboratorIcon_list}'          => $collaboratorsHtml,
     '${Common/bodyFooter}'                      => buildBodyFooter(),
     '${Common/pageFooter}'                      => buildPageFooter()
 ));

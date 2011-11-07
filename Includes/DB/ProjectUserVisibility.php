@@ -74,7 +74,7 @@ class ProjectUserVisibility {
         $objs = array();
 
         $result = _mysql_query(
-            'select atav.*, a.name as user_name ' .
+            'select atav.*, a.name as user_name, a.image_filename as user_image_filename ' .
             'from pp_project_user_visibility atav, pp_user a ' .
             'where atav.project_id = ' . n($tid) . ' ' .
             'and atav.user_id = a.id ' .

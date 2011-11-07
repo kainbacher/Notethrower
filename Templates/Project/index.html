@@ -27,7 +27,7 @@ $(document).ready(function () {
     });
 
     $("input[rel=invite_friend]").click(function(e){
-        e.preventDefault();    
+        e.preventDefault();
         if(isValidEmailAddress($('#search_friend').val())) {
             $.post('projectInvite.php',{ action:'inviteExternal',email:$('#search_friend').val(),projectId:${projectId} } , function(data) {
                 if(data.type == 'userExists'){
@@ -42,12 +42,12 @@ $(document).ready(function () {
             alert('Invalid E-Mail Format');
         }
     });
-    
+
     $("input[rel=search_name]").click(function(e){
         e.preventDefault();
         alert('search for '+$('#search_name').val()+' Function');
     });
-    
+
      $("input[rel=clicktest]").click(function(e) {
         e.preventDefault();
         updateRecommendedartistList();
@@ -106,10 +106,9 @@ ${Common/bodyHeader}
 
                 <div class="span-8 last">
                     <div class="box-grey">
-                        <h2>${headline}</h2>
+                        <h2>Collaborators</h2>
                         <br />
-
-                        ...
+                        ${Project/collaboratorIcon_list}
                         <br />
                         &nbsp;
                     </div>
@@ -137,12 +136,12 @@ ${Common/bodyFooter}
 <script type="text/javascript">
 
 function updateRecommendedartistList(){
-    
+
     $('.recommendedList').children().fadeOut(500, function(){
         $('.recommendedList').empty();
         $('.recommendedList').append('<li>test</li>');
     });
-    
+
 }
 
 function checkDeleteResponseAndRefreshFileList(deleteWasOk, data) {

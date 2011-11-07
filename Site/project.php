@@ -309,7 +309,34 @@ if (get_param('action') == 'create') {
     ProjectFileAttribute::deleteForProjectFileId($file->id); // first, delete all existing attributes
     ProjectFileAttribute::addAll(explode(',', get_param('projectFileAttributesList_' . $file->id)), $file->id); // then save the selected attributes
 
-    $activeTab = 'upload'; // jump to the correct tab when the page was reloaded
+    $activeTab = 'upload'; // jump to the correct tab when the page is reloaded
+
+} else if (get_param('action') == 'join') {
+    ensureUserIsLoggedIn($loggedInUser);
+
+    if (!$projectId) {
+        show_fatal_error_and_exit('cannot save project file metadata without a project id!');
+    }
+
+    $project = Project::fetch_for_id($projectId);
+    if (!$project || !$project->id) {
+        show_fatal_error_and_exit('project not found for id: ' . $projectId);
+    }
+
+    if ($project->visibility == 'public') {
+        // create visibility record so that the project appears in the collaborators list of projects
+        // where the user participated
+        $puv = ProjectUserVisibility::fetch_for_user_id_project_id($loggedInUser->id, $projectId);
+        if (!$puv || !$puv->project_id) {
+            $puv = new ProjectUserVisibility();
+            $puv->user_id    = $loggedInUser->id;
+            $puv->project_id = $projectId;
+            $puv->save();
+            $logger->info('saved project/user visibility record for logged in user');
+        }
+    }
+
+    $activeTab = 'upload'; // jump to the correct tab when the page is reloaded
 }
 
 // form fields
@@ -532,11 +559,18 @@ foreach ($collaboratorsList as $puv) {
     $collaboratorsHtml .= processTpl('Project/collaboratorIcon.html', array(
         '${artistImgUrl}' => getUserImageUri($puv->user_image_filename, 'tiny'),
         '${userId}'       => $puv->user_id,
-        '${artistName}'   => escape($puv->user_name)
+        '${title}'        => escape($puv->user_name)
     ));
 }
 //echo '<a href="javascript:showSelectFriendsPopup();">Select the artists you want to have access to this project</a>' . "\n";
 //echo '</div>' . "\n";
+
+$joinProjectLink = '';
+if ($project->visibility == 'public' && !projectIdIsAssociatedWithUserId($project->id, $loggedInUser->id)) {
+    $joinProjectLink = processTpl('Project/joinThisProjectLink.html', array(
+        '${projectId}' => $project->id
+    ));
+}
 
 processAndPrintTpl('Project/index.html', array(
     '${Common/pageHeader}'                      => buildPageHeader(($projectId ? 'Edit project' : 'Create project'), false, false, true),
@@ -565,6 +599,7 @@ processAndPrintTpl('Project/index.html', array(
     '${Project/uploadBackNavigation}'           => $uploadBackNavigation,
     '${Project/uploadedFilesSection}'           => getUploadedFilesSection($project, $projectFilesMessageList, $loggedInUser),
     '${Project/collaboratorIcon_list}'          => $collaboratorsHtml,
+    '${Project/joinThisProjectLink_optional}'   => $joinProjectLink,
     '${Common/bodyFooter}'                      => buildBodyFooter(),
     '${Common/pageFooter}'                      => buildPageFooter()
 ));

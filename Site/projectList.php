@@ -30,9 +30,10 @@ $projects = Project::fetch_all_unfinished_projects_of_user($user->id); // FIXME 
 $projectsList = '';
 foreach ($projects as $p) {
     $projectsList .= processTpl('ProjectList/projectListItem.html', array(
-        '${projectId}'           => $p->id,
-        '${projectTitle}'        => escape($p->title),
-        '${projectTitleEscaped}' => escape_and_rewrite_single_quotes($p->title)
+        '${projectId}'                              => $p->id,
+        '${projectTitle}'                           => escape($p->title),
+        '${ProjectList/projectOwnerAddon_optional}' => '',
+        '${projectTitleEscaped}'                    => escape_and_rewrite_single_quotes($p->title)
         // FIXME - later - visibility? facebook sharing?
     ));
 }
@@ -47,9 +48,10 @@ $associatedProjects = Project::fetch_all_associated_projects_of_user($user->id);
 $associatedProjectsList = '';
 foreach ($associatedProjects as $p) {
     $associatedProjectsList .= processTpl('ProjectList/projectListItem.html', array(
-        '${projectId}'           => $p->id,
-        '${projectTitle}'        => escape($p->title),
-        '${projectTitleEscaped}' => escape_and_rewrite_single_quotes($p->title)
+        '${projectId}'                              => $p->id,
+        '${projectTitle}'                           => escape($p->title),
+        '${ProjectList/projectOwnerAddon_optional}' => getProjectOwnerAddon($p->user_id, $p->user_name),
+        '${projectTitleEscaped}'                    => escape_and_rewrite_single_quotes($p->title)
         // FIXME - later - visibility? facebook sharing?
     ));
 }
@@ -72,5 +74,11 @@ processAndPrintTpl('ProjectList/index.html', array(
 
 // functions
 // -----------------------------------------------------------------------------
+function getProjectOwnerAddon($ownerId, $ownerName) {
+    return processTpl('ProjectList/projectOwnerAddon.html', array(
+        '${ownerId}'   => $ownerId,
+        '${ownerName}' => escape($ownerName)
+    ));
+}
 
 ?>

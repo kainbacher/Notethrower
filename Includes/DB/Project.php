@@ -506,7 +506,7 @@ class Project {
         $objs = array();
 
         $result = _mysql_query(
-            'select p.* ' .
+            'select p.*, u.name as user_name ' .
             'from pp_project p, pp_project_user_visibility puv, pp_user u ' .
             'where puv.user_id = ' . n($uid) . ' ' .
             'and puv.project_id = p.id ' .

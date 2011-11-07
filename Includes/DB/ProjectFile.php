@@ -49,6 +49,36 @@ class ProjectFile {
         return $objs;
     }
 
+    function fetch_all_for_user_id_and_type($uid, $type) {
+        $objs = array();
+
+        $result = _mysql_query(
+            'select pf.* ' .
+            'from pp_project_file pf, pp_project p ' .
+            'where pf.project_id = p.id ' .
+            'and p.user_id = ' . n($uid) . ' ' .
+            'and p.status = "active" ' .
+            'and pf.status = "active" ' .
+            'and pf.type = ' . qq($type) . ' ' .
+            'order by pf.entry_date desc'
+        );
+
+        $ind = 0;
+
+        while ($row = mysql_fetch_array($result)) {
+            $f = new ProjectFile();
+            $f = ProjectFile::_read_row($f, $row);
+
+            $objs[$ind] = $f;
+            $ind++;
+        }
+
+        mysql_free_result($result);
+
+        return $objs;
+    }
+
+
     function fetch_for_id($id) {
         $result = _mysql_query(
             'select * ' .

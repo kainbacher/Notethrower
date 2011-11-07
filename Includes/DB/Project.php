@@ -473,7 +473,7 @@ class Project {
         return $objs;
     }
 
-    function fetch_all_unfinished_projects_of_user($uid) {
+    function fetch_all_unfinished_projects_of_user($uid, $includePrivateProjects = false) {
         $objs = array();
 
         $result = _mysql_query(
@@ -481,6 +481,7 @@ class Project {
             'from pp_project p, pp_user u ' .
             'where p.user_id = ' . n($uid) . ' ' .
             'and p.status != "finished" ' .
+            ($includePrivateProjects ? '' : 'and p.visibility = "public"') . ' ' .
             'and p.user_id = u.id ' .
             'and u.status = "active" ' .
             'order by p.entry_date desc'

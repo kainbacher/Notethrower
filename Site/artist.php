@@ -182,19 +182,39 @@ if ($user->video_url) {
 //
 
 // project lists
-$unfinishedProjects = Project::fetch_all_unfinished_projects_of_user($user_id); // FIXME - deal with finished projects somehow
-
-$rows = count($unfinishedProjects);
-
-$unfinishedProjectsList = '';
-for ($i = 0; $i < $rows; $i++) {
-    if (isset($unfinishedProjects[$i])) {
-        $unfinishedProjectsList .= processTpl('Artist/trackListElement.html', array(
-            '${userId}'  => $user_id,
-            '${trackId}' => $unfinishedProjects[$i]->id,
-            '${title}'   => escape($unfinishedProjects[$i]->title)
+$unfinishedProjects = Project::fetch_all_unfinished_projects_of_user($user_id, false); // FIXME - deal with finished projects somehow
+$projectsSection = '';
+if (count($unfinishedProjects) > 0) {
+    $projectsList = '';
+    foreach ($unfinishedProjects as $unfinishedProject) {
+        $projectsList .= processTpl('Artist/projectListElement.html', array(
+            '${userId}'    => $user_id,
+            '${projectId}' => $unfinishedProject->id,
+            '${title}'     => escape($unfinishedProject->title)
         ), $showMobileVersion);
     }
+
+    $projectsSection = processTpl('Artist/projectsSection.html', array(
+        '${Artist/projectListElement_list}' => $projectsList
+    ), $showMobileVersion);
+}
+
+// released tracks
+$releasedTracks = ProjectFile::fetch_all_for_user_id_and_type($user_id, 'release');
+$releasesSection = '';
+if (count($releasedTracks) > 0) {
+    $releasedTracksList = '';
+    foreach ($releasedTracks as $releasedTrack) {
+        $releasedTracksList .= processTpl('Artist/trackListElement.html', array(
+            '${userId}'        => $user_id,
+            '${projectFileId}' => $releasedTrack->id,
+            '${title}'         => escape($releasedTrack->title) . 'FIXME'
+        ), $showMobileVersion);
+    }
+
+    $releasesSection = processTpl('Artist/releasesSection.html', array(
+        '${Artist/releaseListElement_list}' => $releasedTracksList
+    ), $showMobileVersion);
 }
 
 $skills = implode(', ', UserAttribute::getAttributeNamesForUserIdAndState($user->id, 'offers'));
@@ -202,24 +222,25 @@ $genres = implode(', ', UserGenre::getGenreNamesForUserId($user->id));
 $tools  = implode(', ', UserTool::getToolNamesForUserId($user->id));
 
 processAndPrintTpl('Artist/index.html', array(
-    '${Common/pageHeader}'                               => buildPageHeader('Artist', false, false, false, $showMobileVersion),
-    '${Common/bodyHeader}'                               => buildBodyHeader($visitorUser, $showMobileVersion),
-    '${userId}'                                          => $user->id,
-    '${userName}'                                        => escape($user->name),
-    '${userImgUrl}'                                      => $userImgUrl,
-    '${Common/externalWebLink_list}'                     => $webpageLink . $facebookLink . $twitterLink,
-    '${Common/sendMessage_optional}'                     => $sendMessageBlock,
-    '${Artist/artistInfo_optional}'                      => $artistInfo,
-    '${Artist/influences_optional}'                      => $influences,
-    //'${Artist/additionalInfo_optional}'                  => $additionalInfo, // currently hidden
-    '${Artist/video_optional}'                           => $video,
-    '${Artist/trackListElement_list_unfinishedProjects}' => $unfinishedProjectsList,
-    '${Artist/editProfileLink_optional}'                 => $editProfileLink,
-    '${skills}'                                          => $skills,
-    '${genres}'                                          => $genres,
-    '${tools}'                                           => $tools,
-    '${Common/bodyFooter}'                               => buildBodyFooter($showMobileVersion),
-    '${Common/pageFooter}'                               => buildPageFooter()
+    '${Common/pageHeader}'                                 => buildPageHeader('Artist', false, false, false, $showMobileVersion),
+    '${Common/bodyHeader}'                                 => buildBodyHeader($visitorUser, $showMobileVersion),
+    '${userId}'                                            => $user->id,
+    '${userName}'                                          => escape($user->name),
+    '${userImgUrl}'                                        => $userImgUrl,
+    '${Common/externalWebLink_list}'                       => $webpageLink . $facebookLink . $twitterLink,
+    '${Common/sendMessage_optional}'                       => $sendMessageBlock,
+    '${Artist/artistInfo_optional}'                        => $artistInfo,
+    '${Artist/influences_optional}'                        => $influences,
+    //'${Artist/additionalInfo_optional}'                    => $additionalInfo, // currently hidden
+    '${Artist/video_optional}'                             => $video,
+    '${Artist/releasesSection_optional}'                   => $releasesSection,
+    '${Artist/projectsSection_optional}'                   => $projectsSection,
+    '${Artist/editProfileLink_optional}'                   => $editProfileLink,
+    '${skills}'                                            => $skills,
+    '${genres}'                                            => $genres,
+    '${tools}'                                             => $tools,
+    '${Common/bodyFooter}'                                 => buildBodyFooter($showMobileVersion),
+    '${Common/pageFooter}'                                 => buildPageFooter()
 ), $showMobileVersion);
 
 // END

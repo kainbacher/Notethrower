@@ -50,18 +50,18 @@ foreach ($projects as $project) {
     ));
 }
 
-// find artists which could help the user with his projects
-$artistListHtml = '';
-$collabArtists = User::fetchAllThatOfferSkillsForUsersProjects($user); // FIXME - limit/paging?
-foreach ($collabArtists as $collabArtist) {
-    $collabArtistImgUrl = getUserImageUri($collabArtist->imageFilename, 'tiny');
-
-    $artistListHtml .= processTpl('Dashboard/artistListItem.html', array(
-        '${userName}'     => escape($collabArtist->name),
-        '${userImgUrl}'   => $collabArtistImgUrl,
-        '${userOffers}'   => implode(', ', $collabArtist->offersAttributeNamesList)
-    ));
-}
+//// find artists which could help the user with his projects
+//$artistListHtml = '';
+//$collabArtists = User::fetchAllThatOfferSkillsForUsersProjects($user); // FIXME - limit/paging?
+//foreach ($collabArtists as $collabArtist) {
+//    $collabArtistImgUrl = getUserImageUri($collabArtist->imageFilename, 'tiny');
+//
+//    $artistListHtml .= processTpl('Dashboard/artistListItem.html', array(
+//        '${userName}'     => escape($collabArtist->name),
+//        '${userImgUrl}'   => $collabArtistImgUrl,
+//        '${userOffers}'   => implode(', ', $collabArtist->offersAttributeNamesList)
+//    ));
+//}
 
 // get list of messages for the user
 $msgListHtml = '';
@@ -96,7 +96,7 @@ processAndPrintTpl('Dashboard/index.html', array(
     '${Common/bodyHeader}'                     => buildBodyHeader($user),
     '${userId}'                                => $user->id,
     '${Dashboard/projectListItem_list}'        => $projectListHtml,
-    '${Dashboard/artistListItem_list}'         => $artistListHtml,
+    //'${Dashboard/artistListItem_list}'         => $artistListHtml,
     '${Dashboard/messageListItem_list}'        => $msgListHtml,
     '${Dashboard/noMessagesFound_optional}'    => $noMessagesFound,
     '${Common/bodyFooter}'                     => buildBodyFooter(),

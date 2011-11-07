@@ -269,8 +269,8 @@ class ProjectFile {
             qq($this->type)                  . ', ' .
             qq($this->status)                . ', ' .
             qq($this->comment)               . ', ' .
-            b($this->autocreated)            . ', ' .
-            'now()'                          .
+            'now()'                          . ', ' .
+            b($this->autocreated)            .
             ')'
         );
 

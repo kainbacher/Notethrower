@@ -509,8 +509,6 @@ if ($project->user_id == $loggedInUser->id) { // logged-in user is the project o
     }
 }
 
-$originatorUserId = $loggedInUser->id;
-
 $tabBasicHtml   = '';
 $tabInviteHtml  = '';
 $tabPublishHtml = '';
@@ -519,8 +517,6 @@ $tabContentBasicHtml   = '';
 $tabContentInviteHtml  = '';
 $tabContentPublishHtml = '';
 if ($project->user_id == $loggedInUser->id) { // logged-in user is the project owner
-    $originatorUserId = '';
-
     $tabBasicHtml   = processTpl('Project/tabBasic.html', array());
     $tabInviteHtml  = processTpl('Project/tabInvite.html', array());
     $tabPublishHtml = processTpl('Project/tabPublish.html', array());
@@ -566,7 +562,12 @@ foreach ($collaboratorsList as $puv) {
 //echo '</div>' . "\n";
 
 $joinProjectLink = '';
-if ($project->visibility == 'public' && !projectIdIsAssociatedWithUserId($project->id, $loggedInUser->id)) {
+if (
+    $project->visibility == 'public' && (
+        !$loggedInUser ||
+        !projectIdIsAssociatedWithUserId($project->id, $loggedInUser->id)
+    )
+) {
     $joinProjectLink = processTpl('Project/joinThisProjectLink.html', array(
         '${projectId}' => $project->id
     ));
@@ -588,13 +589,14 @@ processAndPrintTpl('Project/index.html', array(
     '${tabsAct_publish}'                        => $activeTab == 'publish' ? ' tabsAct' : '',
     '${projectId}'                              => $project && $project->id ? $project->id : '',
     '${projectTitle}'                           => $project && $project->title ? $project->title : '(No title)',
+    '${projectOwnerUserId}'                     => $project->user_id,
+    '${projectOwner}'                           => escape($project->user_name),
     '${projectGenres}'                          => escape(implode(', ', $projectGenreList)),
     '${projectMoods}'                           => escape(implode(', ', $projectMoodList)),
     '${projectNeeds}'                           => escape(implode(', ', $projectNeedsList)),
     '${projectAdditionalInfo}'                  => escape($project->additionalInfo),
-    '${userId}'                                 => $loggedInUser ? $loggedInUser->id : '',
-    '${originatorUserId}'                       => $originatorUserId,
-    '${uploaderChecksum}'                       => md5('PoopingInTheWoods' . ($loggedInUser ? $loggedInUser->id : '') . '_' . $project->id . '_' . $originatorUserId),
+    '${originatorUserId}'                       => $loggedInUser->id,
+    '${uploaderChecksum}'                       => md5('PoopingInTheWoods' . $project->id . '_' . ($loggedInUser ? $loggedInUser->id : '')),
     '${baseUrl}'                                => $GLOBALS['BASE_URL'],
     '${Project/uploadBackNavigation}'           => $uploadBackNavigation,
     '${Project/uploadedFilesSection}'           => getUploadedFilesSection($project, $projectFilesMessageList, $loggedInUser),

@@ -11,7 +11,6 @@ include_once('../Includes/DB/ProjectUserVisibility.php');
 include_once('../Includes/DB/TranscodingJob.php');
 
 if (get_param('action') == 'process') {
-    $userId           = get_numeric_param('uid');
     $projectId        = get_numeric_param('pid');
     $filename         = get_param('filename');
     $origFilename     = get_param('origFilename');
@@ -20,7 +19,7 @@ if (get_param('action') == 'process') {
     $checksum         = get_param('cs');
 
     if (
-        md5('PoopingInTheWoods' . $userId . '_' . $projectId . '_' . $isMix . '_' . $originatorUserId) !=
+        md5('PoopingInTheWoods' . $projectId . '_' . $isMix . '_' . $originatorUserId) !=
         $checksum
     ) {
         show_fatal_error_and_exit('checksum failure!');
@@ -44,8 +43,8 @@ if (get_param('action') == 'process') {
     }
 
     if ($project->visibility == 'private') {
-        if (!projectIdIsAssociatedWithUserId($projectId, $userId)) {
-            show_fatal_error_and_exit('user with id ' . $userId . ' is not allowed to upload a file to the ' .
+        if (!projectIdIsAssociatedWithUserId($projectId, $originatorUserId)) {
+            show_fatal_error_and_exit('user with id ' . $originatorUserId . ' is not allowed to upload a file to the ' .
                     'private project with id: ' . $projectId);
         }
 
@@ -70,7 +69,7 @@ if (get_param('action') == 'process') {
 // END
 
 // functions
-function handleNewFileUpload($projectId, $userId, $filename, $origFilename, $isMix, $originatorUserId) {
+function handleNewFileUpload($projectId, $projectOwnerUserId, $filename, $origFilename, $isMix, $originatorUserId) {
     global $logger;
 
     $logger->info('processing new project file upload: ' . $filename . ' (orig filename: ' . $origFilename . ')');
@@ -81,14 +80,14 @@ function handleNewFileUpload($projectId, $userId, $filename, $origFilename, $isM
     if (ini_get('safe_mode')) {
         $userSubdir = '/'; // in safe mode we're not allowed to create directories
     } else {
-        $userSubdir = md5('Wuizi' . $userId) . '/';
+        $userSubdir = md5('Wuizi' . $projectOwnerUserId) . '/';
     }
     $target_dir = $GLOBALS['CONTENT_BASE_PATH'] . $userSubdir;
 
     if (!file_exists($target_dir)) create_directory($target_dir);
 
     $upload_filename = $projectId . '_' . time() . '_' . $filename;
-    
+
     move_file($GLOBALS['TMP_UPLOAD_PATH'] . $filename, $target_dir . $upload_filename, false);
 
     $newProjectFile = new ProjectFile();
@@ -101,10 +100,10 @@ function handleNewFileUpload($projectId, $userId, $filename, $origFilename, $isM
     if ($originatorUserId) {
         $newProjectFile->originator_user_id = $originatorUserId;
     }
-    
+
     $newProjectFile->save();
-    
-        
+
+
     // create transcoding job
     $fileExt = pathinfo($upload_filename, PATHINFO_EXTENSION);
     if (strtolower($fileExt) == 'wav') {

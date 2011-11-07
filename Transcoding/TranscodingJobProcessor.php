@@ -78,18 +78,20 @@ function transcode(&$pjob) {
     
         // execute the command                               
         $returnVar = 1;
+        $output = array()
         $logger->debug('executing command: ' . $command);
-        $ret = system($command, $returnVar);     
+        $ret = system($command, $output, $returnVar);     
         
         if ($returnVar != 0) {
             throw new Exception('Failed to transcode file, command returned: ' . $ret);
         }   
         
         // chmod the new created mp3 file
-        $returnVar = chmod($destFile, 0644);
-        if ($returnVar != 0) {
-            throw new Exception('Failed chmod file ' . $mp3Filename);
+        $done = chmod($destFile, 0644);
+        if (!$done) {
+            throw new Exception('Failed chmod file ' . $destFile);
         }
+
                 
         // clone the existing project file
         $newProjectFile = ProjectFile::fetch_for_id($pjob->projectFileId);

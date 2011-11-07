@@ -641,7 +641,7 @@ a.nohighlight:hover {
 }
 
 .topMenuItem {
-	float: left;
+	float: right;
 	height: 36px;
 	margin-left: 1px;
 }
@@ -853,7 +853,9 @@ a.nohighlight:hover {
     padding-bottom: 0px;
 }
 
-.subMenu {}
+.subMenu {
+    list-style: none;
+}
 
 .subMenuItem {
     float: left;
@@ -1107,7 +1109,7 @@ a.nohighlight:hover {
 
 .footerMenu li {
     padding-right: 20px;
-    border-bottom: 1px dotted #aaa;
+    border-bottom: 1px solid #ddd;
 }
 
 .footerMenu a {

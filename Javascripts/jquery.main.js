@@ -278,6 +278,21 @@ $(document).ready(function(){
         return false;
     });
 
+
+    console.log('log');
+    $(':input').focus(function () {
+        console.log('log');
+    	if ($(this).val() == $(this).attr("title")) {
+    		$(this).val("");
+    	}
+    }).blur(function () {
+    	if ($(this).val() == "") {
+    		$(this).val($(this).attr("title"));
+    	}
+    });
+
+
+
 });
 
 

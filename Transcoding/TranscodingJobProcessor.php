@@ -76,18 +76,17 @@ function transcode(&$pjob) {
     
         $command = $GLOBALS['TRANSCODER_COMMAND'] . ' ' . $sourceFile . ' ' . $destFile;
     
-        // execute the command
-        $output = array();                                     
+        // execute the command                               
         $returnVar = 1;
         $logger->debug('executing command: ' . $command);
-        $ret = exec($command, $output, $returnVar);     
+        $ret = system($command, $returnVar);     
         
         if ($returnVar != 0) {
             throw new Exception('Failed to transcode file, command returned: ' . $ret);
         }   
         
         // chmod the new created mp3 file
-        $returnVar = chmod($mp3Filename, 0644);
+        $returnVar = chmod($destFile, 0644);
         if ($returnVar != 0) {
             throw new Exception('Failed chmod file ' . $mp3Filename);
         }

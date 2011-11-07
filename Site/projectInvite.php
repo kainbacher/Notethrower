@@ -67,7 +67,7 @@ if (get_param('action') == 'inviteExternal') {
     //check if user is already in database
     $userCheck = User::fetch_for_email_address($emailAddr);
     if ($userCheck) {
-        $response = array('type' => 'userExists', 'id' => $userCheck -> id);
+        $response = array('type' => 'userExists', 'id' => $userCheck -> id, 'username' => $userCheck -> name);
         echo json_encode($response);
         exit ;
     }
@@ -94,9 +94,9 @@ if (get_param('action') == 'inviteExternal') {
 if (get_param('action') == 'updateRecommendations') {
     $projectId = get_param('projectId');
     $additionalAttributes = $_REQUEST['attributes'];
-    
+
     $projectRecommendedArtists = User::fetchAllThatOfferSkillsForProjectId($loggedInUser -> id, $projectId, $additionalAttributes);
-    
+
     $projectRecommendedArtistsList = '';
     foreach ($projectRecommendedArtists as $projectRecommendedArtist) {
         //attribute list
@@ -111,16 +111,18 @@ if (get_param('action') == 'updateRecommendations') {
 
 if (get_param('action') == 'searchRecommendation') {
     $searchTerm = get_param('searchTerm');
-    $projectRecommendedArtists = User::fetch_all_for_name_like($searchTerm,3);
+    if(strlen($searchTerm)>0){
+        $projectRecommendedArtists = User::fetch_all_for_name_like($searchTerm, 10);
     
-    $projectRecommendedArtistsList = '';
-    foreach ($projectRecommendedArtists as $projectRecommendedArtist) {
-        //attribute list
-        //$recommendedArtistAttributes = implode(',', $projectRecommendedArtist -> offersAttributeNamesList);
-        $recommendedArtistAttributes = null;
-        //userimagepath
-        $recommendedArtistImage = (!empty($projectRecommendedArtist -> image_filename) ? '../Content/UserImages/' . $projectRecommendedArtist -> image_filename : '../Images/testimages/profile-testimg-75x75.png');
-        $projectRecommendedArtistsList .= processTpl('Project/recommendedArtistElement.html', array('${recommendedArtistId}' => $projectRecommendedArtist -> id, '${recommendedArtistName}' => $projectRecommendedArtist -> name, '${recommendedArtistAttributes}' => $recommendedArtistAttributes, '${recommendedArtistProfileImage}' => $recommendedArtistImage));
+        $projectRecommendedArtistsList = '';
+        foreach ($projectRecommendedArtists as $projectRecommendedArtist) {
+            //attribute list
+            //$recommendedArtistAttributes = implode(',', $projectRecommendedArtist -> offersAttributeNamesList);
+            $recommendedArtistAttributes = null;
+            //userimagepath
+            $recommendedArtistImage = (!empty($projectRecommendedArtist -> image_filename) ? '../Content/UserImages/' . $projectRecommendedArtist -> image_filename : '../Images/testimages/profile-testimg-75x75.png');
+            $projectRecommendedArtistsList .= processTpl('Project/recommendedArtistElement.html', array('${recommendedArtistId}' => $projectRecommendedArtist -> id, '${recommendedArtistName}' => $projectRecommendedArtist -> name, '${recommendedArtistAttributes}' => $recommendedArtistAttributes, '${recommendedArtistProfileImage}' => $recommendedArtistImage));
+        }
+        echo $projectRecommendedArtistsList;
     }
-    echo $projectRecommendedArtistsList;
 }

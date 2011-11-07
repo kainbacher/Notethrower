@@ -14,7 +14,7 @@ include_once('../Includes/DB/User.php');
 // TODO - in case of error: show friendly error page with instructions for help
 
 $loggedInUser = User::new_from_cookie();
-ensureUserIsLoggedIn($loggedInUser);
+//ensureUserIsLoggedIn($loggedInUser);
 
 $project = Project::fetch_for_id(get_param('project_id'));
 if (!$project || !$project->id) {
@@ -24,7 +24,9 @@ if (!$project || !$project->id) {
 }
 
 //ensureProjectBelongsToUserId($project, $loggedInUser->id);
-ensureProjectIdIsAssociatedWithUserId($project->id, $loggedInUser->id);
+if ($project->visibility == 'private') {
+    ensureProjectIdIsAssociatedWithUserId($project->id, $loggedInUser->id);
+}
 
 $pFile = ProjectFile::fetch_for_id(get_numeric_param('atfid'));
 if (!$pFile || !$pFile->id || $pFile->project_id != $project->id) {

@@ -20,18 +20,29 @@ function showSelectFriendsPopup() {
 
 $(document).ready(function () {
     /* !invite */
-    /* ---------------------------------------------------------------------- */
-    $("input[rel=invite]").click(function(e) {
-        e.preventDefault();
-        alert('invite User Function');
+    /* ---------------------------------------------------------------------- */   
+    $(".recommendedList").delegate("input[rel=invite]", "click", function() {
+        var parent = $(this).parents('.trackListItem');     
+        var artistId = $(this).attr("id");
+        
+        $.post('projectInvite.php',{ action:'inviteInternal',userid:artistId,projectId:${projectId} } , function(data) {
+            if(data.type == 'userAlreadyInvited'){
+                alert('This Artist has already been invited to the Project.');
+                parent.fadeOut(400);
+            } else if (data.type == 'inviteSuccess'){
+                alert('Your Invitation has successfully been sent.');
+                parent.fadeOut(400);
+            }
+        }, "json");
     });
 
     $("input[rel=invite_friend]").click(function(e){
-        e.preventDefault();
+        e.preventDefault();    
         if(isValidEmailAddress($('#search_friend').val())) {
             $.post('projectInvite.php',{ action:'inviteExternal',email:$('#search_friend').val(),projectId:${projectId} } , function(data) {
                 if(data.type == 'userExists'){
-                    alert('method: display user id:'+data.id);
+                    alert('There is already a user with this email address: '+data.username);
+                    updateRecommendedartistList('search',data.username);
                 } else if (data.type == 'inviteSuccess') {
                     alert('Your Invitation has successfully been sent to '+$('#search_friend').val());
                 } else if (data.type == 'inviteFail') {
@@ -42,15 +53,16 @@ $(document).ready(function () {
             alert('Invalid E-Mail Format');
         }
     });
-
+    
     $("input[rel=search_name]").click(function(e){
         e.preventDefault();
-        alert('search for '+$('#search_name').val()+' Function');
+        updateRecommendedartistList('search',$('#search_name').val());
     });
-
-     $("input[rel=clicktest]").click(function(e) {
-        e.preventDefault();
-        updateRecommendedartistList();
+    
+    $('#attributes').change(function() {
+        var attributes = $('#attributes').val();
+        updateRecommendedartistList('update',attributes);
+        
     });
 
 });
@@ -136,12 +148,25 @@ ${Common/bodyFooter}
 <script type="text/javascript">
 
 function updateRecommendedartistList(){
-
-    $('.recommendedList').children().fadeOut(500, function(){
-        $('.recommendedList').empty();
-        $('.recommendedList').append('<li>test</li>');
-    });
-
+    if ( method == 'update' ) {
+        $.post('projectInvite.php',{ action:'updateRecommendations',projectId:${projectId},attributes:data } , function(data) {
+            if(data){
+                $('.recommendedList').children().fadeOut(500, function(){
+                    $('.recommendedList').empty();
+                    $('.recommendedList').append(data);
+                });
+            }
+        });
+    } else if ( method == 'search'){
+        $.post('projectInvite.php',{ action:'searchRecommendation',searchTerm:data } , function(data) {
+            if(data){
+                $('.recommendedList').children().fadeOut(500, function(){
+                    $('.recommendedList').empty();
+                    $('.recommendedList').append(data);
+                });
+            }
+        });
+    }
 }
 
 function checkDeleteResponseAndRefreshFileList(deleteWasOk, data) {

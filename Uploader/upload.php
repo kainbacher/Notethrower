@@ -5,7 +5,7 @@ include_once('../Includes/Init.php');
 include_once('../Includes/Config.php');
 include_once('../Includes/Snippets.php');
 
-$logger->set_debug_level();
+//$logger->set_debug_level();
 
 /**
  * upload.php

@@ -380,11 +380,11 @@ class User {
             if (!isset($attribute_id_list[$pa->project_id])) $attribute_id_list[$pa->project_id] = array();
             $attribute_id_list[$pa->project_id][] = $pa->attribute_id;
         }
-        
+
         if($additionalAttributes){
             $attribute_id_list[$projectId] = array_merge($attribute_id_list[$projectId], $additionalAttributes);
         }
-        
+
         // fetch all genres of project
         $projects_genre_id_list = array();
         $pgList = ProjectGenre::fetchAllOfProject($projectId);
@@ -392,6 +392,9 @@ class User {
             if (!isset($projects_genre_id_list[$pg->project_id])) $projects_genre_id_list[$pg->project_id] = array();
             $projects_genre_id_list[$pg->project_id][] = $pg->genre_id;
         }
+
+        // fetch all collaborators of this project
+        $collaborators = ProjectUserVisibility::getAllUserIdsForProjectId($projectId);
 
         $objs = array();
 
@@ -417,18 +420,20 @@ class User {
 
             $previousUid = null;
             while ($row = mysql_fetch_array($result)) {
-                if ($previousUid != $row['id']) {
-                    $u = new User();
-                    $u = User::_read_row($u, $row);
-                    $u->offersAttributeIdsList   = array();
-                    $u->offersAttributeNamesList = array();
-                    $objs[] = $u;
+                if (!in_array($row['id'], $collaborators)) { // ignore users which already collaborate
+                    if ($previousUid != $row['id']) {
+                        $u = new User();
+                        $u = User::_read_row($u, $row);
+                        $u->offersAttributeIdsList   = array();
+                        $u->offersAttributeNamesList = array();
+                        $objs[] = $u;
+                    }
+
+                    $u->offersAttributeIdsList[]   = $row['attribute_id'];
+                    $u->offersAttributeNamesList[] = $row['attribute_name'];
+
+                    $previousUid = $row['id'];
                 }
-
-                $u->offersAttributeIdsList[]   = $row['attribute_id'];
-                $u->offersAttributeNamesList[] = $row['attribute_name'];
-
-                $previousUid = $row['id'];
             }
 
             mysql_free_result($result);

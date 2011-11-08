@@ -11,12 +11,10 @@ include_once('../Includes/DB/Message.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/User.php');
 
-$logger->set_debug_level();
+//$logger->set_debug_level();
 
 $user = User::new_from_cookie();
 ensureUserIsLoggedIn($user);
-
-// FIXME - find out what data is not neccessary here because it's not shown anymore
 
 $action = get_param('action');
 if ($action == 'deleteMsg') {
@@ -37,7 +35,7 @@ if ($action == 'deleteMsg') {
 
 // find projects where the user could collaborate
 $projectListHtml = '';
-$projects = Project::fetchAllThatNeedSkillsOfUser($user); // FIXME - limit/paging?
+$projects = Project::fetchAllThatNeedSkillsOfUser($user, 25); // FIXME - limit/paging?
 foreach ($projects as $project) {
     $projectUserImgUrl = getUserImageUri($project->user_img_filename, 'tiny');
 
@@ -49,6 +47,10 @@ foreach ($projects as $project) {
         '${projectTitle}' => escape($project->title),
         '${projectNeeds}' => implode(', ', $project->needsAttributeNamesList)
     ));
+}
+
+if (count($projects) == 0) {
+    $projectListHtml = 'No projects found. You might need to enter or refine your <a href="account.php">user profile</a> to get some project recommendations here.';
 }
 
 //// find artists which could help the user with his projects

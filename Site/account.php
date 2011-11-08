@@ -18,7 +18,9 @@ include_once('../Includes/DB/UserAttribute.php');
 include_once('../Includes/DB/UserGenre.php');
 include_once('../Includes/DB/UserTool.php');
 
-$logger->set_debug_level();
+$MAX_UPLOAD_FILESIZE = 3145728; // 3MB
+
+//$logger->set_debug_level();
 
 $user = null;
 $unpersistedUser = null;
@@ -306,12 +308,14 @@ if ($userIsLoggedIn) { // it's an update
         'unpersistedObj'         => $unpersistedUser,
         'errorFields'            => $errorFields,
         'workWithUnpersistedObj' => $problemOccured,
-        'infoText'               => 'You can add this later if you like. Photos may not contain nudity, violent or offensive material, or copyrighted images. If you violate these terms your account may be deleted.'
+        'inputFieldSuffix'       => 'Max. 3 MB',
+        'infoText'               => 'You can add this later if you like. Photos may not contain nudity, violent or offensive material, or copyrighted images. If you violate these terms your account may be deleted. The max. file size is 3 MB.',
+        'maxFileSizeForUpload'   => $GLOBALS['MAX_UPLOAD_FILESIZE']
     ));
 
     if ($user->image_filename) {
         $userImage = processTpl('Account/userImage_found.html', array(
-            '${imgSrc}'  => $USER_IMAGE_BASE_URL . $user->image_filename,
+            '${imgSrc}'  => $USER_IMAGE_BASE_URL . $user->image_filename . '?nocache=' . @filemtime($USER_IMAGE_BASE_PATH . $user->image_filename),
             '${altText}' => escape($user->name)
         ));
 
@@ -800,9 +804,15 @@ function inputDataOk(&$errorFields, &$user, $userIsLoggedIn) {
         '.png'
     );
     preg_match('/\.[^\.]+$/i',$_FILES['image_filename']['name'],$image_ext);
-    
+
     if (isset($_FILES['image_filename']['name']) && $_FILES['image_filename']['name'] && !in_array($image_ext[0], $allowed_types)) {
         $errorFields['image_filename'] = 'Image must be in JPG, GIF or PNG format!';
+        $result = false;
+    }
+
+    // check filesize
+    if ($_FILES['image_filename']['error'] == 2 || filesize($_FILES['image_filename']['tmp_name']) > $GLOBALS['MAX_UPLOAD_FILESIZE']) {
+        $errorFields['image_filename'] = 'Max. image file size exceeded!';
         $result = false;
     }
 
@@ -1007,7 +1017,7 @@ function handleUserImageUploadOrFacebookImageDownload(&$user) {
 
         $logger->info('resizing uploaded image');
         umask(0777); // most probably ignored on windows systems
-        
+
         create_resized_jpg($upload_img_file, $final_img_file, $GLOBALS['USER_IMG_MAX_WIDTH'], $GLOBALS['USER_IMG_MAX_HEIGHT'], $_FILES['image_filename']['type']);
         create_resized_jpg($upload_img_file, $final_thumb_img_file, $GLOBALS['USER_THUMB_MAX_WIDTH'], $GLOBALS['USER_THUMB_MAX_HEIGHT'], $_FILES['image_filename']['type']);
         chmod($final_img_file, 0666);

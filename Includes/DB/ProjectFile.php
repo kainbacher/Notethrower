@@ -312,7 +312,7 @@ class ProjectFile {
             qq($this->type)                  . ', ' .
             qq($this->status)                . ', ' .
             qq($this->comment)               . ', ' .
-            'now()'                          . ', ' .
+            ($this->entry_date ? qq($this->entry_date) : 'now()') . ', ' .
             n($this->autocreated_from)       .
             ')'
         );

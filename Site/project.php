@@ -635,11 +635,11 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
 
         // find out if the next file in the list is the autocreated mp3 of this file
         $autocreatedSibling = null;
-        if (
-            isset($projectFiles[$i + 1]) &&
-            $projectFiles[$i + 1]->autocreated_from == $projectFiles[$i]->id
-        ) {
-            $autocreatedSibling = $projectFiles[$i + 1];
+        if (isset($projectFiles[$i + 1])) {
+            $logger->info($projectFiles[$i + 1]->autocreated_from . ' == ' . $projectFiles[$i]->id);
+            if ($projectFiles[$i + 1]->autocreated_from == $projectFiles[$i]->id) {
+                $autocreatedSibling = $projectFiles[$i + 1];
+            }
         }
 
         // check if user has edit permissions for this file

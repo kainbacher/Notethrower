@@ -130,6 +130,34 @@ class User {
         return $objs;
     }
 
+    // attention: all changes here need to be done in getResultsCountForSearch(), too!
+    function fetchForSearch($from, $length, $name, $attributeId, $genreId) {
+        $objs = array();
+
+        $result = _mysql_query(
+                'select u.* ' .
+                'from pp_user u ' .
+                ($genreId ? 'join pp_user_genre ug on ug.user_id = u.id ' : '') .
+                ($attributeId ? 'join pp_user_attribute ua on ua.user_id = u.id ' : '') .
+                'where u.status = "active" ' .
+                ($name ? 'and u.name like ' . qqLike($name) . ' ' : '') .
+                ($genreId ? 'and ug.genre_id = ' . n($genreId) . ' ' : '') .
+                ($attributeId ? 'and ua.attribute_id = ' . n($attributeId) . ' ' : '') .
+                'order by entry_date desc ' .
+                ($length ? 'limit ' . n($from) . ', ' . n($length) : '')
+        );
+
+        while ($row = mysql_fetch_array($result)) {
+            $u = new User();
+            $u = User::_read_row($u, $row);
+            $objs[] = $u;
+        }
+
+        mysql_free_result($result);
+
+        return $objs;
+    }
+
     function fetch_most_listened_artists_from_to($from, $to) {
         $objs = array();
 
@@ -521,6 +549,30 @@ class User {
         }
 
         return $ok;
+    }
+
+    // FIXME - needed?
+    // attention: all changes here need to be done in fetchForSearch(), too!
+    function getResultsCountForSearch($name, $attributeId, $genreId) {
+        $result = _mysql_query(
+                'select count(*) as cnt ' .
+                'from pp_user u ' .
+                ($genreId ? 'join pp_user_genre ug on ug.user_id = u.id ' : '') .
+                ($attributeId ? 'join pp_user_attribute ua on ua.user_id = u.id ' : '') .
+                'where u.status = "active" ' .
+                ($name ? 'and u.name like ' . qqLike($name) . ' ' : '') .
+                ($genreId ? 'and ug.genre_id = ' . n($genreId) . ' ' : '') .
+                ($attributeId ? 'and ua.attribute_id = ' . n($attributeId) . ' ' : '')
+        );
+
+        $count = 0;
+        if ($row = mysql_fetch_array($result)) {
+            $count = $row['cnt'];
+        }
+
+        mysql_free_result($result);
+
+        return $count;
     }
 
     function count_all($count_inactive_items, $include_unknown_artist) {

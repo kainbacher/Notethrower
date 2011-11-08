@@ -14,7 +14,7 @@ class ProjectFile {
     var $status; // inactive or active
     var $comment;
     var $entry_date;
-    var $autocreated;
+    var $autocreated_from;
 
     // fields from referenced tables
 
@@ -31,7 +31,7 @@ class ProjectFile {
             'from pp_project_file pf ' .
             'where pf.project_id = ' . n($tid) . ' ' .
             ($show_inactive_items ? 'and pf.status in ("active", "inactive") ' : 'and pf.status = "active" ') .
-            'order by pf.entry_date desc'
+            'order by pf.entry_date desc, pf.autocreated_from asc' // ATTENTION: never change the ordering here without checking the effects on the the display of project file lists with regards to autocreated files!
         );
 
         $ind = 0;
@@ -107,7 +107,7 @@ class ProjectFile {
         $f->status                = $row['status'];
         $f->comment               = $row['comment'];
         $f->entry_date            = reformat_sql_date($row['entry_date']);
-        $f->autocreated           = $row['autocreated'];
+        $f->autocreated_from      = $row['autocreated_from'];
 
         // fields from referenced tables
 
@@ -129,10 +129,11 @@ class ProjectFile {
             'status                varchar(20)  not null, ' .
             'comment               text, ' .
             'entry_date            datetime     not null default "1970-01-01 00:00:00", ' .
-            'autocreated           tinyint(1)   not null default 0, ' .
+            'autocreated_from      int(10), ' .
             'primary key (id), ' .
             'key project_id (project_id), ' .
-            'key entry_date (entry_date) ' .
+            'key entry_date (entry_date), ' .
+            'key autocreated_from (autocreated_from) ' .
             ') default charset=utf8'
         );
 
@@ -190,6 +191,9 @@ class ProjectFile {
 
         if (!$id) return;
 
+        // first, delete the autocreated sibling (if one is there)
+        ProjectFile::delete_with_autocreated_from($id);
+
         // delete file from filesystem
         $result = _mysql_query(
             'select filename ' .
@@ -221,6 +225,45 @@ class ProjectFile {
         return _mysql_query(
             'delete from pp_project_file ' .
             'where id = ' . n($id)
+        );
+    }
+
+    function delete_with_autocreated_from($id) {
+        global $logger;
+
+        if (!$id) return;
+
+        // delete file from filesystem
+        $result = _mysql_query(
+            'select filename ' .
+            'from pp_project_file ' .
+            'where autocreated_from = ' . n($id)
+        );
+
+        $f = null;
+        if ($row = mysql_fetch_array($result)) {
+            $f = $row['filename'];
+        }
+
+        mysql_free_result($result);
+
+        if ($f) {
+            $file = $GLOBALS['CONTENT_BASE_PATH'] . $f;
+            $logger->info('deleting project file: ' . $file);
+            $ok = @unlink($file); // suppress errors because this negatively influences ajax/json communication
+            if (!$ok) {
+                $logger->error('failed to delete file: ' . $file);
+            }
+
+        } else {
+            $logger->error('unable to get filename for project file id: ' . $id);
+        }
+
+        // delete record
+        $logger->info('deleting project file record with autocreated_from: ' . $id);
+        return _mysql_query(
+            'delete from pp_project_file ' .
+            'where autocreated_from = ' . n($id)
         );
     }
 
@@ -260,7 +303,7 @@ class ProjectFile {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_project_file ' .
-            '(project_id, originator_user_id, filename, orig_filename, type, status, comment, entry_date, autocreated) ' .
+            '(project_id, originator_user_id, filename, orig_filename, type, status, comment, entry_date, autocreated_from) ' .
             'values (' .
             n($this->project_id)             . ', ' .
             n($this->originator_user_id)     . ', ' .
@@ -269,8 +312,8 @@ class ProjectFile {
             qq($this->type)                  . ', ' .
             qq($this->status)                . ', ' .
             qq($this->comment)               . ', ' .
-            'now()'                          . ', ' .
-            b($this->autocreated)            .
+            ($this->entry_date ? qq($this->entry_date) : 'now()') . ', ' .
+            n($this->autocreated_from)       .
             ')'
         );
 
@@ -293,7 +336,7 @@ class ProjectFile {
             'type = '               . qq($this->type)              . ', ' .
             'status = '             . qq($this->status)            . ', ' .
             'comment = '            . qq($this->comment)           . ', ' .
-            'autocreated = '        . b($this->autocreated)        . ' ' .
+            'autocreated_from = '   . n($this->autocreated_from)   . ' ' .
             // entry_date intentionally not set here
             'where id = '           . n($this->id)
         );

@@ -46,7 +46,7 @@ if (get_param('action') == 'create') {
 
     $project = new Project();
     $project->user_id                   = $loggedInUser->id;
-    $project->title                     = '(New project)';
+    $project->title                     = '';
     $project->currency                  = 'USD'; // TODO - take from config - check other occurences as well
     $project->visibility                = 'public';
     $project->playback_count            = 0;
@@ -613,21 +613,6 @@ processAndPrintTpl('Project/index.html', array(
 function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
     global $logger;
 
-//    $masterFound = ProjectFile::master_mp3_file_found_for_project_id($project->id);
-//    if ($masterFound) {
-//        if ($project->status == 'inactive') $project->status = 'active';
-//        $project->save();
-//
-//    } else {
-//        if ($project->status == 'active') $project->status = 'inactive';
-//        $project->save();
-//        $messageList .= processTpl('Common/message_notice.html', array(
-//            '${msg}' => 'Please upload a mix MP3 file to make sure your project is activated.<br />' .
-//                        'Without a mix MP3 file the project will not be visible for other users.<br />' .
-//                        'Please make sure the file is of high quality, at least 128kbps at 44.1kHz'
-//        ));
-//    }
-
     $masterFileFoundHtml    = '';
     $masterFileNotFoundHtml = '';
 
@@ -644,7 +629,19 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
 
     $uploaders = array(); // cache
 
-    foreach ($projectFiles as $file) {
+    $fileCount = count($projectFiles);
+    for ($i = 0; $i < $fileCount; $i++) {
+        $file = $projectFiles[$i];
+
+        // find out if the next file in the list is the autocreated mp3 of this file
+        $autocreatedSibling = null;
+        if (isset($projectFiles[$i + 1])) {
+            $logger->info($projectFiles[$i + 1]->autocreated_from . ' == ' . $projectFiles[$i]->id);
+            if ($projectFiles[$i + 1]->autocreated_from == $projectFiles[$i]->id) {
+                $autocreatedSibling = $projectFiles[$i + 1];
+            }
+        }
+
         // check if user has edit permissions for this file
         $loggedInUserMayEdit = false;
         if (
@@ -655,6 +652,7 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
             $loggedInUserMayEdit = true;
         }
 
+        // get the uploader user obj
         if ($file->originator_user_id) { // file was uploaded by collaborator
             if (!isset($uploaders[$file->originator_user_id])) { // if not in cache
                 $uploaders[$file->originator_user_id] = User::fetch_for_id($file->originator_user_id);
@@ -670,6 +668,7 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
 
         $uploaderUserImg = getUserImageHtml($uploader->image_filename, $uploader->name, 'tiny');
 
+        // checkbox(es) and icon
         $checkbox = '';
         $fileIcon = '';
         if ($file->type == 'mix') {
@@ -748,19 +747,20 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
         }
 
         $snippet = processTpl('Project/projectFileElement.html', array(
-            '${formAction}'                               => $_SERVER['PHP_SELF'],
-            '${projectFileId}'                            => $file->id,
-            '${projectFileElementCheckbox_optional}'      => $checkbox,
-            '${fileIcon_choice}'                          => $fileIcon,
-            '${filename}'                                 => escape($file->orig_filename),
-            '${Project/deleteFileLink_optional}'          => $deleteFileLinkHtml,
-            '${fileDownloadUrl}'                          => '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $file->id,
-            '${status}'                                   => $file->status == 'active' ? 'Active' : 'Inactive', // TODO - currently not used
-            '${projectId}'                                => $project->id,
-            '${uploadedByName}'                           => $uploader->name,
-            '${uploaderUserImg}'                          => $uploaderUserImg,
-            '${Project/projectFileMetadataForm_optional}' => $metadataForm,
-            '${Project/projectFileMetadata_optional}'     => $metadataBlock
+            '${formAction}'                                             => $_SERVER['PHP_SELF'],
+            '${projectFileId}'                                          => $file->id,
+            '${projectFileElementCheckbox_optional}'                    => $checkbox,
+            '${fileIcon_choice}'                                        => $fileIcon . ($autocreatedSibling ? ' [+ autocreated MP3]' : ''),
+            '${filename}'                                               => escape($file->orig_filename),
+            '${Project/deleteFileLink_optional}'                        => $deleteFileLinkHtml,
+            '${fileDownloadUrl}'                                        => '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $file->id,
+            // FIXME - use this for player: 'xxxxxxxxxxxxxxxxxx' => $autocreatedSibling ? '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $autocreatedSibling->id : '',
+            '${status}'                                                 => $file->status == 'active' ? 'Active' : 'Inactive', // TODO - currently not used
+            '${projectId}'                                              => $project->id,
+            '${uploadedByName}'                                         => $uploader->name,
+            '${uploaderUserImg}'                                        => $uploaderUserImg,
+            '${Project/projectFileMetadataForm_optional}'               => $metadataForm,
+            '${Project/projectFileMetadata_optional}'                   => $metadataBlock
         ));
 
         if ($file->type == 'mix') {
@@ -770,6 +770,8 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
         } else {
             $projectFilesStemsHtml .= $snippet;
         }
+
+        if ($autocreatedSibling) $i++; // skip the autocreated sibling
     }
 
     if (!$projectFilesStemsHtml) {

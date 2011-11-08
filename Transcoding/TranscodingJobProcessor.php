@@ -12,7 +12,7 @@ include_once('../Includes/DB/TranscodingJob.php');
 
 $startTime = time();
 
-$logger->set_debug_level();
+//$logger->set_debug_level();
 
 // check if this script is currently running
 $processingFile = '../Tmp/processing';
@@ -69,48 +69,50 @@ function transcode(&$pjob) {
     $logger->info('transcoding file ' . $pjob->filename . ' (jobId = ' . $pjob->id . ')');
 
     try {
-    
+        $projectFile = ProjectFile::fetch_for_id($pjob->projectFileId);
+
         $sourceFile = $GLOBALS['CONTENT_BASE_PATH'] . $pjob->filename;
         $mp3Filename = getFilenameWithoutExt($pjob->filename) . '.mp3';
-        $destFile = $GLOBALS['CONTENT_BASE_PATH'] . $mp3Filename; 
-    
-        $command = $GLOBALS['TRANSCODER_COMMAND'] . ' ' . $sourceFile . ' ' . $destFile;
-    
-        // execute the command                               
+        $destFile = $GLOBALS['CONTENT_BASE_PATH'] . $mp3Filename;
+
+        $options = $GLOBALS['TRANSCODER_OPTIONS'][$projectFile->type];
+        $command = $GLOBALS['TRANSCODER_COMMAND'] . ' ' . $options . ' ' . $sourceFile . ' ' . $destFile;
+
+        // execute the command
         $returnVar = 1;
         $output = array();
-        $logger->debug('executing command: ' . $command);
-        $ret = exec($command, $output, $returnVar);     
-        
+        $logger->info('executing command: ' . $command);
+        $ret = exec($command, $output, $returnVar);
+
         if ($returnVar != 0) {
             throw new Exception('Failed to transcode file, command returned: ' . $ret);
-        }   
-        
+        }
+
         // chmod the new created mp3 file
         $done = chmod($destFile, 0644);
         if (!$done) {
             throw new Exception('Failed chmod file ' . $destFile);
         }
 
-                
+
         // clone the existing project file
         $newProjectFile = ProjectFile::fetch_for_id($pjob->projectFileId);
         // edge case, when the projectFile does not exist the fetch_for_id returns
         // and empty ProjectFile instance
         if ($newProjectFile->id == $pjob->projectFileId) {
-            $newProjectFile->id = null;
             $newProjectFile->filename = $mp3Filename;
             $newProjectFile->orig_filename = getFilenameWithoutExt($newProjectFile->orig_filename) . '.mp3';
-            $newProjectFile->autocreated = 1;
+            $newProjectFile->autocreated_from = $newProjectFile->id;
+            $newProjectFile->id = null; // remove id to produce a new insert
             $success = $newProjectFile->save();
             if (!success) {
-                throw new Exception('Failed to create new ProjectFile db entry!');   
-            }                                             
+                throw new Exception('Failed to create new ProjectFile db entry!');
+            }
         } else {
-            throw new Exception('No ProjectFile found (id: ' . $pjob->projectFileId . ')!');           
+            throw new Exception('No ProjectFile found (id: ' . $pjob->projectFileId . ')!');
         }
 
-        
+
         $pjob->status = 'SUCCESS';
         $pjob->update();
 
@@ -163,8 +165,8 @@ function exitIfValidProcessingFileFound($processingFile) {
     }
 }
 
-function getFilenameWithoutExt($filename) {  
-    return pathinfo($filename, PATHINFO_FILENAME); 
-} 
+function getFilenameWithoutExt($filename) {
+    return pathinfo($filename, PATHINFO_FILENAME);
+}
 
 ?>

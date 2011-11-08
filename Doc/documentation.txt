@@ -19,6 +19,17 @@ also be careful with the Config.php - this file is on every machine the same.
 
 
 
+Cron
+--------------------------------------------------
+In the "Doc" directory there is the crontab.txt file which needs to be used to setup the cron jobs:
+crontab <pathToSrc>/Doc/crontab.txt
+
+
+
+Permissions
+--------------------------------------------------
+_The file /Scripts/TranscodingJobProcessor.sh must have world execute rights (e.g. chmod a+x TranscodingJobProcessor.php) because cron starts that script.
+
 
 
 

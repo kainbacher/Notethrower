@@ -637,9 +637,7 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
         $autocreatedSibling = null;
         if (
             isset($projectFiles[$i + 1]) &&
-            $projectFiles[$i + 1]->entry_date == $projectFiles[$i]->entry_date && // entry dates are the same
-            $projectFiles[$i + 1]->autocreated_from &&
-            strpos(basename($projectFiles[$i + 1]->orig_filename, '.mp3'), $projectFiles[$i]->orig_filename) === 0 // filenames are the same except the file extension
+            $projectFiles[$i + 1]->autocreated_from == $projectFiles[$i]->id
         ) {
             $autocreatedSibling = $projectFiles[$i + 1];
         }

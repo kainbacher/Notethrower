@@ -1,0 +1,2 @@
+# starts every minite the TranscodingJobProcessor
+* * * * * /home/benso/oneloudr.com/OLTest/Scripts/TranscodingJobProcessor.sh &

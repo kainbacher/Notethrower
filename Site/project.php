@@ -750,7 +750,7 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
             '${formAction}'                                             => $_SERVER['PHP_SELF'],
             '${projectFileId}'                                          => $file->id,
             '${projectFileElementCheckbox_optional}'                    => $checkbox,
-            '${fileIcon_choice}'                                        => $fileIcon,
+            '${fileIcon_choice}'                                        => $fileIcon . ($autocreatedSibling ? ' [+ autocreated MP3]' : ''),
             '${filename}'                                               => escape($file->orig_filename),
             '${Project/deleteFileLink_optional}'                        => $deleteFileLinkHtml,
             '${fileDownloadUrl}'                                        => '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $file->id,

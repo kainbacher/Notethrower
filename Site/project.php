@@ -46,7 +46,7 @@ if (get_param('action') == 'create') {
 
     $project = new Project();
     $project->user_id                   = $loggedInUser->id;
-    $project->title                     = '(New project)';
+    $project->title                     = '';
     $project->currency                  = 'USD'; // TODO - take from config - check other occurences as well
     $project->visibility                = 'public';
     $project->playback_count            = 0;

@@ -30,6 +30,8 @@ if (get_param('action') == 'search') { // ajax call
     $genreId     = get_numeric_param('genreId'); // optional
     $attributeId = get_numeric_param('attributeId'); // optional
 
+    echo User::getResultsCountForSearch($name, $attributeId, $genreId) . '<hr>';
+
     $users = User::fetchForSearch($start, $maxRows, $name, $attributeId, $genreId);
 
     foreach ($users as $a) {

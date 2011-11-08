@@ -130,6 +130,7 @@ class User {
         return $objs;
     }
 
+    // attention: all changes here need to be done in getResultsCountForSearch(), too!
     function fetchForSearch($from, $length, $name, $attributeId, $genreId) {
         $objs = array();
 
@@ -142,7 +143,6 @@ class User {
                 ($name ? 'and u.name like ' . qqLike($name) . ' ' : '') .
                 ($genreId ? 'and ug.genre_id = ' . n($genreId) . ' ' : '') .
                 ($attributeId ? 'and ua.attribute_id = ' . n($attributeId) . ' ' : '') .
-                'group by u.id ' .
                 'order by entry_date desc ' .
                 ($length ? 'limit ' . n($from) . ', ' . n($length) : '')
         );
@@ -549,6 +549,30 @@ class User {
         }
 
         return $ok;
+    }
+
+    // FIXME - needed?
+    // attention: all changes here need to be done in fetchForSearch(), too!
+    function getResultsCountForSearch($name, $attributeId, $genreId) {
+        $result = _mysql_query(
+                'select count(*) as cnt ' .
+                'from pp_user u ' .
+                ($genreId ? 'join pp_user_genre ug on ug.user_id = u.id ' : '') .
+                ($attributeId ? 'join pp_user_attribute ua on ua.user_id = u.id ' : '') .
+                'where u.status = "active" ' .
+                ($name ? 'and u.name like ' . qqLike($name) . ' ' : '') .
+                ($genreId ? 'and ug.genre_id = ' . n($genreId) . ' ' : '') .
+                ($attributeId ? 'and ua.attribute_id = ' . n($attributeId) . ' ' : '')
+        );
+
+        $count = 0;
+        if ($row = mysql_fetch_array($result)) {
+            $count = $row['cnt'];
+        }
+
+        mysql_free_result($result);
+
+        return $count;
     }
 
     function count_all($count_inactive_items, $include_unknown_artist) {

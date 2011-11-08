@@ -95,7 +95,7 @@ if (count($msgs) == 0) {
 }
 
 processAndPrintTpl('Dashboard/index.html', array(
-    '${Common/pageHeader}'                     => buildPageHeader('Dashboard', true, false),
+    '${Common/pageHeader}'                     => buildPageHeader('Dashboard', false, false),
     '${Common/bodyHeader}'                     => buildBodyHeader($user),
     '${userId}'                                => $user->id,
     '${Dashboard/projectListItem_list}'        => $projectListHtml,

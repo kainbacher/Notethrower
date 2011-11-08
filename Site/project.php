@@ -574,7 +574,7 @@ if (
 }
 
 processAndPrintTpl('Project/index.html', array(
-    '${Common/pageHeader}'                      => buildPageHeader(($projectId ? 'Edit project' : 'Create project'), false, false, true),
+    '${Common/pageHeader}'                      => buildPageHeader(($projectId ? 'Edit project' : 'Create project'), true, false, true),
     '${Common/bodyHeader}'                      => buildBodyHeader($loggedInUser),
     '${Project/tabBasic_optional}'              => $tabBasicHtml,
     '${Project/tabInvite_optional}'             => $tabInviteHtml,

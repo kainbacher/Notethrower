@@ -83,7 +83,7 @@ foreach ($topArtists as $a) {
 }
 
 processAndPrintTpl('ArtistList/index.html', array(
-    '${Common/pageHeader}'                     => buildPageHeader('Artist list', true, false),
+    '${Common/pageHeader}'                     => buildPageHeader('Artist list', false, false),
     '${Common/bodyHeader}'                     => buildBodyHeader($user),
     '${ArtistList/artistListItem_top_list}'    => $topArtistsList,
     '${ArtistList/artistListItem_latest_list}' => $latestArtistsList,

@@ -132,7 +132,8 @@ class ProjectFile {
             'autocreated_from      int(10), ' .
             'primary key (id), ' .
             'key project_id (project_id), ' .
-            'key entry_date (entry_date) ' .
+            'key entry_date (entry_date), ' .
+            'key autocreated_from (autocreated_from) ' .
             ') default charset=utf8'
         );
 
@@ -190,6 +191,9 @@ class ProjectFile {
 
         if (!$id) return;
 
+        // first, delete the autocreated sibling (if one is there)
+        ProjectFile::delete_with_autocreated_from($id);
+
         // delete file from filesystem
         $result = _mysql_query(
             'select filename ' .
@@ -221,6 +225,45 @@ class ProjectFile {
         return _mysql_query(
             'delete from pp_project_file ' .
             'where id = ' . n($id)
+        );
+    }
+
+    function delete_with_autocreated_from($id) {
+        global $logger;
+
+        if (!$id) return;
+
+        // delete file from filesystem
+        $result = _mysql_query(
+            'select filename ' .
+            'from pp_project_file ' .
+            'where autocreated_from = ' . n($id)
+        );
+
+        $f = null;
+        if ($row = mysql_fetch_array($result)) {
+            $f = $row['filename'];
+        }
+
+        mysql_free_result($result);
+
+        if ($f) {
+            $file = $GLOBALS['CONTENT_BASE_PATH'] . $f;
+            $logger->info('deleting project file: ' . $file);
+            $ok = @unlink($file); // suppress errors because this negatively influences ajax/json communication
+            if (!$ok) {
+                $logger->error('failed to delete file: ' . $file);
+            }
+
+        } else {
+            $logger->error('unable to get filename for project file id: ' . $id);
+        }
+
+        // delete record
+        $logger->info('deleting project file record with autocreated_from: ' . $id);
+        return _mysql_query(
+            'delete from pp_project_file ' .
+            'where autocreated_from = ' . n($id)
         );
     }
 

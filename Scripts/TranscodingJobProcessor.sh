@@ -6,12 +6,12 @@
 # Config Section
 TRANSCODING_DIR="/home/benso/oneloudr.com/OLTest/Transcoding/"
 LOG_ENABLED="false"
-LOG_FILE="/home/benso/oneloudr.com/OLTest/Log"
+LOG_FILE="/home/benso/oneloudr.com/OLTest/Log/cron.log"
 ##################################################################
 
 cd $TRANSCODING_DIR
 if [ $LOG_ENABLED = "true" ]; then
-    php TranscodingJobProcessor.php >> $LOG_FILE 2>&1
+    /usr/local/php5/bin/php/php TranscodingJobProcessor.php >> $LOG_FILE 2>&1
 else
-    php TranscodingJobProcessor.php > /dev/null 2>&1
+    /usr/local/php5/bin/php/php TranscodingJobProcessor.php > /dev/null 2>&1
 fi

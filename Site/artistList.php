@@ -24,9 +24,9 @@ if ($user) {
 }
 
 $latestArtistsList = '';
-$latestArtists = User::fetch_all_from_to(0, 999999, false, false, false, 'order by u.entry_date desc'); // FIXME - paging?
+$latestArtists = User::fetch_all_from_to(0, 25, false, false, false, 'order by u.entry_date desc'); // FIXME - paging?
 foreach ($latestArtists as $a) {
-    
+
     $artistAttributesArray = UserAttribute::getAttributeNamesForUserIdAndState($a->id, 'offers');
     $artistGenresArray = UserGenre::getGenreNamesForUserId($a->id);
     $artistAttributes = '';
@@ -35,7 +35,7 @@ foreach ($latestArtists as $a) {
         $artistAttributes = implode(", ", $artistAttributesArray);
         $artistAttributes = 'Skills: '.$artistAttributes;
         $artistAttributes = (strlen($artistAttributes) > 50 ? substr($artistAttributes, 0, 50).'...' : $artistAttributes);
-        
+
     }
     if(count($artistGenresArray)>0){
         $artistGenres = implode(", ", $artistGenresArray);
@@ -53,10 +53,10 @@ foreach ($latestArtists as $a) {
 }
 
 $topArtistsList = '';
-$topArtists = User::fetch_most_listened_artists_from_to(0, 999999); // FIXME - paging?
+$topArtists = User::fetch_most_listened_artists_from_to(0, 25); // FIXME - paging?
 
 foreach ($topArtists as $a) {
-        
+
     $artistAttributesArray = UserAttribute::getAttributeNamesForUserIdAndState($a->id, 'offers');
     $artistGenresArray = UserGenre::getGenreNamesForUserId($a->id);
     $artistAttributes = '';
@@ -65,7 +65,7 @@ foreach ($topArtists as $a) {
         $artistAttributes = implode(", ", $artistAttributesArray);
         $artistAttributes = 'Skills: '.$artistAttributes;
         $artistAttributes = (strlen($artistAttributes) > 50 ? substr($artistAttributes, 0, 50).'...' : $artistAttributes);
-        
+
     }
     if(count($artistGenresArray)>0){
         $artistGenres = implode(", ", $artistGenresArray);

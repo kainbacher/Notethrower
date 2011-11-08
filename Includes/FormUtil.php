@@ -44,6 +44,7 @@ function getFormFieldForParams($params) {
     $recaptchaPublicKey        = array_key_exists('recaptchaPublicKey', $params)        ? $params['recaptchaPublicKey']        : '';
     $objValueOverride          = array_key_exists('objValueOverride', $params)          ? $params['objValueOverride']          : null;
     $cssClassSuffix            = array_key_exists('cssClassSuffix', $params)            ? $params['cssClassSuffix']            : null;
+    $maxFileSizeForUpload      = array_key_exists('maxFileSizeForUpload', $params)      ? $params['maxFileSizeForUpload']      : null;
 
     // label
     $label = processTpl('Common/formElementLabel_' . ($mandatory ? 'mandatory' : 'optional') . '.html', array(
@@ -321,6 +322,11 @@ function getFormFieldForParams($params) {
         ));
 
     } else if ($inputType == 'file') {
+        $maxFileSizeAddon = '';
+        if ($maxFileSizeForUpload) {
+            $maxFileSizeAddon = '<input type="hidden" name="MAX_FILE_SIZE" value="' . $maxFileSizeForUpload . '">';
+        }
+
         $inputField = processTpl('Common/formElementInputField_file.html', array(
             '${id}'                        => $propName,
             '${name}'                      => $propName,
@@ -330,7 +336,8 @@ function getFormFieldForParams($params) {
             '${suffix}'                    => ($inputFieldSuffix ? '&nbsp;' . escape($inputFieldSuffix) : ''),
             '${disabled_optional}'         => ($disabled ? ' disabled="disabled"' : ''),
             '${readonly_optional}'         => ($readonly ? ' readonly="readonly"' : ''),
-            '${onChangeCallback_optional}' => ($onChangeCallback ? ' onChange="' . $onChangeCallback . '"' : '')
+            '${onChangeCallback_optional}' => ($onChangeCallback ? ' onChange="' . $onChangeCallback . '"' : ''),
+            '${maxFileSizeAddon}'          => $maxFileSizeAddon
         ));
 
     } else if ($inputType == 'recaptcha') {

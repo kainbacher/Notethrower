@@ -10,7 +10,7 @@ include_once('../Includes/DB/User.php');
 
 // FIXME - voting system, players, etc. need to be made dynamic. try not to reload the entire page when voting happens. player code is in startpage.php.
 
-$logger->set_debug_level();
+//$logger->set_debug_level();
 
 $visitorUserId = -1;
 $user = handleAuthentication();

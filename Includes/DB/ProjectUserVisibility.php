@@ -206,6 +206,25 @@ class ProjectUserVisibility {
         return $ok;
     }
 
+    function getAllUserIdsForProjectId($pid) {
+        $ids = array();
+
+        $result = _mysql_query(
+            'select puv.user_id ' .
+            'from pp_project_user_visibility puv ' .
+            'where puv.project_id = ' . n($pid) . ' ' .
+            'and (puv.is_request is null or puv.is_request = 0)'
+        );
+
+        while ($row = mysql_fetch_array($result)) {
+            $ids[] = $row['user_id'];
+        }
+
+        mysql_free_result($result);
+
+        return $ids;
+    }
+
     function delete_all_with_project_id($tid) {
         global $logger;
 

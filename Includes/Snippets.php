@@ -277,8 +277,10 @@ function getUserImageUri($userImageFilename, $size) {
 
         $logger->debug('user img: ' . $userImg);
 
-        if (!file_exists($userImg)) {
-      	    $userImgUri = $GLOBALS['BASE_URL'] . 'Images/no_artist_image.png';
+        if (file_exists($userImg)) {
+      	    $userImgUri .= '?nocache=' . filemtime($userImg); // prevent caching
+        } else {
+            $userImgUri = $GLOBALS['BASE_URL'] . 'Images/no_artist_image.png';
         }
 
     } else {
@@ -752,7 +754,7 @@ function create_resized_jpg($file, $destFile, $maxWidth, $maxHeight, $type) {
 
     $newWidth  = 0;
     $newHeight = 0;
-    
+
     if ($width <= $maxWidth && $height <= $maxHeight) { //image size already ok - rewrite with same dimensions
         $newWidth  = $width;
         $newHeight = $height;
@@ -791,7 +793,7 @@ function create_resized_jpg($file, $destFile, $maxWidth, $maxHeight, $type) {
     }
 
     $logger->info('destination width/height: ' . $newWidth . 'x' . $newHeight);
-    
+
     // Bild neu aufbereiten
     $imageNew = imagecreatetruecolor($newWidth, $newHeight);
     if($type == 'image/jpeg'){
@@ -804,9 +806,9 @@ function create_resized_jpg($file, $destFile, $maxWidth, $maxHeight, $type) {
         //fallback assuming img is jpeg
         $image = imagecreatefromjpeg($file);
     }
-    
-    
-    
+
+
+
     imagecopyresampled($imageNew, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
     imagedestroy($image); // free memory
 

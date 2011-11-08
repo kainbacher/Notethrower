@@ -590,7 +590,7 @@ class Project {
         return null;
     }
 
-    function fetchAllThatNeedSkillsOfUser(&$user) {
+    function fetchAllThatNeedSkillsOfUser(&$user, $maxRows = null) {
         $attribute_id_list = UserAttribute::getAttributeIdsForUserIdAndState($user->id, 'offers');
 
         $genre_id_list = UserGenre::getGenreIdsForUserId($user->id);
@@ -624,6 +624,8 @@ class Project {
             $p = null;
             while ($row = mysql_fetch_array($result)) {
                 if ($previousPid != $row['id']) {
+                    if ($maxRows && count($objs) >= $maxRows) break;
+
                     $p = new Project();
                     $p = Project::_read_row($p, $row);
                     $p->needsAttributeIdsList   = array();

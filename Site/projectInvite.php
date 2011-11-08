@@ -93,8 +93,8 @@ if (get_param('action') == 'inviteExternal') {
 
 if (get_param('action') == 'updateRecommendations') {
     $projectId = get_param('projectId');
-    $additionalAttributes = $_REQUEST['attributes'];
-
+    $additionalAttributes = get_param('attributes');
+    $additionalAttributes = explode(',', $additionalAttributes);
     $projectRecommendedArtists = User::fetchAllThatOfferSkillsForProjectId($loggedInUser -> id, $projectId, $additionalAttributes);
 
     $projectRecommendedArtistsList = '';

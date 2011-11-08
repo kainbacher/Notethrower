@@ -61,7 +61,7 @@ $(document).ready(function () {
     
     $('#attributes').change(function() {
         var attributes = $('#attributes').val();
-        updateRecommendedartistList('update',attributes);
+        updateRecommendedartistList('update',attributes.join(','));
         
     });
 

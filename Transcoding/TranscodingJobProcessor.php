@@ -12,7 +12,7 @@ include_once('../Includes/DB/TranscodingJob.php');
 
 $startTime = time();
 
-$logger->set_debug_level();
+//$logger->set_debug_level();
 
 // check if this script is currently running
 $processingFile = '../Tmp/processing';

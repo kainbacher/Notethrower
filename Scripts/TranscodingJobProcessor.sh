@@ -5,7 +5,7 @@
 
 # Config Section
 TRANSCODING_DIR="/home/benso/oneloudr.com/OLTest/Transcoding/"
-LOG_ENABLED="false"
+LOG_ENABLED="true"
 LOG_FILE="/home/benso/oneloudr.com/OLTest/Log/cron.log"
 ##################################################################
 

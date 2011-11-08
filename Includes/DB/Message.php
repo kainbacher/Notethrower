@@ -10,6 +10,7 @@ class Message {
     var $recipient_user_id;
     var $subject;
     var $text;
+    var $type; // possible values: null (same as 'message'), 'message', 'invitation'
     var $deleted;
     var $marked_as_read;
     var $entry_date;
@@ -77,6 +78,7 @@ class Message {
         $m->recipient_user_id   = $row['recipient_user_id'];
         $m->subject             = $row['subject'];
         $m->text                = $row['text'];
+        $m->type                = $row['type'];
         $m->deleted             = $row['deleted'];
         $m->marked_as_read      = $row['marked_as_read'];
         $m->entry_date          = reformat_sql_date($row['entry_date']);
@@ -99,6 +101,7 @@ class Message {
             'recipient_user_id int(10)      not null, ' .
             'subject             varchar(255), ' .
             'text                text         not null, ' .
+            'type                varchar(10), ' .
             'deleted             tinyint(1)   not null, ' .
             'marked_as_read      tinyint(1)   not null, ' .
             'entry_date          datetime     not null default "1970-01-01 00:00:00", ' .
@@ -160,12 +163,13 @@ class Message {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_message ' .
-            '(sender_user_id, recipient_user_id, subject, text, deleted, marked_as_read, entry_date) ' .
+            '(sender_user_id, recipient_user_id, subject, text, type, deleted, marked_as_read, entry_date) ' .
             'values (' .
             n($this->sender_user_id)     . ', ' .
             n($this->recipient_user_id)  . ', ' .
             qq($this->subject)             . ', ' .
             qq($this->text)                . ', ' .
+            qq($this->type)                . ', ' .
             b($this->deleted)              . ', ' .
             b($this->marked_as_read)       . ', ' .
             'now()'                        .
@@ -188,6 +192,7 @@ class Message {
             'recipient_user_id = '  . n($this->recipient_user_id) . ', ' .
             'subject = '              . qq($this->subject)            . ', ' .
             'text = '                 . qq($this->text)               . ', ' .
+            'type = '                 . qq($this->type)               . ', ' .
             'deleted = '              . b($this->deleted)             . ', ' .
             'marked_as_read = '       . b($this->marked_as_read)      . ' ' .
             // entry_date intentionally not set here

@@ -61,6 +61,7 @@ $RECAPTCHA_PUBLIC_KEY = '6LcNIgoAAAAAAP0BgB5wNty92PiCewdRq7y5L6qw';
 
 $ALLOWED_UPLOAD_EXTENSIONS = array('wav', 'mp3', 'mid', 'midi', 'txt');
 
-$TRANSCODER_COMMAND = '/home/benso/lame/bin/lame -h -S';
+$TRANSCODER_COMMAND = '/home/benso/lame/bin/lame';
+$TRANSCODER_OPTIONS = array('raw'=>'-S -b 160', 'mix'=>'-S -b 320;')
 
 ?>

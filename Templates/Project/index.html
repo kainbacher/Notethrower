@@ -147,7 +147,7 @@ ${Common/bodyFooter}
 
 <script type="text/javascript">
 
-function updateRecommendedartistList(){
+function updateRecommendedartistList(method, data){
     if ( method == 'update' ) {
         $.post('projectInvite.php',{ action:'updateRecommendations',projectId:${projectId},attributes:data } , function(data) {
             if(data){

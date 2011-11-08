@@ -60,9 +60,11 @@ $(document).ready(function () {
     });
     
     $('#attributes').change(function() {
-        var attributes = $('#attributes').val();
-        updateRecommendedartistList('update',attributes.join(','));
         
+        var attributes = $('#attributes').val();
+        if(attributes != null){
+            updateRecommendedartistList('update',attributes.join(','));
+        } 
     });
 
 });

@@ -130,6 +130,34 @@ class User {
         return $objs;
     }
 
+    function fetchForSearch($from, $length, $name, $attributeId, $genreId) {
+        $objs = array();
+
+        $result = _mysql_query(
+                'select u.* ' .
+                'from pp_user u ' .
+                ($genreId ? 'join pp_user_genre ug on ug.user_id = u.id ' : '') .
+                ($attributeId ? 'join pp_user_attribute ua on ua.user_id = u.id ' : '') .
+                'where u.status = "active" ' .
+                ($name ? 'and u.name like ' . qqLike($name) . ' ' : '') .
+                ($genreId ? 'and ug.genre_id = ' . n($genreId) . ' ' : '') .
+                ($attributeId ? 'and ua.attribute_id = ' . n($attributeId) . ' ' : '') .
+                'group by u.id ' .
+                'order by entry_date desc ' .
+                ($length ? 'limit ' . n($from) . ', ' . n($length) : '')
+        );
+
+        while ($row = mysql_fetch_array($result)) {
+            $u = new User();
+            $u = User::_read_row($u, $row);
+            $objs[] = $u;
+        }
+
+        mysql_free_result($result);
+
+        return $objs;
+    }
+
     function fetch_most_listened_artists_from_to($from, $to) {
         $objs = array();
 

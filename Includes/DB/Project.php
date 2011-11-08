@@ -364,7 +364,9 @@ class Project {
         return $a;
     }
 
-    function fetchForSearch($from, $length, $userOrTitle, $needsAttributeIds, $containsAttributeIds, $needsOthers, $containsOthers, $genres, $ignore_visibility, $show_inactive_items, $visitorUserId) {
+    function fetchForSearch($from, $length, $userOrTitle, $needsAttributeIds, $containsAttributeIds,
+            $needsOthers, $containsOthers, $genres, $ignore_visibility, $show_inactive_items, $visitorUserId) {
+
         $objs = array();
         $result = _mysql_query(
                 'select distinct t.*, a.name as user_name, a.image_filename as user_img_filename ' .
@@ -389,8 +391,7 @@ class Project {
                 (count($genres) == 0 ? '' : ' and pg.genre_id in (' . qqList($genres) . ') ') .
                 ' order by entry_date desc ' .
                 'limit ' . n($from) . ', ' . n($length)
-            );
-
+        );
 
         $ind = 0;
 

@@ -149,6 +149,34 @@ textarea {
     border-top: 1px solid #ccc;
 }
 
+.titleText {
+    color: #62487C;
+    font-weight: bold;
+}
+
+.edit {
+    background-image: url(../Images/icons/pencil.png);
+    background-repeat: no-repeat;
+    padding-left: 25px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
+
+.link-twitter {
+    background-image: url(../Images/icons/balloon-twitter.png);
+    background-repeat: no-repeat;
+    padding-left: 25px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
+
+.link-facebook {
+    background-image: url(../Images/icons/balloon-facebook.png);
+    background-repeat: no-repeat;
+    padding-left: 25px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
 
 /* !tooltip */
 /* ---------------------------------------------------------------------- */
@@ -272,16 +300,6 @@ textarea {
 .formElement {
     margin-bottom: 10px;
 }
-
-
-/* !text */
-/* ---------------------------------------------------------------------- */
-
-.titleText {
-    color: #62487C;
-    font-weight: bold;
-}
-
 
 
 /* !bodyWrapper */

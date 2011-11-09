@@ -33,6 +33,25 @@ if (isset($_GET['iid']) && isset($_GET['cs']) && md5('R.I.P.SuperSic!' . $_GET['
         } else {
             $logger->info('invited user is already associated with project');
         }
+        
+        //if user clicks accept link on dashboard, remove Message 
+        $mid = get_numeric_param('mid');
+        if ($mid) {
+            include_once('../Includes/DB/Message.php');
+            include_once('../Includes/PermissionsUtil.php');
+            $msg = Message::fetch_for_id($mid);
+            $user = User::new_from_cookie();
+    
+            if (!$msg || !$msg->id) {
+                $logger->error('Message with ID ' . $mid . ' not found!');
+            }
+    
+            ensureMessageBelongsToUser($msg, $user);
+    
+            $msg->deleted = true;
+            $msg->save();
+        }
+        
 
         redirectTo('project.php?action=edit&pid=' . $inv->project_id);
 

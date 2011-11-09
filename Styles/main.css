@@ -274,7 +274,13 @@ textarea {
 }
 
 
+/* !text */
+/* ---------------------------------------------------------------------- */
 
+.titleText {
+    color: #62487C;
+    font-weight: bold;
+}
 
 
 
@@ -1302,7 +1308,6 @@ a.nohighlight:hover {
 
 .trackList {
     border-top: 1px solid #ccc;
-    display: inline-block;
     margin-bottom: 36px;
 }
 

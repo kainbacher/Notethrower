@@ -74,12 +74,12 @@ function buildArtistRow(&$a) {
     $artistGenres = '';
     if (count($artistAttributesArray) >  0) {
         $artistAttributes = implode(', ', $artistAttributesArray);
-        $artistAttributes = 'Skills: ' . $artistAttributes;
+        $artistAttributes = '<span class="titleText">Skills:</span> ' . $artistAttributes;
         $artistAttributes = (strlen($artistAttributes) > 50 ? substr($artistAttributes, 0, 50) . '...' : $artistAttributes);
     }
     if (count($artistGenresArray) > 0) {
         $artistGenres = implode(', ', $artistGenresArray);
-        $artistGenres = 'Genres: ' . $artistGenres;
+        $artistGenres = '<span class="titleText">Genres: </span>' . $artistGenres;
         $artistGenres = (strlen($artistGenres) > 50 ? substr($artistGenres, 0, 50) . '...' : $artistGenres);
     }
 

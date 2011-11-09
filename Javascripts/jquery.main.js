@@ -279,7 +279,7 @@ $(document).ready(function(){
     });
 
 
-    console.log('log');
+
     $(':input').focus(function () {
         console.log('log');
     	if ($(this).val() == $(this).attr("title")) {

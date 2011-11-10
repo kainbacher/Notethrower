@@ -212,7 +212,7 @@ foreach ($releasedTracks as $releasedTrack) {
     $fileDownloadUrl = '../Backend/downloadFile.php?mode=download&project_id=' . $releasedTrack->project_id . '&atfid=' . $releasedTrack->id;
 
     $releasedTracksList .= processTpl('Artist/releaseListElement.html', array(
-        '${fileDownloadUrl}' => $releasedTrack->id,
+        '${fileDownloadUrl}' => $fileDownloadUrl,
         '${title}'           => $releasedTrack->title ? escape($releasedTrack->title) : escape($releasedTrack->orig_filename)
     ), $showMobileVersion);
 }

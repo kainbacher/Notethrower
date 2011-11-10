@@ -90,7 +90,7 @@ if ($visitorUser && $user->id != $visitorUser->id) {
 $artistInfo = '';
 if ($user->artist_info) {
     $artistInfo = processTpl('Artist/artistInfo.html', array(
-        '${artistInfo}' => escape($user->artist_info)
+        '${artistInfo}' => nl2br(escape($user->artist_info))
     ), $showMobileVersion);
 }
 
@@ -98,7 +98,7 @@ if ($user->artist_info) {
 $influences = '';
 if ($user->influences) {
     $influences = processTpl('Artist/influences.html', array(
-        '${influences}' => escape($user->influences)
+        '${influences}' => nl2br(escape($user->influences))
     ), $showMobileVersion);
 }
 

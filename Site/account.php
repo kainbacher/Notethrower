@@ -561,7 +561,7 @@ if ($userIsLoggedIn) {
     $artistInfo = '';
     if ($user->artist_info) {
         $artistInfo = processTpl('Account/artistInfo.html', array(
-            '${artistInfo}' => escape($user->artist_info)
+            '${artistInfo}' => nl2br(escape($user->artist_info))
         ));
     }
 
@@ -569,7 +569,7 @@ if ($userIsLoggedIn) {
     $influences = '';
     if ($user->influences) {
         $influences = processTpl('Account/influences.html', array(
-            '${influences}' => escape($user->influences)
+            '${influences}' => nl2br(escape($user->influences))
         ));
     }
 

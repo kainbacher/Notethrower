@@ -1,4 +1,4 @@
-<div style="border:1px solid black;padding:5px;margin-bottom:5px;background-color:#eeeeee"> <!-- hallo roland! ;) den krempel hier hab ich nur termpor�r eingebaut. kannst ihn gern wegschmeissen. lgh -->
+<div class="span-15 last projectAudioListItem">
     <!--jplayer start-->
     <script type="text/javascript">
     //<![CDATA[
@@ -22,52 +22,60 @@
 
     <div id="jquery_jplayer_${projectFileId}" class="jp-jplayer"></div>
 
-    <div id="jp_container_${projectFileId}" class="jp-audio">
-        <div class="jp-type-single">
-            <div class="jp-gui jp-interface">
-                <ul class="jp-controls">
-                    <li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
-                    <li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
-                    <li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
-                    <li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">mute</a></li>
-                    <li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
-                    <li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
-                </ul>
-                <div class="jp-progress">
-                    <div class="jp-seek-bar">
-                        <div class="jp-play-bar"></div>
+    <div class="span-15 last">
+        <div class="span-1">${projectFileElementCheckbox_optional}</div>
+        <div class="span-5">
+            ${uploaderUserImg}<br />
+            ${uploadedByName}<br />
+            ${fileIcon_choice}&nbsp;
+        </div>
+        <div class="span-8">
+
+            <div id="jquery_jplayer_${projectFileId}" class="jp-jplayer"></div>
+
+            <div id="jp_container_${projectFileId}" class="jp-audio">
+                <div class="jp-type-single">
+                    <div class="jp-gui jp-interface">
+                        <ul class="jp-controls">
+                            <li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
+                            <li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
+                    		<li><a href="javascript:;" class="jp-mute" tabindex="1">mute</a></li>
+                    		<li><a href="javascript:;" class="jp-unmute" tabindex="1">unmute</a></li>
+
+                        </ul>
+                        
+                    	<div class="jp-progress-container">
+                    		<div class="jp-progress">
+                    			<div class="jp-seek-bar" style="width: 100%; ">
+                    				<div class="jp-play-bar" style="width: 30.849901166487577%; "></div>
+                    			</div>
+                    		</div>
+                    	</div>
+                        
+                    	<div class="jp-volume-bar-container">
+                    		<div class="jp-volume-bar">
+                    			<div class="jp-volume-bar-value" style="width: 80%; "></div>
+                    		</div>
+                    	</div>
+
+                    </div>
+                    <div class="jp-no-solution">
+                        <span>Update Required</span>
+                        To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
                     </div>
                 </div>
-                <div class="jp-volume-bar">
-                    <div class="jp-volume-bar-value"></div>
-                </div>
-                <div class="jp-time-holder">
-                    <div class="jp-current-time"></div>
-                    <div class="jp-duration"></div>
-
-                    <ul class="jp-toggles">
-                        <li><a href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
-                        <li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
-                    </ul>
-                </div>
             </div>
-            <div class="jp-title">
-                <ul>
-                    <li>
-                        ${projectFileElementCheckbox_optional}
-                        ${fileIcon_choice}&nbsp;
-                        <a href="${fileDownloadUrl}" target="_blank">${filename}</a>
-                    </li>
-                    <li><small>Uploaded by ${uploaderUserImg}&nbsp;<b>${uploadedByName}</b></small></li>
-                </ul>
+            
+            <div>
+                Download: <a href="${fileDownloadUrl}" target="_blank">${filename}</a>
             </div>
-            <div class="jp-no-solution">
-                <span>Update Required</span>
-                To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
-            </div>
+            
         </div>
     </div>
-    <!--jplayer end -->
+
+
+ 
+ 
     <div style="clear:both"></div>
     ${Project/deleteFileLink_optional}
     ${Project/projectFileMetadataForm_optional}

@@ -41,6 +41,7 @@
     padding: .4em 1.5em .42em;
 }
 .button-small {
+    cursor: pointer;
     font-size: 11px;
     padding: .2em 1em .275em;
     -webkit-border-radius: 0.3em;
@@ -49,6 +50,7 @@
 }
 
 .button-big {
+    cursor: pointer;
     -webkit-border-radius: .2em;
     -moz-border-radius: .2em;
     border-radius: .2em;

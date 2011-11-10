@@ -2057,3 +2057,29 @@ a.nohighlight:hover {
     background-image: url(../Images/icons/message-close-hover.png);
 }
 
+
+/* !project page */
+/* ---------------------------------------------------------------------- */
+
+.projectAudioList {
+    border-top: 1px solid #ccc;
+}
+
+.projectAudioListItem {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

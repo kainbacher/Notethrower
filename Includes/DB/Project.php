@@ -323,6 +323,7 @@ class Project {
             'and p.status != "finished" ' .
             ($includePrivateProjects ? '' : 'and p.visibility = "public"') . ' ' .
             'and p.user_id = u.id ' .
+            'and p.status = "active" ' .
             'and u.status = "active" ' .
             'order by p.entry_date desc'
         );

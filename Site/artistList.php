@@ -93,12 +93,12 @@ function buildArtistRow(&$a) {
     if (count($artistAttributesArray) >  0) {
         $artistAttributes = implode(', ', $artistAttributesArray);
         $artistAttributes = '<span class="titleText">Skills:</span> ' . $artistAttributes;
-        $artistAttributes = (strlen($artistAttributes) > 50 ? substr($artistAttributes, 0, 50) . '...' : $artistAttributes);
+        $artistAttributes = (strlen($artistAttributes) > 200 ? substr($artistAttributes, 0, 200) . '...' : $artistAttributes);
     }
     if (count($artistGenresArray) > 0) {
         $artistGenres = implode(', ', $artistGenresArray);
         $artistGenres = '<span class="titleText">Genres: </span>' . $artistGenres;
-        $artistGenres = (strlen($artistGenres) > 50 ? substr($artistGenres, 0, 50) . '...' : $artistGenres);
+        $artistGenres = (strlen($artistGenres) > 200 ? substr($artistGenres, 0, 200) . '...' : $artistGenres);
     }
 
     return processTpl('ArtistList/artistListItem.html', array(

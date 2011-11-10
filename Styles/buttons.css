@@ -64,12 +64,19 @@
 
 /* grey */
 .grey {
-    color: #333;
+    color: #333 !important;
     border: solid 1px #ccc;
     background: #ddd;
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ccc));
+    background: -moz-linear-gradient(top,  #fff,  #ccc);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff', endColorstr='#ccc');
+    text-decoration: none !important;
 }
 .grey:hover {
     background: #d0d0d0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#ccc), to(#fff));
+    background: -moz-linear-gradient(top,  #ccc,  #fff);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ccc', endColorstr='#fff');
 }
 .grey:active {
     color: #afafaf;
@@ -119,6 +126,7 @@
     text-shadow: #8270A4 3px 3px 5px;
 }
 .purple:hover {
+    background: #62487C;
     color: #ffffff !important;
     text-decoration: none;
 }

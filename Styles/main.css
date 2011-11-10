@@ -926,7 +926,7 @@ a.nohighlight:hover {
 
 #pageContent {
     margin-top: 54px;
-    min-height: 600px;
+    min-height: 650px;
 }
 
 #contentTop {
@@ -2071,8 +2071,8 @@ a.nohighlight:hover {
 
 .projectAudioListItem {
     border-bottom: 1px solid #ccc;
-    padding-bottom: 10px;
-    padding-top: 10px;
+    padding-bottom: 20px;
+    padding-top: 20px;
 }
 
 .projectSectionButtons {

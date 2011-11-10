@@ -45,10 +45,16 @@ select { background-color:#fff; border-width:1px; border-style:solid; }
 
 input[type=text], input[type=password],
 input.text, input.title,
-textarea, select {
+textarea {
   margin-bottom: 5px;
   width: 295px;
 }
+
+select {
+  margin-bottom: 5px;
+  width: 305px;
+}
+
 
 input.text,
 input.title   { width: 300px; padding:5px; }

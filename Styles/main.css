@@ -186,6 +186,10 @@ textarea {
     padding-top: 2px;
 }
 
+.inline-block {
+    display: inline-block;
+}
+
 /* !tooltip */
 /* ---------------------------------------------------------------------- */
 
@@ -2071,7 +2075,10 @@ a.nohighlight:hover {
     padding-top: 10px;
 }
 
-
+.projectSectionButtons {
+    margin-bottom: 60px;
+    margin-top: 30px;
+}
 
 
 

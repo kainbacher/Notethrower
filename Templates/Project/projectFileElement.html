@@ -23,7 +23,10 @@
     <div id="jquery_jplayer_${projectFileId}" class="jp-jplayer"></div>
 
     <div class="span-15 last">
-        <div class="span-1">${projectFileElementCheckbox_optional}</div>
+        <div class="span-1">
+            ${projectFileElementCheckbox_optional}
+            &nbsp;
+        </div>
         <div class="span-5">
             ${uploaderUserImg}<br />
             ${uploadedByName}<br />
@@ -69,16 +72,13 @@
             <div>
                 Download: <a href="${fileDownloadUrl}" target="_blank">${filename}</a>
             </div>
+          
+            
+            ${Project/projectFileMetadataForm_optional}
+            ${Project/projectFileMetadata_optional}
+            ${Project/deleteFileLink_optional}
             
         </div>
     </div>
-
-
- 
- 
-    <div style="clear:both"></div>
-    ${Project/deleteFileLink_optional}
-    ${Project/projectFileMetadataForm_optional}
-    ${Project/projectFileMetadata_optional}
-    <br />
+    
 </div>

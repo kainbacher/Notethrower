@@ -93,49 +93,90 @@ ${Common/bodyHeader}
 <div id="pageContent" class="container">
 
 
-            ${Project/tabContentBasic_optional}
+    ${Project/tabContentBasic_optional}
 
-            ${Project/tabContentInvite_optional}
+    ${Project/tabContentInvite_optional}
 
-            <div class="span-24 last tabcontent-2${tabcontentAct_upload}">
-                <div class="span-16">
-                    <div class="box-grey">
-                        <h2>${projectTitle}</h2>
-                        <p>
-                            <span class="titleText">Owner:</span> <a href="artist.php?aid=${projectOwnerUserId}">${projectOwner}</a><br />
-                            
-                            <span class="titleText">Genres:</span> ${projectGenres}<br />
-                            <span class="titleText">Moods:</span> ${projectMoods}<br />
-                            <span class="titleText">Project needs:</span> ${projectNeeds}<br />
-                            <br />
-                            ${projectAdditionalInfo}
-                        </p>
-                        <br />
-
-                        ${Project/uploadedFilesSection}
-
+    <div class="span-24 last tabcontent-2${tabcontentAct_upload}">
+        <div class="span-16">
+            <div class="box-grey inline-block">
+                <h2>${projectTitle}</h2>
+                
+                <div class="span-15 last">
+                    <div class="span-3">
+                        <span class="titleText">Owner:</span>
+                    </div>
+                    <div class="span-10">
+                        <a href="artist.php?aid=${projectOwnerUserId}">${projectOwner}</a>
                     </div>
                 </div>
 
-                <div class="span-8 last">
-                    <div class="box-grey">
-                        <h2>Collaborators</h2>
-                        <br />
-                        ${Project/collaboratorIcon_list}
-                        <div style="clear:both"></div>
-                        ${Project/joinThisProjectLink_optional}
-                        &nbsp;
+                <div class="span-15 last">
+                    <div class="span-3">
+                        <span class="titleText">Genres:</span>
+                    </div>
+                    <div class="span-10">
+                        ${projectGenres}
                     </div>
                 </div>
-                <div style="clear: both;">
-                    <br />
-                    <br />
-                    <br />
-                    ${Project/uploadBackNavigation}
+
+                <div class="span-15 last">
+                    <div class="span-3">
+                        <span class="titleText">Moods:</span>
+                    </div>
+                    <div class="span-10">
+                        ${projectMoods}
+                    </div>
+                </div>                       
+
+                <div class="span-15 last">
+                    <div class="span-3">
+                        <span class="titleText">Project needs:</span>
+                    </div>
+                    <div class="span-10">
+                        ${projectNeeds}
+                    </div>
                 </div>
+
+                <div class="span-15 last">
+                    <div class="span-3">
+                        <span class="titleText">Project Infos:</span>
+                    </div>
+                    <div class="span-10">
+                        ${projectAdditionalInfo}
+                    </div>
+                </div>
+                
+                <div class="span-15 last">
+                    &nbsp;
+                    <br />
+                    <br />
+                </div>
+
+                ${Project/uploadedFilesSection}
+
             </div>
+        </div>
 
-            ${Project/tabContentPublish_optional}
+        <div class="span-8 last">
+            <div class="box-grey">
+                <h2>Collaborators</h2>
+                <br />
+                ${Project/collaboratorIcon_list}
+                <div style="clear:both"></div>
+                ${Project/joinThisProjectLink_optional}
+                &nbsp;
+            </div>
+        </div>
+        <div style="clear: both;">
+            <br />
+            <br />
+            <br />
+            ${Project/uploadBackNavigation}
+        </div>
+    </div>
+
+    ${Project/tabContentPublish_optional}
 
 
 </div>

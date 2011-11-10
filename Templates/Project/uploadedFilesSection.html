@@ -1,48 +1,50 @@
-<div id="projectFilesSection">
+<div id="projectFilesSection" class="span-15 last">
   ${Common/message_choice_list}
 
-    <div id="stemsSection">
-        <br />
-        <h2>Stems:</h2>
+    <div id="stemsSection" class="span-15 last projectSection">
+        <h1>Stems:</h1>
         <div class="span-15 last projectAudioList">
           ${Project/projectFileElement_list_stems}
           ${Project/projectFilesNotFound_optional_stems}
         </div>
-        <br />
-        ${Project/uploadStemsButton_optional}
+        
+        
 
-        <div class="prepend-6 span-6 last">
-            <input class="button blue"
-                type="submit"
-                value="Download selected stems"
-                onClick="downloadSelectedStems();">
+        <div class="span-15 last projectSectionButtons">
+            <div class="span-4">
+                <input class="button-small blue"
+                    type="submit"
+                    value="Download selected stems"
+                    onClick="downloadSelectedStems();">
+            </div>
+            <div class="span-3 last">
+                ${Project/uploadStemsButton_optional}
+            </div>
         </div>
-        <br />
+        
     </div>
 
-    <br />
-
-    <div id="releasesSection">
-      <br />
-      <h2>Releases:</h2>
-      <div>
-        ${Project/projectFileElement_list_releases}
-        ${Project/projectFilesNotFound_optional_releases}
-      </div>
-      <br />
+    <div id="releasesSection" class="span-15 last projectSection">
+        <h1>Releases:</h1>
+        <div class="span-15 last projectAudioList">
+            ${Project/projectFileElement_list_releases}
+            ${Project/projectFilesNotFound_optional_releases}
+        </div>
     </div>
 
-    <br />
+    <div id="mixesSection" class="span-15 last projectSection">
+        <h1>Mixes:</h1>
+        <div class="span-15 last projectAudioList">
+            ${Project/projectFileElement_list_mixes}
+            ${Project/projectFilesNotFound_optional_mixes}
+        </div>
 
-    <div id="mixesSection">
-      <br />
-      <h2>Mixes:</h2>
-      <div>
-        ${Project/projectFileElement_list_mixes}
-        ${Project/projectFilesNotFound_optional_mixes}
-      </div>
-      <br />
-      ${Project/uploadMixFilesButton_optional}
+        <div class="span-15 last projectSectionButtons">
+            <div class="span-3 last">
+                ${Project/uploadMixFilesButton_optional}
+            </div>
+        </div>
+    
     </div>
 
 </div>

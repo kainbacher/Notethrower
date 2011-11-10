@@ -341,7 +341,7 @@ if (get_param('action') == 'create') {
 
 // form fields
 $formElementsList == '';
-if ($project->user_id == $loggedInUser->id) { // logged-in user is the project owner
+if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user is the project owner
     $formElementsList .= getFormFieldForParams(array(
         'propName'               => 'title',
         'label'                  => 'Project title',
@@ -491,7 +491,7 @@ if ($project) {
 }
 
 $projectRecommendedArtistsList = '';
-if ($project->user_id == $loggedInUser->id) { // logged-in user is the project owner
+if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user is the project owner
     $projectRecommendedArtists = User::fetchAllThatOfferSkillsForProjectId($loggedInUser->id, $project->id);
 
     foreach($projectRecommendedArtists as $projectRecommendedArtist){
@@ -516,7 +516,7 @@ $tabPublishHtml = '';
 $tabContentBasicHtml   = '';
 $tabContentInviteHtml  = '';
 $tabContentPublishHtml = '';
-if ($project->user_id == $loggedInUser->id) { // logged-in user is the project owner
+if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user is the project owner
     $tabBasicHtml   = processTpl('Project/tabBasic.html', array());
     $tabInviteHtml  = processTpl('Project/tabInvite.html', array());
     $tabPublishHtml = processTpl('Project/tabPublish.html', array());
@@ -564,7 +564,8 @@ foreach ($collaboratorsList as $puv) {
 $joinProjectLink = '';
 if (
     $project->visibility == 'public' && (
-        !$loggedInUser ||
+        !$loggedInUser     ||
+        !$loggedInUser->id ||
         !projectIdIsAssociatedWithUserId($project->id, $loggedInUser->id)
     )
 ) {
@@ -595,7 +596,7 @@ processAndPrintTpl('Project/index.html', array(
     '${projectMoods}'                           => escape(implode(', ', $projectMoodList)),
     '${projectNeeds}'                           => escape(implode(', ', $projectNeedsList)),
     '${projectAdditionalInfo}'                  => escape($project->additionalInfo),
-    '${originatorUserId}'                       => $loggedInUser->id,
+    '${originatorUserId}'                       => $loggedInUser ? $loggedInUser->id : '',
     '${uploaderChecksum}'                       => md5('PoopingInTheWoods' . $project->id . '_' . ($loggedInUser ? $loggedInUser->id : '')),
     '${baseUrl}'                                => $GLOBALS['BASE_URL'],
     '${Project/uploadBackNavigation}'           => $uploadBackNavigation,
@@ -785,7 +786,7 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
             '${filename}'                                 => escape($file->orig_filename),
             '${Project/deleteFileLink_optional}'          => $deleteFileLinkHtml,
             '${fileDownloadUrl}'                          => $fileDownloadUrl,
-            '${player_optional}'                          => $playerHtml,
+            '${Project/player_optional}'                  => $playerHtml,
             '${status}'                                   => $file->status == 'active' ? 'Active' : 'Inactive', // TODO - currently not used
             '${projectId}'                                => $project->id,
             '${uploadedByName}'                           => $uploader->name,

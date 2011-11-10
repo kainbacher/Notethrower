@@ -634,17 +634,11 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
     for ($i = 0; $i < $fileCount; $i++) {
         $file = $projectFiles[$i];
 
+        // skip autocreaed siblings, they are grouped with their originals
         if ($file->autocreated_from) continue;
 
         // find out if the next file in the list is the autocreated mp3 of this file
         $autocreatedSibling = null;
-//        if (isset($projectFiles[$i + 1])) {
-//            $logger->info($projectFiles[$i + 1]->autocreated_from . ' == ' . $projectFiles[$i]->id);
-//            if ($projectFiles[$i + 1]->autocreated_from == $projectFiles[$i]->id) {
-//                $autocreatedSibling = $projectFiles[$i + 1];
-//            }
-//        }
-
         foreach ($projectFiles as $tmpPf) {
             if ($tmpPf->autocreated_from == $file->id) {
                 $autocreatedSibling = $tmpPf;
@@ -811,8 +805,6 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
         } else {
             $projectFilesStemsHtml .= $snippet;
         }
-
-        //if ($autocreatedSibling) $i++; // skip the autocreated sibling
     }
 
     if (!$projectFilesStemsHtml) {

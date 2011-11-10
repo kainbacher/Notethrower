@@ -97,8 +97,8 @@ class Message {
             'create table if not exists pp_message ' .
             '(' .
             'id                  int(10)      not null auto_increment, ' .
-            'sender_user_id    int(10)      not null, ' .
-            'recipient_user_id int(10)      not null, ' .
+            'sender_user_id      int(10), ' .
+            'recipient_user_id   int(10)      not null, ' .
             'subject             varchar(255), ' .
             'text                text         not null, ' .
             'type                varchar(10), ' .
@@ -165,8 +165,8 @@ class Message {
             'insert into pp_message ' .
             '(sender_user_id, recipient_user_id, subject, text, type, deleted, marked_as_read, entry_date) ' .
             'values (' .
-            n($this->sender_user_id)     . ', ' .
-            n($this->recipient_user_id)  . ', ' .
+            n($this->sender_user_id)       . ', ' .
+            n($this->recipient_user_id)    . ', ' .
             qq($this->subject)             . ', ' .
             qq($this->text)                . ', ' .
             qq($this->type)                . ', ' .
@@ -188,8 +188,8 @@ class Message {
     function update() {
         $ok = _mysql_query(
             'update pp_message ' .
-            'set sender_user_id = ' . n($this->sender_user_id)    . ', ' .
-            'recipient_user_id = '  . n($this->recipient_user_id) . ', ' .
+            'set sender_user_id = '   . n($this->sender_user_id)      . ', ' .
+            'recipient_user_id = '    . n($this->recipient_user_id)   . ', ' .
             'subject = '              . qq($this->subject)            . ', ' .
             'text = '                 . qq($this->text)               . ', ' .
             'type = '                 . qq($this->type)               . ', ' .

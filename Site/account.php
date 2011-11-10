@@ -10,6 +10,7 @@ include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/Attribute.php');
 include_once('../Includes/DB/Genre.php');
 include_once('../Includes/DB/Invitation.php');
+include_once('../Includes/DB/Message.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectUserVisibility.php');
 include_once('../Includes/DB/Tool.php');
@@ -86,6 +87,8 @@ if (get_param('action') == 'save') {
             if (get_numeric_param('invitedToProject')) {
                 processPendingInvitations($user);
             }
+
+            createWelcomeMessage($user->id);
 
             $logger->info('sending account creation confirmation email');
 
@@ -1096,6 +1099,29 @@ function processPendingInvitations(&$user) {
             $logger->warn('project with id ' . $inv->project_id . ' doesn\'t exist anymore! ignoring invitation.');
         }
     }
+}
+
+function createWelcomeMessage($newUserId) {
+    global $logger;
+
+    $subject = 'Welcome to Oneloudr!';
+    $text = 'Start making music together with our growing community of talented musicians. Create a new project ' .
+            'by uploading your stem files or join a public project that needs your talent. Remember, we\'re ' .
+            'currently in "Beta mode", so it\'s possible you might find a bug here and there. Please contact ' .
+            'us through our feedback tab on the left to let us know of any feature requests or bug fixes so we ' .
+            'can continue to make Oneloudr the best network for musicians to create and earn together.' . "\n\n" .
+            'Glad you are here. Let\'s make some Music!' . "\n\n" .
+            '-Joe Founder, Oneloudr';
+
+    $msg = new Message();
+    $msg->sender_user_id    = $senderUser->id;
+    $msg->recipient_user_id = $newUserId;
+    $msg->subject           = $subject;
+    $msg->text              = $text;
+    $msg->marked_as_read    = false;
+    $msg->save();
+
+    $logger->info('created welcome message for new user');
 }
 
 ?>

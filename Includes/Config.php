@@ -67,4 +67,7 @@ $TRANSCODER_COMMAND = '/home/benso/lame/bin/lame'; // FIXME - this should be in 
 // options for the transcoder, based on the type of the projectFile type
 $TRANSCODER_OPTIONS = array('raw'=>'-S -b 160', 'mix'=>'-S -b 320');
 
+// the email address which shall get the feedback via the contact form
+$CONTACT_FORM_RECIPIENT_EMAIL = 'go@oneloudr.com';
+
 ?>

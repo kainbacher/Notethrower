@@ -5,30 +5,32 @@ ${Common/pageHeader}
     ${Common/bodyHeader}
 
     <div id="pageContent" class="container">
-    
+
         <div class="span-16">
             <div class="box-grey">
                 <h1>Contact us</h1>
 
-                <form action="." style="display:inline-block;">
-                
+                ${msgsAndErrorsList_optional}
+
+                <form action="${formAction}" style="display:inline-block;">
+                    <input type="hidden" name="action" value="send">
 
                     <div id="formElt_name" class=" formElement span-15 last">
                         <div class="span-6">
-                            <b>Firstname:</b>
+                            <b>First name:</b>
                         </div>
                         <div class="span-8">
-                            <input type="text" id="name" name="name" value="rocka" maxlength="255">
+                            <input type="text" id="firstName" name="firstName" maxlength="255">
                         </div>
                     </div>
 
 
                     <div id="formElt_name" class=" formElement span-15 last">
                         <div class="span-6">
-                            <b>Name:</b>
+                            <b>Last name:</b>
                         </div>
                         <div class="span-8">
-                            <input type="text" id="name" name="name" value="rocka" maxlength="255">
+                            <input type="text" id="lastName" name="lastName" maxlength="255">
                         </div>
                     </div>
 
@@ -38,30 +40,30 @@ ${Common/pageHeader}
                             <b>Email:</b>
                         </div>
                         <div class="span-8">
-                            <input type="text" id="name" name="name" value="rocka" maxlength="255">
+                            <input type="text" id="email" name="email" value="${email_optional}" maxlength="255">
                         </div>
                     </div>
 
                     <div id="formElt_name" class=" formElement span-15 last">
-                        <div class="span-6"><b>Nachricht:</b></div>
+                        <div class="span-6"><b>Message:</b></div>
                         <div class="span-8">
-                            <textarea type="text" id="name" name="name" value="rocka" maxlength="255"></textarea>
-                        </div>   
+                            <textarea type="text" id="msg" name="msg"></textarea>
+                        </div>
                     </div>
-                
+
                     <div class="prepend-6 span-6 last">
-                        <input type="submit" class="updateAccountButton button blue" value="send" onclick="buildUserAttributesToolsAndGenresLists();">
+                        <input type="submit" class="updateAccountButton button blue" value="send">
                     </div>
-                
+
                 </form>
             </div>
         </div>
 
         <div class="span-8 last">
-            
+
             <div class="span-8 last">
                 <div class="box-grey">
-                    <h2>States</h2>
+                    <h2>United States</h2>
                     <p>
                         <b>Oneloudr North America</b><br />
                         Mainstreet<br />
@@ -83,9 +85,9 @@ ${Common/pageHeader}
                     </p>
                 </div>
             </div>
-        
+
         </div>
-    
+
     </div>
 
     ${Common/bodyFooter}

@@ -639,13 +639,25 @@ a.nohighlight:hover {
 }
 
 #logo {
-    color: #ffffff;
+    color: white;
     font-size: 18px;
     float: left;
-    width: 170px;
-    height: 40px;
-    margin-top: 0px;
+    width: 180px;
+    height: 38px;
+    margin-top: 2px;
     cursor: pointer;
+}
+
+#betaLogo {
+    padding-top: 10px;
+}
+
+#betaLogo a {
+    text-decoration: none;
+    border: 1px solid #0F7AC0;
+    font-size: 23px;
+    padding-left: 3px;
+    padding-right: 3px;
 }
 
 #logo a {

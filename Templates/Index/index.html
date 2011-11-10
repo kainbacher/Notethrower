@@ -3,7 +3,48 @@ ${Common/pageHeader}
 <body>
 
 ${Common/bodyHeader}
+<script type="text/javascript">
+//<![CDATA[
+$(document).ready(function(){
 
+    var myCirclePlayer1 = new CirclePlayer("#jquery_jplayer_1",
+    {
+        mp3:"http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3"
+    }, {
+        cssSelectorAncestor: "#jp_container_1",
+        swfPath: "../Javascripts/jplayer/",
+        supplied: "mp3",
+        wmode: "window"
+    });
+
+    var myCirclePlayer2 = new CirclePlayer("#jquery_jplayer_2",
+    {
+        mp3:"http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3"
+    }, {
+        cssSelectorAncestor: "#jp_container_2",
+        swfPath: "../Javascripts/jplayer/",
+        supplied: "mp3",
+        wmode: "window"
+    });
+
+    var myCirclePlayer3 = new CirclePlayer("#jquery_jplayer_3",
+    {
+        mp3:"http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3"
+    }, {
+        cssSelectorAncestor: "#jp_container_3",
+        swfPath: "../Javascripts/jplayer/",
+        supplied: "mp3",
+        wmode: "window"
+    });
+
+});
+//]]>
+</script>
+<!-- jPlayer containers - hidden  start-->
+<div id="jquery_jplayer_1" class="cp-jplayer"></div>
+<div id="jquery_jplayer_2" class="cp-jplayer"></div>
+<div id="jquery_jplayer_3" class="cp-jplayer"></div>
+<!-- jPlayer containers - hidden  end-->
 <div id="pageContent">
     <div class="container">
 
@@ -72,7 +113,25 @@ ${Common/bodyHeader}
                                 incl pictuere
                             </div>
                             <div class="startListenPlay">
-                                <img src="../Images/icons/play-startpage.png" alt="play-startpage" width="48" height="48" />
+                                <!-- jPlayer container start -->
+                                <div id="jp_container_1" class="cp-container">
+                                    <div class="cp-buffer-holder">
+                                        <div class="cp-buffer-1"></div>
+                                        <div class="cp-buffer-2"></div>
+                                    </div>
+                                    <div class="cp-progress-holder">
+                                        <div class="cp-progress-1"></div>
+                    
+                                        <div class="cp-progress-2"></div>
+                                    </div>
+                                    <div class="cp-circle-control"></div>
+                                    <ul class="cp-controls">
+                                        <li><a href="#" class="cp-play" tabindex="1">play</a></li>
+                                        <li><a href="#" class="cp-pause" style="display:none;" tabindex="1">pause</a></li>
+                                    </ul>
+                    
+                                </div>
+                                <!-- jPlayer container end-->
                             </div>
                             <div class="startListenMusicians">
                                 Musicians in this Project:<br />
@@ -88,7 +147,25 @@ ${Common/bodyHeader}
                                 by Mister Monk
                             </div>
                             <div class="startListenPlay">
-                                <img src="../Images/icons/play-startpage.png" alt="play-startpage" width="48" height="48" />
+                                <!-- jPlayer container start -->
+                                <div id="jp_container_2" class="cp-container">
+                                    <div class="cp-buffer-holder">
+                                        <div class="cp-buffer-1"></div>
+                                        <div class="cp-buffer-2"></div>
+                                    </div>
+                                    <div class="cp-progress-holder">
+                                        <div class="cp-progress-1"></div>
+                    
+                                        <div class="cp-progress-2"></div>
+                                    </div>
+                                    <div class="cp-circle-control"></div>
+                                    <ul class="cp-controls">
+                                        <li><a href="#" class="cp-play" tabindex="1">play</a></li>
+                                        <li><a href="#" class="cp-pause" style="display:none;" tabindex="1">pause</a></li>
+                                    </ul>
+                    
+                                </div>
+                                <!-- jPlayer container end-->
                             </div>
                             <div class="startListenMusicians">
                                 Musicians in this Project:<br />
@@ -104,7 +181,25 @@ ${Common/bodyHeader}
                                 by Mister Monk
                             </div>
                             <div class="startListenPlay">
-                                <img src="../Images/icons/play-startpage.png" alt="play-startpage" width="48" height="48" />
+                                <!-- jPlayer container start -->
+                                <div id="jp_container_3" class="cp-container">
+                                    <div class="cp-buffer-holder">
+                                        <div class="cp-buffer-1"></div>
+                                        <div class="cp-buffer-2"></div>
+                                    </div>
+                                    <div class="cp-progress-holder">
+                                        <div class="cp-progress-1"></div>
+                    
+                                        <div class="cp-progress-2"></div>
+                                    </div>
+                                    <div class="cp-circle-control"></div>
+                                    <ul class="cp-controls">
+                                        <li><a href="#" class="cp-play" tabindex="1">play</a></li>
+                                        <li><a href="#" class="cp-pause" style="display:none;" tabindex="1">pause</a></li>
+                                    </ul>
+                    
+                                </div>
+                                <!-- jPlayer container end-->
                             </div>
                             <div class="startListenMusicians">
                                 Musicians in this Project:<br />

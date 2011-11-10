@@ -38,13 +38,18 @@ if (get_param('action') == 'inviteInternal') {
         $msg = new Message();
         $msg -> sender_user_id = $senderUserId;
         $msg -> recipient_user_id = $artistId;
-        $msg -> subject = $senderUser -> name . ' invited you to the oneloudr.com "' . $projectTitle . '" project.';
-        $msg -> text = 'Please click the link below to accept the invitation' . "\n" . $invitationurl;
+        $msg -> subject = $projectTitle;
+        $msg -> text = $invitationurl;
         $msg -> marked_as_read = false;
+        $msg -> type = 'invite';
         $msg -> save();
+        
+        $email_subject = $senderUser -> name . ' invited you to the oneloudr.com "' . $projectTitle . '" project.';
+        $email_text = 'Please click the link below to accept the invitation' . "\n" . $invitationurl;
+        
 
-        //$email_sent = send_email($invitedArtist->email_address,$msg->subject, $msg->text);
-        $email_sent = true;
+        $email_sent = send_email($invitedArtist->email_address,$email_subject, $email_text);
+        //$email_sent = true;
         if (!$email_sent) {
             $logger -> error('Failed to send "new message" notification email!');
         } else {

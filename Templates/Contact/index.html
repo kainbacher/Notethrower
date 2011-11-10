@@ -4,32 +4,84 @@ ${Common/pageHeader}
 
     ${Common/bodyHeader}
 
-    <div class="container">
+    <div id="pageContent" class="container">
     
         <div class="span-16">
-            <h1>Contact</h1>
-            
-            <iframe src="http://spreadsheets.google.com/embeddedform?key=thN79U430lcxoxd1CUsvqyw" width="610" height="891" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
-            <br />
+            <div class="box-grey">
+                <h1>Contact us</h1>
+
+                <form action="." style="display:inline-block;">
+                
+
+                    <div id="formElt_name" class=" formElement span-15 last">
+                        <div class="span-6">
+                            <b>Firstname:</b>
+                        </div>
+                        <div class="span-8">
+                            <input type="text" id="name" name="name" value="rocka" maxlength="255">
+                        </div>
+                    </div>
+
+
+                    <div id="formElt_name" class=" formElement span-15 last">
+                        <div class="span-6">
+                            <b>Name:</b>
+                        </div>
+                        <div class="span-8">
+                            <input type="text" id="name" name="name" value="rocka" maxlength="255">
+                        </div>
+                    </div>
+
+
+                    <div id="formElt_name" class=" formElement span-15 last">
+                        <div class="span-6">
+                            <b>Email:</b>
+                        </div>
+                        <div class="span-8">
+                            <input type="text" id="name" name="name" value="rocka" maxlength="255">
+                        </div>
+                    </div>
+
+                    <div id="formElt_name" class=" formElement span-15 last">
+                        <div class="span-6"><b>Nachricht:</b></div>
+                        <div class="span-8">
+                            <textarea type="text" id="name" name="name" value="rocka" maxlength="255"></textarea>
+                        </div>   
+                    </div>
+                
+                    <div class="prepend-6 span-6 last">
+                        <input type="submit" class="updateAccountButton button blue" value="send" onclick="buildUserAttributesToolsAndGenresLists();">
+                    </div>
+                
+                </form>
+            </div>
         </div>
 
         <div class="span-8 last">
             
-            <div class="box-grey">
-                <h2>US</h2>
-                <p>
-                    Memphis..<br />
-                    <a href="mailto:us@oneloudr.com">us@oneloudr.com</a>
-                </p>
+            <div class="span-8 last">
+                <div class="box-grey">
+                    <h2>States</h2>
+                    <p>
+                        <b>Oneloudr North America</b><br />
+                        Mainstreet<br />
+                        909090 Memphis<br />
+                        <a href="mailto:one@oneloudr.com">one@oneloudr.com</a>
+                    </p>
+                </div>
             </div>
 
-            <div class="box-grey">
-                <h2>Austria</h2>
-                <p>
-                    Marktstraße 4<br />
-                    6850 Dornbirn<br />
-                    <a href="mailto:aut@oneloudr.com">aut@oneloudr.com</a>
-                </p>
+            <div class="span-8 last">
+                <div class="box-grey">
+                    <h2>Europe</h2>
+                    <p>
+                        <b>Oneloudr Europe</b><br />
+                        Marktstraße 4<br />
+                        6850 Dornbirn<br />
+                        Austria, Europe<br />
+                        <a href="mailto:one@oneloudr.com">one@oneloudr.com</a>
+                    </p>
+                </div>
             </div>
         
         </div>

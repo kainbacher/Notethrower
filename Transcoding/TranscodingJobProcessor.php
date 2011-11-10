@@ -12,7 +12,7 @@ include_once('../Includes/DB/TranscodingJob.php');
 
 $startTime = time();
 
-$logger->set_debug_level();
+//$logger->set_debug_level();
 
 // check if this script is currently running
 $processingFile = '../Tmp/processing';
@@ -69,17 +69,19 @@ function transcode(&$pjob) {
     $logger->info('transcoding file ' . $pjob->filename . ' (jobId = ' . $pjob->id . ')');
 
     try {
+        $projectFile = ProjectFile::fetch_for_id($pjob->projectFileId);
 
         $sourceFile = $GLOBALS['CONTENT_BASE_PATH'] . $pjob->filename;
         $mp3Filename = getFilenameWithoutExt($pjob->filename) . '.mp3';
         $destFile = $GLOBALS['CONTENT_BASE_PATH'] . $mp3Filename;
 
-        $command = $GLOBALS['TRANSCODER_COMMAND'] . ' ' . $sourceFile . ' ' . $destFile;
+        $options = $GLOBALS['TRANSCODER_OPTIONS'][$projectFile->type];
+        $command = $GLOBALS['TRANSCODER_COMMAND'] . ' ' . $options . ' ' . $sourceFile . ' ' . $destFile;
 
         // execute the command
         $returnVar = 1;
         $output = array();
-        $logger->debug('executing command: ' . $command);
+        $logger->info('executing command: ' . $command);
         $ret = exec($command, $output, $returnVar);
 
         if ($returnVar != 0) {

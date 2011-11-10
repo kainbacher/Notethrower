@@ -11,7 +11,7 @@ LOG_FILE="/home/benso/oneloudr.com/OLTest/Log/cron.log"
 
 cd $TRANSCODING_DIR
 if [ $LOG_ENABLED = "true" ]; then
-    /usr/local/php5/bin/php/php TranscodingJobProcessor.php >> $LOG_FILE 2>&1
+    /usr/local/php5/bin/php TranscodingJobProcessor.php >> $LOG_FILE 2>&1
 else
-    /usr/local/php5/bin/php/php TranscodingJobProcessor.php > /dev/null 2>&1
+    /usr/local/php5/bin/php TranscodingJobProcessor.php > /dev/null 2>&1
 fi

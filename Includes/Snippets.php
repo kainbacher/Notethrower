@@ -145,8 +145,14 @@ function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagin
     $jplayerStylesheet = '';
     $jplayerScript     = '';
     if ($includeJPlayerStuff) {
-        $jplayerStylesheet = processTpl('Common/jPlayerStylesheet.html', array(), $useMobileVersion);
-        $jplayerScript     = processTpl('Common/jPlayerScript.html', array(), $useMobileVersion);
+        if ($includeJPlayerStuff === 'circlesmall') {
+            $jplayerStylesheet = processTpl('Common/jPlayerStylesheetCS.html', array(), $useMobileVersion);
+            $jplayerScript     = processTpl('Common/jPlayerScriptCS.html', array(), $useMobileVersion);
+        }
+        else {
+            $jplayerStylesheet = processTpl('Common/jPlayerStylesheet.html', array(), $useMobileVersion);
+            $jplayerScript     = processTpl('Common/jPlayerScript.html', array(), $useMobileVersion);
+        }
     }
 
     $ajaxPaginationStylesheet = '';

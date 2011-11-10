@@ -1,8 +1,8 @@
-/* !ONELOUDR.COM */
 /* ---------------------------------------------------------------------- */
 /*
     Hanno Jonas - www.rastaduck.org
     Roland Kainbacher MA - www.beautyparlour.at
+    Markus Dietrich  
 */
 /* !generalStyles */
 /* ---------------------------------------------------------------------- */
@@ -149,6 +149,42 @@ textarea {
     border-top: 1px solid #ccc;
 }
 
+.titleText {
+    color: #62487C;
+    font-weight: bold;
+}
+
+.edit {
+    background-image: url(../Images/icons/pencil.png);
+    background-repeat: no-repeat;
+    padding-left: 25px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
+
+.link-twitter {
+    background-image: url(../Images/icons/balloon-twitter.png);
+    background-repeat: no-repeat;
+    padding-left: 25px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
+
+.link-facebook {
+    background-image: url(../Images/icons/balloon-facebook.png);
+    background-repeat: no-repeat;
+    padding-left: 25px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
+
+.link-web {
+    background-image: url(../Images/icons/globe.png);
+    background-repeat: no-repeat;
+    padding-left: 25px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
 
 /* !tooltip */
 /* ---------------------------------------------------------------------- */
@@ -193,7 +229,7 @@ textarea {
 .box-grey {
     background-color: #fafafa;
     border: 1px solid #f0f0f0;
-    display: inline-block;
+    /* display: inline-block; */
     padding: 18px;
     margin-bottom: 18px;
 }
@@ -272,10 +308,6 @@ textarea {
 .formElement {
     margin-bottom: 10px;
 }
-
-
-
-
 
 
 /* !bodyWrapper */
@@ -641,7 +673,7 @@ a.nohighlight:hover {
 }
 
 .topMenuItem {
-	float: left;
+	float: right;
 	height: 36px;
 	margin-left: 1px;
 }
@@ -853,7 +885,9 @@ a.nohighlight:hover {
     padding-bottom: 0px;
 }
 
-.subMenu {}
+.subMenu {
+    list-style: none;
+}
 
 .subMenuItem {
     float: left;
@@ -1107,7 +1141,7 @@ a.nohighlight:hover {
 
 .footerMenu li {
     padding-right: 20px;
-    border-bottom: 1px dotted #aaa;
+    border-bottom: 1px solid #ddd;
 }
 
 .footerMenu a {
@@ -1132,6 +1166,78 @@ a.nohighlight:hover {
     width: 32px;
 }
 
+.footerSocialmedia a {
+    display: block;
+    height: 32px;
+    text-decoration: none;
+    width: 32px;
+}
+
+.footerSocialmediaFacebook a {
+    background-image: url(../Images/socialmedia/facebook-sw.png);
+    background-repeat: no-repeat;
+}
+
+.footerSocialmediaFacebook a:hover {
+    background-image: url(../Images/socialmedia/facebook.png);
+    background-repeat: no-repeat;
+}
+
+.footerSocialmediaTwitter a {
+    background-image: url(../Images/socialmedia/twitter-sw.png);
+    background-repeat: no-repeat;
+}
+
+.footerSocialmediaTwitter a:hover {
+    background-image: url(../Images/socialmedia/twitter.png);
+    background-repeat: no-repeat;
+}
+
+.footerSocialmediaYoutube a {
+    background-image: url(../Images/socialmedia/youtube-sw.png);
+    background-repeat: no-repeat;
+}
+
+.footerSocialmediaYoutube a:hover {
+    background-image: url(../Images/socialmedia/youtube.png);
+    background-repeat: no-repeat;
+}
+
+
+.footerLogos {
+    list-style: none;
+    margin: 0px;
+}
+
+.footerLogos li {
+    float: left;
+}
+
+.footerLogos a {
+    display: block;
+    height: 115px;
+    width: 160px;
+}
+
+.footerLogoImpulse a {
+    background-image: url(../Images/footer-logo-impulse-sw.png);
+    background-repeat: no-repeat;
+}
+
+.footerLogoImpulse a:hover {
+    background-image: url(../Images/footer-logo-impulse.png);
+    background-repeat: no-repeat;
+}
+
+.footerLogoStartup a {
+    background-image: url(../Images/footer-logo-startup-sw.png);
+    background-repeat: no-repeat;
+}
+
+.footerLogoStartup a:hover {
+    background-image: url(../Images/footer-logo-startup.png);
+    background-repeat: no-repeat;
+}
 
 /* !news */
 /* ---------------------------------------------------------------------- */
@@ -1228,7 +1334,6 @@ a.nohighlight:hover {
 
 .trackList {
     border-top: 1px solid #ccc;
-    display: inline-block;
     margin-bottom: 36px;
 }
 

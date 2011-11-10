@@ -24,32 +24,27 @@ ${Common/pageHeader}
                     <div class="sidetwoRight">
                         <h1>${userName}</h1>
                         ${Common/sendMessage_optional}
+                        ${Artist/editProfileLink_optional}
                     </div>
                     <div class="clear"></div>
                 </div>
 
-
                 <div class="line">&nbsp;</div>
 
-                ${Artist/editProfileLink_optional}
-
                 <p>
-                  Skills:<br />
-                  ${skills}
+                  <span class="titleText">Skills:</span> ${skills}
                 </p>
 
                 <div class="line">&nbsp;</div>
 
                 <p>
-                  Genres:<br />
-                  ${genres}
+                  <span class="titleText">Genres:</span> ${genres}
                 </p>
 
                 <div class="line">&nbsp;</div>
 
                 <p>
-                  Tools:<br />
-                  ${tools}
+                  <span class="titleText">Tools:</span> ${tools}
                 </p>
 
                 <div class="line">&nbsp;</div>
@@ -57,9 +52,7 @@ ${Common/pageHeader}
                 ${Artist/video_optional}
 
                 ${Artist/artistInfo_optional}
-
                 ${Artist/influences_optional}
-
                 ${Common/externalWebLink_list}
 
             </div>

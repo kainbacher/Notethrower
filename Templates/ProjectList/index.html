@@ -12,30 +12,22 @@ ${Common/bodyHeader}
             <h1>My Projects</h1>
             ${Common/message_choice_optional}
 
-            <div class="span-16 last">
-                <div class="trackList">
-                    ${ProjectList/projectListItem_list_own}
-                </div>
+            <div class="span-16 last trackList">
+                ${ProjectList/projectListItem_list_own}
             </div>
 
             <h1>Projects where i participate</h1>
 
-            <div class="span-16 last">
-                <div class="trackList">
-                    ${ProjectList/projectListItem_list_associated}
-                </div>
+            <div class="span-16 last trackList">
+                ${ProjectList/projectListItem_list_associated}
             </div>
 
         </div>
 
         <div class="span-8 last">
-
-            <div class="box-grey">
-                <a href="project.php?action=create" class="button blue">
-                    Create a new project
-                </a>
-            </div>
-
+            <a href="project.php?action=create" class="button blue">
+                Create a new project
+            </a>
         </div>
     </div>
 </div>

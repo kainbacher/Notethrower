@@ -2080,7 +2080,13 @@ a.nohighlight:hover {
     margin-top: 30px;
 }
 
+.projectAudioListItem select {
+    width: 200px;
+}
 
+.projectAudioListItem textarea {
+    width: 200px;
+}
 
 
 

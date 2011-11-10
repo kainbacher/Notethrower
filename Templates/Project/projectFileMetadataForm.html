@@ -5,66 +5,34 @@
   <input type="hidden" name="fid" value="${projectFileId}">
   <input type="hidden" name="projectFileAttributesList_${projectFileId}" id="projectFileAttributesList_${projectFileId}" value="">
 
-  <div id="formElt_comment" class=" formElement span-15 last">
 
-    <div class="span-6">
-        <b>Comment:</b>
-    </div>
-
-    <div class="span-8">
-
-        <textarea id="comment" name="comment" rows="3" cols="30" style="height:60px;" maxlength="500">${commentText_optional}</textarea><p class="smallText charsRemaining"></p>
-
-
-    </div>
-
-    <div class="span-1 last">
-        <div class="toolTipWrapper">
-    <div class="toolTip">
-        <img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" />
-    </div>
-    <div class="toolTipContent">
-        Add a comment about the file here.
-    </div>
-</div>
-
+    <div class="span-9 last">
+        <div class="span-3">
+            <span class="titleText">Comment:</span>
+        </div>
+        <div class="span-6 last">
+            <textarea id="comment" name="comment" rows="3" cols="30" style="height:60px;" maxlength="500">${commentText_optional}</textarea>
+            <p class="smallText charsRemaining"></p>
+        </div>
     </div>
 
 
-
-</div><div id="formElt_fileAttributes_${projectFileId}" class=" formElement span-15 last">
-
-    <div class="span-6">
-        <b>Instrument/Skills:</b>
-    </div>
-
-    <div class="span-8">
-
-        <select data-placeholder=" " id="fileAttributes_${projectFileId}" name="fileAttributes_${projectFileId}" class=" chzn-select" multiple>
-  ${attributesList}
-
-</select>
-
-
-    </div>
-
-    <div class="span-1 last">
-        <div class="toolTipWrapper">
-    <div class="toolTip">
-        <img src="../Images/icons/icon_info.png" alt="icon_info" width="16" height="16" />
-    </div>
-    <div class="toolTipContent">
-        List here what this file consists of. Eg. &quot;Bass&quot; for a bass track.
-    </div>
-</div>
-
+    <div class="span-9 last">
+        <div class="span-3">
+            <span class="titleText">Instrument/Skills:</span>
+        </div>
+        <div class="span-6 last">
+            <select data-placeholder=" " id="fileAttributes_${projectFileId}" name="fileAttributes_${projectFileId}" class=" chzn-select" multiple>
+                ${attributesList}
+            </select>
+        </div>
     </div>
 
 
 
-  <input class="button blue"
+    <input class="button-small blue"
          type="submit"
          value="Save"
-         onClick="buildProjectFileAttributesLists(${projectFileId});"><br />
-  <p class="smallText charsRemaining"></p>
+         onClick="buildProjectFileAttributesLists(${projectFileId});">
+    
 </form>

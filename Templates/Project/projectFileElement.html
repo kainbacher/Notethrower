@@ -2,13 +2,13 @@
     <!--jplayer start-->
     <script type="text/javascript">
     //<![CDATA[
-    
+
     $(document).ready(function(){
-    
+
         $("#jquery_jplayer_${projectFileId}").jPlayer({
             ready: function () {
                 $(this).jPlayer("setMedia", {
-                    mp3:"${fileDownloadUrl}"
+                    mp3:"${prelisteningUrl}"
                 });
             },
             swfPath: "../Javascripts/jplayer/",
@@ -19,7 +19,7 @@
     });
     //]]>
     </script>
-    
+
     <div id="jquery_jplayer_${projectFileId}" class="jp-jplayer"></div>
 
     <div id="jp_container_${projectFileId}" class="jp-audio">
@@ -54,7 +54,7 @@
             <div class="jp-title">
                 <ul>
                     <li>
-                        ${projectFileElementCheckbox_optional}  
+                        ${projectFileElementCheckbox_optional}
                         ${fileIcon_choice}&nbsp;
                         <a href="${fileDownloadUrl}" target="_blank">${filename}</a>
                     </li>

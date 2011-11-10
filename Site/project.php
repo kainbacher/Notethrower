@@ -757,6 +757,10 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
             ));
         }
 
+        $fileDownloadUrl = '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $file->id;
+        $prelisteningUrl = $fileDownloadUrl;
+        if ($autocreatedSibling) $prelisteningUrl = '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $autocreatedSibling->id;
+
         $snippet = processTpl('Project/projectFileElement.html', array(
             '${formAction}'                                             => $_SERVER['PHP_SELF'],
             '${projectFileId}'                                          => $file->id,
@@ -764,8 +768,8 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
             '${fileIcon_choice}'                                        => $fileIcon . ($autocreatedSibling ? ' [+ autocreated MP3]' : ''),
             '${filename}'                                               => escape($file->orig_filename),
             '${Project/deleteFileLink_optional}'                        => $deleteFileLinkHtml,
-            '${fileDownloadUrl}'                                        => '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $file->id,
-            // FIXME - use this for player: 'xxxxxxxxxxxxxxxxxx' => $autocreatedSibling ? '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $autocreatedSibling->id : '',
+            '${fileDownloadUrl}'                                        => $fileDownloadUrl,
+            '${prelisteningUrl}'                                        => $prelisteningUrl,
             '${status}'                                                 => $file->status == 'active' ? 'Active' : 'Inactive', // TODO - currently not used
             '${projectId}'                                              => $project->id,
             '${uploadedByName}'                                         => $uploader->name,

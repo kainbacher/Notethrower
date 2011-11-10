@@ -113,7 +113,7 @@ function transcode(&$pjob) {
             throw new Exception('No ProjectFile found (id: ' . $pjob->projectFileId . ')!');
         }
 
-        $logger->info('all done.');
+        $logger->info('all done. autocreated project file id: ' . $newProjectFile->id);
 
         $pjob->status = 'SUCCESS';
         $pjob->update();

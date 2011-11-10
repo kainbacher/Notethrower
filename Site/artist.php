@@ -202,15 +202,17 @@ $projectsSection = processTpl('Artist/projectsSection.html', array(
 ), $showMobileVersion);
 
 
-// released tracks
-$releasedTracks = ProjectFile::fetch_all_for_user_id_and_type($user_id, 'release');
+// released tracks -- FIXME: breaks artist.php when released track is found
+$releasedTracks = array();
+//$releasedTracks = ProjectFile::fetch_all_for_user_id_and_type($user_id, 'release');
+
 $releasesSection = '';
 $releasedTracksList = '';
 foreach ($releasedTracks as $releasedTrack) {
-    $releasedTracksList .= processTpl('Artist/releaseListElement.html', array(
+    $releasedTracksList .= processTpl('Artist/trackListElement.html', array(
         '${userId}'        => $user_id,
-        '${projectId}'     => $releasedTrack->id,
-        '${title}'         => escape($releasedTrack->title)
+        '${projectFileId}' => $releasedTrack->id,
+        '${title}'         => escape($releasedTrack->title) . 'FIXME'
     ), $showMobileVersion);
 }
 

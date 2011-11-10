@@ -7,7 +7,8 @@
         <div class="span-5">
             ${uploaderUserImg}<br />
             ${uploadedByName}<br />
-            ${fileIcon_choice}&nbsp;
+            ${fileIcon_choice}&nbsp;<br />
+            ${Project/deleteFileLink_optional}
         </div>
         <div class="span-8">
 
@@ -22,23 +23,8 @@
                 </div>
             </div>
 
-
             ${Project/projectFileMetadataForm_optional}
             ${Project/projectFileMetadata_optional}
-
-            <div class="span-9 last">
-                <div class="span-3">
-                    <span class="titleText">&nbsp;</span>
-                </div>
-                <div class="span-6 last">
-                        <input class="button-small grey"
-                             type="submit"
-                             value="Save"
-                             onClick="buildProjectFileAttributesLists(${projectFileId});">
-
-                        ${Project/deleteFileLink_optional}
-                </div>
-            </div>
 
             </form>
 

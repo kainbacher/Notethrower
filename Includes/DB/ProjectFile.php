@@ -106,7 +106,7 @@ class ProjectFile {
         $f->type                  = $row['type'];
         $f->status                = $row['status'];
         $f->comment               = $row['comment'];
-        $f->entry_date            = reformat_sql_date($row['entry_date']);
+        $f->entry_date            = $row['entry_date'];
         $f->autocreated_from      = $row['autocreated_from'];
 
         // fields from referenced tables

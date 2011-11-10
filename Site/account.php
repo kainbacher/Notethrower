@@ -1111,7 +1111,8 @@ function createWelcomeMessage($newUserId) {
             'us through our feedback tab on the left to let us know of any feature requests or bug fixes so we ' .
             'can continue to make Oneloudr the best network for musicians to create and earn together.' . "\n\n" .
             'Glad you are here. Let\'s make some Music!' . "\n\n" .
-            '-Joe Founder, Oneloudr';
+            '-Joe' . "\n" .
+            'Founder, Oneloudr';
 
     $msg = new Message();
     $msg->sender_user_id    = $senderUser->id;

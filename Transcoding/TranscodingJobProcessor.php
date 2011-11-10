@@ -76,7 +76,7 @@ function transcode(&$pjob) {
         $destFile = $GLOBALS['CONTENT_BASE_PATH'] . $mp3Filename;
 
         $options = $GLOBALS['TRANSCODER_OPTIONS'][$projectFile->type];
-        $command = $GLOBALS['TRANSCODER_COMMAND'] . ' ' . $options . ' ' . $sourceFile . ' ' . $destFile;
+        $command = $GLOBALS['TRANSCODER_COMMAND'] . ' ' . $options . ' "' . $sourceFile . '" "' . $destFile . '"';
 
         // execute the command
         $returnVar = 1;

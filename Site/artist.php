@@ -209,8 +209,8 @@ $releasedTracksList = '';
 foreach ($releasedTracks as $releasedTrack) {
     $releasedTracksList .= processTpl('Artist/releaseListElement.html', array(
         '${userId}'        => $user_id,
-        '${projectFileId}' => $releasedTrack->id,
-        '${title}'         => escape($releasedTrack->title) . 'FIXME'
+        '${projectId}'     => $releasedTrack->id,
+        '${title}'         => escape($releasedTrack->title)
     ), $showMobileVersion);
 }
 

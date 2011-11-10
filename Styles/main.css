@@ -2092,8 +2092,16 @@ a.nohighlight:hover {
 }
 
 
+/* !sidebar */
+/* ---------------------------------------------------------------------- */
 
+.span-8 input {
+    max-width: 275px;
+}
 
+.span-8 select {
+    max-width: 285px;
+}
 
 
 

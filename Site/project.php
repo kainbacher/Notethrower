@@ -724,6 +724,7 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
 //            ));
 
             $selectedAttribs = ProjectFileAttribute::getAttributeIdsForProjectFileId($file->id);
+            $logger->info(print_r($selectedAttribs, true));
             $attribs = Attribute::getIdNameMapShownFor('both');
             $attribList = '';
             foreach ($attribs as $attribId => $attribName) {
@@ -765,7 +766,7 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
             '${formAction}'                                             => $_SERVER['PHP_SELF'],
             '${projectFileId}'                                          => $file->id,
             '${projectFileElementCheckbox_optional}'                    => $checkbox,
-            '${fileIcon_choice}'                                        => $fileIcon . ($autocreatedSibling ? ' [+ autocreated MP3]' : ''),
+            '${fileIcon_choice}'                                        => $fileIcon,
             '${filename}'                                               => escape($file->orig_filename),
             '${Project/deleteFileLink_optional}'                        => $deleteFileLinkHtml,
             '${fileDownloadUrl}'                                        => $fileDownloadUrl,

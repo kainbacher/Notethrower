@@ -102,10 +102,11 @@ ${Common/bodyHeader}
                     <div class="box-grey">
                         <h2>${projectTitle}</h2>
                         <p>
-                            Owner: <a href="artist.php?aid=${projectOwnerUserId}">${projectOwner}</a><br />
-                            Genres: ${projectGenres}<br />
-                            Moods: ${projectMoods}<br />
-                            Project needs: ${projectNeeds}<br />
+                            <span class="titleText">Owner:</span> <a href="artist.php?aid=${projectOwnerUserId}">${projectOwner}</a><br />
+                            
+                            <span class="titleText">Genres:</span> ${projectGenres}<br />
+                            <span class="titleText">Moods:</span> ${projectMoods}<br />
+                            <span class="titleText">Project needs:</span> ${projectNeeds}<br />
                             <br />
                             ${projectAdditionalInfo}
                         </p>

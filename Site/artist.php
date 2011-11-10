@@ -207,7 +207,7 @@ $releasedTracks = ProjectFile::fetch_all_for_user_id_and_type($user_id, 'release
 $releasesSection = '';
 $releasedTracksList = '';
 foreach ($releasedTracks as $releasedTrack) {
-    $releasedTracksList .= processTpl('Artist/trackListElement.html', array(
+    $releasedTracksList .= processTpl('Artist/releaseListElement.html', array(
         '${userId}'        => $user_id,
         '${projectFileId}' => $releasedTrack->id,
         '${title}'         => escape($releasedTrack->title) . 'FIXME'

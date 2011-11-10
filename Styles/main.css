@@ -2095,11 +2095,11 @@ a.nohighlight:hover {
 /* !sidebar */
 /* ---------------------------------------------------------------------- */
 
-.span-8 input {
+#searchArtist input {
     max-width: 275px;
 }
 
-.span-8 select {
+#searchArtist select {
     max-width: 285px;
 }
 

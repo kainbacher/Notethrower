@@ -1,9 +1,11 @@
 <div class="span-16 trackListItem">
     <div class="span-2">
-        <img src="${artistImgUrl}" width="60" />
+        <a href="artist.php?aid=${userId}">
+            <img src="${artistImgUrl}" width="60" align="${artistName}" title="${artistName}" />
+        </a>
     </div>
     <div class="span-6">
-        <a href="artist.php?aid=${userId}">${artistName}</a>
+        <a href="artist.php?aid=${userId}" title="${artistName}">${artistName}</a>
     </div>
     <div class="span-8 last">
         ${artistAttributes}<br />

@@ -491,7 +491,7 @@ if (!$userIsLoggedIn) {
             'inputType'                 => 'checkbox',
             'propName'                  => 'terms_accepted',
             'label'                     => 'Artist Agreement',
-            'inputFieldGroupSuffixHtml' => 'I\'ve read and agree to<br><a href="javascript:showTermsAndConditions();">oneloudr\'s Artist Agreement</a>',
+            'inputFieldGroupSuffixHtml' => 'I\'ve read and agree to<br><a href="javascript:showArtistAgreement();">oneloudr\'s Artist Agreement</a>',
             'mandatory'                 => true,
             'obj'                       => $user,
             'unpersistedObj'            => $unpersistedUser,

@@ -634,6 +634,8 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
     for ($i = 0; $i < $fileCount; $i++) {
         $file = $projectFiles[$i];
 
+        if ($file->autocreated_from) continue;
+
         // find out if the next file in the list is the autocreated mp3 of this file
         $autocreatedSibling = null;
 //        if (isset($projectFiles[$i + 1])) {
@@ -810,7 +812,7 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
             $projectFilesStemsHtml .= $snippet;
         }
 
-        if ($autocreatedSibling) $i++; // skip the autocreated sibling
+        //if ($autocreatedSibling) $i++; // skip the autocreated sibling
     }
 
     if (!$projectFilesStemsHtml) {

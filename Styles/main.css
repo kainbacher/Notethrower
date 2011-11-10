@@ -748,12 +748,12 @@ a.nohighlight:hover {
 
 .topMenuLoginLabel {
     float: left;
-    width: 100px;
+    width: 80px;
 }
 
 .topMenuLoginInput {
     float: left;
-    width: 130px;
+    width: 150px;
 }
 
 .topMenuSubItemIcon {
@@ -789,7 +789,7 @@ a.nohighlight:hover {
     color: #444444;
     font-size: 12px;
     padding: 4px;
-    width: 120px;
+    width: 150px;
 }
 
 .loginFormLabel {
@@ -1220,6 +1220,7 @@ a.nohighlight:hover {
 .footerLogos a {
     display: block;
     height: 115px;
+    text-decoration: none;
     width: 160px;
 }
 
@@ -1920,8 +1921,10 @@ a.nohighlight:hover {
     padding: 0px;
 }
 
-.startListen li {
+.startListenItem {
     border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
 
 .startListenTitle {
@@ -1936,7 +1939,7 @@ a.nohighlight:hover {
 
 .startListenMusicians {
     float: left;
-    width: 240px;
+    width: 370px;
 }
 
 

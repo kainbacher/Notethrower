@@ -70,7 +70,7 @@ $(document).ready(function(){
     	$(this).show();
     },function(){
         //fix for immediate hiding of login menu when chosing email addres from autocomplete 
-    	$(this).delay(2000).fadeOut('slow');
+    	$(this).delay(2000).slideUp('fast');
     });
 
 

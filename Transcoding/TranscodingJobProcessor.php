@@ -94,6 +94,7 @@ function transcode(&$pjob) {
             throw new Exception('Failed chmod file ' . $destFile);
         }
 
+        $logger->info('conversion done. cloning DB record ...');
 
         // clone the existing project file
         $newProjectFile = ProjectFile::fetch_for_id($pjob->projectFileId);
@@ -112,6 +113,7 @@ function transcode(&$pjob) {
             throw new Exception('No ProjectFile found (id: ' . $pjob->projectFileId . ')!');
         }
 
+        $logger->info('all done.');
 
         $pjob->status = 'SUCCESS';
         $pjob->update();

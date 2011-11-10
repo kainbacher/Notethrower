@@ -772,6 +772,9 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
                 '${projectFileId}'   => $file->id,
                 '${prelisteningUrl}' => $prelisteningUrl,
             ));
+
+        } else if (getFileExtension($file->filename) == 'wav') {
+            $playerHtml = '<i>(Converting to mp3 ...)</i>';
         }
 
         $snippet = processTpl('Project/projectFileElement.html', array(

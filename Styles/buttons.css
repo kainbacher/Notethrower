@@ -107,7 +107,7 @@
 /* blue */
 .blue {
     color: #d9eef7 !important;
-    border: solid 0px #0076a3;
+    border: solid 1px #0076a3;
     background: #0095cd;
 }
 .blue:hover {

@@ -292,6 +292,22 @@ $(document).ready(function(){
     });
 
 
+    /* !project */
+    /* ---------------------------------------------------------------------- */
+
+    $('.projectListSelectAll').live("click", function(){
+        $('.selectedStems').attr('checked', true);
+        $(this).html('Deselect all');
+        $(this).removeClass('projectListSelectAll').addClass('projectListDeselectAll');
+        return false;
+    });
+
+    $('.projectListDeselectAll').live("click", function(){
+        $('.selectedStems').attr('checked', false);
+        $(this).html('Select all');
+        $(this).removeClass('projectListDeselectAll').addClass('projectListSelectAll');
+        return false;
+    });
 
 });
 

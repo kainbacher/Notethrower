@@ -7,7 +7,7 @@ ${Common/bodyHeader}
 
     <div id="pageContent" class="container">
 
-        <div class="span-16">
+        <div class="span-16" id="artistList">
 
             <h1>Top artists</h1>                
             <div class="span-16 last trackList">
@@ -26,19 +26,52 @@ ${Common/bodyHeader}
             <div class="box-grey">
 
                 <h2>Search an Artist:</h2>
-                <input type="text" id="title" name="title" value="Artist Name" title="Artist Name" maxlength="255">
-
-                <input class="button-small blue"
-                    type="submit"
-                    value="search"
-                    onClick="buildProjectAttributesAndSubGenresAndMoodsLists();">
-
+                <form id="searchArtist">
+                    <input type="hidden" name="action" value="search">
+                    <input type="text" id="searchName" name="name" value="Artist Name" title="Artist Name" maxlength="255">
+                    
+                    <label for="genreId">Genre:</label >
+                    <select data-placeholder=" " id="genreId" name="genreId" class=" chzn-select">
+                        ${genreSelect}
+                    </select>
+                    
+                    <label for="attributeId">Skills:</label >
+                    <select data-placeholder=" " id="attributeId" name="attributeId" class=" chzn-select">
+                        ${attributeSelect}
+                    </select>
+                    <input class="button-small blue"
+                        type="submit"
+                        value="search">
+                        <!--onClick="buildProjectAttributesAndSubGenresAndMoodsLists();"-->
+                        
+                </form>
 
             </div>
         </div>
 
     </div>
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".chzn-select").chosen();
+        
+        $('#searchArtist').submit(function(e) {
+            e.preventDefault();
+            
+            $.post('artistList.php',$('#searchArtist').serialize(), function(data) {
+                if(!data){
+                    $('#artistList').empty();
+                    $('#artistList').append('<h1>Search Result:</h1>');
+                    $('#artistList').append('<div class="span-16 last trackList">no artists matching the search criteria found</div>');
+                } else {
+                    $('#artistList').empty();
+                    $('#artistList').append('<h1>Search Result:</h1>');
+                    $('#artistList').append('<div class="span-16 last trackList">'+data+'</div>');
+                }
+                
+            });          
+        });
+    });
+</script>
 ${Common/bodyFooter}
 
 </body>

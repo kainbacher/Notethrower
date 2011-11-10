@@ -7,6 +7,8 @@ include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/UserAttribute.php');
 include_once('../Includes/DB/UserGenre.php');
+include_once('../Includes/DB/Genre.php');
+include_once('../Includes/DB/Attribute.php');
 
 $visitorUserId = -1;
 
@@ -26,11 +28,12 @@ if ($user) {
 if (get_param('action') == 'search') { // ajax call
     $start       = get_numeric_param('start'); // optional
     $maxRows     = get_numeric_param('maxRows'); // optional
-    $name        = get_param('name'); // optional
+    $name        = (get_param('name') == 'Artist Name' ? false : get_param('name')); // optional
     $genreId     = get_numeric_param('genreId'); // optional
     $attributeId = get_numeric_param('attributeId'); // optional
-
-    echo User::getResultsCountForSearch($name, $attributeId, $genreId) . '<hr>';
+    
+    
+    //echo User::getResultsCountForSearch($name, $attributeId, $genreId) . '<hr>';
 
     $users = User::fetchForSearch($start, $maxRows, $name, $attributeId, $genreId);
 
@@ -54,11 +57,26 @@ foreach ($topArtists as $a) {
     $topArtistsList .= buildArtistRow($a);
 }
 
+$genreOptions = '';
+$genres = Genre::getSelectorOptionsArray(true);
+foreach($genres as $genreKey => $genreOption){
+    $genreOptions .= '<option value="'.$genreKey.'">'.$genreOption.'</option>';
+}
+
+$attributeOptions = '<option value=""></option>';
+$attributes = Attribute::getIdNameMapShownFor('needs');
+foreach($attributes as $attributeKey => $attributeOption){
+    $attributeOptions .= '<option value="'.$attributeKey.'">'.$attributeOption.'</option>';
+}
+
+
 processAndPrintTpl('ArtistList/index.html', array(
-    '${Common/pageHeader}'                     => buildPageHeader('Artist list', false, false),
+    '${Common/pageHeader}'                     => buildPageHeader('Artist list', false, false, true),
     '${Common/bodyHeader}'                     => buildBodyHeader($user),
     '${ArtistList/artistListItem_top_list}'    => $topArtistsList,
     '${ArtistList/artistListItem_latest_list}' => $latestArtistsList,
+    '${genreSelect}'                           => $genreOptions,
+    '${attributeSelect}'                       => $attributeOptions,
     '${Common/newsletterSubscription}'         => processTpl('Common/newsletterSubscription.html', array()),
     '${Common/bodyFooter}'                     => buildBodyFooter(),
     '${Common/pageFooter}'                     => buildPageFooter()

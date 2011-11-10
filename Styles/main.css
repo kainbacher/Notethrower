@@ -638,6 +638,11 @@ a.nohighlight:hover {
     position: relative;
 }
 
+#logoWrapper {
+    float: left;
+    width: 300px
+}
+
 #logo {
     color: white;
     font-size: 18px;
@@ -649,13 +654,13 @@ a.nohighlight:hover {
 }
 
 #betaLogo {
-    padding-top: 10px;
+    padding-top: 2px;
 }
 
 #betaLogo a {
     text-decoration: none;
     border: 1px solid #0F7AC0;
-    font-size: 23px;
+    font-size: 10px;
     padding-left: 3px;
     padding-right: 3px;
 }

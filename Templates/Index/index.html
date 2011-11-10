@@ -9,7 +9,8 @@ $(document).ready(function(){
 
     var myCirclePlayer1 = new CirclePlayer("#jquery_jplayer_1",
     {
-        mp3:"http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3"
+        //mp3:"http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3"
+        mp3:"../Backend/downloadFile.php?mode=download&project_id=288&atfid=182"
     }, {
         cssSelectorAncestor: "#jp_container_1",
         swfPath: "../Javascripts/jplayer/",
@@ -19,7 +20,8 @@ $(document).ready(function(){
 
     var myCirclePlayer2 = new CirclePlayer("#jquery_jplayer_2",
     {
-        mp3:"http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3"
+        //mp3:"http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3"
+        mp3:"../Backend/downloadFile.php?mode=download&project_id=233&atfid=143"
     }, {
         cssSelectorAncestor: "#jp_container_2",
         swfPath: "../Javascripts/jplayer/",
@@ -120,23 +122,21 @@ $(document).ready(function(){
                                         <span class="titleText">Owner:</span>
                                     </div>
                                     <div class="span-7 last">
-                                        <a href="#">Dj Tom</a>
+                                        <a href="artist.php?aid=120">The Artistry</a>
                                     </div>
                                 </div>
 
                                 <div class="span-9 last">
                                     <div class="span-2">
-                                        <span class="titleText">Musicians:</span>
+                                        <span class="titleText">Title:</span>
                                     </div>
                                     <div class="span-7 last">
-                                        <a href="#">Dj Micky</a>,
-                                        <a href="#">Andreas Moreani</a>,
-                                        <a href="#">Antonis Boola</a>
+                                        <a href="project.php?action=edit&pid=288">Turn Of Tide</a>
                                     </div>
                                 </div>
                                 
                                 <div class="prepend-2 span-7 last">
-                                    <a href="#">&rarr; Project Details</a>
+                                    <a href="project.php?action=edit&pid=288">&rarr; Project Details</a>
                                 </div>
                             </div>
                             <div class="clear"></div>
@@ -170,23 +170,21 @@ $(document).ready(function(){
                                         <span class="titleText">Owner:</span>
                                     </div>
                                     <div class="span-7 last">
-                                        <a href="#">Dj Tom</a>
+                                        <a href="artist.php?aid=89">The Sorrow</a>
                                     </div>
                                 </div>
 
                                 <div class="span-9 last">
                                     <div class="span-2">
-                                        <span class="titleText">Musicians:</span>
+                                        <span class="titleText">Title:</span>
                                     </div>
                                     <div class="span-7 last">
-                                        <a href="#">Dj Micky</a>,
-                                        <a href="#">Andreas Moreani</a>,
-                                        <a href="#">Antonis Boola</a>
+                                        <a href="project.php?action=edit&pid=233">Where is the Sun?</a>
                                     </div>
                                 </div>
                                 
                                 <div class="prepend-2 span-7 last">
-                                    <a href="#">&rarr; Project Details</a>
+                                    <a href="project.php?action=edit&pid=233">&rarr; Project Details</a>
                                 </div>
                             </div>
                             <div class="clear"></div>
@@ -220,7 +218,7 @@ $(document).ready(function(){
                                         <span class="titleText">Owner:</span>
                                     </div>
                                     <div class="span-7 last">
-                                        <a href="#">Dj Tom</a>
+                                        <a href="artist.php?aid=127">Tim Bennett</a>
                                     </div>
                                 </div>
 
@@ -229,14 +227,12 @@ $(document).ready(function(){
                                         <span class="titleText">Musicians:</span>
                                     </div>
                                     <div class="span-7 last">
-                                        <a href="#">Dj Micky</a>,
-                                        <a href="#">Andreas Moreani</a>,
-                                        <a href="#">Antonis Boola</a>
+                                        <a href="project.php?action=edit&pid=338">Awake</a>
                                     </div>
                                 </div>
                                 
                                 <div class="prepend-2 span-7 last">
-                                    <a href="#">&rarr; Project Details</a>
+                                    <a href="project.php?action=edit&pid=338">&rarr; Project Details</a>
                                 </div>
                             </div>
                             <div class="clear"></div>

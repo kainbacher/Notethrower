@@ -1,12 +1,10 @@
-<div class="span-16 trackListItem">
-    <div class="span-2">
+<div class="span-7 trackListItem">
+    <div class="span-1">
         <a href="artist.php?aid=${userId}"><img src="${userImgUrl}" height="25" /></a>
     </div>
-    <div class="span-6">
-        <a href="artist.php?aid=${userId}">${userName}</a>
-    </div>
-    <div class="span-6">
+    <div class="span-6 last">
+        <a href="artist.php?aid=${userId}">${userName}</a><br />
         <a href="project.php?action=edit&pid=${projectId}">${projectTitle}</a><br>
-        <small>Project needs: ${projectNeeds}</small>
+        Project needs: ${projectNeeds}
     </div>
 </div>

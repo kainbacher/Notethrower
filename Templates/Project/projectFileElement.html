@@ -68,15 +68,35 @@
                     </div>
                 </div>
             </div>
-            
-            <div>
-                Download: <a href="${fileDownloadUrl}" target="_blank">${filename}</a>
+
+            <div class="span-9 last">
+                <div class="span-3">
+                    <span class="titleText">Download:</span>
+                </div>
+                <div class="span-6 last">
+                    <a href="${fileDownloadUrl}" target="_blank">${filename}</a>
+                </div>
             </div>
           
             
             ${Project/projectFileMetadataForm_optional}
             ${Project/projectFileMetadata_optional}
-            ${Project/deleteFileLink_optional}
+
+            <div class="span-9 last">
+                <div class="span-3">
+                    <span class="titleText">&nbsp;</span>
+                </div>
+                <div class="span-6 last">
+                        <input class="button-small blue"
+                             type="submit"
+                             value="Save"
+                             onClick="buildProjectFileAttributesLists(${projectFileId});">
+                        
+                        ${Project/deleteFileLink_optional}
+                </div>
+            </div>
+
+            </form>
             
         </div>
     </div>

@@ -29,8 +29,8 @@ if ($visitorUser) {
 $user_id = get_numeric_param('aid');
 
 $user = User::fetch_for_id($user_id);
-if (!$user) {
-    show_fatal_error_and_exit('no user found for id: ' . $user_id);
+if (!$user || $user->status != 'active') {
+    show_fatal_error_and_exit('no (active) user found for id: ' . $user_id);
 }
 
 // user image

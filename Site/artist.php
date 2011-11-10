@@ -202,8 +202,7 @@ $projectsSection = processTpl('Artist/projectsSection.html', array(
 ), $showMobileVersion);
 
 
-// released tracks -- FIXME: breaks artist.php when released track is found
-//$releasedTracks = array();
+// released tracks
 $releasedTracks = ProjectFile::fetch_all_for_user_id_and_type($user_id, 'release');
 
 $releasesSection = '';

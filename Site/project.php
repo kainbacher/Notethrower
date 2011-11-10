@@ -777,7 +777,10 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
                 '${prelisteningUrl}' => $prelisteningUrl,
             ));
 
-        } else if (getFileExtension($file->filename) == 'wav') {
+        } else if (
+            getFileExtension($file->filename) == 'wav' &&
+            strtotime($file->entry_date) > strtotime('2011-11-10 17:00:00')
+        ) {
             $playerHtml = '<i>(Converting to mp3 ...)</i>';
         }
 

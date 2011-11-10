@@ -29,8 +29,8 @@ if ($visitorUser) {
 $user_id = get_numeric_param('aid');
 
 $user = User::fetch_for_id($user_id);
-if (!$user) {
-    show_fatal_error_and_exit('no user found for id: ' . $user_id);
+if (!$user || $user->status != 'active') {
+    show_fatal_error_and_exit('no (active) user found for id: ' . $user_id);
 }
 
 // user image
@@ -184,38 +184,43 @@ if ($user->video_url) {
 // project lists
 $unfinishedProjects = Project::fetch_all_unfinished_projects_of_user($user_id, false); // FIXME - deal with finished projects somehow
 $projectsSection = '';
-if (count($unfinishedProjects) > 0) {
-    $projectsList = '';
-    foreach ($unfinishedProjects as $unfinishedProject) {
-        $projectsList .= processTpl('Artist/projectListElement.html', array(
-            '${userId}'    => $user_id,
-            '${projectId}' => $unfinishedProject->id,
-            '${title}'     => escape($unfinishedProject->title)
-        ), $showMobileVersion);
-    }
-
-    $projectsSection = processTpl('Artist/projectsSection.html', array(
-        '${Artist/projectListElement_list}' => $projectsList
+$projectsList = '';
+foreach ($unfinishedProjects as $unfinishedProject) {
+    $projectsList .= processTpl('Artist/projectListElement.html', array(
+        '${userId}'    => $user_id,
+        '${projectId}' => $unfinishedProject->id,
+        '${title}'     => escape($unfinishedProject->title)
     ), $showMobileVersion);
 }
+
+if (count($unfinishedProjects) == 0) {
+    $projectsList = 'No open projects found.';
+}
+
+$projectsSection = processTpl('Artist/projectsSection.html', array(
+    '${Artist/projectListElement_list}' => $projectsList
+), $showMobileVersion);
+
 
 // released tracks
 $releasedTracks = ProjectFile::fetch_all_for_user_id_and_type($user_id, 'release');
 $releasesSection = '';
-if (count($releasedTracks) > 0) {
-    $releasedTracksList = '';
-    foreach ($releasedTracks as $releasedTrack) {
-        $releasedTracksList .= processTpl('Artist/trackListElement.html', array(
-            '${userId}'        => $user_id,
-            '${projectFileId}' => $releasedTrack->id,
-            '${title}'         => escape($releasedTrack->title) . 'FIXME'
-        ), $showMobileVersion);
-    }
-
-    $releasesSection = processTpl('Artist/releasesSection.html', array(
-        '${Artist/releaseListElement_list}' => $releasedTracksList
+$releasedTracksList = '';
+foreach ($releasedTracks as $releasedTrack) {
+    $releasedTracksList .= processTpl('Artist/trackListElement.html', array(
+        '${userId}'        => $user_id,
+        '${projectFileId}' => $releasedTrack->id,
+        '${title}'         => escape($releasedTrack->title) . 'FIXME'
     ), $showMobileVersion);
 }
+
+if (count($releasedTracks) == 0) {
+    $releasedTracksList = 'No released tracks found.';
+}
+
+$releasesSection = processTpl('Artist/releasesSection.html', array(
+    '${Artist/releaseListElement_list}' => $releasedTracksList
+), $showMobileVersion);
 
 $skills = implode(', ', UserAttribute::getAttributeNamesForUserIdAndState($user->id, 'offers'));
 $genres = implode(', ', UserGenre::getGenreNamesForUserId($user->id));

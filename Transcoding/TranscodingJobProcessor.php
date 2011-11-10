@@ -166,7 +166,7 @@ function exitIfValidProcessingFileFound($processingFile) {
 }
 
 function getFilenameWithoutExt($filename) {
-    return pathinfo($filename, PATHINFO_FILENAME);
+    return dirname($filename) . $GLOBALS['PATH_SEPARATOR'] . pathinfo($filename, PATHINFO_FILENAME);
 }
 
 ?>

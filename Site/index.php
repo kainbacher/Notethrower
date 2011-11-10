@@ -111,7 +111,7 @@ function handleAuthentication() {
 
             // if user data complete, log user in
             $user = User::fetch_for_email_address($fbUserData->email);
-            if ($user) {
+            if ($user && $user->status == 'active') {
                 $user->doLogin();
                 $logger->info('facebook login successful, reloading page to set cookie');
                 redirectTo($GLOBALS['BASE_URL'] . 'Site/dashboard.php');

@@ -59,12 +59,15 @@ $COOKIE_NAME_GENRE          = 'oneloudr_genre';
 
 $RECAPTCHA_PUBLIC_KEY = '6LcNIgoAAAAAAP0BgB5wNty92PiCewdRq7y5L6qw';
 
-$ALLOWED_UPLOAD_EXTENSIONS = array('wav', 'mp3', 'mid', 'midi', 'txt');
+$ALLOWED_UPLOAD_EXTENSIONS = array('wav', 'aif', 'aiff', 'mp3', 'mid', 'midi', 'txt');
 
-#Transcoder settings
-#Full path to lame
-$TRANSCODER_COMMAND = '/home/benso/lame/bin/lame';
-# options for the transcoder, based on the type of the projectFile type
+// Transcoder settings
+// Full path to lame
+$TRANSCODER_COMMAND = '/home/benso/lame/bin/lame'; // FIXME - this should be in the local config instead
+// options for the transcoder, based on the type of the projectFile type
 $TRANSCODER_OPTIONS = array('raw'=>'-S -b 160', 'mix'=>'-S -b 320');
+
+// the email address which shall get the feedback via the contact form
+$CONTACT_FORM_RECIPIENT_EMAIL = 'go@oneloudr.com';
 
 ?>

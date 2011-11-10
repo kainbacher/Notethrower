@@ -25,7 +25,7 @@ foreach ($newbornProjectIdList as $nbpid) {
 }
 
 // own projects
-$projects = Project::fetch_all_unfinished_projects_of_user($user->id); // FIXME - deal with finished projects somehow
+$projects = Project::fetch_all_unfinished_projects_of_user($user->id, true); // FIXME - deal with finished projects somehow
 
 $projectsList = '';
 foreach ($projects as $p) {

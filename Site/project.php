@@ -694,40 +694,51 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
             $loggedInUserMayEdit &&                              // user has edit permissions and
             (!$file->comment || count($fileAttributeNames) == 0) // no data was entered so far
         ) {
-            $pfFormElementsList = getFormFieldForParams(array(
-                'inputType'                => 'textarea',
-                'propName'                 => 'comment',
-                'label'                    => 'Comment',
-                'maxlength'                => 500,
-                'customStyleForInputField' => 'height:60px;', // FIXME - should not be needed
-                'mandatory'                => true,
-                'obj'                      => $file,
-                'unpersistedObj'           => null,
-                'errorFields'              => array(),
-                'workWithUnpersistedObj'   => false,
-                'infoText'                 => 'Add a comment about the file here.'
-            ));
+//            $pfFormElementsList = getFormFieldForParams(array(
+//                'inputType'                => 'textarea',
+//                'propName'                 => 'comment',
+//                'label'                    => 'Comment',
+//                'maxlength'                => 500,
+//                'customStyleForInputField' => 'height:60px;', // FIXME - should not be needed
+//                'mandatory'                => true,
+//                'obj'                      => $file,
+//                'unpersistedObj'           => null,
+//                'errorFields'              => array(),
+//                'workWithUnpersistedObj'   => false,
+//                'infoText'                 => 'Add a comment about the file here.'
+//            ));
+//
+//            $pfFormElementsList .= getFormFieldForParams(array(
+//                'inputType'              => 'multiselect2',
+//                'propName'               => 'fileAttributes_' . $file->id,
+//                'label'                  => 'Instrument/Skills',
+//                'mandatory'              => true,
+//                'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
+//                'obj'                    => $file,
+//                'unpersistedObj'         => null,
+//                'selectOptions'          => Attribute::getIdNameMapShownFor('both'),
+//                'objValues'              => ProjectFileAttribute::getAttributeIdsForProjectFileId($file->id),
+//                'errorFields'            => array(),
+//                'workWithUnpersistedObj' => false,
+//                'infoText'               => 'List here what this file consists of. Eg. "Bass" for a bass track.'
+//            ));
 
-            $pfFormElementsList .= getFormFieldForParams(array(
-                'inputType'              => 'multiselect2',
-                'propName'               => 'fileAttributes_' . $file->id,
-                'label'                  => 'Instrument/Skills',
-                'mandatory'              => true,
-                'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
-                'obj'                    => $file,
-                'unpersistedObj'         => null,
-                'selectOptions'          => Attribute::getIdNameMapShownFor('both'),
-                'objValues'              => ProjectFileAttribute::getAttributeIdsForProjectFileId($file->id),
-                'errorFields'            => array(),
-                'workWithUnpersistedObj' => false,
-                'infoText'               => 'List here what this file consists of. Eg. "Bass" for a bass track.'
-            ));
+            $selectedAttribs = ProjectFileAttribute::getAttributeIdsForProjectFileId($file->id);
+            $attribs = Attribute::getIdNameMapShownFor('both');
+            $attribList = '';
+            foreach ($attribs as $attribId => $attribName) {
+                $selected = '';
+                if (in_array($attribId, $selectedAttribs)) $selected = ' selected';
+                $attribList .= '<option value="' . $attribId . '"' . $selected . '>' . escape($attribName) . '</option>' . "\n";
+            }
 
             $metadataForm = processTpl('Project/projectFileMetadataForm.html', array(
                 '${formAction}'              => $_SERVER['PHP_SELF'],
                 '${projectId}'               => $project->id,
                 '${projectFileId}'           => $file->id,
-                '${Common/formElement_list}' => $pfFormElementsList,
+                //'${Common/formElement_list}' => $pfFormElementsList,
+                '${commentText_optional}'    => escape($file->comment),
+                '${attributesList}'          => $attribList
             ));
 
         } else { // data already entered or no permissions to see the form

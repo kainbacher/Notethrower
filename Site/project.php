@@ -759,24 +759,36 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
         }
 
         $fileDownloadUrl = '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $file->id;
-        $prelisteningUrl = $fileDownloadUrl;
-        if ($autocreatedSibling) $prelisteningUrl = '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $autocreatedSibling->id;
+
+        $playerHtml = '';
+        if (
+            getFileExtension($file->filename) == 'mp3' ||
+            $autocreatedSibling
+        ) {
+            $prelisteningUrl = $fileDownloadUrl;
+            if ($autocreatedSibling) $prelisteningUrl = '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $autocreatedSibling->id;
+
+            $playerHtml = processTpl('Project/player.html', array(
+                '${projectFileId}'   => $file->id,
+                '${prelisteningUrl}' => $prelisteningUrl,
+            ));
+        }
 
         $snippet = processTpl('Project/projectFileElement.html', array(
-            '${formAction}'                                             => $_SERVER['PHP_SELF'],
-            '${projectFileId}'                                          => $file->id,
-            '${projectFileElementCheckbox_optional}'                    => $checkbox,
-            '${fileIcon_choice}'                                        => $fileIcon,
-            '${filename}'                                               => escape($file->orig_filename),
-            '${Project/deleteFileLink_optional}'                        => $deleteFileLinkHtml,
-            '${fileDownloadUrl}'                                        => $fileDownloadUrl,
-            '${prelisteningUrl}'                                        => $prelisteningUrl,
-            '${status}'                                                 => $file->status == 'active' ? 'Active' : 'Inactive', // TODO - currently not used
-            '${projectId}'                                              => $project->id,
-            '${uploadedByName}'                                         => $uploader->name,
-            '${uploaderUserImg}'                                        => $uploaderUserImg,
-            '${Project/projectFileMetadataForm_optional}'               => $metadataForm,
-            '${Project/projectFileMetadata_optional}'                   => $metadataBlock
+            '${formAction}'                               => $_SERVER['PHP_SELF'],
+            '${projectFileId}'                            => $file->id,
+            '${projectFileElementCheckbox_optional}'      => $checkbox,
+            '${fileIcon_choice}'                          => $fileIcon,
+            '${filename}'                                 => escape($file->orig_filename),
+            '${Project/deleteFileLink_optional}'          => $deleteFileLinkHtml,
+            '${fileDownloadUrl}'                          => $fileDownloadUrl,
+            '${player_optional}'                          => $playerHtml,
+            '${status}'                                   => $file->status == 'active' ? 'Active' : 'Inactive', // TODO - currently not used
+            '${projectId}'                                => $project->id,
+            '${uploadedByName}'                           => $uploader->name,
+            '${uploaderUserImg}'                          => $uploaderUserImg,
+            '${Project/projectFileMetadataForm_optional}' => $metadataForm,
+            '${Project/projectFileMetadata_optional}'     => $metadataBlock
         ));
 
         if ($file->type == 'mix') {

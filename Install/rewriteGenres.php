@@ -60,7 +60,7 @@ function rewriteGenreInfo(&$project, $genreNamesStr) {
             $ug = new UserGenre();
             $ug->user_id  = $project->user_id;
             $ug->genre_id = $genre->id;
-            $ug->insert();
+            // FIXME - reactivate // $ug->insert();
 
             echo 'inserted user/genre association: ' . $project->user_id . '/' . $genre->id . ' ' . $genre->name . '<br>' . "\n";
         }

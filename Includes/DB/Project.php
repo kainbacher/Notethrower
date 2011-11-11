@@ -9,6 +9,8 @@ include_once('../Includes/DB/ProjectUserVisibility.php');
 include_once('../Includes/DB/UserAttribute.php');
 include_once('../Includes/DB/UserGenre.php');
 
+// FIXME - drop genres column in live DB when we are sure we really don't need it anymore
+
 // dao for pp_project table
 class Project {
     var $id;

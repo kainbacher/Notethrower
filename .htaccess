@@ -1,10 +1,10 @@
-RewriteEngine on 
-
-RewriteBase /
-RewriteCond %{REQUEST_URI} ^/invite/?$
-RewriteRule .* Site/subscription.php 
-RewriteRule ^invite/([^/]+)/?$ Site/subscription.php?referrer=$1
-RewriteRule ^invite/([^/]+)/([^/]+) Site/subscription.php?referrer=$1&action=$2 
+#RewriteEngine on 
+#
+#RewriteBase /
+#RewriteCond %{REQUEST_URI} ^/invite/?$
+#RewriteRule .* Site/subscription.php 
+#RewriteRule ^invite/([^/]+)/?$ Site/subscription.php?referrer=$1
+#RewriteRule ^invite/([^/]+)/([^/]+) Site/subscription.php?referrer=$1&action=$2 
 
 AddHandler php5-script .php
 

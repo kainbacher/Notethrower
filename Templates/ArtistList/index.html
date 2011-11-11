@@ -43,7 +43,6 @@ ${Common/bodyHeader}
                         type="submit"
                         value="search">
                         <!--onClick="buildProjectAttributesAndSubGenresAndMoodsLists();"-->
-                        
                 </form>
 
             </div>
@@ -51,13 +50,36 @@ ${Common/bodyHeader}
 
     </div>
 <script type="text/javascript">
+    
     $(document).ready(function () {
-        $(".chzn-select").chosen();
+        $(".chzn-select").chosen(({allow_single_deselect:true}));
         
         $('#searchArtist').submit(function(e) {
             e.preventDefault();
             
             $.post('artistList.php',$('#searchArtist').serialize(), function(data) {
+                
+                if(!data || typeof data.serp == 'undefined'){
+                    $('#artistList').empty();
+                    $('#artistList').append('<h1>Search Result:</h1>');
+                    $('#artistList').append('<div class="span-16 last trackList">no artists matching the search criteria found</div>');
+                } else {
+                    $('#artistList').empty();
+                    $('#artistList').append('<h1>Search Result:</h1>');
+                    $('#artistList').append('<div class="span-16 last trackList">'+data.serp+'</div>');
+                    if(data.pagination){
+                        $('#artistList .trackList').append('<div class="span-16 pagination">'+data.pagination+'</div>');
+                    }
+                }
+                
+            }, "JSON");          
+        });
+        
+        $("#artistList").delegate("a[rel=pagination]", "click", function(e) {
+            e.preventDefault();
+            href = $(this).attr('href');
+            href = href.replace("?", "");
+            $.post('artistList.php',href, function(data) {
                 if(!data){
                     $('#artistList').empty();
                     $('#artistList').append('<h1>Search Result:</h1>');
@@ -65,10 +87,13 @@ ${Common/bodyHeader}
                 } else {
                     $('#artistList').empty();
                     $('#artistList').append('<h1>Search Result:</h1>');
-                    $('#artistList').append('<div class="span-16 last trackList">'+data+'</div>');
-                }
-                
-            });          
+                    $('#artistList').append('<div class="span-16 last trackList">'+data.serp+'</div>');
+                    if(data.pagination){
+                        $('#artistList .trackList').append('<div class="span-16 pagination">'+data.pagination+'</div>');
+                    }
+                }                
+            }, "JSON");
+            
         });
     });
 </script>

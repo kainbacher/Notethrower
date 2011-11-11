@@ -26,20 +26,27 @@ if ($user) {
 }
 
 if (get_param('action') == 'search') { // ajax call
-    $start       = get_numeric_param('start'); // optional
-    $maxRows     = get_numeric_param('maxRows'); // optional
+    $page       = get_numeric_param('page'); // optional
+    //$maxRows     = get_numeric_param('maxRows'); // optional
+    $maxRows     = 5;
+    $start       = $page * $maxRows;
     $name        = (get_param('name') == 'Artist Name' ? false : get_param('name')); // optional
     $genreId     = get_numeric_param('genreId'); // optional
     $attributeId = get_numeric_param('attributeId'); // optional
     
     
-    //echo User::getResultsCountForSearch($name, $attributeId, $genreId) . '<hr>';
+    $rowCount = User::getResultsCountForSearch($name, $attributeId, $genreId);
 
     $users = User::fetchForSearch($start, $maxRows, $name, $attributeId, $genreId);
-
+    $result = array();
     foreach ($users as $a) {
-        echo buildArtistRow($a);
+        $result['serp'] .= buildArtistRow($a);
     }
+    if($rowCount > 0){
+        $paginationUrl = '?action=search&name='.$name.'&genreId='.$genreId.'&attributeId='.$attributeId;
+        $result['pagination'] = buildPagination($rowCount, $maxRows, $page, $paginationUrl);
+    }
+    echo json_encode($result);
 
     exit;
 }
@@ -108,6 +115,26 @@ function buildArtistRow(&$a) {
         '${artistAttributes}' => $artistAttributes,
         '${artistGenres}'     => $artistGenres
     ));
+}
+
+function buildPagination($totalRows, $perPage, $currentPage = 0, $paginationUrl){
+    
+    $pageCount = ceil($totalRows/$perPage);
+    
+    $pagination = '';
+    for($i=0; $i < $pageCount; $i++){
+        if($i == $currentPage){
+            $pagination .= '<span style="font-weight:bold"> '.($i+1).' </span>';
+        } else {
+            $pagination .= '<a href="'.$paginationUrl.'&page='.$i.'" rel="pagination"> '.($i+1).' </a>';
+        }
+        
+    }
+    $previousPage   = ($currentPage+1) > 1 ? '<a href="'.$paginationUrl.'&page='.($currentPage-1).'" rel="pagination">Previous</a> | ' : null;
+    $nextPage       = ($currentPage+1) < $pageCount ? '<a href="'.$paginationUrl.'&page='.($currentPage+1).'" rel="pagination">Next</a> | ' : null;
+    $pagination = $previousPage . $pagination . $nextPage;
+    return $pagination;
+
 }
 
 ?>        	

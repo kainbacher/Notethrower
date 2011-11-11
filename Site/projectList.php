@@ -47,7 +47,7 @@ $associatedProjects = Project::fetch_all_associated_projects_of_user($user->id);
 
 $associatedProjectsList = '';
 foreach ($associatedProjects as $p) {
-    $associatedProjectsList .= processTpl('ProjectList/projectListItem.html', array(
+    $associatedProjectsList .= processTpl('ProjectList/projectListItemAssoc.html', array(
         '${projectId}'                              => $p->id,
         '${projectTitle}'                           => escape($p->title),
         '${ProjectList/projectOwnerAddon_optional}' => getProjectOwnerAddon($p->user_id, $p->user_name),

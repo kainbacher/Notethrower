@@ -16,6 +16,26 @@ class UserGenre {
     function UserGenre() {
     }
 
+    function fetchForUserIdGenreId($user_id, $genre_id) {
+        $result = _mysql_query(
+            'select * ' .
+            'from pp_user_genre ' .
+            'where user_id = ' . n($user_id) . ' ' .
+            'and genre_id = ' . n($genre_id)
+        );
+
+        $ug = null;
+
+        if ($row = mysql_fetch_array($result)) {
+            $ug = new UserGenre();
+            UserGenre::_read_row($ug, $row);
+        }
+
+        mysql_free_result($result);
+
+        return $ug;
+    }
+
     function fetchAllForGenreId($genre_id) {
         $objs = array();
 
@@ -26,10 +46,10 @@ class UserGenre {
         );
 
         while ($row = mysql_fetch_array($result)) {
-            $f = new UserGenre();
-            UserGenre::_read_row($f, $row);
+            $ug = new UserGenre();
+            UserGenre::_read_row($ug, $row);
 
-            $objs[] = $f;
+            $objs[] = $ug;
         }
 
         mysql_free_result($result);

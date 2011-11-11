@@ -7,6 +7,7 @@ include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/Genre.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectGenre.php');
+include_once('../Includes/DB/UserGenre.php');
 
 // fetch all projects
 $result = _mysql_query(
@@ -16,7 +17,9 @@ $result = _mysql_query(
 );
 
 while ($row = mysql_fetch_array($result)) {
-    rewriteGenreInfo($row['id'], $row['genres']);
+    $project = new Project();
+    $project = Project::_readRow($project, $row);
+    rewriteGenreInfo($project, $row['genres']);
 }
 
 mysql_free_result($result);
@@ -26,7 +29,7 @@ echo 'all done.';
 // END
 
 // functions
-function rewriteGenreInfo($projectId, $genreNamesStr) {
+function rewriteGenreInfo(&$project, $genreNamesStr) {
     if (!$genreNamesStr) return;
 
     $genreNames = explode(',', $genreNamesStr);
@@ -45,12 +48,22 @@ function rewriteGenreInfo($projectId, $genreNamesStr) {
 
         // insert its id into the pp_project_genre table
         $pg = new ProjectGenre();
-        $pg->project_id = $projectId;
+        $pg->project_id = $project->id;
         $pg->genre_id   = $genre->id;
         $pg->relevance  = $relevance;
-        $pg->insert();
+        // FIXME - reactivate // $pg->insert();
+        // FIXME - reactivate // echo 'inserted project/genre association: ' . $project->id . '/' . $genre->id . ' ' . $genre->name . '<br>' . "\n";
 
-        echo 'inserted project/genre association: ' . $projectId . '/' . $genre->id . ' ' . $genre->name . '<br>' . "\n";
+        // copy the genre info to the user profile
+        $ug = UserGenre::fetchForUserIdGenreId($project->user_id, $genre->id);
+        if (!$ug) {
+            $ug = new UserGenre();
+            $ug->user_id  = $project->user_id;
+            $ug->genre_id = $genre->id;
+            // FIXME - activate // $ug->insert();
+
+            echo 'inserted user/genre association: ' . $project->user_id . '/' . $genre->id . ' ' . $genre->name . '<br>' . "\n";
+        }
 
         $relevance = 0;
     }

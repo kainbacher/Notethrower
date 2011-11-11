@@ -42,7 +42,7 @@ if (get_param('action') == 'search') { // ajax call
     foreach ($users as $a) {
         $result['serp'] .= buildArtistRow($a);
     }
-    if($rowCount > 0){
+    if($rowCount > $maxRows){
         $paginationUrl = '?action=search&name='.$name.'&genreId='.$genreId.'&attributeId='.$attributeId;
         $result['pagination'] = buildPagination($rowCount, $maxRows, $page, $paginationUrl);
     }

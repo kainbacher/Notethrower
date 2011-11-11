@@ -28,7 +28,7 @@ if ($user) {
 if (get_param('action') == 'search') { // ajax call
     $page       = get_numeric_param('page'); // optional
     //$maxRows     = get_numeric_param('maxRows'); // optional
-    $maxRows     = 5;
+    $maxRows     = 20;
     $start       = $page * $maxRows;
     $name        = (get_param('name') == 'Artist Name' ? false : get_param('name')); // optional
     $genreId     = get_numeric_param('genreId'); // optional

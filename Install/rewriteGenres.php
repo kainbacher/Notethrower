@@ -18,7 +18,7 @@ $result = _mysql_query(
 
 while ($row = mysql_fetch_array($result)) {
     $project = new Project();
-    $project = Project::_readRow($project, $row);
+    $project = Project::_read_row($project, $row);
     rewriteGenreInfo($project, $row['genres']);
 }
 

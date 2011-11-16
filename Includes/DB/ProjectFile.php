@@ -53,7 +53,7 @@ class ProjectFile {
         return $objs;
     }
     
-    function fetch_all_for_project_id_and_type($tid, $type, $show_inactive_items = false) {
+    function fetch_all_for_project_id_and_type($tid, $type, $show_autocreated_siblings = false, $show_inactive_items = false) {
         $objs = array();
 
         $result = _mysql_query(
@@ -62,6 +62,7 @@ class ProjectFile {
             'left join pp_user u on pf.originator_user_id = u.id ' .
             'where pf.project_id = ' . n($tid) . ' ' .
             ($show_inactive_items ? 'and pf.status in ("active", "inactive") ' : 'and pf.status = "active" ') .
+            ($show_autocreated_siblings ? '' : 'and pf.autocreated_from is null ') .
             'and pf.type = ' . qq($type) . ' ' .
             'order by pf.entry_date desc, pf.autocreated_from asc' // ATTENTION: never change the ordering here without checking the effects on the the display of project file lists with regards to autocreated files, etc.!
         );

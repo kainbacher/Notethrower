@@ -585,12 +585,12 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
         'mixer' => true
     );
     
-    $allFiles = ProjectFile::fetch_all_for_project_id_and_type($project->id, 'raw');
+    $allFiles = ProjectFile::fetch_all_for_project_id_and_type($project->id, 'raw', false, false);
     foreach ($allFiles as $pf) {
         $checkedBoxes[$pf->id] = $initiallyCheckCheckboxes || in_array($pf->id, $releaseContributionIds);
     }
     
-    // FIXME - based on $checkedBoxes, calculation of ownership percentages can be done.
+    // FIXME? based on $checkedBoxes, calculation of ownership percentages can be done.
     // but it's more interesting to see this per user, not per contribution/file
         
     // start with the owner

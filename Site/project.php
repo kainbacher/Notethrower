@@ -16,6 +16,7 @@ include_once('../Includes/DB/ProjectFileAttribute.php');
 include_once('../Includes/DB/ProjectGenre.php');
 include_once('../Includes/DB/ProjectMood.php');
 include_once('../Includes/DB/ProjectUserVisibility.php');
+include_once('../Includes/DB/ReleaseContribution.php');
 include_once('../Includes/DB/User.php');
 
 // some notes on permissions:
@@ -27,12 +28,20 @@ $logger->set_info_level();
 
 $loggedInUser = User::new_from_cookie();
 
+// variables for basics form
 $project = null;
 $unpersistedProject = null;
 $generalMessageList = '';
 $projectFilesMessageList = '';
 $problemOccured = false;
 $errorFields = Array();
+
+// variables for publish form
+$projectFile = null;
+$unpersistedProjectFile = null;
+$publishMessageList = '';
+$problemOccuredForPublish = false;
+$errorFieldsForPublish = Array();
 
 $projectId = get_numeric_param('pid'); // this is only set in an update scenario
 
@@ -89,7 +98,7 @@ if (get_param('action') == 'create') {
         ensureProjectIdIsAssociatedWithUserId($project->id, $loggedInUser->id);
     }
 
-} else if (get_param('action') == 'save') { // can only be called by the project owner
+} else if (get_param('action') == 'save') { // save project basic info. can only be called by the project owner.
     ensureUserIsLoggedIn($loggedInUser);
 
     $logger->info('attempting to save project data ...');
@@ -337,12 +346,86 @@ if (get_param('action') == 'create') {
     }
 
     $activeTab = 'upload'; // jump to the correct tab when the page is reloaded
+
+} else if (get_param('action') == 'publishEdit') {
+    ensureUserIsLoggedIn($loggedInUser);
+    
+    if (!$projectId) {
+        show_fatal_error_and_exit('cannot save without a project id!');
+    }
+
+    $project = Project::fetch_for_id($projectId);
+    if (!$project || !$project->id) {
+        show_fatal_error_and_exit('found no project with id: ' . $projectId);
+    }
+
+    ensureProjectBelongsToUserId($project, $loggedInUser->id);
+    
+    $projectFile = ProjectFile::fetch_for_id(get_numeric_param('pfid'));
+    if (!$projectFile) {
+        show_fatal_error_and_exit('project file not found for id: ' . get_numeric_param('pfid'));
+    }
+
+    ensureProjectFileBelongsToProjectId($projectFile, $projectId);
+    
+    if ($projectFile->type != 'mix' && $projectFile->type != 'release') {
+        show_fatal_error_and_exit('project file is neither a mix nor a release!');
+    }
+    
+    $activeTab = 'publish';
+    
+} else if (get_param('action') == 'publishSave') { // publish a song (project file -> releas). can only be called by the project owner.
+    ensureUserIsLoggedIn($loggedInUser);
+
+    $logger->info('attempting to publish song ...');
+    if (!$projectId) {
+        show_fatal_error_and_exit('cannot publish without a project id!');
+    }
+
+    $project = Project::fetch_for_id($projectId);
+    if (!$project || !$project->id) {
+        show_fatal_error_and_exit('project not found for id: ' . $projectId);
+    }
+
+    ensureProjectBelongsToUserId($project, $loggedInUser->id);
+    
+    $projectFile = ProjectFile::fetch_for_id(get_numeric_param('pfid'));
+    if (!$projectFile) {
+        show_fatal_error_and_exit('project file not found for id: ' . get_numeric_param('pfid'));
+    }
+
+    ensureProjectFileBelongsToProjectId($projectFile, $projectId);
+
+    if (inputDataOkForPublish($errorFieldsForPublish, $projectFile)) {
+        processParamsForPublish($projectFile, $loggedInUser);
+        
+        if (!$projectFile->release_date) $projectFile->release_date = date('Y-m-d H:i:s'); // set release date
+        $projectFile->type = 'release';
+        $projectFile->save();
+
+        $publishMessageList .= processTpl('Common/message_success.html', array(
+            '${msg}' => 'Successfully published song.'
+        ));
+
+    } else {
+        $logger->info('input data was invalid: ' . print_r($errorFieldsForPublish, true));
+        $unpersistedProjectFile = new ProjectFile();
+        processParamsForPublish($unpersistedProjectFile, $loggedInUser);
+        $publishMessageList .= processTpl('Common/message_error.html', array(
+            '${msg}' => 'Please correct the highlighted problems!'
+        ));
+        $problemOccuredForPublish = true;        
+    }
+    
+    $activeTab = 'publish';
 }
 
 // form fields
-$formElementsList == '';
+$basicsFormElementsList  = '';
+$publishFormElementsList = '';
+$contributionsList = '';
 if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user is the project owner
-    $formElementsList .= getFormFieldForParams(array(
+    $basicsFormElementsList .= getFormFieldForParams(array(
         'propName'               => 'title',
         'label'                  => 'Project title',
         'mandatory'              => true,
@@ -354,7 +437,7 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
     ));
 
     // main genre
-    $formElementsList .= getFormFieldForParams(array(
+    $basicsFormElementsList .= getFormFieldForParams(array(
         'inputType'              => 'select2',
         'propName'               => 'mainGenre',
         'label'                  => 'Main genre',
@@ -369,7 +452,7 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
     ));
 
     // sub genres
-    $formElementsList .= getFormFieldForParams(array(
+    $basicsFormElementsList .= getFormFieldForParams(array(
         'inputType'              => 'multiselect2',
         'propName'               => 'subGenres',
         'label'                  => 'Sub genres',
@@ -385,7 +468,7 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
 
     /* DEPRECATED - handled by chosen.js
     // "create new genre"
-    $formElementsList .= getFormFieldForParams(array(
+    $basicsFormElementsList .= getFormFieldForParams(array(
         'propName'               => 'newGenre',
         'label'                  => 'Add new genre',
         'mandatory'              => false,
@@ -399,7 +482,7 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
     */
 
     // mood
-    $formElementsList .= getFormFieldForParams(array(
+    $basicsFormElementsList .= getFormFieldForParams(array(
         'inputType'              => 'multiselect2',
         'propName'               => 'moods',
         'label'                  => 'Moods',
@@ -415,7 +498,7 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
 
     /* DEPRECATED - handled by chosen.js
     // "create new mood"
-    $formElementsList .= getFormFieldForParams(array(
+    $basicsFormElementsList .= getFormFieldForParams(array(
         'propName'               => 'newMood',
         'label'                  => 'Add new mood',
         'mandatory'              => false,
@@ -428,7 +511,7 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
     ));
     */
     // project attributes
-    $formElementsList .= getFormFieldForParams(array(
+    $basicsFormElementsList .= getFormFieldForParams(array(
         'inputType'              => 'multiselect2',
         'propName'               => 'attributes',
         'label'                  => 'This project needs',
@@ -443,7 +526,7 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
         'infoText'               => 'Make a list of what\'s needed for this project to be finished. Other artists will find your project based on this information.'
     ));
 
-    $formElementsList .= getFormFieldForParams(array(
+    $basicsFormElementsList .= getFormFieldForParams(array(
         'inputType'              => 'textarea',
         'propName'               => 'additionalInfo',
         'label'                  => 'Additional info',
@@ -461,7 +544,7 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
     if ($project)            $value            = $project->visibility            == 'private' ? true : false;
     if ($unpersistedProject) $unpersistedValue = $unpersistedProject->visibility == 'private' ? true : false;
     $objValue = $problemOccured ? $unpersistedValue : $value;
-    $formElementsList .= getFormFieldForParams(array(
+    $basicsFormElementsList .= getFormFieldForParams(array(
         'inputType'              => 'checkbox',
         'propName'               => 'isPrivate',
         'objValueOverride'       => $objValue, // this is a checkbox but the value is stored as a string, thus the override
@@ -473,6 +556,107 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
         'workWithUnpersistedObj' => $problemOccured,
         'infoText'               => 'If you choose the project to be private, you need to manually invite other musicians on oneloudr so they can see stems and participate in your project. You can also release previous finished works using this option.'
     ));
+    
+    // publish form fields
+    $publishFormElementsList .= getFormFieldForParams(array(
+        'propName'               => 'release_title',
+        'label'                  => 'Title',
+        'mandatory'              => true,
+        'maxlength'              => 255,
+        'obj'                    => $projectFile,
+        'unpersistedObj'         => $unpersistedProjectFile,
+        'errorFields'            => $errorFieldsForPublish,
+        'workWithUnpersistedObj' => $problemOccuredForPublish
+    ));
+    
+    // collaborator list on publish tab
+    $releaseContributionIds = ReleaseContribution::getContribProjectFileIdsForMixProjectFileId($projectFile->id);
+       
+    // if no release title was persisted yet then the user is here for the first time
+    // (later the user can update the settings)
+    $initiallyCheckCheckboxes = false;
+    if (!$projectFile->release_title) { 
+        $initiallyCheckCheckboxes = true;     
+    }
+     
+    // determine which checkboxes are checked
+    $checkedBoxes = array(
+        'owner' => true,
+        'mixer' => true
+    );
+    
+    $allFiles = ProjectFile::fetch_all_for_project_id_and_type($project->id, 'raw');
+    foreach ($allFiles as $pf) {
+        $checkedBoxes[$pf->id] = $initiallyCheckCheckboxes || in_array($pf->id, $releaseContributionIds);
+    }
+    
+    // FIXME - based on $checkedBoxes, calculation of ownership percentages can be done.
+    // but it's more interesting to see this per user, not per contribution/file
+        
+    // start with the owner
+    $contributionsList .= processTpl('Project/releaseContributionElement.html', array(
+        '${pfid}'                => 'owner',
+        '${checked_optional}'    => $checkedBoxes['owner'] ? ' checked="checked"' : '',
+        '${disabled_optional}'   => ' disabled="disabled"',
+        '${filename_optional}'   => '',           
+        '${comment_optional}'    => '',           
+        '${attributes}'          => 'Started by: ',
+        '${name}'                => escape($project->user_name)
+    ));
+    
+    // next is the mixer
+    $comment = '';
+    if ($projectFile->comment) {
+        $comment = escape(strlen($projectFile->comment) > 100 ? substr($projectFile->comment, 0, 100) . '...' : $projectFile->comment) . '<br />';
+    }
+    
+    $contributionsList .= processTpl('Project/releaseContributionElement.html', array(
+        '${pfid}'                => 'mixer',
+        '${checked_optional}'    => $checkedBoxes['mixer'] ? ' checked="checked"' : '',
+        '${disabled_optional}'   => ' disabled="disabled"',
+        '${filename_optional}'   => '',           
+        '${comment_optional}'    => $comment,           
+        '${attributes}'          => 'Mixed by: ',           
+        '${name}'                => escape($projectFile->originator_user_id ? $projectFile->originator_user_name : $project->user_name)
+    ));
+    
+    foreach ($allFiles as $pf) {
+        $isOwner = true;
+        $name    = $project->user_name;
+        if ($pf->originator_user_id) {
+            $isOwner = false;
+            $name    = $pf->originator_user_name;
+        }
+        
+        $attributesList = '';
+        $attributes = ProjectFileAttribute::getAttributeNamesForProjectFileId($pf->id);
+        if (count($attributes) > 0) $attributesList = implode(', ', $attributes) . ': ';
+
+        $comment = '';
+        if ($pf->comment) {
+            $comment = escape(strlen($pf->comment) > 100 ? substr($pf->comment, 0, 100) . '...' : $pf->comment) . '<br />';
+        }
+        
+        $contributionsList .= processTpl('Project/releaseContributionElement.html', array(
+            '${pfid}'                => $pf->id,
+            '${checked_optional}'    => $checkedBoxes[$pf->id] ? ' checked="checked"' : '',
+            '${disabled_optional}'   => '',
+            '${filename_optional}'   => escape($pf->orig_filename) . '<br />',           
+            '${comment_optional}'    => $comment,           
+            '${attributes}'          => $attributesList,
+            '${name}'                => escape($name)
+        ));
+    }
+    
+//    $fractionDigits = 2;
+//    foreach ($allContributorsInProject as $rcUid => $data) {
+//        $percentage = number_format(0, $fractionDigits);
+//        if ($totalContributions > 0 && in_array($rcUid, $releaseContributors)) {
+//            $percentage = number_format(100 * $data['contributionCount'] / $totalContributions, $fractionDigits);
+//        }
+//
+//        ....
+//    }
 }
 
 $projectGenreList = array();
@@ -519,26 +703,39 @@ $tabContentPublishHtml = '';
 if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user is the project owner
     $tabBasicHtml   = processTpl('Project/tabBasic.html', array());
     $tabInviteHtml  = processTpl('Project/tabInvite.html', array());
-    $tabPublishHtml = processTpl('Project/tabPublish.html', array());
+    
+    if ($projectFile) {
+        $tabPublishHtml = processTpl('Project/tabPublish.html', array());
+    }
 
     $tabContentBasicHtml   = processTpl('Project/tabContentBasic.html', array(
-        '${tabcontentAct_basics}'       => $activeTab == 'basics'  ? ' tabcontentAct' : '',
+        '${tabcontentAct_basics}'       => $activeTab == 'basics' ? ' tabcontentAct' : '',
         '${Common/message_choice_list}' => $generalMessageList,
         '${formAction}'                 => $_SERVER['PHP_SELF'],
         '${projectId}'                  => $project->id,
-        '${Common/formElement_list}'    => $formElementsList,
+        '${Common/formElement_list}'    => $basicsFormElementsList,
         '${submitButtonValue}'          => 'Save'
     ));
 
     $tabContentInviteHtml  = processTpl('Project/tabContentInvite.html', array(
-        '${tabcontentAct_invite}'          => $activeTab == 'invite'  ? ' tabcontentAct' : '',
+        '${tabcontentAct_invite}'          => $activeTab == 'invite' ? ' tabcontentAct' : '',
         '${recommendedArtistElement_list}' => $projectRecommendedArtistsList
     ));
 
-    $tabContentPublishHtml = processTpl('Project/tabContentPublish.html', array(
-        '${tabcontentAct_publish}' => $activeTab == 'publish' ? ' tabcontentAct' : '',
-        '${submitButtonValue}'     => 'Save'
-    ));
+    if ($projectFile) {
+        $tabContentPublishHtml = processTpl('Project/tabContentPublish.html', array(
+            '${tabcontentAct_publish}'                   => $activeTab == 'publish' ? ' tabcontentAct' : '',
+            '${projectName}'                             => escape($project->title),
+            '${releaseDate}'                             => reformat_sql_date($projectFile->release_date ? $projectFile->release_date : date('Y-m-d H:i:s'), true),
+            '${Common/message_choice_list}'              => $publishMessageList,
+            '${formAction}'                              => $_SERVER['PHP_SELF'],
+            '${projectId}'                               => $project->id,
+            '${projectFileId}'                           => $projectFile->id,
+            '${Common/formElement_list}'                 => $publishFormElementsList,
+            '${Project/releaseContributionElement_list}' => $contributionsList,
+            '${publishButtonValue}'                      => $projectFile->release_date ? 'Update' : 'Publish this song'
+        ));
+    }
 
     $uploadBackNavigation = '<a class="tab-1" href="#">&larr; back to project basic settings</a>';
 
@@ -650,8 +847,10 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
         $loggedInUserMayEdit = false;
         if (
             userIsLoggedIn($loggedInUser) &&
-            $file->originator_user_id && $file->originator_user_id == $loggedInUser->id || // file was contributed by the person which is logged in OR
-            $project->user_id == $loggedInUser->id                                         // owner is logged in
+            (
+                $file->originator_user_id && $file->originator_user_id == $loggedInUser->id || // file was contributed by the person which is logged in OR
+                $project->user_id == $loggedInUser->id                                         // owner is logged in
+            )
         ) {
             $loggedInUserMayEdit = true;
         }
@@ -694,71 +893,59 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
 
         $metadataBlock = '';
         $metadataForm  = '';
-        if (
-            $loggedInUserMayEdit &&                              // user has edit permissions and
-            (!$file->comment || count($fileAttributeNames) == 0) // no data was entered so far
-        ) {
-//            $pfFormElementsList = getFormFieldForParams(array(
-//                'inputType'                => 'textarea',
-//                'propName'                 => 'comment',
-//                'label'                    => 'Comment',
-//                'maxlength'                => 500,
-//                'customStyleForInputField' => 'height:60px;', // FIXME - should not be needed
-//                'mandatory'                => true,
-//                'obj'                      => $file,
-//                'unpersistedObj'           => null,
-//                'errorFields'              => array(),
-//                'workWithUnpersistedObj'   => false,
-//                'infoText'                 => 'Add a comment about the file here.'
-//            ));
-//
-//            $pfFormElementsList .= getFormFieldForParams(array(
-//                'inputType'              => 'multiselect2',
-//                'propName'               => 'fileAttributes_' . $file->id,
-//                'label'                  => 'Instrument/Skills',
-//                'mandatory'              => true,
-//                'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
-//                'obj'                    => $file,
-//                'unpersistedObj'         => null,
-//                'selectOptions'          => Attribute::getIdNameMapShownFor('both'),
-//                'objValues'              => ProjectFileAttribute::getAttributeIdsForProjectFileId($file->id),
-//                'errorFields'            => array(),
-//                'workWithUnpersistedObj' => false,
-//                'infoText'               => 'List here what this file consists of. Eg. "Bass" for a bass track.'
-//            ));
-
-            $selectedAttribs = ProjectFileAttribute::getAttributeIdsForProjectFileId($file->id);
-            $logger->info(print_r($selectedAttribs, true));
-            $attribs = Attribute::getIdNameMapShownFor('both');
-            $attribList = '';
-            foreach ($attribs as $attribId => $attribName) {
-                $selected = '';
-                if (in_array($attribId, $selectedAttribs)) $selected = ' selected';
-                $attribList .= '<option value="' . $attribId . '"' . $selected . '>' . escape($attribName) . '</option>' . "\n";
+        if ($file->type != 'release') {
+            if (
+                $loggedInUserMayEdit &&                              // user has edit permissions and
+                (!$file->comment || count($fileAttributeNames) == 0) // no data was entered so far
+            ) {
+                $selectedAttribs = ProjectFileAttribute::getAttributeIdsForProjectFileId($file->id);
+                $logger->info(print_r($selectedAttribs, true));
+                $attribs = Attribute::getIdNameMapShownFor('both');
+                $attribList = '';
+                foreach ($attribs as $attribId => $attribName) {
+                    $selected = '';
+                    if (in_array($attribId, $selectedAttribs)) $selected = ' selected';
+                    $attribList .= '<option value="' . $attribId . '"' . $selected . '>' . escape($attribName) . '</option>' . "\n";
+                }
+    
+                $metadataForm = processTpl('Project/projectFileMetadataForm.html', array(
+                    '${formAction}'              => $_SERVER['PHP_SELF'],
+                    '${projectId}'               => $project->id,
+                    '${projectFileId}'           => $file->id,
+                    '${commentText_optional}'    => escape($file->comment),
+                    '${attributesList}'          => $attribList
+                ));
+    
+            } else { // data already entered or no permissions to see the form
+                $metadataBlock = processTpl('Project/projectFileMetadata.html', array(
+                    '${comment}' => escape($file->comment),
+                    '${skills}'  => escape(join(', ', $fileAttributeNames))
+                ));
             }
-
-            $metadataForm = processTpl('Project/projectFileMetadataForm.html', array(
-                '${formAction}'              => $_SERVER['PHP_SELF'],
-                '${projectId}'               => $project->id,
-                '${projectFileId}'           => $file->id,
-                //'${Common/formElement_list}' => $pfFormElementsList,
-                '${commentText_optional}'    => escape($file->comment),
-                '${attributesList}'          => $attribList
-            ));
-
-        } else { // data already entered or no permissions to see the form
-            $metadataBlock = processTpl('Project/projectFileMetadata.html', array(
-                '${comment}' => escape($file->comment),
-                '${skills}'  => escape(join(', ', $fileAttributeNames))
-            ));
         }
 
         $deleteFileLinkHtml = '';
-        if ($loggedInUserMayEdit) {
+        if ($loggedInUserMayEdit && $file->type != 'release') { // FIXME - an "unrelease" button could be useful, right?
             $deleteFileLinkHtml = processTpl('Project/deleteFileLink.html', array(
                 '${projectFileId}'   => $file->id,
                 '${filenameEscaped}' => escape_and_rewrite_single_quotes($file->orig_filename),
                 '${projectId}'       => $project->id
+            ));
+        }
+        
+        $publishFileLinkHtml = '';
+        if ($file->type == 'mix' && userIsLoggedIn($loggedInUser) && $project->user_id == $loggedInUser->id) { // owner is logged in
+            $publishFileLinkHtml = processTpl('Project/publishFileLink.html', array(
+                '${projectFileId}'   => $file->id,
+                '${projectId}'       => $project->id,
+                '${linkLabel}'       => 'Publish'
+            ));
+            
+        } else if ($file->type == 'release' && userIsLoggedIn($loggedInUser) && $project->user_id == $loggedInUser->id) { // owner is logged in
+            $publishFileLinkHtml = processTpl('Project/publishFileLink.html', array(
+                '${projectFileId}'   => $file->id,
+                '${projectId}'       => $project->id,
+                '${linkLabel}'       => 'Update'
             ));
         }
 
@@ -791,6 +978,7 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
             '${fileIcon_choice}'                          => $fileIcon,
             '${filename}'                                 => escape($file->orig_filename),
             '${Project/deleteFileLink_optional}'          => $deleteFileLinkHtml,
+            '${Project/publishFileLink_optional}'         => $publishFileLinkHtml,
             '${fileDownloadUrl}'                          => $fileDownloadUrl,
             '${Project/player_optional}'                  => $playerHtml,
             '${status}'                                   => $file->status == 'active' ? 'Active' : 'Inactive', // TODO - currently not used
@@ -1014,55 +1202,41 @@ function processParams(&$project, &$loggedInUser) {
     }
 }
 
-// currently hidden, but maybe a candidate for pro users
-//function showVisibilityField($label, $inputType, $propName, $helpTextHtml, $mandatory, $maxlength, &$project, &$unpersistedProject, $problemOccured, &$errorFields, $selectOptions) {
-//    global $logger;
-//
-//    $classSuffix = isset($errorFields[$propName]) ? ' formFieldWithProblem' : '';
-//
-//    echo '<tr class="standardRow1' . $classSuffix . '"' .
-//         ' onmouseover="this.className=\'highlightedRow' . $classSuffix . '\';" onmouseout="this.className=\'standardRow1' . $classSuffix . '\';"' .
-//         '>' . "\n";
-//
-//    echo '<td class="formLeftCol">' . ($mandatory ? '<b>' : '') . $label . ':' . ($mandatory ? '</b>' : '') . '</td>' . "\n";
-//
-//    echo '<td class="formMiddleCol ' . ($mandatory ? 'mandatoryFormField' : 'optionalFormField') . '">';
-//
-//    $normalClass  = 'inputTextField';
-//    $problemClass = 'inputTextFieldWithProblem';
-//    $size = 40;
-//
-//    $projectVal            = null;
-//    $unpersistedProjectVal = null;
-//    eval('if ($project) $projectVal = $project->' . $propName . ';');
-//    eval('if ($unpersistedProject) $unpersistedProjectVal = $unpersistedProject->' . $propName . ';');
-//    $selectedValue = $unpersistedProject ? $unpersistedProjectVal : $projectVal;
-//
-//    echo '<select onChange="visibilityHasChanged(this);" class="' . (isset($errorFields[$propName]) ? $problemClass : $normalClass) . '" name="' . $propName . '">' . "\n";
-//    foreach (array_keys($selectOptions) as $optVal) {
-//        //$logger->debug('#### ' . $selectedValue  . ' === ' . $optVal);
-//        $selected = ((string) $selectedValue === (string) $optVal) ? ' selected' : '';
-//        echo '<option value="' . $optVal . '"' . $selected . '>' . escape($selectOptions[$optVal]) . '</option>' . "\n";
-//    }
-//    echo '</select>' . "\n";
-//
-//    echo '</td>' . "\n";
-//
-//    echo '<td style="vertical-align:top">';
-//    if ($helpTextHtml) {
-//        echo '<span style="font-size:11px">' . $helpTextHtml . '</span>';
-//    } else {
-//        echo '&nbsp;';
-//    }
-//    echo '</td>';
-//
-//    if (isset($errorFields[$propName])) {
-//        echo '<tr class="formFieldWithProblem"><td colspan="3">';
-//        echo $errorFields[$propName];
-//        echo '<br><br></td></tr>';
-//    }
-//
-//    echo '</tr>' . "\n";
-//}
+function inputDataOkForPublish(&$errorFieldsForPublish, &$projectFile) {
+    global $logger;
 
+    $result = true;
+
+    if (strlen(get_param('release_title')) < 1) {
+        $errorFieldsForPublish['release_title'] = 'Title is missing!';
+        $result = false;
+    }
+
+    return $result;
+}
+
+function processParamsForPublish(&$projectFile, &$loggedInUser) {
+    global $logger;
+
+    $projectFile->release_title = get_param('release_title');    
+    
+    if ($projectFile->id) { // if persisted, we may also save the release contribution data
+        ReleaseContribution::deleteForMixProjectFileId($projectFile->id);
+        
+        $contribProjectFileIds = array();
+        foreach ($_POST as $key => $value) {
+            if (
+                $key != 'contribution_owner' &&
+                $key != 'contribution_mixer' &&
+                strpos($key, 'contribution_') === 0
+            ) {
+                if ($value) {
+                    $contribProjectFileIds[] = substr($key, 13);
+                }
+            }
+        }
+        
+        ReleaseContribution::addAll($contribProjectFileIds, $projectFile->id);
+    }
+}
 ?>

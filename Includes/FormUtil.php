@@ -43,6 +43,7 @@ function getFormFieldForParams($params) {
     $readonly                  = array_key_exists('readonly', $params)                  ? $params['readonly']                  : false;
     $recaptchaPublicKey        = array_key_exists('recaptchaPublicKey', $params)        ? $params['recaptchaPublicKey']        : '';
     $objValueOverride          = array_key_exists('objValueOverride', $params)          ? $params['objValueOverride']          : null;
+    $objValuesOverride         = array_key_exists('objValuesOverride', $params)         ? $params['objValuesOverride']         : null;
     $cssClassSuffix            = array_key_exists('cssClassSuffix', $params)            ? $params['cssClassSuffix']            : null;
     $maxFileSizeForUpload      = array_key_exists('maxFileSizeForUpload', $params)      ? $params['maxFileSizeForUpload']      : null;
 
@@ -154,11 +155,16 @@ function getFormFieldForParams($params) {
         ));
 
     } else if ($inputType == 'checkboxes') {
-        $values            = array();
-        $unpersistedValues = array();
-        eval('if ($obj) $values = $obj->' . $propName . ';');
-        eval('if ($unpersistedObj) $unpersistedValues = $unpersistedObj->' . $propName . ';');
-        $objValues = $workWithUnpersistedObj ? $unpersistedValues : $values;
+        if ($objValuesOverride) {
+            $objValues = $objValuesOverride;
+            
+        } else {
+            $values            = array();
+            $unpersistedValues = array();
+            eval('if ($obj) $values = $obj->' . $propName . ';');
+            eval('if ($unpersistedObj) $unpersistedValues = $unpersistedObj->' . $propName . ';');
+            $objValues = $workWithUnpersistedObj ? $unpersistedValues : $values;
+        }
 
         $i = 0;
         foreach (array_keys($selectOptions) as $optVal) {
@@ -172,7 +178,7 @@ function getFormFieldForParams($params) {
                 '${checked_optional}'          => ($objValues && in_array($optVal, $objValues) ? ' checked' : ''),
                 '${disabled_optional}'         => ($disabled ? ' disabled="disabled"' : ''),
                 '${onChangeCallback_optional}' => ($onChangeCallback ? ' onClick="' . $onChangeCallback . '"' : '')
-            ));
+            )) . '<br />'; // FIXME - linebreak should be part of template somehow
 
             $i++;
         }

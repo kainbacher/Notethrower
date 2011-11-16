@@ -2,36 +2,53 @@
     <div class="span-16">
         <div class="box-grey">
 
-                <h2>Share</h2>
-                <br />
-                <p>List with Names</p>
-                <p>Aufteilung in %</p>
-
-                <h2>Opitons</h2>
-                <input type="checkbox" name="needsAttributIds" id="needsAttributIds" value="1"> iTunes<br />
-                <input type="checkbox" name="needsAttributIds" id="needsAttributIds" value="1"> sptify<br />
-                <input type="checkbox" name="needsAttributIds" id="needsAttributIds" value="1"> Soundcloud<br />
-
-                <br />
-                <br />
-
-                <div id="formElt_artist_info" class=" formElement span-15 last">
-                    <div class="span-6">Artist/Band information:</div>
+            <h2>Publish</h2>
+            ${Common/message_choice_list}
+            <form name="publishForm" action="${formAction}" method="POST" style="display:inline-block;">
+                <input type="hidden" name="action" value="publishSave">
+                <input type="hidden" name="pid" value="${projectId}">
+                <input type="hidden" name="pfid" value="${projectFileId}">
+                
+                <div class="formElement span-15 last">
+                    <div class="span-6">
+                        Project:
+                    </div>                
                     <div class="span-8">
-                        <textarea id="artist_info" name="artist_info" rows="3" cols="30"></textarea>
-                    </div>
-                    <div class="span-1 last"></div>
+                        ${projectName}
+                    </div>                
+                    <div class="span-1 last">
+                        &nbsp;
+                    </div>                
                 </div>
-
-
+                
+                ${Common/formElement_list}
+                
+                <div class="formElement span-15 last">
+                    <div class="span-6">
+                        Release date:
+                    </div>                
+                    <div class="span-8">
+                        ${releaseDate}
+                    </div>                
+                    <div class="span-1 last">
+                        &nbsp;
+                    </div>                
+                </div>
+                                
+                <h3>Contributors:</h3>
+                
+                Select the checkboxes of all contributions, which are featured in this mix/release:<br />
+                <br />
+                
+                ${Project/releaseContributionElement_list}
 
                 <div class="prepend-6 span-6 last">
                     <input class="button blue"
                         type="submit"
-                        value="${submitButtonValue}">
+                        value="${publishButtonValue}"
+                        onClick="document.publishForm.submit();">
                 </div>
-
-
+            </form>
         </div>
     </div>
     <div style="clear: both;">

@@ -424,12 +424,17 @@ function b($s) { // for boolean fields which should be declared as 'tinyint(1)'.
     return '0';
 }
 
-function reformat_sql_date($date_str) {
+function reformat_sql_date($date_str, $day_only = false) {
     if (!$date_str) return '';
 
-    //return date('j.n.Y H:i:s', strtotime($date_str));
-    //return date('j.n.Y H:i', strtotime($date_str)); // german format
-    return date('n/j/Y g:ia', strtotime($date_str)); // us format
+    if ($day_only) {
+        return date('n/j/Y', strtotime($date_str)); // us format
+        
+    } else {
+        //return date('j.n.Y H:i:s', strtotime($date_str));
+        //return date('j.n.Y H:i', strtotime($date_str)); // german format
+        return date('n/j/Y g:ia', strtotime($date_str)); // us format
+    }
 }
 
 function escape($utf8_string) {

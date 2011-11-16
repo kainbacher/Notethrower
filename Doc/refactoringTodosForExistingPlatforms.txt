@@ -176,7 +176,7 @@ execute:
 
 #DONE#### manually execute /Install/dbsetup.php to fill genre and mood table
 
-#### manually execute /Install/rewriteGenres.php, then drop the project.genres column with this stmt:
+#DONE#### manually execute /Install/rewriteGenres.php, then drop the project.genres column with this stmt:
 #DONE#alter table pp_project drop column genres;
 
 #### manually move the subscriptions table from test to live and reconfigure the invitation page code to talk to the live db!

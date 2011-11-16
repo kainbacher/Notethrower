@@ -13,10 +13,13 @@ class ProjectFile {
     var $type; // raw, mix, release
     var $status; // inactive or active
     var $comment;
+    var $release_title;
+    var $release_date;
     var $entry_date;
     var $autocreated_from;
 
     // fields from referenced tables
+    var $originator_user_name;
 
     // constructors
     // ------------
@@ -27,11 +30,40 @@ class ProjectFile {
         $objs = array();
 
         $result = _mysql_query(
-            'select pf.* ' .
+            'select pf.*, u.name as originator_user_name ' .
             'from pp_project_file pf ' .
+            'left join pp_user u on pf.originator_user_id = u.id ' .
             'where pf.project_id = ' . n($tid) . ' ' .
             ($show_inactive_items ? 'and pf.status in ("active", "inactive") ' : 'and pf.status = "active" ') .
-            'order by pf.entry_date desc, pf.autocreated_from asc' // ATTENTION: never change the ordering here without checking the effects on the the display of project file lists with regards to autocreated files!
+            'order by pf.entry_date desc, pf.autocreated_from asc' // ATTENTION: never change the ordering here without checking the effects on the the display of project file lists with regards to autocreated files, etc.!
+        );
+
+        $ind = 0;
+
+        while ($row = mysql_fetch_array($result)) {
+            $f = new ProjectFile();
+            $f = ProjectFile::_read_row($f, $row);
+
+            $objs[$ind] = $f;
+            $ind++;
+        }
+
+        mysql_free_result($result);
+
+        return $objs;
+    }
+    
+    function fetch_all_for_project_id_and_type($tid, $type, $show_inactive_items = false) {
+        $objs = array();
+
+        $result = _mysql_query(
+            'select pf.*, u.name as originator_user_name ' .
+            'from pp_project_file pf ' .
+            'left join pp_user u on pf.originator_user_id = u.id ' .
+            'where pf.project_id = ' . n($tid) . ' ' .
+            ($show_inactive_items ? 'and pf.status in ("active", "inactive") ' : 'and pf.status = "active" ') .
+            'and pf.type = ' . qq($type) . ' ' .
+            'order by pf.entry_date desc, pf.autocreated_from asc' // ATTENTION: never change the ordering here without checking the effects on the the display of project file lists with regards to autocreated files, etc.!
         );
 
         $ind = 0;
@@ -78,12 +110,12 @@ class ProjectFile {
         return $objs;
     }
 
-
     function fetch_for_id($id) {
         $result = _mysql_query(
-            'select * ' .
-            'from pp_project_file ' .
-            'where id = ' . n($id)
+            'select pf.*, u.name as originator_user_name ' .
+            'from pp_project_file pf ' .
+            'left join pp_user u on pf.originator_user_id = u.id ' .
+            'where pf.id = ' . n($id)            
         );
 
         $f = new ProjectFile();
@@ -106,10 +138,13 @@ class ProjectFile {
         $f->type                  = $row['type'];
         $f->status                = $row['status'];
         $f->comment               = $row['comment'];
+        $f->release_title         = $row['release_title'];
+        $f->release_date          = $row['release_date'];
         $f->entry_date            = $row['entry_date'];
         $f->autocreated_from      = $row['autocreated_from'];
 
         // fields from referenced tables
+        $f->originator_user_name = $row['originator_user_name'];
 
         return $f;
     }
@@ -128,6 +163,8 @@ class ProjectFile {
             'type                  varchar(10)  not null, ' .
             'status                varchar(20)  not null, ' .
             'comment               text, ' .
+            'release_title         varchar(255), ' .
+            'release_date          datetime, ' .
             'entry_date            datetime     not null default "1970-01-01 00:00:00", ' .
             'autocreated_from      int(10), ' .
             'primary key (id), ' .
@@ -303,7 +340,8 @@ class ProjectFile {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_project_file ' .
-            '(project_id, originator_user_id, filename, orig_filename, type, status, comment, entry_date, autocreated_from) ' .
+            '(project_id, originator_user_id, filename, orig_filename, type, status, comment, release_title, ' .
+            'release_date, entry_date, autocreated_from) ' .
             'values (' .
             n($this->project_id)             . ', ' .
             n($this->originator_user_id)     . ', ' .
@@ -312,6 +350,8 @@ class ProjectFile {
             qq($this->type)                  . ', ' .
             qq($this->status)                . ', ' .
             qq($this->comment)               . ', ' .
+            qq($this->release_title)         . ', ' .
+            qq($this->release_date)          . ', ' .
             ($this->entry_date ? qq($this->entry_date) : 'now()') . ', ' .
             n($this->autocreated_from)       .
             ')'
@@ -336,6 +376,8 @@ class ProjectFile {
             'type = '               . qq($this->type)              . ', ' .
             'status = '             . qq($this->status)            . ', ' .
             'comment = '            . qq($this->comment)           . ', ' .
+            'release_title = '      . qq($this->release_title)     . ', ' .
+            'release_date = '       . qq($this->release_date)      . ', ' .
             'autocreated_from = '   . n($this->autocreated_from)   . ' ' .
             // entry_date intentionally not set here
             'where id = '           . n($this->id)

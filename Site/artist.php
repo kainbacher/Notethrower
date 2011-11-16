@@ -204,12 +204,13 @@ $projectsSection = processTpl('Artist/projectsSection.html', array(
 
 // released tracks
 $releasedTracks = ProjectFile::fetch_all_for_user_id_and_type($user_id, 'release');
+$releasedTracksCopy = $releasedTracks;
 
 $releasesSection = '';
 $releasedTracksList = '';
 foreach ($releasedTracks as $releasedTrack) {
     $autocreatedSibling = null;
-    foreach ($releasedTracks as $tmpPf) {
+    foreach ($releasedTracksCopy as $tmpPf) {
         if ($tmpPf->autocreated_from == $projectFile->id) {
             $autocreatedSibling = $tmpPf;
             break;

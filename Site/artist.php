@@ -225,18 +225,24 @@ foreach ($releasedTracks as $releasedTrack) {
     if ($autocreatedSibling) {
         $prelistenUrl = '../Backend/downloadFile.php?mode=download&project_id=' . $releasedTrack->project_id . '&atfid=' . $autocreatedSibling->id;
     }
-
-    $playerHtml = processTpl('Common/player.html', array(
-        '${projectFileId}'   => $releasedTrack->id,
-        '${prelisteningUrl}' => $prelistenUrl
-    ));
+    
+    $playerHtml = '';
+    if (
+        getFileExtension($releasedTrack->filename) == 'mp3' ||
+        $autocreatedSibling
+    ) {
+        $playerHtml = processTpl('Common/player.html', array(
+            '${projectFileId}'   => $releasedTrack->id,
+            '${prelisteningUrl}' => $prelistenUrl
+        ));
+    }
 
     $releasedTracksList .= processTpl('Artist/releaseListElement.html', array(
-        '${Common/player}'   => $playerHtml,
-        '${fileDownloadUrl}' => $fileDownloadUrl,
-        '${filename}'        => escape($releasedTrack->orig_filename),
-        '${releasePageUrl}'  => $releasePageUrl,
-        '${title}'           => escape($releasedTrack->release_title)
+        '${Common/player_optional}' => $playerHtml,
+        '${fileDownloadUrl}'        => $fileDownloadUrl,
+        '${filename}'               => escape($releasedTrack->orig_filename),
+        '${releasePageUrl}'         => $releasePageUrl,
+        '${title}'                  => escape($releasedTrack->release_title)
     ), $showMobileVersion);
 }
 

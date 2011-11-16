@@ -208,11 +208,12 @@ $releasedTracks = ProjectFile::fetch_all_for_user_id_and_type($user_id, 'release
 $releasesSection = '';
 $releasedTracksList = '';
 foreach ($releasedTracks as $releasedTrack) {
-    $fileDownloadUrl = '../Backend/downloadFile.php?mode=download&project_id=' . $releasedTrack->project_id . '&atfid=' . $releasedTrack->id;
+    $releasePageUrl = '../Backend/downloadFile.php?mode=download&project_id=' . $releasedTrack->project_id . '&atfid=' . $releasedTrack->id;
+    // FIXME - activate as soon as this page is ready: $releasePageUrl = 'release.php?pfid=' . $releasedTrack->id;
 
     $releasedTracksList .= processTpl('Artist/releaseListElement.html', array(
-        '${fileDownloadUrl}' => $fileDownloadUrl,
-        '${title}'           => $releasedTrack->title ? escape($releasedTrack->title) : escape($releasedTrack->orig_filename)
+        '${releasePageUrl}' => $releasePageUrl,
+        '${title}'          => escape($releasedTrack->release_title)
     ), $showMobileVersion);
 }
 

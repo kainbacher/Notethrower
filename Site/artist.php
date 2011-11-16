@@ -211,7 +211,7 @@ $releasedTracksList = '';
 foreach ($releasedTracks as $releasedTrack) {
     $autocreatedSibling = null;
     foreach ($releasedTracksCopy as $tmpPf) {
-        if ($tmpPf->autocreated_from == $projectFile->id) {
+        if ($tmpPf->autocreated_from == $releasedTrack->id) {
             $autocreatedSibling = $tmpPf;
             break;
         }

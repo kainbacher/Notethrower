@@ -400,7 +400,12 @@ if (get_param('action') == 'create') {
         processParamsForPublish($projectFile, $loggedInUser);
         
         if (!$projectFile->release_date) $projectFile->release_date = date('Y-m-d H:i:s'); // set release date
-        $projectFile->type = 'release';
+        $projectFile->type = 'release';  
+        $projectFile->orig_filename = '1ldr-' . 
+                                      $projectFile->id . '-' . 
+                                      substr(sanitizeFilename($project->title), 0, 12) . '-' .
+                                      substr(sanitizeFilename($projectFile->release_title), 0, 30) . 
+                                      '.' . getFileExtension($projectFile->filename);        
         $projectFile->save();
 
         $publishMessageList .= processTpl('Common/message_success.html', array(
@@ -647,16 +652,6 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
             '${name}'                => escape($name)
         ));
     }
-    
-//    $fractionDigits = 2;
-//    foreach ($allContributorsInProject as $rcUid => $data) {
-//        $percentage = number_format(0, $fractionDigits);
-//        if ($totalContributions > 0 && in_array($rcUid, $releaseContributors)) {
-//            $percentage = number_format(100 * $data['contributionCount'] / $totalContributions, $fractionDigits);
-//        }
-//
-//        ....
-//    }
 }
 
 $projectGenreList = array();
@@ -959,7 +954,7 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
             $prelisteningUrl = $fileDownloadUrl;
             if ($autocreatedSibling) $prelisteningUrl = '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $autocreatedSibling->id;
 
-            $playerHtml = processTpl('Project/player.html', array(
+            $playerHtml = processTpl('Common/player.html', array(
                 '${projectFileId}'   => $file->id,
                 '${prelisteningUrl}' => $prelisteningUrl,
             ));
@@ -980,7 +975,7 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
             '${Project/deleteFileLink_optional}'          => $deleteFileLinkHtml,
             '${Project/publishFileLink_optional}'         => $publishFileLinkHtml,
             '${fileDownloadUrl}'                          => $fileDownloadUrl,
-            '${Project/player_optional}'                  => $playerHtml,
+            '${Common/player_optional}'                   => $playerHtml,
             '${status}'                                   => $file->status == 'active' ? 'Active' : 'Inactive', // TODO - currently not used
             '${projectId}'                                => $project->id,
             '${uploadedByName}'                           => $uploader->name,

@@ -12,6 +12,19 @@ for($i = 128; $i < 256; $i++){
 }
 
 // functions
+function sanitizeFilename($fn) {
+    // rewrite umlauts
+    $fn = preg_replace('/ä/', 'ae', $fn);
+    $fn = preg_replace('/Ä/', 'Ae', $fn);
+    $fn = preg_replace('/ö/', 'oe', $fn);
+    $fn = preg_replace('/Ö/', 'Oe', $fn);
+    $fn = preg_replace('/ü/', 'ue', $fn);
+    $fn = preg_replace('/Ü/', 'Ue', $fn);
+    $fn = preg_replace('/ß/', 'ss', $fn);
+
+    return preg_replace('/[^a-zA-Z0-9_.-]/', '', $fn);
+}
+
 function getFileExtension($fileName) {
     $pos = strrpos($fileName, '.');
     $extension = null;

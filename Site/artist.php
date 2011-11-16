@@ -208,12 +208,35 @@ $releasedTracks = ProjectFile::fetch_all_for_user_id_and_type($user_id, 'release
 $releasesSection = '';
 $releasedTracksList = '';
 foreach ($releasedTracks as $releasedTrack) {
-    $releasePageUrl = '../Backend/downloadFile.php?mode=download&project_id=' . $releasedTrack->project_id . '&atfid=' . $releasedTrack->id;
+    $autocreatedSibling = null;
+    foreach ($releasedTracks as $tmpPf) {
+        if ($tmpPf->autocreated_from == $projectFile->id) {
+            $autocreatedSibling = $tmpPf;
+            break;
+        }
+    }
+    
+    $fileDownloadUrl = '../Backend/downloadFile.php?mode=download&project_id=' . $releasedTrack->project_id . '&atfid=' . $releasedTrack->id;
+    
+    $releasePageUrl = $fileDownloadUrl;
     // FIXME - activate as soon as this page is ready: $releasePageUrl = 'release.php?pfid=' . $releasedTrack->id;
 
+    $prelistenUrl = $fileDownloadUrl;
+    if ($autocreatedSibling) {
+        $prelistenUrl = '../Backend/downloadFile.php?mode=download&project_id=' . $releasedTrack->project_id . '&atfid=' . $autocreatedSibling->id;
+    }
+
+    $playerHtml = processTpl('Common/player.html', array(
+        '${projectFileId}'   => $releasedTrack->id,
+        '${prelisteningUrl}' => $prelistenUrl
+    ));
+
     $releasedTracksList .= processTpl('Artist/releaseListElement.html', array(
-        '${releasePageUrl}' => $releasePageUrl,
-        '${title}'          => escape($releasedTrack->release_title)
+        '${Common/player}'   => $playerHtml,
+        '${fileDownloadUrl}' => $fileDownloadUrl,
+        '${filename}'        => escape($releasedTrack->orig_filename),
+        '${releasePageUrl}'  => $releasePageUrl,
+        '${title}'           => escape($releasedTrack->release_title)
     ), $showMobileVersion);
 }
 
@@ -230,7 +253,7 @@ $genres = implode(', ', UserGenre::getGenreNamesForUserId($user->id));
 $tools  = implode(', ', UserTool::getToolNamesForUserId($user->id));
 
 processAndPrintTpl('Artist/index.html', array(
-    '${Common/pageHeader}'                                 => buildPageHeader('Artist', false, false, false, $showMobileVersion),
+    '${Common/pageHeader}'                                 => buildPageHeader('Artist', true, false, false, $showMobileVersion),
     '${Common/bodyHeader}'                                 => buildBodyHeader($visitorUser, $showMobileVersion),
     '${userId}'                                            => $user->id,
     '${userName}'                                          => escape($user->name),

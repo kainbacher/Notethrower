@@ -2,18 +2,6 @@ ${Common/pageHeader}
 
 <script type="text/javascript">
 
-// currently hidden, but maybe a candidate for pro users
-//function visibilityHasChanged(elt) {
-//    if (document.getElementById('associated_users_row')) {
-//        var sel = elt.options[elt.selectedIndex].value;
-//        if (sel == 'private') {
-//            document.getElementById('associated_users_row').style.display = '';
-//        } else {
-//            document.getElementById('associated_users_row').style.display = 'none';
-//        }
-//    }
-//}
-
 function showSelectFriendsPopup() {
     window.open('selectFriends.php?tid=${projectId}', 'NT_SELECT_FRIENDS', 'scrollbars=yes,resizable=yes,status=0,width=400,height=600');
 }

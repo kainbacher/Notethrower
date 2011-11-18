@@ -12,6 +12,15 @@ for($i = 128; $i < 256; $i++){
 }
 
 // functions
+function getReleaseUrl($pfid, $releaseTitle) {
+    if ($GLOBALS['STAGING_ENV'] == 'live') {
+        // this works only for the live system - see rewrite rules there
+        return $GLOBALS['BASE_URL'] . 'release/' . $pfid . '/' . preg_replace('/[^a-zA-Z0-9_,.()$-]/', '', substr($releaseTitle, 0, 20)); // FIXME - is the 20 char limit ok?
+    } else {
+        return $GLOBALS['BASE_URL'] . 'Site/release.php?pfid=' . $pfid;
+    }
+}
+
 function sanitizeFilename($fn) {
     // rewrite umlauts
     $fn = preg_replace('/ä/', 'ae', $fn);
@@ -159,30 +168,47 @@ function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagin
     $jplayerScript     = '';
     if ($includeJPlayerStuff) {
         if ($includeJPlayerStuff === 'circlesmall') {
-            $jplayerStylesheet = processTpl('Common/jPlayerStylesheetCS.html', array(), $useMobileVersion);
-            $jplayerScript     = processTpl('Common/jPlayerScriptCS.html', array(), $useMobileVersion);
+            $jplayerStylesheet = processTpl('Common/jPlayerStylesheetCS.html', array(
+                '${baseUrl}' => $GLOBALS['BASE_URL']
+            ), $useMobileVersion);
+            $jplayerScript     = processTpl('Common/jPlayerScriptCS.html', array(
+                '${baseUrl}' => $GLOBALS['BASE_URL']
+            ), $useMobileVersion);
         }
         else {
-            $jplayerStylesheet = processTpl('Common/jPlayerStylesheet.html', array(), $useMobileVersion);
-            $jplayerScript     = processTpl('Common/jPlayerScript.html', array(), $useMobileVersion);
+            $jplayerStylesheet = processTpl('Common/jPlayerStylesheet.html', array(
+                '${baseUrl}' => $GLOBALS['BASE_URL']
+            ), $useMobileVersion);
+            $jplayerScript     = processTpl('Common/jPlayerScript.html', array(
+                '${baseUrl}' => $GLOBALS['BASE_URL']
+            ), $useMobileVersion);
         }
     }
 
     $ajaxPaginationStylesheet = '';
     $ajaxPaginationScript     = '';
     if ($includeAjaxPagination) {
-        $ajaxPaginationStylesheet = processTpl('Common/ajaxPaginationStylesheet.html', array(), $useMobileVersion);
-        $ajaxPaginationScript     = processTpl('Common/ajaxPaginationScript.html', array(), $useMobileVersion);
+        $ajaxPaginationStylesheet = processTpl('Common/ajaxPaginationStylesheet.html', array(
+            '${baseUrl}' => $GLOBALS['BASE_URL']
+        ), $useMobileVersion);
+        $ajaxPaginationScript     = processTpl('Common/ajaxPaginationScript.html', array(
+            '${baseUrl}' => $GLOBALS['BASE_URL']
+        ), $useMobileVersion);
     }
 
     $chosenStylesheet = '';
     $chosenScript     = '';
     if ($includeChosenStuff) {
-        $chosenStylesheet = processTpl('Common/chosenStylesheet.html', array(), $useMobileVersion);
-        $chosenScript     = processTpl('Common/chosenScript.html', array(), $useMobileVersion);
+        $chosenStylesheet = processTpl('Common/chosenStylesheet.html', array(
+            '${baseUrl}' => $GLOBALS['BASE_URL']
+        ), $useMobileVersion);
+        $chosenScript     = processTpl('Common/chosenScript.html', array(
+            '${baseUrl}' => $GLOBALS['BASE_URL']
+        ), $useMobileVersion);
     }
 
     return processTpl('Common/pageHeader.html', array(
+        '${baseUrl}'                                  => $GLOBALS['BASE_URL'],                                 
         '${pageTitle}'                                => escape($title),
         '${Common/jPlayerStylesheet_optional}'        => $jplayerStylesheet,
         '${Common/jPlayerScript_optional}'            => $jplayerScript,
@@ -202,19 +228,22 @@ function buildBodyHeader($loggedInUser, $useMobileVersion = false) {
     if (!$loggedInUser) {
         $logoLinkUrl = $GLOBALS['BASE_URL'] . 'Site/index.php';
 
-        $fbLoginUrl = $GLOBALS['STAGING_ENV'] == 'dev' ? 'fbDummy.php' : 'fb.php';
+        $fbLoginUrl = $GLOBALS['BASE_URL'] . 'Site/' . ($GLOBALS['STAGING_ENV'] == 'dev' ? 'fbDummy.php' : 'fb.php');
         $fbLoginUrl .= '?destUrl=' . urlencode($_SERVER['PHP_SELF']);
 
         $loginBlock = processTpl('Common/signUpAndLoginMenuItems.html', array(
+            '${baseUrl}'          => $GLOBALS['BASE_URL'],
             '${facebookLoginUrl}' => $fbLoginUrl
         ), $useMobileVersion);
 
     } else {
         $loggedInUserInfoBlockFirstRow = processTpl('Common/loggedInUserFirstRowMenuItems.html', array(
-            '${userId}' => $loggedInUser->id
+            '${baseUrl}' => $GLOBALS['BASE_URL'],
+            '${userId}'  => $loggedInUser->id
         ), $useMobileVersion);
 
         $loggedInUserInfoBlockSecondRow = processTpl('Common/loggedInUserSecondRowMenuItems.html', array(
+            '${baseUrl}'                        => $GLOBALS['BASE_URL'],
             '${userId}'                         => $loggedInUser->id,
             '${dashboardActiveMenuItemClass}'   => strpos($_SERVER['PHP_SELF'], 'dashboard.php')     !== false ? ' mainMenuItemAct' : '',
             '${artistActiveMenuItemClass}'      => strpos($_SERVER['PHP_SELF'], 'artist.php')        !== false ? ' mainMenuItemAct' : '',
@@ -226,6 +255,7 @@ function buildBodyHeader($loggedInUser, $useMobileVersion = false) {
     }
 
     return processTpl('Common/bodyHeader.html', array(
+        '${baseUrl}'                                        => $GLOBALS['BASE_URL'],
         '${logoLinkUrl}'                                    => $logoLinkUrl,
         '${Common/signUpAndLoginMenuItems_optional}'        => $loginBlock,
         '${Common/loggedInUserFirstRowMenuItems_optional}'  => $loggedInUserInfoBlockFirstRow,
@@ -234,11 +264,15 @@ function buildBodyHeader($loggedInUser, $useMobileVersion = false) {
 }
 
 function buildBodyFooter($useMobileVersion = false) {
-    return processTpl('Common/bodyFooter.html', array(), $useMobileVersion);
+    return processTpl('Common/bodyFooter.html', array(
+        '${baseUrl}' => $GLOBALS['BASE_URL']
+    ), $useMobileVersion);
 }
 
 function buildPageFooter($useMobileVersion = false) {
-    return processTpl('Common/pageFooter.html', array(), $useMobileVersion);
+    return processTpl('Common/pageFooter.html', array(
+        '${baseUrl}' => $GLOBALS['BASE_URL']
+    ), $useMobileVersion);
 }
 
 function writePageDoctype() {

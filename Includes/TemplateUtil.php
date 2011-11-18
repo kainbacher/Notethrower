@@ -37,6 +37,13 @@ function processTpl($tplFile, $assignments = array(), $showMobileVersion = false
 
 // takes a template string and an assignments array for the template variables and returns the resolved template string
 function processTplData(&$data, $assignments = array(), $showMobileVersion = false) {
+    if (
+        !isset($assignments['${baseUrl}']) &&
+        isset($GLOBALS['BASE_URL'])
+    ) {
+        $assignments['${baseUrl}'] = $GLOBALS['BASE_URL']; // this is something that is needed in many places
+    }
+        
     return str_replace(array_keys($assignments), array_values($assignments), $data);
 }
 

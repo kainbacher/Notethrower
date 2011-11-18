@@ -28,4 +28,8 @@ $PAYPAL_FIX_PARAMS = "&cmd=_xclick&no_shipping=1&no_note=1&rm=POST&bn=PP-BuyNowB
 $FACEBOOK_APP_ID     = 'xxxxxxxx';
 $FACEBOOK_APP_SECRET = 'xxxxxxxxxxxxxxxxxxxxxx';
 
+// twitter api config
+$TWITTER_CONSUMER_KEY    = 'xxxxxxxxxxxxxxxx';
+$TWITTER_CONSUMER_SECRET = 'xxxxxxxxxxxxxxxxxxxxxxx';
+
 ?>

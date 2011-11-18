@@ -8,6 +8,9 @@ include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectFile.php');
 include_once('../Includes/DB/User.php');
 
+// ATTENTION: on this page, all urls in the output html code have to be absolute, since this page can be accessed
+// via a rewrite rule
+
 // find out if the user browses with a mobile device
 $showMobileVersion = false;
 $isMobileDevice = mobile_device_detect(true,false,true,true,true,true,true,false,false);
@@ -52,13 +55,14 @@ foreach ($projectFiles as $tmpPf) {
 // user image
 $projectOwnerImgUrl = getUserImageUri($project->user_img_filename, 'regular');
 
-$fileDownloadUrl = '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $projectFile->id;
+$fileDownloadUrl = $GLOBALS['BASE_URL'] . 'Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $projectFile->id;
 $prelistenUrl = $fileDownloadUrl;
 if ($autocreatedSibling) {
-    $prelistenUrl = '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $autocreatedSibling->id;
+    $prelistenUrl = $GLOBALS['BASE_URL'] . 'Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $autocreatedSibling->id;
 }
 
 processAndPrintTpl('Release/index.html', array(
+    '${baseUrl}'            => $GLOBALS['BASE_URL'],
     '${Common/pageHeader}'  => buildPageHeader('Release', false, false, false, $showMobileVersion),
     '${Common/bodyHeader}'  => buildBodyHeader($visitorUser, $showMobileVersion),
     '${releaseTitle}'       => escape($projectFile->release_title),

@@ -182,7 +182,9 @@ if ($user->video_url) {
 //
 
 // project lists
-$unfinishedProjects = Project::fetch_all_unfinished_projects_of_user($user_id, false); // FIXME - deal with finished projects somehow
+$includePrivateProjects = false;
+if ($visitorUser && $visitorUserId == $user->id) $includePrivateProjects = true; // the logged in user may see his private projects
+$unfinishedProjects = Project::fetch_all_unfinished_projects_of_user($user_id, $includePrivateProjects); // FIXME - deal with finished projects somehow
 $projectsSection = '';
 $projectsList = '';
 foreach ($unfinishedProjects as $unfinishedProject) {

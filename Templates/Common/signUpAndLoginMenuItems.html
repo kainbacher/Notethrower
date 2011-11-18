@@ -1,6 +1,6 @@
 
 <div class="topMenuItem">
-    <a href="account.php">Sign up for free</a>
+    <a href="${baseUrl}Site/account.php">Sign up for free</a>
 </div>
 
 <div class="topMenuItem">
@@ -9,7 +9,7 @@
         <div class="topMenuSubItem">
             <div  class="topMenuSubLoginItem">
 
-                <form name="loginForm" action="index.php" method="POST">
+                <form name="loginForm" action="${baseUrl}Site/index.php" method="POST">
                     <input type="hidden" name="action" value="login">
 
                     <div  class="topMenuLoginWrapper">
@@ -50,7 +50,7 @@
         <div  class="topMenuSubItem">
             <a href="${facebookLoginUrl}">
                 <span class="topMenuSubItemIcon">
-                    <img src="../Images/icons/facebook.png" width="24" height="24" alt="Facebook">
+                    <img src="${baseUrl}Images/icons/facebook.png" width="24" height="24" alt="Facebook">
                 </span>
                 <span class="topMenuSubItemText">
                     Sign in via Facebook
@@ -60,9 +60,9 @@
         </div>
 
         <div  class="topMenuSubItem">
-            <a href="resetPassword.php">
+            <a href="${baseUrl}Site/resetPassword.php">
                 <span class="topMenuSubItemIcon">
-                    <img src="../Images/icons/lock.png" alt="box" width="24" height="24" />
+                    <img src="${baseUrl}Images/icons/lock.png" alt="box" width="24" height="24" />
                 </span>
                 <span class="topMenuSubItemText">
                     Forgot password?

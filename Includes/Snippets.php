@@ -884,4 +884,59 @@ function rand_char($length=6) {
     return $key;
 }
 
+function relativeTime($timestamp) {
+    
+    $difference = time() - $timestamp;
+
+    if ($difference > 0) {//past
+        $ending = ' ago';
+    } else {//future
+        $difference = -$difference;
+        $ending = ' to go';
+    }
+
+    $output = '';
+    $plural = '';
+    $midnight = time() - strtotime("midnight");
+    $midnight_yesterday = time() - strtotime("-1 day midnight");
+    $year_start = time() - strtotime("first day of January");
+    //just now: 0 - 5 Seconds ago
+    if ($difference <= 10) {
+        $output = "just now";
+    }
+    //x seconds ago
+    else if ($difference < 60) {
+        $output = $difference . ' seconds ' . $ending;
+    }
+    //x minutes ago
+    else if ($difference <= (60 * 60)) {
+        $minutes = round($difference / 60);
+        if ($minutes > 1) {
+            $plural = 's';
+        }
+        $output = $minutes . ' minute' . $plural . $ending;
+    }
+    //x hours ago
+    else if ($difference < $midnight || $difference < (60 * 60 * 12)) {
+        $hours = round($difference / 3600);
+        if ($hours > 1) {
+            $plural = 's';
+        }
+        $output = $hours . ' hour' . $plural . $ending;
+    }
+    //x yesterday
+    // else if (($difference > $midngith || $difference >= (60*60*12))&&$difference < $midnight_yesterday){
+    else if ($difference < $midnight_yesterday) {
+        $output = 'yesterday';
+    }
+    //x Date without year
+    else if ($difference < $year_start) {
+        $output = date('F j', $timestamp);
+    }
+    //x Date with year
+    else {
+        $output = date('F j, Y', $timestamp);
+    }
+    return $output;
+}
 ?>

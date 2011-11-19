@@ -75,9 +75,6 @@ foreach ($msgs as $msg) {
     if ($msg->sender_user_id) {
         $senderImgUrl = getUserImageUri($msg->sender_image_filename, 'tiny');
     }
-    //echo '<pre>';
-    //print_r($msg);
-    //echo '</pre>';
     if($msg->type == 'invite'){
         $subject = 'Project Invite: "'.$msg->subject.'"';
         $text = '<a href="'.$msg->text.'&mid='.$msg->id.'" class="button-small grey">Accept</a>';
@@ -85,7 +82,7 @@ foreach ($msgs as $msg) {
         $msgListHtml .= processTpl('Dashboard/messageListItemInvite.html', array(
             '${messageId}'                                      => $msg->id,
             '${senderId}'                                       => $msg->sender_user_id,
-            '${timestamp}'                                      => reformat_sql_date($msg->entry_date),
+            '${timestamp}'                                      => relativeTime(strtotime($msg->entry_date)),
             '${senderImgUrl}'                                   => $senderImgUrl,
             '${senderName}'                                     => escape($msg->sender_user_name),
             '${subject}'                                        => $subject,
@@ -102,7 +99,7 @@ foreach ($msgs as $msg) {
         $msgListHtml .= processTpl('Dashboard/messageListItem.html', array(
             '${messageId}'                                      => $msg->id,
             '${senderId}'                                       => $msg->sender_user_id,
-            '${timestamp}'                                      => reformat_sql_date($msg->entry_date),
+            '${timestamp}'                                      => relativeTime(strtotime($msg->entry_date)),
             '${senderImgUrl}'                                   => $senderImgUrl,
             '${senderName}'                                     => escape($msg->sender_user_name),
             '${Dashboard/messageListItemShowMoreLink_optional}' => $showMoreLink,

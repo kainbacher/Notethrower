@@ -9,7 +9,7 @@ include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectFile.php');
 require_once('../Includes/twitteroauth/twitteroauth.php');
 
-header("Cache-control: private");
+header('Cache-control: private');
 
 $action = get_param('action');
 
@@ -18,7 +18,11 @@ $data          = get_param('data');
 $returnUrl     = get_param('returnUrl');
 $cs            = get_param('cs');
 
-// FIXME - sessions gehen einfach nicht auf oneloudr.com box - sie werden nicht persistiert
+// ############################################################################################
+// this script is currently unused buy may be useful later for some additional twitter features
+// ############################################################################################
+
+// FIXME - sessions gehen einfach nicht auf oneloudr.com box - sie werden nicht persistiert (angeblich nur ein chrome bug)
 // habe die custom sachen auf params umgestellt, aber die oauth dinge laufen über sessions
 // als letztes wollt ich die php session files in /home/benso/oneloudr.com/phpsessions/ speichern, statt in /tmp
 // und hab dann bemerkt, dass unser php.ini nicht gelesen wird

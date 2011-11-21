@@ -9,6 +9,8 @@ include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectFile.php');
 require_once('../Includes/twitteroauth/twitteroauth.php');
 
+header("Cache-control: private");
+
 $action = get_param('action');
 
 $twitterAction = get_param('twitterAction');

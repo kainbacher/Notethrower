@@ -28,7 +28,7 @@ if ($action == 'connect') {
     $connection = new TwitterOAuth($GLOBALS['TWITTER_CONSUMER_KEY'], $GLOBALS['TWITTER_CONSUMER_SECRET']);
      
     // Get temporary credentials.
-    $callbackUrl = $GLOBALS['BASE_URL'] . $_SERVER['PHP_SELF'] . 
+    $callbackUrl = $GLOBALS['BASE_URL'] . 'Site/' . basename($_SERVER['PHP_SELF']) . 
                    '?action=callback';
     $logger->info('callback url: ' . $callbackUrl);
     $request_token = $connection->getRequestToken($callbackUrl);

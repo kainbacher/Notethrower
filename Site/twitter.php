@@ -10,7 +10,8 @@ require_once('../Includes/twitteroauth/twitteroauth.php');
 $action = get_param('action');
 
 $twitterAction = get_param('twitterAction');
-$returnUrl = get_param('returnUrl');
+$data          = get_param('data');
+$returnUrl     = get_param('returnUrl');
 
 if ($action == 'connect') {
     if (!$GLOBALS['TWITTER_CONSUMER_KEY'] || !$GLOBALS['TWITTER_CONSUMER_SECRET']) {
@@ -43,8 +44,10 @@ if ($action == 'connect') {
     
     // store custom data in session, too
     $_SESSION['twitterAction'] = $twitterAction; // a key which controls what shall happen after authentication (eg. the string tweetAboutRelease)
-    $_SESSION['data']          = get_param('data'); // use this for transportation of the payload for the twitter action (currently this holds eg the pfid of the release file)
+    $_SESSION['data']          = $data; // use this for transportation of the payload for the twitter action (currently this holds eg the pfid of the release file)
     $_SESSION['returnUrl']     = $returnUrl;
+    
+    $logger->info('session: ' . print_r($_SESSION, true));
  
     switch ($connection->http_code) {
       case 200:
@@ -61,6 +64,8 @@ if ($action == 'connect') {
 
 } else if ($action == 'callback') {
     session_start();
+    
+    $logger->info('session: ' . print_r($_SESSION, true));
 
     // If the oauth_token is old redirect to the connect page.
     if (isset($_REQUEST['oauth_token']) && $_SESSION['oauth_token'] !== $_REQUEST['oauth_token']) {

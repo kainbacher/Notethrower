@@ -85,16 +85,21 @@ if ($action == 'connect') {
     $logger->info('session: ' . print_r($_SESSION, true));
 
     // If the oauth_token is old redirect to the connect page.
-    if (isset($_REQUEST['oauth_token']) && $_SESSION['oauth_token'] !== $_REQUEST['oauth_token']) {
-        $_SESSION['oauth_status'] = 'oldtoken';
+    if (!$_SESSION || !isset($_SESSION['oauth_token']) {
+        show_fatal_error_and_exit('session data lost');
         
-        session_write_close();
-        
-        redirectTo($_SERVER['PHP_SELF'] . '?action=clearsessions' .
-                                          '&twitterAction=' . $twitterAction .
-                                          '&data='          . urlencode($data) .
-                                          '&returnUrl='     . urlencode($returnUrl) .
-                                          '&cs='            . $cs);
+    } else {
+        if (isset($_REQUEST['oauth_token']) && $_SESSION['oauth_token'] !== $_REQUEST['oauth_token']) {
+            $_SESSION['oauth_status'] = 'oldtoken';
+            
+            session_write_close();
+            
+            redirectTo($_SERVER['PHP_SELF'] . '?action=clearsessions' .
+                                              '&twitterAction=' . $twitterAction .
+                                              '&data='          . urlencode($data) .
+                                              '&returnUrl='     . urlencode($returnUrl) .
+                                              '&cs='            . $cs);
+        }
     }
     
     // Create TwitteroAuth object with app key/secret and token key/secret from default phase
@@ -181,7 +186,7 @@ if ($action == 'connect') {
     $logger->info('twitterAction: ' . $twitterAction);
     $logger->info('data: ' . $data);
     $logger->info('returnUrl: ' . $returnUrl);
-    $logger->info('cs:' . $cs);
+    $logger->info('cs: ' . $cs);
     
     if ($twitterAction == 'tweetAboutRelease') {
         $projectFile = ProjectFile::fetch_for_id($data);

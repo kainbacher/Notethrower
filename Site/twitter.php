@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 include_once('../Includes/Init.php');
 include_once('../Includes/Config.php');
 include_once('../Includes/Snippets.php');
@@ -34,8 +36,6 @@ if ($action == 'connect') {
     if (!$twitterAction) {
         show_fatal_error_and_exit('returnUrl param is missing!');
     }
-    
-    session_start();
 
     // Build TwitterOAuth object with client credentials.
     $connection = new TwitterOAuth($GLOBALS['TWITTER_CONSUMER_KEY'], $GLOBALS['TWITTER_CONSUMER_SECRET']);
@@ -78,9 +78,7 @@ if ($action == 'connect') {
     
     exit;
 
-} else if ($action == 'callback') {
-    session_start();
-    
+} else if ($action == 'callback') {    
     $logger->info('session: ' . print_r($_SESSION, true));
 
     // If the oauth_token is old redirect to the connect page.
@@ -139,8 +137,7 @@ if ($action == 'connect') {
 
 } else if ($action == 'clearsessions') {
     $logger->info('clearing sessions');
-    
-    session_start();
+
     session_destroy();
  
     // Redirect to connect action
@@ -154,8 +151,6 @@ if ($action == 'connect') {
 
 } else if ($action == 'postTweet') {
     $logger->info('posting tweet');
-    
-    session_start();
     
     // If access tokens are not available redirect to connect page.
     if (

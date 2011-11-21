@@ -131,7 +131,7 @@ if ($user->video_url) {
 //        for ($i = 0; $i < 5; $i++) {
 //            echo '<td>';
 //            if (isset($collaborators[$i])) {
-//                echo '<a href="artist.php?aid=' . $collaborators[$i]->collaborating_user_id . '" target="_blank">';
+//                echo '<a href="' . $GLOBALS['BASE_URL'] . 'Site/artist.php?aid=' . $collaborators[$i]->collaborating_user_id . '" target="_blank">';
 //                echo getUserImageHtml($collaborators[$i]->user_image_filename, $collaborators[$i]->user_name, 'tiny');
 //                echo '</a>';
 //
@@ -147,7 +147,7 @@ if ($user->video_url) {
 //        for ($i = 5; $i < 10; $i++) {
 //            echo '<td>';
 //            if (isset($collaborators[$i])) {
-//                echo '<a href="artist.php?aid=' . $collaborators[$i]->collaborating_user_id . '" target="_blank">';
+//                echo '<a href="' . $GLOBALS['BASE_URL'] . 'Site/artist.php?aid=' . $collaborators[$i]->collaborating_user_id . '" target="_blank">';
 //                echo getUserImageHtml($collaborators[$i]->user_image_filename, $collaborators[$i]->user_name, 'tiny');
 //                echo '</a>';
 //
@@ -172,12 +172,12 @@ if ($user->video_url) {
 //        <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="300" height="400" id="NTWidget" align="middle">
 //	                                  <param name="allowScriptAccess" value="always" />
 //	                                  <param name="allowFullScreen" value="false" />
-//	                                  <param name="movie" value="../Widget/PpWidget.swf?aid=#####php echo $user->id; ####" />
+//	                                  <param name="movie" value="${baseUrl}Widget/PpWidget.swf?aid=#####php echo $user->id; ####" />
 //	                                  <param name="loop" value="false" />
 //	                                  <param name="quality" value="high" />
 //	                                  <param name="wmode" value="transparent" />
 //	                                  <param name="bgcolor" value="#ffffff" />
-//	                                  <embed src="../Widget/PpWidget.swf?aid=#####php echo $user->id; #######" loop="false" quality="high" wmode="transparent" bgcolor="#ffffff" width="300" height="400" name="NTWidget" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+//	                                  <embed src="${baseUrl}Widget/PpWidget.swf?aid=#####php echo $user->id; #######" loop="false" quality="high" wmode="transparent" bgcolor="#ffffff" width="300" height="400" name="NTWidget" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
 //	                                </object>
 //
 
@@ -219,14 +219,14 @@ foreach ($releasedTracks as $releasedTrack) {
         }
     }
     
-    $fileDownloadUrl = '../Backend/downloadFile.php?mode=download&project_id=' . $releasedTrack->project_id . '&atfid=' . $releasedTrack->id;
+    $fileDownloadUrl = $GLOBALS['BASE_URL'] . 'Backend/downloadFile.php?mode=download&project_id=' . $releasedTrack->project_id . '&atfid=' . $releasedTrack->id;
     
     $releasePageUrl = $fileDownloadUrl;
-    // FIXME - activate as soon as this page is ready: $releasePageUrl = 'release.php?pfid=' . $releasedTrack->id;
+    // FIXME - activate as soon as this page is ready: $releasePageUrl = $GLOBALS['BASE_URL'] . 'Site/release.php?pfid=' . $releasedTrack->id;
 
     $prelistenUrl = $fileDownloadUrl;
     if ($autocreatedSibling) {
-        $prelistenUrl = '../Backend/downloadFile.php?mode=download&project_id=' . $releasedTrack->project_id . '&atfid=' . $autocreatedSibling->id;
+        $prelistenUrl = $GLOBALS['BASE_URL'] . 'Backend/downloadFile.php?mode=download&project_id=' . $releasedTrack->project_id . '&atfid=' . $autocreatedSibling->id;
     }
     
     $playerHtml = '';

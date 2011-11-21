@@ -50,7 +50,7 @@ foreach ($projects as $project) {
 }
 
 if (count($projects) == 0) {
-    $projectListHtml = 'No projects found. You might need to enter or refine your <a href="account.php">user profile</a> to get some project recommendations here.';
+    $projectListHtml = 'No projects found. You might need to enter or refine your <a href="' . $GLOBALS['BASE_URL'] . 'Site/account.php">user profile</a> to get some project recommendations here.';
 }
 
 //// find artists which could help the user with his projects

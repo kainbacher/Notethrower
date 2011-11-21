@@ -9,16 +9,19 @@ require_once('../Includes/twitteroauth/twitteroauth.php');
 
 $action = get_param('action');
 
+$twitterAction = get_param('twitterAction');
+$returnUrl = get_param('returnUrl');
+
 if ($action == 'connect') {
     if (!$GLOBALS['TWITTER_CONSUMER_KEY'] || !$GLOBALS['TWITTER_CONSUMER_SECRET']) {
         show_fatal_error_and_exit('$TWITTER_CONSUMER_KEY or $TWITTER_CONSUMER_SECRET missing in local config!');
     }
     
-    if (!get_param('twitterAction')) {
+    if (!$twitterAction) {
         show_fatal_error_and_exit('returnUrl param is missing!');
     }
     
-    if (!get_param('returnUrl')) {
+    if (!$returnUrl) {
         show_fatal_error_and_exit('returnUrl param is missing!');
     }
     
@@ -39,9 +42,9 @@ if ($action == 'connect') {
     $_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
     
     // store custom data in session, too
-    $_SESSION['twitterAction'] = get_param('twitterAction'); // a key which controls what shall happen after authentication (eg. the string tweetAboutRelease)
+    $_SESSION['twitterAction'] = $twitterAction; // a key which controls what shall happen after authentication (eg. the string tweetAboutRelease)
     $_SESSION['data']          = get_param('data'); // use this for transportation of the payload for the twitter action (currently this holds eg the pfid of the release file)
-    $_SESSION['returnUrl']     = get_param('returnUrl');
+    $_SESSION['returnUrl']     = $returnUrl;
  
     switch ($connection->http_code) {
       case 200:
@@ -62,7 +65,10 @@ if ($action == 'connect') {
     // If the oauth_token is old redirect to the connect page.
     if (isset($_REQUEST['oauth_token']) && $_SESSION['oauth_token'] !== $_REQUEST['oauth_token']) {
         $_SESSION['oauth_status'] = 'oldtoken';
-        redirectTo($_SERVER['PHP_SELF'] . '?action=clearsessions');
+        redirectTo($_SERVER['PHP_SELF'] . '?action=clearsessions' .
+                                          '&twitterAction=' . urlencode($_SESSION['twitterAction']) .
+                                          '&data='          . urlencode($_SESSION['data']) .
+                                          '&returnUrl='     . urlencode($_SESSION['returnUrl']));
     }
     
     // Create TwitteroAuth object with app key/secret and token key/secret from default phase
@@ -88,7 +94,10 @@ if ($action == 'connect') {
       
     } else {
         /* Save HTTP status for error dialog on connnect page.*/
-        redirectTo($_SERVER['PHP_SELF'] . '?action=clearsessions');
+        redirectTo($_SERVER['PHP_SELF'] . '?action=clearsessions' .
+                                          '&twitterAction=' . urlencode($_SESSION['twitterAction']) .
+                                          '&data='          . urlencode($_SESSION['data']) .
+                                          '&returnUrl='     . urlencode($_SESSION['returnUrl']));
     }
     
     exit;
@@ -100,7 +109,10 @@ if ($action == 'connect') {
     session_destroy();
  
     // Redirect to connect action
-    redirectTo($_SERVER['PHP_SELF'] . '?action=connect');
+    redirectTo($_SERVER['PHP_SELF'] . '?action=connect' .
+                                      '&twitterAction=' . urlencode($twitterAction) .
+                                      '&data='          . urlencode($data) .
+                                      '&returnUrl='     . urlencode($returnUrl));
     
     exit;
 
@@ -115,7 +127,10 @@ if ($action == 'connect') {
         empty($_SESSION['access_token']['oauth_token']) || 
         empty($_SESSION['access_token']['oauth_token_secret'])
     ) {
-        redirectTo($_SERVER['PHP_SELF'] . '?action=clearsessions');
+        redirectTo($_SERVER['PHP_SELF'] . '?action=clearsessions' .
+                                          '&twitterAction=' . urlencode($_SESSION['twitterAction']) .
+                                          '&data='          . urlencode($_SESSION['data']) .
+                                          '&returnUrl='     . urlencode($_SESSION['returnUrl']));
     }
     
     // Get user access tokens out of the session.

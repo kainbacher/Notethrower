@@ -1,6 +1,7 @@
 <?php
 
-session_start();
+if (isset($_GET['phpsessid'])) session_start($_GET['phpsessid']);
+else session_start();
 
 include_once('../Includes/Init.php');
 include_once('../Includes/Config.php');
@@ -62,6 +63,7 @@ if ($action == 'connect') {
     $_SESSION['cs']            = $cs;
     
     $logger->info('session: ' . print_r($_SESSION, true));
+    $logger->info('session id: ' . session_id());
     
     session_write_close();
  

@@ -12,6 +12,16 @@ $action = get_param('action');
 $twitterAction = get_param('twitterAction');
 $data          = get_param('data');
 $returnUrl     = get_param('returnUrl');
+$cs            = get_param('cs');
+
+// http://ntdev.com/Site/twitter.php?action=connect&twitterAction=tweetAboutRelease&data=22&cs=056d2ad3af7e8e0d9774aa466f6ce69f&returnUrl=http://ntdev.com/
+
+//echo md5('ErpaDerpa!' . $twitterAction . '_' . $data . '_' . $returnUrl); exit; 
+// bd26a82906301d78d6494c6f104ae163 for oltest, 165, no return url
+
+if (md5('ErpaDerpa!' . $twitterAction . '_' . $data . '_' . $returnUrl) != $cs) {
+    show_fatal_error_and_exit('checksum failure!');
+}
 
 if ($action == 'connect') {
     if (!$GLOBALS['TWITTER_CONSUMER_KEY'] || !$GLOBALS['TWITTER_CONSUMER_SECRET']) {
@@ -33,7 +43,11 @@ if ($action == 'connect') {
      
     // Get temporary credentials.
     $callbackUrl = $GLOBALS['BASE_URL'] . 'Site/' . basename($_SERVER['PHP_SELF']) . 
-                   '?action=callback';
+                   '?action=callback' .
+                   '&twitterAction=' . $twitterAction .
+                   '&data='          . urlencode($data) .
+                   '&returnUrl='     . urlencode($returnUrl) .
+                   '&cs='            . $cs;
     $logger->info('callback url: ' . $callbackUrl);
     $request_token = $connection->getRequestToken($callbackUrl);
     $logger->info('request_token: ' . print_r($request_token, true));
@@ -42,10 +56,11 @@ if ($action == 'connect') {
     $_SESSION['oauth_token'] = $token = $request_token['oauth_token'];
     $_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
     
-    // store custom data in session, too
+    // store custom data in session, too // FIXME - for some reason this gets lost when testing on dreamhost. it works locally. interim solution is to transfer all data in get parameters
     $_SESSION['twitterAction'] = $twitterAction; // a key which controls what shall happen after authentication (eg. the string tweetAboutRelease)
     $_SESSION['data']          = $data; // use this for transportation of the payload for the twitter action (currently this holds eg the pfid of the release file)
     $_SESSION['returnUrl']     = $returnUrl;
+    $_SESSION['cs']            = $cs;
     
     $logger->info('session: ' . print_r($_SESSION, true));
  
@@ -71,9 +86,10 @@ if ($action == 'connect') {
     if (isset($_REQUEST['oauth_token']) && $_SESSION['oauth_token'] !== $_REQUEST['oauth_token']) {
         $_SESSION['oauth_status'] = 'oldtoken';
         redirectTo($_SERVER['PHP_SELF'] . '?action=clearsessions' .
-                                          '&twitterAction=' . urlencode($_SESSION['twitterAction']) .
-                                          '&data='          . urlencode($_SESSION['data']) .
-                                          '&returnUrl='     . urlencode($_SESSION['returnUrl']));
+                                          '&twitterAction=' . $twitterAction .
+                                          '&data='          . urlencode($data) .
+                                          '&returnUrl='     . urlencode($returnUrl) .
+                                          '&cs='            . $cs);
     }
     
     // Create TwitteroAuth object with app key/secret and token key/secret from default phase
@@ -91,18 +107,23 @@ if ($action == 'connect') {
     unset($_SESSION['oauth_token']);
     unset($_SESSION['oauth_token_secret']);
     
-    // If HTTP response is 200 continue otherwise send to connect action to retry
+    // If HTTP response is 200 continue, otherwise send to connect action to retry
     if (200 == $connection->http_code) {
         // The user has been verified and the access tokens can be saved for future use
         $_SESSION['status'] = 'verified';
-        redirectTo($_SERVER['PHP_SELF'] . '?action=postTweet');
+        redirectTo($_SERVER['PHP_SELF'] . '?action=postTweet' .
+                                          '&twitterAction=' . $twitterAction .
+                                          '&data='          . urlencode($data) .
+                                          '&returnUrl='     . urlencode($returnUrl) .
+                                          '&cs='            . $cs);
       
     } else {
         /* Save HTTP status for error dialog on connnect page.*/
         redirectTo($_SERVER['PHP_SELF'] . '?action=clearsessions' .
-                                          '&twitterAction=' . urlencode($_SESSION['twitterAction']) .
-                                          '&data='          . urlencode($_SESSION['data']) .
-                                          '&returnUrl='     . urlencode($_SESSION['returnUrl']));
+                                          '&twitterAction=' . $twitterAction .
+                                          '&data='          . urlencode($data) .
+                                          '&returnUrl='     . urlencode($returnUrl) .
+                                          '&cs='            . $cs);
     }
     
     exit;
@@ -115,9 +136,10 @@ if ($action == 'connect') {
  
     // Redirect to connect action
     redirectTo($_SERVER['PHP_SELF'] . '?action=connect' .
-                                      '&twitterAction=' . urlencode($twitterAction) .
+                                      '&twitterAction=' . $twitterAction .
                                       '&data='          . urlencode($data) .
-                                      '&returnUrl='     . urlencode($returnUrl));
+                                      '&returnUrl='     . urlencode($returnUrl) .
+                                      '&cs='            . $cs);
     
     exit;
 
@@ -133,9 +155,10 @@ if ($action == 'connect') {
         empty($_SESSION['access_token']['oauth_token_secret'])
     ) {
         redirectTo($_SERVER['PHP_SELF'] . '?action=clearsessions' .
-                                          '&twitterAction=' . urlencode($_SESSION['twitterAction']) .
-                                          '&data='          . urlencode($_SESSION['data']) .
-                                          '&returnUrl='     . urlencode($_SESSION['returnUrl']));
+                                          '&twitterAction=' . $twitterAction .
+                                          '&data='          . urlencode($data) .
+                                          '&returnUrl='     . urlencode($returnUrl) .
+                                          '&cs='            . $cs);
     }
     
     // Get user access tokens out of the session.
@@ -146,14 +169,15 @@ if ($action == 'connect') {
             $access_token['oauth_token'], $access_token['oauth_token_secret']);
     
     // post the tweet
-    $logger->info('twitterAction param: ' . $_SESSION['twitterAction']);
-    $logger->info('data param: ' . $_SESSION['data']);
-    $logger->info('returnUrl: ' . $_SESSION['returnUrl']);
+    $logger->info('twitterAction: ' . $twitterAction);
+    $logger->info('data: ' . $data);
+    $logger->info('returnUrl: ' . $returnUrl);
+    $logger->info('cs:' . $cs);
     
-    if ($_SESSION['twitterAction'] == 'tweetAboutRelease') {
-        $projectFile = ProjectFile::fetch_for_id($_SESSION['data']);
+    if ($twitterAction == 'tweetAboutRelease') {
+        $projectFile = ProjectFile::fetch_for_id($data);
         if (!$projectFile || !$projectFile->id) {
-            show_fatal_error_and_exit('found no project file for id: ' . $_SESSION['data']);
+            show_fatal_error_and_exit('found no project file for id: ' . $data);
         }
         
         if ($projectFile->type != 'release' || $projectFile->status != 'active') {
@@ -178,7 +202,7 @@ if ($action == 'connect') {
         $logger->info('status/update response: ' . print_r($response, true));
         
     } else {
-        show_fatal_error_and_exit('unrecognized twitterAction: ' . $_SESSION['twitterAction']);
+        show_fatal_error_and_exit('unrecognized twitterAction: ' . $twitterAction);
     }
     
     /* Some example calls */
@@ -188,10 +212,10 @@ if ($action == 'connect') {
     //$connection->post('friendships/create', array('id' => 9436992)));
     //$connection->post('friendships/destroy', array('id' => 9436992)));
     
-    if ($_SESSION['returnUrl']) {
-        redirectTo($_SESSION['returnUrl']);
+    if ($returnUrl) {
+        redirectTo($returnUrl);
     } else {
-        show_fatal_error_and_exit('found no returnUrl value in $_SESSION!');
+        redirectTo($GLOBALS['BASE_URL']);
     }
     
     exit;

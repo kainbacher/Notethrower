@@ -718,17 +718,32 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
     ));
 
     if ($projectFile) {
+        $tweetAboutReleaseButton = '';
+        if ($projectFile->release_date) {
+            $releaseUrl = getReleaseUrl($projectFile->id, $projectFile->release_title);
+            $logger->info('release url: ' . $releaseUrl);
+        
+            $tweetText = 'I just released "' . $projectFile->release_title . '" from my project "' .
+                         $project->title . '" at:';
+            
+            $tweetAboutReleaseButton = processTpl('Project/tweetAboutReleaseButton.html', array(
+                '${urlEscaped}'  => str_replace('"', '\'', $releaseUrl),
+                '${textEscaped}' => str_replace('"', '\'', $tweetText)
+            ));
+        }
+        
         $tabContentPublishHtml = processTpl('Project/tabContentPublish.html', array(
-            '${tabcontentAct_publish}'                   => $activeTab == 'publish' ? ' tabcontentAct' : '',
-            '${projectName}'                             => escape($project->title),
-            '${releaseDate}'                             => reformat_sql_date($projectFile->release_date ? $projectFile->release_date : date('Y-m-d H:i:s'), true),
-            '${Common/message_choice_list}'              => $publishMessageList,
-            '${formAction}'                              => $_SERVER['PHP_SELF'],
-            '${projectId}'                               => $project->id,
-            '${projectFileId}'                           => $projectFile->id,
-            '${Common/formElement_list}'                 => $publishFormElementsList,
-            '${Project/releaseContributionElement_list}' => $contributionsList,
-            '${publishButtonValue}'                      => $projectFile->release_date ? 'Update' : 'Publish this song'
+            '${tabcontentAct_publish}'                    => $activeTab == 'publish' ? ' tabcontentAct' : '',
+            '${projectName}'                              => escape($project->title),
+            '${releaseDate}'                              => reformat_sql_date($projectFile->release_date ? $projectFile->release_date : date('Y-m-d H:i:s'), true),
+            '${Common/message_choice_list}'               => $publishMessageList,
+            '${formAction}'                               => $_SERVER['PHP_SELF'],
+            '${projectId}'                                => $project->id,
+            '${projectFileId}'                            => $projectFile->id,
+            '${Common/formElement_list}'                  => $publishFormElementsList,
+            '${Project/releaseContributionElement_list}'  => $contributionsList,
+            '${Project/tweetAboutReleaseButton_optional}' => $tweetAboutReleaseButton,
+            '${publishButtonValue}'                       => $projectFile->release_date ? 'Update' : 'Publish this song'
         ));
     }
 

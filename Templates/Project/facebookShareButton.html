@@ -1,0 +1,27 @@
+<script type="text/javascript">
+    <!--
+    function popup(url) {
+        var width = 640;
+        var height = 440;
+        var left = (screen.width - width) / 2;
+        var top = (screen.height - height) / 2;
+        var params = 'width=' + width + ', height=' + height;
+        params += ', top=' + top + ', left=' + left;
+        params += ', directories=no';
+        params += ', location=no';
+        params += ', menubar=no';
+        params += ', resizable=no';
+        params += ', scrollbars=no';
+        params += ', status=no';
+        params += ', toolbar=no';
+        newwin = window.open(url, 'windowname5', params);
+        if(window.focus) {
+            newwin.focus()
+        }
+        return false;
+    }
+
+    // -->
+</script>
+
+<a href="javascript: void(0)" onclick="popup('http://www.facebook.com/sharer/sharer.php?u=${releaseUrl}')"><img src="${baseUrl}Images/fb_share.png" /></a>

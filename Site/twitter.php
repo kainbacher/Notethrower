@@ -1,7 +1,6 @@
 <?php
 
-if (isset($_GET['phpsessid'])) session_start($_GET['phpsessid']);
-else session_start();
+session_start();
 
 include_once('../Includes/Init.php');
 include_once('../Includes/Config.php');
@@ -35,7 +34,7 @@ if ($action == 'connect') {
     }
     
     if (!$twitterAction) {
-        show_fatal_error_and_exit('returnUrl param is missing!');
+        show_fatal_error_and_exit('twitterAction param is missing!');
     }
 
     // Build TwitterOAuth object with client credentials.

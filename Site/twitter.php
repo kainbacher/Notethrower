@@ -14,6 +14,11 @@ $data          = get_param('data');
 $returnUrl     = get_param('returnUrl');
 $cs            = get_param('cs');
 
+// FIXME - sessions gehen einfach nicht auf oneloudr.com box - sie werden nicht persistiert
+// habe die custom sachen auf params umgestellt, aber die oauth dinge laufen über sessions
+// als letztes wollt ich die php session files in /home/benso/oneloudr.com/phpsessions/ speichern, statt in /tmp
+// und hab dann bemerkt, dass unser php.ini nicht gelesen wird
+
 // http://ntdev.com/Site/twitter.php?action=connect&twitterAction=tweetAboutRelease&data=22&cs=056d2ad3af7e8e0d9774aa466f6ce69f&returnUrl=http://ntdev.com/
 // http://oneloudr.com/OLTest/Site/twitter.php?action=connect&twitterAction=tweetAboutRelease&data=165&cs=bd26a82906301d78d6494c6f104ae163&returnUrl=
 

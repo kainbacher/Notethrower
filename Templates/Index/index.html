@@ -10,10 +10,10 @@ $(document).ready(function(){
     var myCirclePlayer1 = new CirclePlayer("#jquery_jplayer_1",
     {
         //mp3:"http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3"
-        mp3:"../Backend/downloadFile.php?mode=download&project_id=288&atfid=182"
+        mp3:"${baseUrl}Backend/downloadFile.php?mode=download&project_id=288&atfid=182"
     }, {
         cssSelectorAncestor: "#jp_container_1",
-        swfPath: "../Javascripts/jplayer/",
+        swfPath: "${baseUrl}Javascripts/jplayer/",
         supplied: "mp3",
         wmode: "window"
     });
@@ -21,20 +21,20 @@ $(document).ready(function(){
     var myCirclePlayer2 = new CirclePlayer("#jquery_jplayer_2",
     {
         //mp3:"http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3"
-        mp3:"../Backend/downloadFile.php?mode=download&project_id=233&atfid=143"
+        mp3:"${baseUrl}Backend/downloadFile.php?mode=download&project_id=233&atfid=143"
     }, {
         cssSelectorAncestor: "#jp_container_2",
-        swfPath: "../Javascripts/jplayer/",
+        swfPath: "${baseUrl}Javascripts/jplayer/",
         supplied: "mp3",
         wmode: "window"
     });
 
     var myCirclePlayer3 = new CirclePlayer("#jquery_jplayer_3",
     {
-        mp3:"../Backend/downloadFile.php?mode=download&project_id=338&atfid=228"
+        mp3:"${baseUrl}Backend/downloadFile.php?mode=download&project_id=338&atfid=228"
     }, {
         cssSelectorAncestor: "#jp_container_3",
-        swfPath: "../Javascripts/jplayer/",
+        swfPath: "${baseUrl}Javascripts/jplayer/",
         supplied: "mp3",
         wmode: "window"
     });
@@ -53,11 +53,11 @@ $(document).ready(function(){
         <div class="span-24 last">
 
             <div class="span-24 last">
-                <img src="../Images/startpage-img.png" alt="startpage-img" width="998" height="380" />
+                <img src="${baseUrl}Images/startpage-img.png" alt="startpage-img" width="998" height="380" />
             </div>
             
             <div class="span-24 last" style="text-align:center;">
-                <a href="account.php" class="button-big purple">Sign up</a>
+                <a href="${baseUrl}Site/account.php" class="button-big purple">Sign up</a>
                 <br />
                 <br />
                 <br />
@@ -77,7 +77,7 @@ $(document).ready(function(){
 
                     <h1>Join Project</h1>
                     <p>
-                        Browse the List of <a href="artistList.php">musicians on Oneloudr</a> and see which ones you like to 
+                        Browse the List of <a href="${baseUrl}Site/artistList.php">musicians on Oneloudr</a> and see which ones you like to 
                         join and play along with.
                     </p>
                 </div>
@@ -116,7 +116,7 @@ $(document).ready(function(){
                                         <span class="titleText">Owner:</span>
                                     </div>
                                     <div class="span-7 last">
-                                        <a href="artist.php?aid=120">The Artistry</a>
+                                        <a href="${baseUrl}Site/artist.php?aid=120">The Artistry</a>
                                     </div>
                                 </div>
 
@@ -125,12 +125,12 @@ $(document).ready(function(){
                                         <span class="titleText">Title:</span>
                                     </div>
                                     <div class="span-7 last">
-                                        <a href="project.php?action=edit&pid=288">Turn Of Tide</a>
+                                        <a href="${baseUrl}Site/project.php?action=edit&pid=288">Turn Of Tide</a>
                                     </div>
                                 </div>
                                 
                                 <div class="prepend-2 span-7 last">
-                                    <a href="project.php?action=edit&pid=288">&rarr; Project Details</a>
+                                    <a href="${baseUrl}Site/project.php?action=edit&pid=288">&rarr; Project Details</a>
                                 </div>
                             </div>
                             <div class="clear"></div>
@@ -164,7 +164,7 @@ $(document).ready(function(){
                                         <span class="titleText">Owner:</span>
                                     </div>
                                     <div class="span-7 last">
-                                        <a href="artist.php?aid=89">The Sorrow</a>
+                                        <a href="${baseUrl}Site/artist.php?aid=89">The Sorrow</a>
                                     </div>
                                 </div>
 
@@ -173,12 +173,12 @@ $(document).ready(function(){
                                         <span class="titleText">Title:</span>
                                     </div>
                                     <div class="span-7 last">
-                                        <a href="project.php?action=edit&pid=233">Where is the Sun?</a>
+                                        <a href="${baseUrl}Site/project.php?action=edit&pid=233">Where is the Sun?</a>
                                     </div>
                                 </div>
                                 
                                 <div class="prepend-2 span-7 last">
-                                    <a href="project.php?action=edit&pid=233">&rarr; Project Details</a>
+                                    <a href="${baseUrl}Site/project.php?action=edit&pid=233">&rarr; Project Details</a>
                                 </div>
                             </div>
                             <div class="clear"></div>
@@ -212,7 +212,7 @@ $(document).ready(function(){
                                         <span class="titleText">Owner:</span>
                                     </div>
                                     <div class="span-7 last">
-                                        <a href="artist.php?aid=127">Tim Bennett</a>
+                                        <a href="${baseUrl}Site/artist.php?aid=127">Tim Bennett</a>
                                     </div>
                                 </div>
 
@@ -221,12 +221,12 @@ $(document).ready(function(){
                                         <span class="titleText">Musicians:</span>
                                     </div>
                                     <div class="span-7 last">
-                                        <a href="project.php?action=edit&pid=338">Awake</a>
+                                        <a href="${baseUrl}Site/project.php?action=edit&pid=338">Awake</a>
                                     </div>
                                 </div>
                                 
                                 <div class="prepend-2 span-7 last">
-                                    <a href="project.php?action=edit&pid=338">&rarr; Project Details</a>
+                                    <a href="${baseUrl}Site/project.php?action=edit&pid=338">&rarr; Project Details</a>
                                 </div>
                             </div>
                             <div class="clear"></div>

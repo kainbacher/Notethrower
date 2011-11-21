@@ -15,9 +15,7 @@ $returnUrl     = get_param('returnUrl');
 $cs            = get_param('cs');
 
 // http://ntdev.com/Site/twitter.php?action=connect&twitterAction=tweetAboutRelease&data=22&cs=056d2ad3af7e8e0d9774aa466f6ce69f&returnUrl=http://ntdev.com/
-
-//echo md5('ErpaDerpa!' . $twitterAction . '_' . $data . '_' . $returnUrl); exit; 
-// bd26a82906301d78d6494c6f104ae163 for oltest, 165, no return url
+// http://oneloudr.com/OLTest/Site/twitter.php?action=connect&twitterAction=tweetAboutRelease&data=165&cs=bd26a82906301d78d6494c6f104ae163&returnUrl=
 
 if (md5('ErpaDerpa!' . $twitterAction . '_' . $data . '_' . $returnUrl) != $cs) {
     show_fatal_error_and_exit('checksum failure!');
@@ -29,10 +27,6 @@ if ($action == 'connect') {
     }
     
     if (!$twitterAction) {
-        show_fatal_error_and_exit('returnUrl param is missing!');
-    }
-    
-    if (!$returnUrl) {
         show_fatal_error_and_exit('returnUrl param is missing!');
     }
     

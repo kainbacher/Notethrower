@@ -64,7 +64,7 @@ if ($autocreatedSibling) {
 //og Tags for Facebook share
 $releaseUrl = getReleaseUrl($projectFile->id, $projectFile->release_title);
 
-$ogTags = processTpl('Release/ogTags.html', array(
+$ogTags = processTpl('Release/ogtags.html', array(
     '${projectTitle}'   => $project->title,
     '${releaseTitle}'   => $projectFile->release_title,
     '${releaseUrl}'     => $releaseUrl

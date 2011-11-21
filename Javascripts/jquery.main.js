@@ -256,7 +256,8 @@ $(document).ready(function(){
    // $("a[rel=send_msg]").attr('href', $("a[rel=send_msg]").attr('href')+'&ajax=1');
 	$("a[rel=send_msg]").fancybox({
         //'onStart' : function(el){recipientid = el.attr('href');},
-        'hideOnOverlayClick' : 'false'
+        'hideOnOverlayClick' : false,
+        'hideOnContentClick' : false
     });
 
 

@@ -81,7 +81,7 @@ class Message {
         $m->type                = $row['type'];
         $m->deleted             = $row['deleted'];
         $m->marked_as_read      = $row['marked_as_read'];
-        $m->entry_date          = reformat_sql_date($row['entry_date']);
+        $m->entry_date          = $row['entry_date'];
 
         // non-table fields
         $m->sender_user_name      = $row['sender_user_name'];

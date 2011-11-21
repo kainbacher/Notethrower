@@ -57,6 +57,8 @@ if ($action == 'connect') {
     $_SESSION['cs']            = $cs;
     
     $logger->info('session: ' . print_r($_SESSION, true));
+    
+    session_write_close();
  
     switch ($connection->http_code) {
       case 200:
@@ -79,6 +81,9 @@ if ($action == 'connect') {
     // If the oauth_token is old redirect to the connect page.
     if (isset($_REQUEST['oauth_token']) && $_SESSION['oauth_token'] !== $_REQUEST['oauth_token']) {
         $_SESSION['oauth_status'] = 'oldtoken';
+        
+        session_write_close();
+        
         redirectTo($_SERVER['PHP_SELF'] . '?action=clearsessions' .
                                           '&twitterAction=' . $twitterAction .
                                           '&data='          . urlencode($data) .
@@ -105,6 +110,9 @@ if ($action == 'connect') {
     if (200 == $connection->http_code) {
         // The user has been verified and the access tokens can be saved for future use
         $_SESSION['status'] = 'verified';
+        
+        session_write_close();
+        
         redirectTo($_SERVER['PHP_SELF'] . '?action=postTweet' .
                                           '&twitterAction=' . $twitterAction .
                                           '&data='          . urlencode($data) .
@@ -112,6 +120,8 @@ if ($action == 'connect') {
                                           '&cs='            . $cs);
       
     } else {
+        session_write_close();
+        
         /* Save HTTP status for error dialog on connnect page.*/
         redirectTo($_SERVER['PHP_SELF'] . '?action=clearsessions' .
                                           '&twitterAction=' . $twitterAction .
@@ -148,6 +158,8 @@ if ($action == 'connect') {
         empty($_SESSION['access_token']['oauth_token']) || 
         empty($_SESSION['access_token']['oauth_token_secret'])
     ) {
+        session_write_close();
+        
         redirectTo($_SERVER['PHP_SELF'] . '?action=clearsessions' .
                                           '&twitterAction=' . $twitterAction .
                                           '&data='          . urlencode($data) .
@@ -205,6 +217,8 @@ if ($action == 'connect') {
     //$connection->post('statuses/destroy', array('id' => 5437877770));
     //$connection->post('friendships/create', array('id' => 9436992)));
     //$connection->post('friendships/destroy', array('id' => 9436992)));
+    
+    session_write_close();
     
     if ($returnUrl) {
         redirectTo($returnUrl);

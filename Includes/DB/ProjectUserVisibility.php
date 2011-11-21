@@ -8,7 +8,7 @@ include_once('../Includes/Snippets.php');
 class ProjectUserVisibility {
     var $project_id;
     var $user_id;
-    var $is_request; // this is true(1) when some requests to join a project but hasn't been accepted yet, or null/false when the association is active.
+    var $is_request; // this is true(1) when someone requests to join a project but hasn't been accepted yet, or null/false when the association is active.
 
     // non-table fields
     var $user_name;

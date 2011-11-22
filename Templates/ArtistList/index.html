@@ -57,7 +57,7 @@ ${Common/bodyHeader}
         $('#searchArtist').submit(function(e) {
             e.preventDefault();
             
-            $.post('artistList.php',$('#searchArtist').serialize(), function(data) {
+            $.post('${baseUrl}Site/artistList.php',$('#searchArtist').serialize(), function(data) {
                 
                 if(!data || typeof data.serp == 'undefined'){
                     $('#artistList').empty();
@@ -79,7 +79,7 @@ ${Common/bodyHeader}
             e.preventDefault();
             href = $(this).attr('href');
             href = href.replace("?", "");
-            $.post('artistList.php',href, function(data) {
+            $.post('${baseUrl}Site/artistList.php',href, function(data) {
                 if(!data){
                     $('#artistList').empty();
                     $('#artistList').append('<h1>Search Result:</h1>');

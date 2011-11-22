@@ -16,10 +16,10 @@
             	$("#jquery_jplayer_1").jPlayer({
             		ready: function () {
             			$(this).jPlayer("setMedia", {
-            				mp3: "http://localhost:8888/notethrower/Backend/preview.php?song=35bcbd79ef6af7e77b95cc9e54b055dd/7_HQMP3.mp3"
+            				mp3: "${baseUrl}Backend/preview.php?song=35bcbd79ef6af7e77b95cc9e54b055dd/7_HQMP3.mp3"
             			});
             		},
-            		swfPath: "../Javascripts",
+            		swfPath: "${baseUrl}Javascripts",
             		supplied: "mp3",
             		cssSelectorAncestor: "#jp_interface_1",
             		preload: 'auto'
@@ -34,7 +34,7 @@
 
             <div id="jquery_jplayer_1" class="jp-jplayer" style="background-color: rgb(0, 0, 0); ">
                 <img id="jp_poster_0" style="width: 0px; height: 0px; display: none; ">
-                <audio id="jp_audio_0" preload="auto" src="http://localhost:8888/notethrower/Backend/preview.php?song=35bcbd79ef6af7e77b95cc9e54b055dd/7_HQMP3.mp3">
+                <audio id="jp_audio_0" preload="auto" src="${baseUrl}Backend/preview.php?song=35bcbd79ef6af7e77b95cc9e54b055dd/7_HQMP3.mp3">
                 </audio>
             </div>
             
@@ -80,10 +80,10 @@
                 $("#jquery_jplayer_2").jPlayer({
                 	ready: function () {
                 		$(this).jPlayer("setMedia", {
-                			mp3: "http://localhost:8888/notethrower/Backend/preview.php?song=629577753e58463e673d5725468b0803/6_HQMP3.mp3"
+                			mp3: "${baseUrl}Backend/preview.php?song=629577753e58463e673d5725468b0803/6_HQMP3.mp3"
                 		});
                 	},
-                	swfPath: "../Javascripts",
+                	swfPath: "${baseUrl}Javascripts",
                 	supplied: "mp3",
                 	cssSelectorAncestor: "#jp_interface_2",
                 	preload: 'auto'
@@ -97,7 +97,7 @@
 
             <div id="jquery_jplayer_2" class="jp-jplayer" style="background-color: rgb(0, 0, 0); ">
                 <img id="jp_poster_1" style="width: 0px; height: 0px; display: none; ">
-                <audio id="jp_audio_1" preload="auto" src="http://localhost:8888/notethrower/Backend/preview.php?song=629577753e58463e673d5725468b0803/6_HQMP3.mp3">
+                <audio id="jp_audio_1" preload="auto" src="${baseUrl}Backend/preview.php?song=629577753e58463e673d5725468b0803/6_HQMP3.mp3">
                 </audio>
             </div>
         
@@ -145,15 +145,15 @@
             <tbody>
                 <tr>
                     <td align="left" style="text-align:left;">
-                        <a href="/notethrower/Site/startpage.php?vt=7&amp;lt=7&amp;rt=6&amp;n=8a383b1d8506e00a882f1aadfc11f298&amp;t=1307711611463458" class="button button-small blue">I like this song better</a>
+                        <a href="${baseUrl}Site/startpage.php?vt=7&amp;lt=7&amp;rt=6&amp;n=8a383b1d8506e00a882f1aadfc11f298&amp;t=1307711611463458" class="button button-small blue">I like this song better</a>
                     </td>
                     <td align="center" style="text-align:center;">
-                        <a href="/notethrower/Site/startpage.php" class="button button-small blue">
+                        <a href="${baseUrl}Site/startpage.php" class="button button-small blue">
                             Both songs are awful
                         </a>
                     </td>
                     <td align="right" style="text-align:right;">
-                        <a href="/notethrower/Site/startpage.php?vt=6&amp;lt=7&amp;rt=6&amp;n=8a383b1d8506e00a882f1aadfc11f298&amp;t=1307711611463458" class="button button-small blue">I like this song better</a>
+                        <a href="${baseUrl}Site/startpage.php?vt=6&amp;lt=7&amp;rt=6&amp;n=8a383b1d8506e00a882f1aadfc11f298&amp;t=1307711611463458" class="button button-small blue">I like this song better</a>
                     </td>
                 </tr>
             </tbody>

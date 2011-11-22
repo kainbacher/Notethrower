@@ -447,7 +447,7 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
         'propName'               => 'mainGenre',
         'label'                  => 'Main genre',
         'mandatory'              => true,
-        'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
+        'cssClassSuffix'         => 'chzn-select chzn-modify', // this triggers a conversion to a "chosen" select field
         'obj'                    => $project,
         'unpersistedObj'         => $unpersistedProject,
         'selectOptions'          => Genre::getSelectorOptionsArray(true),
@@ -521,7 +521,7 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
         'propName'               => 'attributes',
         'label'                  => 'This project needs',
         'mandatory'              => true,
-        'cssClassSuffix'         => 'chzn-select', // this triggers a conversion to a "chosen" select field
+        'cssClassSuffix'         => 'chzn-select chzn-modify', // this triggers a conversion to a "chosen" select field
         'obj'                    => $project,
         'unpersistedObj'         => $unpersistedProject,
         'selectOptions'          => Attribute::getIdNameMapShownFor('needs'),
@@ -1068,10 +1068,12 @@ function inputDataOk(&$errorFields, &$project) {
         $errorFields['title'] = 'Title is missing!';
         $result = false;
     }
-
-    if (!get_numeric_param('mainGenre')) {
-        $errorFields['mainGenre'] = 'Please choose a main genre here!';
-        $result = false;
+    
+    if (strpos(get_param('mainGenre'), 'new_') === false) { // if no new value was added
+        if (!get_numeric_param('mainGenre')) {
+            $errorFields['mainGenre'] = 'Please choose a main genre here!';
+            $result = false;
+        }
     }
 
     if (strpos(get_param('projectSubGenresList'), 'new_') === false) { // if no new value was added
@@ -1100,9 +1102,12 @@ function inputDataOk(&$errorFields, &$project) {
         $errorFields['attributes'] = 'Please choose at least one element here!';
         $result = false;
 
-    } else if (preg_match('/[^0-9,]/', get_param('projectAttributesList'))) {
-        $errorFields['attributes'] = 'Invalid attributes list'; // can only happen when someone plays around with the post data
-        $result = false;
+    } else if(strpos(get_param('projectAttributesList'), 'new_') === false){ //no new value added
+        if (preg_match('/[^0-9,]/', get_param('projectAttributesList'))){
+            $errorFields['attributes'] = 'Invalid attributes list'; // can only happen when someone plays around with the post data
+            $result = false;
+        }
+        
     }
 
     return $result;
@@ -1147,6 +1152,18 @@ function processParams(&$project, &$loggedInUser) {
 //        }
 //    }
 
+    // check if main genre is a existing genre, otherwise add it
+    $mainGenreCheck = strstr(get_param('mainGenre'), 'new_');
+    $mainGenre = 0;
+    if($mainGenreCheck){
+        $newMainGenre = new Genre();
+        $newMainGenre->name = substr($mainGenreCheck,4,strlen($mainGenreCheck));
+        $newMainGenre->insert();
+        $mainGenre = $newMainGenre->id;
+    } else {
+        $mainGenre = get_param('mainGenre');
+    }
+    
     // create genre list and save new genre, if one was entered
     $subgenres = explode(',', get_param('projectSubGenresList'));
     $newGenreList = array();
@@ -1188,6 +1205,27 @@ function processParams(&$project, &$loggedInUser) {
             $projectMoodsList[] = $mood;
         }
     }
+    
+    //create attributes list and save new attribute if one was entered
+    $attributes = explode(',', get_param('projectAttributesList'));
+    $newAttributesList = array();
+    $projectAttributesList = array(); 
+    foreach($attributes as $attribute){
+        $newCheck = strstr($attribute, 'new_');
+        if($newCheck){
+            $newAttribute = Attribute::fetchForName($attribute);
+            if(!$newAttribute || !$newAttribute->id){
+                $newAttribute = new Attribute();
+                $newAttribute->name = substr($newCheck,4,strlen($newCheck));
+                $newAttribute->shown_for = 'both';
+                $newAttribute->insert();
+                $newAttributesList[] = $newAttribute->id;
+            }
+        }
+        else {
+            $projectAttributesList[] = $attribute;
+        }
+    }
 
     // handle project main & sub genres
     $projectSubGenresList = array_merge($projectSubGenresList, $newGenreList);
@@ -1195,11 +1233,11 @@ function processParams(&$project, &$loggedInUser) {
 
     if ($project->id) {
         ProjectGenre::deleteForProjectId($project->id); // first, delete all existing genres
-        if (get_numeric_param('mainGenre')) ProjectGenre::addAll(array(get_numeric_param('mainGenre')), $project->id, 1); // then save the selected main genre
+        if ($mainGenre) ProjectGenre::addAll(array($mainGenre), $project->id, 1); // then save the selected main genre
         ProjectGenre::addAll($projectSubGenresList, $project->id, 0); // and the selected sub genres
 
     } else { // work with unpersisted obj
-        $project->unpersistedProjectMainGenre = get_numeric_param('mainGenre');
+        $project->unpersistedProjectMainGenre = $mainGenre;
         $project->unpersistedProjectSubGenres = $projectSubGenresList;
     }
 
@@ -1216,9 +1254,12 @@ function processParams(&$project, &$loggedInUser) {
     }
 
     // handle project attributes
+    $projectAttributesList = array_merge($projectAttributesList, $newAttributesList);
+    $projectAttributesList = array_unique($projectAttributesList);
+    
     if ($project->id) {
         ProjectAttribute::deleteForProjectId($project->id); // first, delete all existing attributes
-        ProjectAttribute::addAll(explode(',', get_param('projectAttributesList')), $project->id, 'needs'); // then save the selected attributes
+        ProjectAttribute::addAll($projectAttributesList, $project->id, 'needs'); // then save the selected attributes
 //        $project->containsOthers = get_param('containsOthers');
 //        $project->needsOthers = get_param('needsOthers');
 

@@ -940,4 +940,121 @@ function relativeTime($timestamp) {
     }
     return $output;
 }
+
+/*
+* Vorschlag zur Angabe der Zeitspannen: Definieren möglicher Einheiten:
+* Jahre / Wochen / Tage / Stunden / Minuten / Sekunden
+* System sucht die größtmögliche Einheit, bei der eine Zahl >=1 entsteht
+* System prüft ob damit eine Angabe mit einer Toleranz von max. z. B. 5% möglich ist
+* (5% in Configfile einstellbar)
+* Wenn das NICHT möglich ist wird die Zahl abgerundet und eine Zusatzangabe mit der nächstkleineren
+* Einheit entsteht!
+* So ist sichergestellt dass die Angabe möglichst leicht lesbar ist (nicht unnötig genau), aber
+* trotzdem eine Mindestgenauigkeit erfüllt.
+* Beispiele:
+* 5 Wochen, 2 Tage (Die Tage brauchts weil 5 Wochen könnten auch 4.5 sein, d. h. 10% Rundungsfehler möglich)
+* 23 Wochen (da brauchts keine Tage, denn wenn es 22.5 Wochen sind ist der Rundungsfehler kleiner als 5%)
+*
+* durchschnittswerte:
+* 365.25 tage pro jahr   (wenn schaltjahr mit einbezogen wird (3 * 265 + 1 * 366) / 4)
+* 52.179 wochen pro jahr (365.25 / 7)
+* 30.438 tage pro monat  (365.25 / 12)
+* 4.348 wochen pro monat (52.179 / 12)
+*/
+function make_nice_duration($seconds, $suppressFineGrainedTimeInfo = true) {
+    
+    // $suppressFineGrainedTimeInfo = true causes that no finer-grained time info is shown when 
+    // the value is outside of the tolerance. eg "3 minutes" instead of "3 minutes, 32 seconds"
+    
+    $minutes = $seconds / 60;
+    $hours   = $seconds / (60 * 60);
+    $days    = $seconds / (60 * 60 * 24);
+    $weeks   = $seconds / (60 * 60 * 24 * 7);
+    $months  = $seconds / (60 * 60 * 24 * 30.438);
+    $years   = $seconds / (60 * 60 * 24 * 365.25);
+
+    $str = '';
+
+    if ($years >= 1) {
+        if ($suppressFineGrainedTimeInfo || _is_within_tolerance($years)) {
+            $str = _get_einzahl_mehrzahl_str(round($years), 'year' , 'years');
+
+        } else {
+            $str = _get_einzahl_mehrzahl_str(floor($years), 'year' , 'years');
+            $addon = _get_einzahl_mehrzahl_str(round($months - floor($years) * 12), 'month', 'months');
+            if ($addon != '-') $str .= ', ' . $addon;
+        }
+
+    } else if ($months >= 1) {
+        if ($suppressFineGrainedTimeInfo || _is_within_tolerance($months)) {
+            $str = _get_einzahl_mehrzahl_str(round($months), 'month', 'months');
+
+        } else {
+            $str = _get_einzahl_mehrzahl_str(floor($months), 'month', 'months');
+            $addon = _get_einzahl_mehrzahl_str(round($weeks - floor($months) * 4.348), 'week', 'weeks');
+            if ($addon != '-') $str .= ', ' . $addon;
+        }
+
+    } else if ($weeks >= 1) {
+        if ($suppressFineGrainedTimeInfo || _is_within_tolerance($weeks)) {
+            $str = _get_einzahl_mehrzahl_str(round($weeks), 'week', 'weeks');
+
+        } else {
+            $str = _get_einzahl_mehrzahl_str(floor($weeks), 'week', 'weeks');
+            $addon = _get_einzahl_mehrzahl_str(round($days - floor($weeks) * 7), 'day', 'days');
+            if ($addon != '-') $str .= ', ' . $addon;
+        }
+
+    } else if ($days >= 1) {
+        if ($suppressFineGrainedTimeInfo || _is_within_tolerance($days)) {
+            $str = _get_einzahl_mehrzahl_str(round($days), 'day', 'days');
+
+        } else {
+            $str = _get_einzahl_mehrzahl_str(floor($days), 'day', 'days');
+            $addon = _get_einzahl_mehrzahl_str(round($hours - floor($days) * 24), 'hour', 'hours');
+            if ($addon != '-') $str .= ', ' . $addon;
+        }
+
+    } else if ($hours >= 1) {
+        if ($suppressFineGrainedTimeInfo || _is_within_tolerance($hours)) {
+            $str = _get_einzahl_mehrzahl_str(round($hours), 'hour', 'hours');
+
+        } else {
+            $str = _get_einzahl_mehrzahl_str(floor($hours), 'hour', 'hours');
+            $addon = _get_einzahl_mehrzahl_str(round($minutes - floor($hours) * 60), 'minute', 'minutes');
+            if ($addon != '-') $str .= ', ' . $addon;
+        }
+
+    } else if ($minutes >= 1) {
+        if ($suppressFineGrainedTimeInfo || _is_within_tolerance($minutes)) {
+            $str = _get_einzahl_mehrzahl_str(round($minutes), 'minute', 'minutes');
+
+        } else {
+            $str = _get_einzahl_mehrzahl_str(floor($minutes), 'minute', 'minutes');
+            $addon = _get_einzahl_mehrzahl_str(round($seconds - floor($minutes) * 60), 'second', 'seconds');
+            if ($addon != '-') $str .= ', ' . $addon;
+        }
+
+    } else {
+        $str = _get_einzahl_mehrzahl_str(round($seconds), 'second', 'seconds');
+    }
+
+    return $str;
+}
+
+function _is_within_tolerance($val) {
+    $tolerance = 0.05;
+
+    if ((round($val) / $val) > (1 + $tolerance) || (round($val) / $val) < (1 - $tolerance)) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function _get_einzahl_mehrzahl_str($val, $singular, $plural) {
+    if ($val == 1) return $val . ' ' . $singular;
+    else           return $val . ' ' . $plural;
+}
+
 ?>

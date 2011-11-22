@@ -738,12 +738,18 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
         }
         
         
-        
+        $releasedTimeStr = 'now';
+        if ($projectFile->release_date) {
+            if (time() - strtotime($projectFile->release_date) > 0) {
+                $releasedTimeStr = make_nice_duration(time() - strtotime($projectFile->release_date)) . ' ago';
+            }
+        }
         
         $tabContentPublishHtml = processTpl('Project/tabContentPublish.html', array(
             '${tabcontentAct_publish}'                    => $activeTab == 'publish' ? ' tabcontentAct' : '',
             '${projectName}'                              => escape($project->title),
-            '${releaseDate}'                              => reformat_sql_date($projectFile->release_date ? $projectFile->release_date : date('Y-m-d H:i:s'), true),
+            //'${released}'                                 => reformat_sql_date($projectFile->release_date ? $projectFile->release_date : date('Y-m-d H:i:s'), true),
+            '${released}'                                 => $releasedTimeStr,
             '${Common/message_choice_list}'               => $publishMessageList,
             '${formAction}'                               => $_SERVER['PHP_SELF'],
             '${projectId}'                                => $project->id,

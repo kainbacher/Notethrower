@@ -4,7 +4,10 @@
 
             <h2>Publish</h2>
             ${Common/message_choice_list}
-            ${Project/tweetAboutReleaseButton_optional}
+            <div style="text-align:center">
+                ${Project/facebookShareButton_optional}
+                ${Project/tweetAboutReleaseButton_optional}
+            </div>
             <form name="publishForm" action="${formAction}" method="POST" style="display:inline-block;">
                 <input type="hidden" name="action" value="publishSave">
                 <input type="hidden" name="pid" value="${projectId}">

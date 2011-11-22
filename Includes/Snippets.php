@@ -23,13 +23,13 @@ function getReleaseUrl($pfid, $releaseTitle) {
 
 function sanitizeFilename($fn) {
     // rewrite umlauts
-    $fn = preg_replace('/ä/', 'ae', $fn);
-    $fn = preg_replace('/Ä/', 'Ae', $fn);
-    $fn = preg_replace('/ö/', 'oe', $fn);
-    $fn = preg_replace('/Ö/', 'Oe', $fn);
-    $fn = preg_replace('/ü/', 'ue', $fn);
-    $fn = preg_replace('/Ü/', 'Ue', $fn);
-    $fn = preg_replace('/ß/', 'ss', $fn);
+    $fn = preg_replace('/Ã¤/', 'ae', $fn);
+    $fn = preg_replace('/Ã„/', 'Ae', $fn);
+    $fn = preg_replace('/Ã¶/', 'oe', $fn);
+    $fn = preg_replace('/Ã–/', 'Oe', $fn);
+    $fn = preg_replace('/Ã¼/', 'ue', $fn);
+    $fn = preg_replace('/Ãœ/', 'Ue', $fn);
+    $fn = preg_replace('/ÃŸ/', 'ss', $fn);
 
     return preg_replace('/[^a-zA-Z0-9_.-]/', '', $fn);
 }
@@ -163,7 +163,7 @@ function setGenreCookie($genre) {
     setcookie($GLOBALS['COOKIE_NAME_GENRE'], $genre, time() + 60 * 60 * 24 * 365 * 100, $GLOBALS['WEBAPP_BASE']);
 }
 
-function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagination = false, $includeChosenStuff = false, $useMobileVersion = false) {
+function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagination = false, $includeChosenStuff = false, $useMobileVersion = false, $ogTags = false) {
     $jplayerStylesheet = '';
     $jplayerScript     = '';
     if ($includeJPlayerStuff) {
@@ -215,7 +215,8 @@ function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagin
         '${Common/ajaxPaginationStylesheet_optional}' => $ajaxPaginationStylesheet,
         '${Common/ajaxPaginationScript_optional}'     => $ajaxPaginationScript,
         '${Common/chosenStylesheet_optional}'         => $chosenStylesheet,
-        '${Common/chosenScript_optional}'             => $chosenScript
+        '${Common/chosenScript_optional}'             => $chosenScript,
+        '${Common/ogTags_optional}'                   => $ogTags
     ), $useMobileVersion);
 }
 

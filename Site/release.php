@@ -61,9 +61,21 @@ if ($autocreatedSibling) {
     $prelistenUrl = $GLOBALS['BASE_URL'] . 'Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $autocreatedSibling->id;
 }
 
+//og Tags for Facebook share
+$releaseUrl = getReleaseUrl($projectFile->id, $projectFile->release_title);
+
+$ogTags = processTpl('Release/ogtags.html', array(
+    '${projectTitle}'   => $project->title,
+    '${releaseTitle}'   => $projectFile->release_title,
+    '${releaseUrl}'     => $releaseUrl
+), $showMobileVersion);
+
+//project 'Wickeder project"'"/>
+
+
 processAndPrintTpl('Release/index.html', array(
     '${baseUrl}'            => $GLOBALS['BASE_URL'],
-    '${Common/pageHeader}'  => buildPageHeader('Release', false, false, false, $showMobileVersion),
+    '${Common/pageHeader}'  => buildPageHeader('Release', false, false, false, $showMobileVersion, $ogTags),
     '${Common/bodyHeader}'  => buildBodyHeader($visitorUser, $showMobileVersion),
     '${releaseTitle}'       => escape($projectFile->release_title),
     '${fileDownloadUrl}'    => $fileDownloadUrl,

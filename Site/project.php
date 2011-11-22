@@ -719,6 +719,7 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
 
     if ($projectFile) {
         $tweetAboutReleaseButton = '';
+        $facebookShareButton = '';
         if ($projectFile->release_date) {
             $releaseUrl = getReleaseUrl($projectFile->id, $projectFile->release_title);
             $logger->info('release url: ' . $releaseUrl);
@@ -730,7 +731,14 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
                 '${urlEscaped}'  => str_replace('"', '\'', $releaseUrl),
                 '${textEscaped}' => str_replace('"', '\'', $tweetText)
             ));
+            
+            $facebookShareButton = processTpl('Project/facebookShareButton.html', array(
+                '${releaseUrl}'  => urlencode($releaseUrl)
+            ));
         }
+        
+        
+        
         
         $tabContentPublishHtml = processTpl('Project/tabContentPublish.html', array(
             '${tabcontentAct_publish}'                    => $activeTab == 'publish' ? ' tabcontentAct' : '',
@@ -743,6 +751,7 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
             '${Common/formElement_list}'                  => $publishFormElementsList,
             '${Project/releaseContributionElement_list}'  => $contributionsList,
             '${Project/tweetAboutReleaseButton_optional}' => $tweetAboutReleaseButton,
+            '${Project/facebookShareButton_optional}'     => $facebookShareButton,
             '${publishButtonValue}'                       => $projectFile->release_date ? 'Update' : 'Publish this song'
         ));
     }

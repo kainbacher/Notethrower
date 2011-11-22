@@ -112,8 +112,8 @@ class TranscodingJob {
             'values (' .
             n($this->projectFileId)           . ', ' .
             qq($this->status)                 . ', ' .
-            'now()'                           . ', ' .
-            'now()'                           . ', ' .
+            qq(formatMysqlDatetime())         . ', ' .
+            qq(formatMysqlDatetime())         . ', ' .
             qq($this->info)                   .
             ')'
         );
@@ -131,9 +131,9 @@ class TranscodingJob {
         $ok = _mysql_query(
             'update pp_transcoding_job ' .
             'set project_file_id='         . n($this->projectFileId)            . ', ' .
-            'status = '                     . qq($this->status)                     . ', ' .
-            'updated_date = '              . 'now()'                              . ', ' .
-            'info = '                      . qq($this->info)                      . ' ' .
+            'status = '                    . qq($this->status)                  . ', ' .
+            'updated_date = '              . qq(formatMysqlDatetime())          . ', ' .
+            'info = '                      . qq($this->info)                    . ' ' .
             'where id = '                  . n($this->id)
         );
         return $ok;
@@ -142,8 +142,8 @@ class TranscodingJob {
     function updateStatusBasedOnOldStatus($oldStatus) {
         $ok = _mysql_query(
             'update pp_transcoding_job ' .
-            'set status = '    . qq($this->status) . ', ' .
-            'updated_date = '  . 'now()'           . ' ' .
+            'set status = '    . qq($this->status)          . ', ' .
+            'updated_date = '  . qq(formatMysqlDatetime())  . ' ' .
             'where id=' . n($this->id) . ' and status=' . qq($oldStatus)
         );
         $affectedRows = mysql_affected_rows();

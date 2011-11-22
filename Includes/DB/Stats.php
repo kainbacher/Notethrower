@@ -37,10 +37,10 @@ class Stats {
         $ok = _mysql_query(
             'insert into pp_stats ' .
             '(user_id, ip, entry_date) ' .
-            'values ('                     .
+            'values ('                   .
             qq($this->user_id)           . ', ' .
-            qq($this->ip)                  . ', ' .
-            'now()'                        .
+            qq($this->ip)                . ', ' .
+            qq(formatMysqlDatetime())    .
             ')'
         );
 

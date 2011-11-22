@@ -57,7 +57,7 @@ class Nonce {
             '(nonce_str, creation_date) ' .
             'values (' .
             qq($nonceStr)     . ', ' .
-            'now()'           .
+            qq(formatMysqlDatetime()) .
             ')'
         );
     }

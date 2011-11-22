@@ -173,7 +173,7 @@ class News {
             'values (' .
             qq($this->html)     . ', ' .
             qq($this->headline) . ', ' .
-            'now()'             .
+            qq(formatMysqlDatetime()) .
             ')'
         );
 

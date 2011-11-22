@@ -100,9 +100,9 @@ class Subscription {
             'values (' .
             qq($this->username)        . ', ' .
             qq($this->email_address)   . ', ' .
-            qq($this->rand_str)       . ', ' .
+            qq($this->rand_str)        . ', ' .
             n($this->referrer_id)      . ', ' .
-            'now()'                    .
+            qq(formatMysqlDatetime())  .
             ')'
         );
 

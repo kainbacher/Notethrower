@@ -116,7 +116,7 @@ class PayPalTx {
             qq($this->receiver)          . ', ' .
             qq($this->paypal_tx_id)      . ', ' .
             qq($this->item_number)       . ', ' .
-            'now()'                      . ', ' .
+            qq(formatMysqlDatetime())    . ', ' .
             n($this->amount)             . ', ' .
             qq($this->currency)          . ', ' .
             qq($this->first_name)        . ', ' .

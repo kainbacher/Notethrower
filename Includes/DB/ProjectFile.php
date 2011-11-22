@@ -353,7 +353,7 @@ class ProjectFile {
             qq($this->comment)               . ', ' .
             qq($this->release_title)         . ', ' .
             qq($this->release_date)          . ', ' .
-            ($this->entry_date ? qq($this->entry_date) : 'now()') . ', ' .
+            ($this->entry_date ? qq($this->entry_date) : qq(formatMysqlDatetime())) . ', ' .
             n($this->autocreated_from)       .
             ')'
         );

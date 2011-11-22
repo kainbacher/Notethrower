@@ -664,7 +664,7 @@ class Project {
             qq($this->containsOthers)            . ', ' .
             qq($this->needsOthers)               . ', ' .
             qq($this->additionalInfo)            . ', ' .
-            'now()'                              .
+            qq(formatMysqlDatetime())            .
             ')'
         );
 

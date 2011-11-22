@@ -172,7 +172,7 @@ class Message {
             qq($this->type)                . ', ' .
             b($this->deleted)              . ', ' .
             b($this->marked_as_read)       . ', ' .
-            'now()'                        .
+            qq(formatMysqlDatetime())      .
             ')'
         );
 

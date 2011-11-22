@@ -1,15 +1,32 @@
-#RewriteEngine on 
+#RewriteEngine on
 
 #RewriteBase /
 
-#RewriteCond %{REQUEST_URI} ^/invite/\d+/?$
-#RewriteRule .* Site/subscription.php 
-#RewriteRule ^invite/([^/]+)/?$ Site/subscription.php?referrer=$1
-#RewriteRule ^invite/([^/]+)/([^/]+) Site/subscription.php?referrer=$1&action=$2 
+#RewriteCond %{REQUEST_URI} ^/invite/?$
+# #RewriteRule .* Site/subscription.php
+# #RewriteRule ^invite/([^/]+)/?$ Site/subscription.php?referrer=$1
+# #RewriteRule ^invite/([^/]+)/([^/]+) Site/subscription.php?referrer=$1&action=$2
+#RewriteRule .* Site/index.php [R]
+#RewriteRule ^invite/([^/]+)/?$ Site/index.php [R]
+#RewriteRule ^invite/([^/]+)/([^/]+) Site/index.php [R]
+# #RewriteCond %{REQUEST_URI} ^/Styles/?$
+# #RewriteRule .* Styles/$1
+# #RewriteCond %{REQUEST_URI} ^/Images/?$
+# #RewriteRule .* Images/$1
 
 #RewriteCond %{REQUEST_URI} ^/release/\d+/?
 #RewriteRule ^release/(\d+)/?$     Site/release.php?pfid=$1
 #RewriteRule ^release/(\d+)/[^/]+  Site/release.php?pfid=$1
+
+#RewriteCond %{REQUEST_URI} ^/?$
+#RewriteRule ^/?$     Site/index.php
+
+#RewriteCond %{REQUEST_URI} ^/messages/?
+#RewriteRule ^messages/?$     Site/dashboard.php
+
+#RewriteCond %{REQUEST_URI} ^/artist/\d+/?
+#RewriteRule ^artist/(\d+)/?$  Site/artist.php?aid=$1
+
 
 AddHandler php5-script .php
 

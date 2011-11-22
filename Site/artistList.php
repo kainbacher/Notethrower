@@ -31,13 +31,14 @@ if (get_param('action') == 'search') { // ajax call
     $maxRows     = 20;
     $start       = $page * $maxRows;
     $name        = (get_param('name') == 'Artist Name' ? false : get_param('name')); // optional
+    $bio         = (get_param('bio') == 'Band Info / Influences' ? false : get_param('bio')); // optional
     $genreId     = get_numeric_param('genreId'); // optional
     $attributeId = get_numeric_param('attributeId'); // optional
     
     
-    $rowCount = User::getResultsCountForSearch($name, $attributeId, $genreId);
+    $rowCount = User::getResultsCountForSearch($name, $bio, $attributeId, $genreId);
 
-    $users = User::fetchForSearch($start, $maxRows, $name, $attributeId, $genreId);
+    $users = User::fetchForSearch($start, $maxRows, $name, $bio, $attributeId, $genreId);
     $result = array();
     foreach ($users as $a) {
         $result['serp'] .= buildArtistRow($a);
@@ -46,6 +47,7 @@ if (get_param('action') == 'search') { // ajax call
         $paginationUrl = '?action=search&name='.$name.'&genreId='.$genreId.'&attributeId='.$attributeId;
         $result['pagination'] = buildPagination($rowCount, $maxRows, $page, $paginationUrl);
     }
+    
     echo json_encode($result);
 
     exit;

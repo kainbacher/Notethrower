@@ -131,7 +131,7 @@ class User {
     }
 
     // attention: all changes here need to be done in getResultsCountForSearch(), too!
-    function fetchForSearch($from, $length, $name, $attributeId, $genreId) {
+    function fetchForSearch($from, $length, $name, $bio, $attributeId, $genreId) {
         $objs = array();
 
         $result = _mysql_query(
@@ -141,6 +141,7 @@ class User {
                 ($attributeId ? 'join pp_user_attribute ua on ua.user_id = u.id ' : '') .
                 'where u.status = "active" ' .
                 ($name ? 'and u.name like ' . qqLike($name) . ' ' : '') .
+                ($bio ? 'and (u.artist_info like ' . qqLike($bio) . ' or u.influences like ' . qqLike($bio) . ') ' : '') .
                 ($genreId ? 'and ug.genre_id = ' . n($genreId) . ' ' : '') .
                 ($attributeId ? 'and ua.attribute_id = ' . n($attributeId) . ' ' : '') .
                 'order by entry_date desc ' .
@@ -553,7 +554,7 @@ class User {
 
     // FIXME - needed?
     // attention: all changes here need to be done in fetchForSearch(), too!
-    function getResultsCountForSearch($name, $attributeId, $genreId) {
+    function getResultsCountForSearch($name, $bio, $attributeId, $genreId) {
         $result = _mysql_query(
                 'select count(*) as cnt ' .
                 'from pp_user u ' .
@@ -561,6 +562,7 @@ class User {
                 ($attributeId ? 'join pp_user_attribute ua on ua.user_id = u.id ' : '') .
                 'where u.status = "active" ' .
                 ($name ? 'and u.name like ' . qqLike($name) . ' ' : '') .
+                ($bio ? 'and (u.artist_info like ' . qqLike($bio) . ' or u.influences like ' . qqLike($bio) . ') ' : '') .
                 ($genreId ? 'and ug.genre_id = ' . n($genreId) . ' ' : '') .
                 ($attributeId ? 'and ua.attribute_id = ' . n($attributeId) . ' ' : '')
         );
@@ -653,7 +655,7 @@ class User {
             b($this->is_artist)         . ', ' .
             b($this->is_pro)            . ', ' .
             qq($this->status)           . ', ' .
-            'now()'                     .
+            qq(formatMysqlDatetime())   .
             ')'
         );
 

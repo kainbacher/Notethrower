@@ -942,17 +942,17 @@ function relativeTime($timestamp) {
 }
 
 /*
-* Vorschlag zur Angabe der Zeitspannen: Definieren möglicher Einheiten:
+* Vorschlag zur Angabe der Zeitspannen: Definieren mï¿½glicher Einheiten:
 * Jahre / Wochen / Tage / Stunden / Minuten / Sekunden
-* System sucht die größtmögliche Einheit, bei der eine Zahl >=1 entsteht
-* System prüft ob damit eine Angabe mit einer Toleranz von max. z. B. 5% möglich ist
+* System sucht die grï¿½ï¿½tmï¿½gliche Einheit, bei der eine Zahl >=1 entsteht
+* System prï¿½ft ob damit eine Angabe mit einer Toleranz von max. z. B. 5% mï¿½glich ist
 * (5% in Configfile einstellbar)
-* Wenn das NICHT möglich ist wird die Zahl abgerundet und eine Zusatzangabe mit der nächstkleineren
+* Wenn das NICHT mï¿½glich ist wird die Zahl abgerundet und eine Zusatzangabe mit der nï¿½chstkleineren
 * Einheit entsteht!
-* So ist sichergestellt dass die Angabe möglichst leicht lesbar ist (nicht unnötig genau), aber
-* trotzdem eine Mindestgenauigkeit erfüllt.
+* So ist sichergestellt dass die Angabe mï¿½glichst leicht lesbar ist (nicht unnï¿½tig genau), aber
+* trotzdem eine Mindestgenauigkeit erfï¿½llt.
 * Beispiele:
-* 5 Wochen, 2 Tage (Die Tage brauchts weil 5 Wochen könnten auch 4.5 sein, d. h. 10% Rundungsfehler möglich)
+* 5 Wochen, 2 Tage (Die Tage brauchts weil 5 Wochen kï¿½nnten auch 4.5 sein, d. h. 10% Rundungsfehler mï¿½glich)
 * 23 Wochen (da brauchts keine Tage, denn wenn es 22.5 Wochen sind ist der Rundungsfehler kleiner als 5%)
 *
 * durchschnittswerte:
@@ -1055,6 +1055,16 @@ function _is_within_tolerance($val) {
 function _get_einzahl_mehrzahl_str($val, $singular, $plural) {
     if ($val == 1) return $val . ' ' . $singular;
     else           return $val . ' ' . $plural;
+}
+
+function formatMysqlDatetime($timestamp = false){
+    if(!$timestamp){
+        $timestamp = time();
+    }
+    
+    $result = date('Y-m-d H:i:s', $timestamp);
+    
+    return $result;
 }
 
 ?>

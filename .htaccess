@@ -28,8 +28,6 @@
 #RewriteRule ^artist/(\d+)/?$  Site/artist.php?aid=$1
 
 
-AddHandler php5-script .php
-
 <FilesMatch "README$">
 deny from all
 </FilesMatch>

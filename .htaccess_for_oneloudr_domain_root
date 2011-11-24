@@ -1,0 +1,29 @@
+#RewriteEngine on
+
+#RewriteBase /
+
+RewriteCond %{REQUEST_URI} ^/invite/?$
+#RewriteRule .* OL/Site/subscription.php
+#RewriteRule ^invite/([^/]+)/?$ OL/Site/subscription.php?referrer=$1
+#RewriteRule ^invite/([^/]+)/([^/]+) OL/Site/subscription.php?referrer=$1&action=$2
+RewriteRule .* OL/Site/index.php [R]
+RewriteRule ^invite/([^/]+)/?$ OL/Site/index.php [R]
+RewriteRule ^invite/([^/]+)/([^/]+) OL/Site/index.php [R]
+#RewriteCond %{REQUEST_URI} ^/Styles/?$
+#RewriteRule .* OL/Styles/$1
+#RewriteCond %{REQUEST_URI} ^/Images/?$
+#RewriteRule .* OL/Images/$1
+
+#RewriteCond %{REQUEST_URI} ^/release/\d+/?
+#RewriteRule ^release/(\d+)/?$     OL/Site/release.php?pfid=$1
+#RewriteRule ^release/(\d+)/[^/]+  OL/Site/release.php?pfid=$1
+
+#RewriteCond %{REQUEST_URI} ^/?$
+#RewriteRule ^/?$     OL/Site/index.php
+
+#RewriteCond %{REQUEST_URI} ^/messages/?
+#RewriteRule ^messages/?$     OL/Site/dashboard.php
+
+#RewriteCond %{REQUEST_URI} ^/artist/\d+/?
+#RewriteRule ^artist/(\d+)/?$  OL/Site/artist.php?aid=$1
+

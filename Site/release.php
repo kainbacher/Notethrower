@@ -75,7 +75,7 @@ $ogTags = processTpl('Release/ogtags.html', array(
 
 processAndPrintTpl('Release/index.html', array(
     '${baseUrl}'            => $GLOBALS['BASE_URL'],
-    '${Common/pageHeader}'  => buildPageHeader('Release', false, false, false, $showMobileVersion, $ogTags),
+    '${Common/pageHeader}'  => buildPageHeader('Release', false, false, false, false, $showMobileVersion, $ogTags),
     '${Common/bodyHeader}'  => buildBodyHeader($visitorUser, $showMobileVersion),
     '${releaseTitle}'       => escape($projectFile->release_title),
     '${fileDownloadUrl}'    => $fileDownloadUrl,

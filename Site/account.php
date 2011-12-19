@@ -221,7 +221,7 @@ if ($userIsLoggedIn) { // it's an update
             'unpersistedObj'         => $unpersistedUser,
             'errorFields'            => $errorFields,
             'workWithUnpersistedObj' => $problemOccured,
-            'infoText'               => 'If you can\'t find your skill in the selection above, you can add it here. It will be added to the skills list, when you click "Update account".'
+            'infoHtml'               => 'If you can\'t find your skill in the selection above, you can add it here. It will be added to the skills list, when you click <b>Save</b>.'
         ));
         */
 
@@ -453,7 +453,7 @@ if ($userIsLoggedIn) { // it's an update
             'unpersistedObj'         => $unpersistedUser,
             'errorFields'            => $errorFields,
             'workWithUnpersistedObj' => $problemOccured,
-            'infoText'               => 'If you have a youtube video, put the URL here.'
+            'infoText'               => 'If you have a Youtube video, put the URL here.'
         ));
 
         $formElementsSection2 .= getFormFieldForParams(array(
@@ -580,8 +580,17 @@ if ($userIsLoggedIn) {
     $video = '';
     if ($user->video_url) {
         preg_match("#(?<=v=)[a-zA-Z0-9-]+(?=&)|(?<=v\/)[^&\n]+|(?<=v=)[^&\n]+|(?<=youtu.be/)[^&\n]+#", $user->video_url, $video_match);
-        $video = processTpl('Artist/video.html', array(
-        '${videoId}' => escape($video_match[0])
+        $video = processTpl('Common/video.html', array(
+            '${videoId}' => escape($video_match[0])
+        ), $showMobileVersion);
+    }
+    
+    // location
+    $locationMap = '';
+    if ($user->latitude && $user->longitude) {
+        $locationMap = processTpl('Common/locationMap.html', array(
+            '${latitude}'  => $user->latitude,
+            '${longitude}' => $user->longitude,
         ), $showMobileVersion);
     }
 
@@ -605,7 +614,8 @@ if ($userIsLoggedIn) {
         '${Account/artistInfo_optional}'          => $artistInfo,
         '${Account/influences_optional}'          => $influences,
         //'${Account/additionalInfo_optional}'      => $additionalInfo, // currently hidden
-        '${Account/video_optional}'               => $video,
+        '${Common/video_optional}'                => $video,
+        '${Common/locationMap_optional}'          => $locationMap,
         '${skills}'                               => $skills,
         '${genres}'                               => $genres,
         '${tools}'                                => $tools
@@ -613,7 +623,7 @@ if ($userIsLoggedIn) {
 }
 
 processAndPrintTpl('Account/index.html', array(
-    '${Common/pageHeader}'                    => buildPageHeader('Account', false, false, true),
+    '${Common/pageHeader}'                    => buildPageHeader('Account', false, false, true, true),
     '${Common/bodyHeader}'                    => buildBodyHeader($userIsLoggedIn ? $user : null),
     '${headline}'                             => $headline,
     '${Common/message_choice_list}'           => $messageList,
@@ -622,7 +632,7 @@ processAndPrintTpl('Account/index.html', array(
     '${signupAs}'                             => get_param('signupAs'),
     '${facebookId}'                           => get_param('facebook_id'),
     '${Common/formElement_section1_list}'     => $formElementsSection1,
-    '${Account/chooseLocationLink_optional}'  => $chooseLocationLink, // currently hidden in template
+    '${Account/chooseLocationLink_optional}'  => $chooseLocationLink,
     '${latitude}'                             => $latitude,
     '${longitude}'                            => $longitude,
     '${userImage_choice}'                     => $userImage,

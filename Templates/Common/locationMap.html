@@ -1,0 +1,46 @@
+<div id="map_canvas" style="width:290px;height:270px;position:relative;"></div>
+<script type="text/javascript">
+
+var startLatitude  = ${latitude};
+var startLongitude = ${longitude};
+
+var startLoc = ['', startLatitude, startLongitude];
+
+var geocodedAddress;
+var map;
+var marker;
+
+function initialize() {
+    geocodedAddress = new google.maps.LatLng(startLatitude, startLongitude);
+    
+    var myOptions = {
+        zoom: 10,
+        center: geocodedAddress,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    
+    setMarker(map, startLoc);
+}
+
+function setMarker(map, loc) {
+    var myLatLng = new google.maps.LatLng(loc[1], loc[2]);
+    marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+        //shadow: shadow,
+        //icon: image,
+        //shape: shape,
+        //title: loc[0],
+        zIndex: 1,
+        draggable: false
+    });
+}
+
+initialize();
+
+</script>
+  
+<p></p><!-- spacer -->
+
+<div class="line">&nbsp;</div>

@@ -76,7 +76,7 @@ if ($action == 'send') {
 
 } else {
     processAndPrintTpl('SendMessage/index.html', array(
-        '${Common/pageHeader}'            => buildPageHeader('Send message', false, false, false, $showMobileVersion),
+        '${Common/pageHeader}'            => buildPageHeader('Send message', false, false, false, false, $showMobileVersion),
         '${Common/bodyHeader}'            => buildBodyHeader($user),
         '${Common/bodyFooter}'            => buildBodyFooter(),
         '${Common/pageFooter}'            => buildPageFooter(),

@@ -163,7 +163,9 @@ function setGenreCookie($genre) {
     setcookie($GLOBALS['COOKIE_NAME_GENRE'], $genre, time() + 60 * 60 * 24 * 365 * 100, $GLOBALS['WEBAPP_BASE']);
 }
 
-function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagination = false, $includeChosenStuff = false, $useMobileVersion = false, $ogTags = false) {
+function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagination = false, $includeChosenStuff = false, $includeGooglemapStuff = false, 
+        $useMobileVersion = false, $ogTags = false) {
+        
     $jplayerStylesheet = '';
     $jplayerScript     = '';
     if ($includeJPlayerStuff) {
@@ -206,6 +208,17 @@ function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagin
             '${baseUrl}' => $GLOBALS['BASE_URL']
         ), $useMobileVersion);
     }
+    
+    $googlemapStylesheet = '';
+    $googlemapScript     = '';
+    if ($includeGooglemapStuff) {
+        $googlemapStylesheet = processTpl('Common/googlemapStylesheet.html', array(
+            '${baseUrl}' => $GLOBALS['BASE_URL']
+        ), $useMobileVersion);
+        $googlemapScript     = processTpl('Common/googlemapScript.html', array(
+            '${baseUrl}' => $GLOBALS['BASE_URL']
+        ), $useMobileVersion);        
+    }
 
     return processTpl('Common/pageHeader.html', array(
         '${baseUrl}'                                  => $GLOBALS['BASE_URL'],                                 
@@ -216,6 +229,8 @@ function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagin
         '${Common/ajaxPaginationScript_optional}'     => $ajaxPaginationScript,
         '${Common/chosenStylesheet_optional}'         => $chosenStylesheet,
         '${Common/chosenScript_optional}'             => $chosenScript,
+        '${Common/googlemapStylesheet_optional}'      => $googlemapStylesheet,
+        '${Common/googlemapScript_optional}'          => $googlemapScript,
         '${Common/ogTags_optional}'                   => $ogTags
     ), $useMobileVersion);
 }

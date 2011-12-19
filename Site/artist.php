@@ -106,11 +106,19 @@ if ($user->influences) {
 $video = '';
 if ($user->video_url) {
     preg_match("#(?<=v=)[a-zA-Z0-9-]+(?=&)|(?<=v\/)[^&\n]+|(?<=v=)[^&\n]+|(?<=youtu.be/)[^&\n]+#", $user->video_url, $video_match);
-    $video = processTpl('Artist/video.html', array(
+    $video = processTpl('Common/video.html', array(
         '${videoId}' => escape($video_match[0])
     ), $showMobileVersion);
 }
 
+// location
+$locationMap = '';
+if ($user->latitude && $user->longitude) {
+    $locationMap = processTpl('Common/locationMap.html', array(
+        '${latitude}'  => $user->latitude,
+        '${longitude}' => $user->longitude,
+    ), $showMobileVersion);
+}
 
 // currently hidden
 //// additional info
@@ -262,7 +270,7 @@ $genres = implode(', ', UserGenre::getGenreNamesForUserId($user->id));
 $tools  = implode(', ', UserTool::getToolNamesForUserId($user->id));
 
 processAndPrintTpl('Artist/index.html', array(
-    '${Common/pageHeader}'                                 => buildPageHeader('Artist', true, false, false, $showMobileVersion),
+    '${Common/pageHeader}'                                 => buildPageHeader('Artist', true, false, false, true, $showMobileVersion),
     '${Common/bodyHeader}'                                 => buildBodyHeader($visitorUser, $showMobileVersion),
     '${userId}'                                            => $user->id,
     '${userName}'                                          => escape($user->name),
@@ -272,7 +280,8 @@ processAndPrintTpl('Artist/index.html', array(
     '${Artist/artistInfo_optional}'                        => $artistInfo,
     '${Artist/influences_optional}'                        => $influences,
     //'${Artist/additionalInfo_optional}'                    => $additionalInfo, // currently hidden
-    '${Artist/video_optional}'                             => $video,
+    '${Common/video_optional}'                             => $video,
+    '${Common/locationMap_optional}'                       => $locationMap,
     '${Artist/releasesSection_optional}'                   => $releasesSection,
     '${Artist/projectsSection_optional}'                   => $projectsSection,
     '${Artist/editProfileLink_optional}'                   => $editProfileLink,

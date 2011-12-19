@@ -16,8 +16,12 @@ $lngFieldId = isParamSet('lngFieldId') ? get_param('lngFieldId') : 'na';
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <title>Pick location</title>
-    <link href="../Styles/googlemap.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="../Javascripts/jquery-1.6.1.min.js"></script>
+    <link rel="stylesheet" href="<?= $GLOBALS['BASE_URL'] ?>Styles/bp-print.css" type="text/css" media="print" />
+    <link rel="stylesheet" href="<?= $GLOBALS['BASE_URL'] ?>Styles/bp-screen.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="<?= $GLOBALS['BASE_URL'] ?>Styles/buttons.css" type="text/css" />
+    <link rel="stylesheet" href="<?= $GLOBALS['BASE_URL'] ?>Styles/main.css" type="text/css" />
+    <link rel="stylesheet" href="<?= $GLOBALS['BASE_URL'] ?>Styles/googlemap.css" type="text/css" />
+    <script type="text/javascript" src="<?= $GLOBALS['BASE_URL'] ?>Javascripts/jquery-1.6.1.min.js"></script>
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script type="text/javascript">
 
@@ -148,6 +152,6 @@ function saveAndClose() {
       <button type="button" id="saveAndCloseBtn" onClick="saveAndClose();">&nbsp;Save and close&nbsp;</button>&nbsp;
       <a href="javascript:window.close();"><small>Cancel</small></a>
     </div>
-    <div id="map_canvas" style="top:30px;width:100%;"></div>
+    <div id="map_canvas" style="top:40px;width:100%;"></div>
   </body>
 </html> 

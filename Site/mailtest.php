@@ -2,6 +2,8 @@
 
 include_once('../Includes/Init.php'); // must be included first
 
+error_reporting(E_ALL | E_STRICT);
+
 include_once('../Includes/Config.php');
 
 $GLOBALS['MAIL_FROM_NAME'] = 'noreply-oneloudr';

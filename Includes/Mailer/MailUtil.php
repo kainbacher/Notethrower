@@ -1,0 +1,120 @@
+<?php
+
+include_once('../../Config.php');
+//include_once('../../Snippets.php');
+include_once('lib/swift_required.php');
+
+function sendEmail($email, $subject, $textContent, $htmlContent = null, $forceEmailDelivery = false) {
+    return sendEmailToRecipients(array($email), $subject, $textContent, $htmlContent, $forceEmailDelivery);
+}
+
+function sendEmailToRecipients($emails, $subject, $textContent, $htmlContent = null, $forceEmailDelivery = false) {
+    return sendEmailWithFromAddressToRecipients(
+            $emails,
+            $subject,
+            $textContent,
+            $htmlContent,
+            $GLOBALS['MAIL_FROM_NAME'],
+            $GLOBALS['MAIL_FROM_ADDRESS'],
+            $GLOBALS['MAIL_REPLY_TO_ADDRESS'],
+            $forceEmailDelivery
+    );
+}
+
+function sendEmailWithFromAddress($email, $subject, $textContent, $htmlContent = null, $mailFromName,
+        $mailFromAddress, $mailReplyToAddress, $forceEmailDelivery = false) {
+
+    return sendEmailWithFromAddressToRecipients(array($email), $subject, $textContent, $htmlContent, $mailFromName,
+            $mailFromAddress, $mailReplyToAddress, $forceEmailDelivery);
+}
+
+function sendEmailWithFromAddressToRecipients($emails, $subject, $textContent, $htmlContent = null, $mailFromName,
+        $mailFromAddress, $mailReplyToAddress, $forceEmailDelivery = false) {
+
+    global $logger;
+
+    if (isset($GLOBALS['STAGING']) && $GLOBALS['STAGING'] == 'test') $subject = 'TESTSYSTEM: ' . $subject;
+    if (isset($GLOBALS['STAGING']) && $GLOBALS['STAGING'] == 'dev')  $subject = 'DEVSYSTEM: '  . $subject;
+
+    $logger->debug('mail to: ' . join(', ', $emails));
+    $logger->debug('mail from: ' . $mailFromName . ' <' . $mailFromAddress . '>');
+    $logger->debug('mail reply-to: ' . $mailReplyToAddress);
+
+    if(!$forceEmailDelivery) {
+        if ($GLOBALS['EMAIL_DELIVERY_MODE'] == 'override') {
+            if (count($emails) == 1) { // we don't do a smart override when there's more than one recipient (because we're too lazy to implement the logic for this edge case)
+                $logger->info('recipient: ' . $emails[0]);
+                if (in_array($emails[0], $GLOBALS['EMAIL_DELIVERY_OVERRIDE_ALLOWED_RECIPIENTS'])) {
+                    $logger->info('email override is active but email address is whitelisted');
+                } else {
+                    $emails = array($GLOBALS['EMAIL_DELIVERY_OVERRIDE_ADDR']);
+                    $logger->info('email will be sent to override address: ' . $emails[0]);
+                }
+
+            } else {
+                $logger->info('recipient(s): ' . join(', ', $emails));
+                $emails = array($GLOBALS['EMAIL_DELIVERY_OVERRIDE_ADDR']);
+                $logger->info('email will be sent to override address: ' . $emails[0]);
+            }
+
+        } else if ($GLOBALS['EMAIL_DELIVERY_MODE'] == 'inactive') {
+            $logger->info('---- email delivery simulation ----');
+            $logger->info('recipient(s): ' . join(', ', $emails));
+            $logger->info('sender      : ' . $mailFromName . ' <' . $mailFromAddress . '>');
+            $logger->info('reply-to    : ' . $mailReplyToAddress);
+            $logger->info('subject     : ' . $subject);
+            $logger->info('text        : ' . $textContent);
+            $logger->info('html        : ' . $htmlContent);
+            $logger->info('-----------------------------------');
+
+            return true;
+        }
+    }
+
+	$logger->info('sending mail to: ' . join(', ', $emails) . ' (BCC to: ' . $GLOBALS['BCC_EMAIL_ADDRESS'] . ')');
+
+    $from = array($mailFromAddress => $mailFromName);
+    // $to = array(
+      // 'hjonas@gmx.at'=>'Hanno Jonas',
+      // 'hanno.jonas@vol.at'=>'Hanno Jonas',
+      // 'hanno@rastaduck.org'=>'Hanno Jonas',
+      // 'hanno.jonas@gmail.com'=>'Hanno Jonas',
+      // 'hanno@jonas-it.com'=>'Hanno Jonas',
+    // );
+    
+    $to = $emails; // TODO - check if this work when no names are there - maybe we have to build a email => email array
+     
+    // Setup Swift mailer parameters
+    $transport = Swift_SmtpTransport::newInstance($GLOBALS['MAIL_SERVER_HOST'], $GLOBALS['MAIL_SERVER_PORT']);
+    $transport->setUsername($GLOBALS['MAIL_SERVER_AUTH_USER']);
+    $transport->setPassword($GLOBALS['MAIL_SERVER_AUTH_PWD']);
+    $swift = Swift_Mailer::newInstance($transport);
+     
+    // Create a message (subject)
+    $message = new Swift_Message($subject);
+     
+    // attach the body of the email
+    $message->setFrom($from);
+    $message->setTo($to);
+    
+    if ($htmlContent) {
+        $message->setBody($htmlContent, 'text/html');
+        if ($textContent) $message->addPart($textContent, 'text/plain');
+        
+    } else {
+        $message->setBody($textContent, 'text/plain');
+    }
+     
+    // send message 
+    if ($recipientCount = $swift->send($message, $failures)) {
+        // This will let us know how many users received this message
+        $logger->info('Message sent out to ' . $recipientCount . ' users');
+        return true;
+        
+    } else { // something went wrong =(
+        $logger->error('Something went wrong: ' . print_r($failures, true));
+        return false;
+    }
+}
+
+?>

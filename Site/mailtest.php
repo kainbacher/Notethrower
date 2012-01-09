@@ -19,10 +19,22 @@ $GLOBALS['MAIL_SERVER_AUTH_PWD'] = 'oneloudr';
 
 include_once('../Includes/MailUtil.php');
 
-sendEmail(
-    'hjonas@gmx.at',
-    'subject',
-    'textContent'
+$msg = "hey, \n\njust a quick test if this whole email delivery thing really works\nin a reliable way ... cu,\n the test script.";
+
+$recipients = array(
+  'hjonas@gmx.at',
+  'hanno@rastaduck.org',
+  'hanno.jonas@gmail.com',
+  'hanno@jonas-it.com',
+  'hanno.jonas@vol.at'
 );
+
+foreach ($recipients as $rec) {
+  sendEmail(
+    $rec,
+    'subject',
+    $msg 
+  );
+}
 
 ?>

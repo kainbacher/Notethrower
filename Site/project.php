@@ -721,7 +721,7 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
     if ($projectFile) {
         $tweetAboutReleaseButton = '';
         $facebookShareButton = '';
-        if ($projectFile->release_date) {
+        if ($projectFile->release_date && false) { // FIXME ############### deactivated because release page is not done yet
             $releaseUrl = getReleaseUrl($projectFile->id, $projectFile->release_title);
             $logger->info('release url: ' . $releaseUrl);
         

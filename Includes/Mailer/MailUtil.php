@@ -114,7 +114,7 @@ function sendEmailWithFromAndReplyToAddressToRecipients($emails, $subject, $text
     // send message 
     if ($recipientCount = $swift->send($message, $failures)) {
         // This will let us know how many users received this message
-        $logger->info('Message sent out to ' . $recipientCount . ' users');
+        $logger->info('Message successfully sent to ' . $recipientCount . ' recipient(s)');
         return true;
         
     } else { // something went wrong =(

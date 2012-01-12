@@ -6,6 +6,7 @@ include_once('../Includes/Config.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/User.php');
+include_once('../Includes/Mailer/MailUtil.php');
 
 $user = User::new_from_cookie();
 
@@ -29,7 +30,7 @@ if (get_param('action') == 'send') {
         $mailtext .= 'Email: '      . $email     . "\n\n";
         $mailtext .= 'Message: '    . $msg       . "\n\n";
 
-        $email_sent = send_email($GLOBALS['CONTACT_FORM_RECIPIENT_EMAIL'], 'User message (via contact form)', $mailtext);
+        $email_sent = sendEmail($GLOBALS['CONTACT_FORM_RECIPIENT_EMAIL'], 'User message (via contact form)', $mailtext);
 
         if (!$email_sent) {
             $error = 'Failed to send message to oneloudr.com! Please try again later.';

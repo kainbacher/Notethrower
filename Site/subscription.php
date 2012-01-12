@@ -5,7 +5,7 @@ include_once('../Includes/Init.php'); // must be included first
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/Subscription.php');
-
+include_once('../Includes/Mailer/MailUtil.php');
 
 if(get_param('referrer') == 'batcholdartists'){
     /*
@@ -19,7 +19,7 @@ if(get_param('referrer') == 'batcholdartists'){
                 '${username}'                                => $artist['username'],
                 '${referralUrl}'                             => $referral_url
             ));
-        $email_sent = send_email($artist['email_address'], 'Your ONELOUDR Invitation', $emailtext);
+        $email_sent = sendEmail($artist['email_address'], 'Your ONELOUDR Invitation', $emailtext);
         if($email_sent){
             echo 'Invitation for "'.$artist['username'].'" successfully sent<br />';
         }  
@@ -67,7 +67,7 @@ if(get_param('username')){
                 '${username}'                                => $username,
                 '${referralUrl}'                             => $referal_url
             ));
-            $email_sent = send_email($subscription->email_address, 'Your ONELOUDR Invitation', $emailtext);
+            $email_sent = sendEmail($subscription->email_address, 'Your ONELOUDR Invitation', $emailtext);
             
             
             //prevent reload
@@ -196,7 +196,7 @@ if(get_param('username') && get_param('email') && email_syntax_ok(get_param('ema
     
         $subscription->insert();
         $referal_url = $_SERVER['HTTP_REFERER'].'?referrer='.$subscription->rand_str;
-        $email_sent = send_email($subscription->email_address, 'Your ONELOUDR Subscription',
+        $email_sent = sendEmail($subscription->email_address, 'Your ONELOUDR Subscription',
                 'Hey ' . $subscription->username . "\n" . 
                 'Your referral-url: '. $referal_url . "\n");
                 

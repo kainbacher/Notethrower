@@ -18,6 +18,7 @@ include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/UserAttribute.php');
 include_once('../Includes/DB/UserGenre.php');
 include_once('../Includes/DB/UserTool.php');
+include_once('../Includes/Mailer/MailUtil.php');
 
 $MAX_UPLOAD_FILESIZE = 3145728; // 3MB
 
@@ -92,10 +93,13 @@ if (get_param('action') == 'save') {
 
             $logger->info('sending account creation confirmation email');
 
-            $email_sent = send_email($user->email_address, 'Please activate your oneloudr.com account',
+            $email_sent = sendEmail(
+                    $user->email_address, 
+                    'Please activate your oneloudr.com account',
                     'Please click the link below to confirm your oneloudr.com account creation:' . "\n\n" .
                     $GLOBALS['BASE_URL'] . 'Site/accountCreationConfirmed.php' .
-                    '?x=' . $user->id . '&c=' . md5('TheSparrowsAreFlyingAgain!' . $user->id));
+                    '?x=' . $user->id . '&c=' . md5('TheSparrowsAreFlyingAgain!' . $user->id)
+            );
 
             if (!$email_sent) {
                 $message = 'Failed to send confirmation email after creation of account!'; // FIXME - test behaviour in this case

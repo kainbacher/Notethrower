@@ -1,7 +1,6 @@
 <?php
 
 include_once('../../Config.php');
-//include_once('../../Snippets.php');
 include_once('lib/swift_required.php');
 
 function sendEmail($email, $subject, $textContent, $htmlContent = null, $forceEmailDelivery = false) {
@@ -9,7 +8,7 @@ function sendEmail($email, $subject, $textContent, $htmlContent = null, $forceEm
 }
 
 function sendEmailToRecipients($emails, $subject, $textContent, $htmlContent = null, $forceEmailDelivery = false) {
-    return sendEmailWithFromAddressToRecipients(
+    return sendEmailWithFromAndReplyToAddressToRecipients(
             $emails,
             $subject,
             $textContent,
@@ -21,14 +20,22 @@ function sendEmailToRecipients($emails, $subject, $textContent, $htmlContent = n
     );
 }
 
-function sendEmailWithFromAddress($email, $subject, $textContent, $htmlContent = null, $mailFromName,
+function sendEmailWithFromAndReplyToAddress($email, $subject, $textContent, $htmlContent = null, $mailFromName,
         $mailFromAddress, $mailReplyToAddress, $forceEmailDelivery = false) {
 
-    return sendEmailWithFromAddressToRecipients(array($email), $subject, $textContent, $htmlContent, $mailFromName,
-            $mailFromAddress, $mailReplyToAddress, $forceEmailDelivery);
+    return sendEmailWithFromAndReplyToAddressToRecipients(
+            array($email), 
+            $subject, 
+            $textContent, 
+            $htmlContent, 
+            $mailFromName,
+            $mailFromAddress, 
+            $mailReplyToAddress, 
+            $forceEmailDelivery
+    );
 }
 
-function sendEmailWithFromAddressToRecipients($emails, $subject, $textContent, $htmlContent = null, $mailFromName,
+function sendEmailWithFromAndReplyToAddressToRecipients($emails, $subject, $textContent, $htmlContent = null, $mailFromName,
         $mailFromAddress, $mailReplyToAddress, $forceEmailDelivery = false) {
 
     global $logger;
@@ -60,8 +67,9 @@ function sendEmailWithFromAddressToRecipients($emails, $subject, $textContent, $
         } else if ($GLOBALS['EMAIL_DELIVERY_MODE'] == 'inactive') {
             $logger->info('---- email delivery simulation ----');
             $logger->info('recipient(s): ' . join(', ', $emails));
-            $logger->info('sender      : ' . $mailFromName . ' <' . $mailFromAddress . '>');
+            $logger->info('from        : ' . $mailFromName . ' <' . $mailFromAddress . '>');
             $logger->info('reply-to    : ' . $mailReplyToAddress);
+            $logger->info('bcc         : ' . $GLOBALS['MAIL_BCC_ADDRESS']);
             $logger->info('subject     : ' . $subject);
             $logger->info('text        : ' . $textContent);
             $logger->info('html        : ' . $htmlContent);
@@ -71,18 +79,14 @@ function sendEmailWithFromAddressToRecipients($emails, $subject, $textContent, $
         }
     }
 
-	$logger->info('sending mail to: ' . join(', ', $emails) . ' (BCC to: ' . $GLOBALS['BCC_EMAIL_ADDRESS'] . ')');
+	$logger->info('sending mail to: ' . join(', ', $emails) . ($GLOBALS['MAIL_BCC_ADDRESS'] ? ' (BCC to: ' . $GLOBALS['MAIL_BCC_ADDRESS'] . ')' : ''));
 
     $from = array($mailFromAddress => $mailFromName);
-    // $to = array(
+    // this is how the recipients array originally looked, but it works without the names, too.
+    // $emails = array(
       // 'hjonas@gmx.at'=>'Hanno Jonas',
-      // 'hanno.jonas@vol.at'=>'Hanno Jonas',
-      // 'hanno@rastaduck.org'=>'Hanno Jonas',
-      // 'hanno.jonas@gmail.com'=>'Hanno Jonas',
-      // 'hanno@jonas-it.com'=>'Hanno Jonas',
+      // 'hanno.jonas@vol.at'=>'Hanno Jonas'
     // );
-    
-    $to = $emails; // TODO - check if this work when no names are there - maybe we have to build a email => email array
      
     // Setup Swift mailer parameters
     $transport = Swift_SmtpTransport::newInstance($GLOBALS['MAIL_SERVER_HOST'], $GLOBALS['MAIL_SERVER_PORT']);
@@ -93,10 +97,12 @@ function sendEmailWithFromAddressToRecipients($emails, $subject, $textContent, $
     // Create a message (subject)
     $message = new Swift_Message($subject);
      
-    // attach the body of the email
     $message->setFrom($from);
-    $message->setTo($to);
+    $message->setReplyTo($mailReplyToAddress);
+    $message->setTo($emails);
+    if ($GLOBALS['MAIL_BCC_ADDRESS']) $message->setBcc($GLOBALS['MAIL_BCC_ADDRESS']);
     
+    // attach the body of the email
     if ($htmlContent) {
         $message->setBody($htmlContent, 'text/html');
         if ($textContent) $message->addPart($textContent, 'text/plain');

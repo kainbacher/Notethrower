@@ -704,7 +704,7 @@ function xmlentities($str){
     return $str;
 }
 
-function send_email($recipient_email, $subject, $text, $filename = '', $data = '', $mime_type = '', $reply_to = null) {
+/*function send_email($recipient_email, $subject, $text, $filename = '', $data = '', $mime_type = '', $reply_to = null) {
     global $logger;
 
 
@@ -801,7 +801,7 @@ function send_email($recipient_email, $subject, $text, $filename = '', $data = '
 
         return true;
     }
-}
+}*/
 
 function email_syntax_ok($addr) {
 	//surpress "eregi is deprecated" Error

@@ -6,6 +6,7 @@ include_once('../Includes/Config.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/User.php');
+include_once('../Includes/Mailer/MailUtil.php');
 
 $user = null;
 $problemOccured = false;
@@ -58,7 +59,7 @@ if ($action == 'sendInstructions') {
         $text .= 'We recommend to change your password in your user profile after you logged in with the random password.' . "\n\n";
         $text .= 'The oneloudr team';
 
-        $emailSent = send_email($user->email_address, 'Password reset instructions', $text);
+        $emailSent = sendEmail($user->email_address, 'Password reset instructions', $text);
 
         if ($emailSent) {
             $instructionsSent = true;

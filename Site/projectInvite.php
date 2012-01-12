@@ -3,14 +3,15 @@
 include_once ('../Includes/Init.php');
 // must be included first
 
-include_once ('../Includes/Snippets.php');
-include_once ('../Includes/PermissionsUtil.php');
-include_once ('../Includes/InvitationUtil.php');
-include_once ('../Includes/DB/User.php');
-include_once ('../Includes/DB/Project.php');
-include_once ('../Includes/DB/Message.php');
-include_once ('../Includes/DB/ProjectUserVisibility.php');
-include_once ('../Includes/TemplateUtil.php');
+include_once('../Includes/InvitationUtil.php');
+include_once('../Includes/PermissionsUtil.php');
+include_once('../Includes/Snippets.php');
+include_once('../Includes/TemplateUtil.php');
+include_once('../Includes/DB/User.php');
+include_once('../Includes/DB/Project.php');
+include_once('../Includes/DB/Message.php');
+include_once('../Includes/DB/ProjectUserVisibility.php');
+include_once('../Includes/Mailer/MailUtil.php');
 
 $loggedInUser = User::new_from_cookie();
 
@@ -48,7 +49,7 @@ if (get_param('action') == 'inviteInternal') {
         $email_text = 'Please click the link below to accept the invitation' . "\n" . $invitationurl;
         
 
-        $email_sent = send_email($invitedArtist->email_address,$email_subject, $email_text);
+        $email_sent = sendEmail($invitedArtist->email_address, $email_subject, $email_text);
         //$email_sent = true;
         if (!$email_sent) {
             $logger -> error('Failed to send "new message" notification email!');
@@ -83,7 +84,7 @@ if (get_param('action') == 'inviteExternal') {
 
     $email_subject = $loggedInUser -> name . ' invited you to the oneloudr.com project "' . $projectTitle . '"';
     $email_text = 'Please click the link below to sign up.' . "\n" . $invitationurl . "\n" . 'Your new oneloudr.com Account will automatically be associated with the Project "' . $projectTitle . '"';
-    $email_sent = send_email($emailAddr, $email_subject, $email_text);
+    $email_sent = sendEmail($emailAddr, $email_subject, $email_text);
 
     if ($email_sent) {
         $response = array('type' => 'inviteSuccess', );

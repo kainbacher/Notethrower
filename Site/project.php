@@ -18,6 +18,7 @@ include_once('../Includes/DB/ProjectMood.php');
 include_once('../Includes/DB/ProjectUserVisibility.php');
 include_once('../Includes/DB/ReleaseContribution.php');
 include_once('../Includes/DB/User.php');
+include_once('../Includes/Mailer/MailUtil.php');
 
 // some notes on permissions:
 // + a private project can only be seen and modified by invited (=associated) users
@@ -991,7 +992,7 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
 
         } else if (
             getFileExtension($file->filename) == 'wav' &&
-            strtotime($file->entry_date) > strtotime('2011-11-10 17:00:00')
+            strtotime($file->entry_date) > strtotime('2011-11-10 17:00:00') // auto-transcoding was added at this time
         ) {
             $playerHtml = '<i>(Converting to mp3 ...)</i>';
         }
@@ -1132,7 +1133,7 @@ function processParams(&$project, &$loggedInUser) {
 //        $originator = User::fetch_for_id($project->originating_user_id);
 //        if ($originator) {
 //            // send notification mail to originator
-//            $email_sent = send_email($originator->email_address, $loggedInUser->name . ' has created a remix using one of your tracks',
+//            $email_sent = sendEmail($originator->email_address, $loggedInUser->name . ' has created a remix using one of your tracks',
 //                    'Hey ' . $originator->name . ',' . "\n\n" .
 //                    $loggedInUser->name . ' has just started creating a new remix using one of your tracks.' . "\n\n" .
 //                    'You may want to check out the "Remixed by others" section in your oneloudr Widget or on your public user page: ' .

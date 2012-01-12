@@ -10,7 +10,7 @@ function sendGetRequest($url, $timeoutSeconds = 30, $followRedirects = true) {
         return doSendGetRequest(
             $u['scheme'] . '://',
             $u['host'],
-            $u['port'],
+            isset($u['port']) ? $u['port'] : 80,
             $u['path'] . ($u['query'] ? '?' . $u['query'] : ''),
             $timeoutSeconds,
             $followRedirects
@@ -89,7 +89,7 @@ function doSendGetRequest($protocol, $domain, $port, $endpointPathPlusQueryStrin
             }
         }
 
-        if ($headers['location'] && $followRedirects) {
+        if (isset($headers['location']) && $headers['location'] && $followRedirects) {
             $logger->info('Redirection header received. Re-sending request with url: ' . $headers['location']);
             return sendGetRequest($headers['location'], $timeoutSeconds, false);
         }
@@ -113,7 +113,7 @@ function sendPostRequest($url, $paramsList, $timeoutSeconds = 30, $followRedirec
         return doSendPostRequest(
             $u['scheme'] . '://',
             $u['host'],
-            $u['port'],
+            isset($u['port']) ? $u['port'] : null,
             $u['path'] . ($u['query'] ? '?' . $u['query'] : ''),
             $paramsList,
             $timeoutSeconds,
@@ -196,12 +196,16 @@ function doSendPostRequest($protocol, $domain, $port, $endpointPath, $paramsList
         $headers = array();
         $lines = explode($crlf, $header);
         foreach($lines as $line) {
-            if(($pos = strpos($line, ':')) !== false) {
+            if (($pos = strpos($line, ':')) !== false) {
                 $headers[strtolower(trim(substr($line, 0, $pos)))] = trim(substr($line, $pos+1));
+            } else {
+                if (count($headers) == 0) {
+                    $headers['_httpResponseCodeLine'] = $line;
+                }
             }
         }
 
-        if ($headers['location'] && $followRedirects) {
+        if (isset($headers['location']) && $headers['location'] && $followRedirects) {
             $logger->info('Redirection header received. Re-sending request with url: ' . $headers['location']);
             return sendPostRequest($headers['location'], $paramsList, $timeoutSeconds, false);
         }

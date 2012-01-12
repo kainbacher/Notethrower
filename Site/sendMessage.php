@@ -7,7 +7,7 @@ include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/Message.php');
-
+include_once('../Includes/Mailer/MailUtil.php');
 
 $senderUser = User::new_from_cookie();
 
@@ -43,24 +43,28 @@ if ($action == 'send') {
         $msg = new Message();
         $msg->sender_user_id    = $senderUser->id;
         $msg->recipient_user_id = $recipientUser->id;
-        $msg->subject             = $subject;
-        $msg->text                = $text;
-        $msg->marked_as_read      = false;
+        $msg->subject           = $subject;
+        $msg->text              = $text;
+        $msg->marked_as_read    = false;
         $msg->save();
 
         // append some footer text in the sent mail - you dont want this in the database or to show up at the dashboard
         $email_text = $text;
-        $email_text   .= "\n\nSee ".$senderUser->name."'s profile page on Oneloudr.com (". $GLOBALS['BASE_URL'] ."Site/artist.php?aid=".$senderUser->id.")\n--\nOneloudr - Social Music Making";
-        $email_text   .= "\n\nYou can directly reply to this email to contact the sender";
+        $email_text .= "\n\nSee ".$senderUser->name."'s profile page on Oneloudr.com (". $GLOBALS['BASE_URL'] ."Site/artist.php?aid=".$senderUser->id.")\n--\nOneloudr - Social Music Making";
+        $email_text .= "\n\nYou can directly reply to this email to contact the sender";
     
-
-        $email_sent = send_email($recipientUser->email_address,
+        $email_sent = sendEmailWithFromAndReplyToAddress(
+                $recipientUser->email_address,
                 'Message from ' . $senderUser->name,
                 'Hey ' . $recipientUser->name . "\n" .
                 $senderUser->name . ' has just sent you a private Message.'. "\n" .
                 'Subject: ' . $msg->subject . "\n" .
                 'Message: ' . $email_text,
-                '','','',$senderUser->email_address);
+                null,
+                $GLOBALS['MAIL_FROM_NAME'],
+                $GLOBALS['MAIL_FROM_ADDRESS'],
+                $senderUser->email_address
+        );
 
         if (!$email_sent) {
             $logger->error('Failed to send "new message" notification email!');
@@ -138,7 +142,9 @@ if ($action == 'send') {
         $msg->marked_as_read      = false;
         $msg->save();
 
-        $email_sent = send_email($recipientUser->email_address, 'Message from ' . $senderUser->name,
+        $email_sent = sendEmail(
+                $recipientUser->email_address, 
+                'Message from ' . $senderUser->name,
                 'Hey ' . $recipientUser->name . "\n" .
                 'A message from ' . $senderUser->name . ' has been stored in your message inbox on ' . $GLOBALS['DOMAIN']);
 

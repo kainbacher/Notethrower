@@ -14,9 +14,21 @@ $DATABASE_USERNAME = 'xxxxx';
 $DATABASE_PASSWORD = 'xxxxx';
 $DATABASE_NAME = 'podperfect';
 
-$EMAIL_DELIVERY_MODE = 'inactive'; // 'active', 'inactive' or 'override' (send all mails to override address)
-$EMAIL_DELIVERY_OVERRIDE_ADDR = 'hanno@rastaduck.org';
-$MAIL_FROM = '"oneloudr.com" <noreply@oneloudr.com>';
+$EMAIL_DELIVERY_MODE                        = 'inactive'; // 'active', 'inactive' or 'override' (send all mails to override address)
+$EMAIL_DELIVERY_OVERRIDE_ADDR               = 'hanno@rastaduck.org';
+$EMAIL_DELIVERY_OVERRIDE_ALLOWED_RECIPIENTS = array();
+
+//$MAIL_FROM             = '"ntdev.com" <postmaster@ntdev.com>'; // only used by Snippets.php:send_email()
+$MAIL_FROM_NAME        = 'oneloudr.com';
+$MAIL_FROM_ADDRESS     = 'noreply@oneloudr.com';
+$MAIL_REPLY_TO_ADDRESS = 'noreply@oneloudr.com';
+$MAIL_BCC_ADDRESS      = '';
+
+$MAIL_SERVER_HOST      = 'some.smtp.server';
+$MAIL_SERVER_PORT      = 25;
+$MAIL_SERVER_AUTH_TYPE = '';
+$MAIL_SERVER_AUTH_USER = '';
+$MAIL_SERVER_AUTH_PWD  = '';
 
 $SANDBOX_MODE = true;
 

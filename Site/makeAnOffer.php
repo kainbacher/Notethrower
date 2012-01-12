@@ -5,6 +5,7 @@ include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/Project.php');
+include_once('../Includes/Mailer/MailUtil.php');
 
 $problemOccured = false;
 $errorFields = Array();
@@ -33,8 +34,8 @@ if (get_param('action') == 'send') {
                 'Category: ' . $offer->usageCategory . "\n" .
                 'Offer in $: ' . $offer->price . "\n" . "\n" .
                 'Your oneloudr team';
-        send_email($user->email_address, 'New offer for song on oneloudr.com', $text);
-        send_email($GLOBALS['SELLER_EMAIL'], 'New offer for song on oneloudr.com', $text);
+        sendEmail($user->email_address, 'New offer for song on oneloudr.com', $text);
+        sendEmail($GLOBALS['SELLER_EMAIL'], 'New offer for song on oneloudr.com', $text);
         $offerSent = true;
     }
 } else if (get_param('action') == 'checkout') {
@@ -48,8 +49,8 @@ if (get_param('action') == 'send') {
                 'Category: ' . $offer->usageCategoryArtistOffer . "\n" .
                 'Once the user finishes the paypal transaction, you should receive from paypal a message about the purchase' . "\n\n" .
                 'Your oneloudr team';
-        send_email($user->email_address, 'Song checkout on oneloudr.com', $text);
-        send_email($GLOBALS['SELLER_EMAIL'], 'Song checkout on oneloudr.com', $text);
+        sendEmail($user->email_address, 'Song checkout on oneloudr.com', $text);
+        sendEmail($GLOBALS['SELLER_EMAIL'], 'Song checkout on oneloudr.com', $text);
         //email sent, redirect to paypal
         $paypalUrl = $GLOBALS['PAYPAL_BASE_URL'] . '&business=' . $GLOBALS['SELLER_EMAIL'];
         $paypalUrl .= '&item_name=' . urlencode($user->name . ' - ' . $track->title);

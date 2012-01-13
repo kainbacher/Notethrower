@@ -1195,31 +1195,16 @@ a.nohighlight:hover {
 }
 
 .footerSocialmediaFacebook a {
-    background-image: url(../Images/socialmedia/facebook-sw.png);
-    background-repeat: no-repeat;
-}
-
-.footerSocialmediaFacebook a:hover {
     background-image: url(../Images/socialmedia/facebook.png);
     background-repeat: no-repeat;
 }
 
 .footerSocialmediaTwitter a {
-    background-image: url(../Images/socialmedia/twitter-sw.png);
-    background-repeat: no-repeat;
-}
-
-.footerSocialmediaTwitter a:hover {
     background-image: url(../Images/socialmedia/twitter.png);
     background-repeat: no-repeat;
 }
 
 .footerSocialmediaYoutube a {
-    background-image: url(../Images/socialmedia/youtube-sw.png);
-    background-repeat: no-repeat;
-}
-
-.footerSocialmediaYoutube a:hover {
     background-image: url(../Images/socialmedia/youtube.png);
     background-repeat: no-repeat;
 }

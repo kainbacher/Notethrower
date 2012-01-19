@@ -29,9 +29,11 @@ Make sure that each job/shell script that is used in the jobs do have "world exe
 
 
 
-Permissions
+Shell scripts
 --------------------------------------------------
-_The file /Scripts/TranscodingJobProcessor.sh must have world execute rights (e.g. chmod a+x TranscodingJobProcessor.php) because cron starts that script.
+Make sure that each job/shell script that is used in the jobs do have "world execute rights".
+The files /Scripts/TranscodingJobProcessor(Test|Live).sh must have world execute rights (e.g. chmod a+x TranscodingJobProcessor(Test|Live.php) because cron starts that script.
+
 
 
 

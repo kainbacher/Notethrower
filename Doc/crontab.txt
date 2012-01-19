@@ -1,4 +1,5 @@
 # starts every minute the TranscodingJobProcessor
 # Make sure that the shell script does have "world execute rights".
 # Do not change this unless you know what you do; Dreamhost does need this shell -c stuff! 
-* * * * * sh -c $'/home/benso/oneloudr.com/OLTest/Scripts/TranscodingJobProcessor.sh \046'
+* * * * * sh -c $'/home/benso/oneloudr.com/OLTest/Scripts/TranscodingJobProcessorTest.sh \046'
+* * * * * sh -c $'/home/benso/oneloudr.com/OL/Scripts/TranscodingJobProcessorLive.sh \046'

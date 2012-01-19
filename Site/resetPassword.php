@@ -54,9 +54,8 @@ if ($action == 'sendInstructions') {
 
         $text = 'Please do not reply to this email. This is an automatically generated response.' . "\n";
         $text .= 'You received this email because you (or someone else) requested a reset of your account password for oneloudr.com' . "\n";
-        $text .= 'To reset your password to a new random password please click the URL below.' . "\n\n";
+        $text .= 'To set your new password please click the URL below.' . "\n\n";
         $text .= $resetPasswordUrl  . "\n\n";
-        $text .= 'We recommend to change your password in your user profile after you logged in with the random password.' . "\n\n";
         $text .= 'The oneloudr team';
 
         $emailSent = sendEmail($user->email_address, 'Password reset instructions', $text);

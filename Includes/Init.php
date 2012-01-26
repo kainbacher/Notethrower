@@ -6,7 +6,9 @@ error_reporting(E_ALL | E_STRICT);
 
 ini_set('date.timezone', 'UTC');
 
-include_once('../Includes/Logger.php');
+$INCLUDE_PATH = dirname(__FILE__) . '/';
+
+include_once($INCLUDE_PATH . 'Logger.php');
 
 $logger = new Logger(basename($_SERVER['PHP_SELF'], '.php'));
 $logger->set_info_level();

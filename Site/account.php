@@ -2,23 +2,23 @@
 
 include_once('../Includes/Init.php'); // must be included first
 
-include_once('../Includes/Config.php');
-include_once('../Includes/FormUtil.php');
+include_once($INCLUDE_PATH . 'Config.php');
+include_once($INCLUDE_PATH . 'FormUtil.php');
 //include_once('../Includes/recaptchalib.php');
-include_once('../Includes/Snippets.php');
-include_once('../Includes/TemplateUtil.php');
-include_once('../Includes/DB/Attribute.php');
-include_once('../Includes/DB/Genre.php');
-include_once('../Includes/DB/Invitation.php');
-include_once('../Includes/DB/Message.php');
-include_once('../Includes/DB/Project.php');
-include_once('../Includes/DB/ProjectUserVisibility.php');
-include_once('../Includes/DB/Tool.php');
-include_once('../Includes/DB/User.php');
-include_once('../Includes/DB/UserAttribute.php');
-include_once('../Includes/DB/UserGenre.php');
-include_once('../Includes/DB/UserTool.php');
-include_once('../Includes/Mailer/MailUtil.php');
+include_once($INCLUDE_PATH . 'Snippets.php');
+include_once($INCLUDE_PATH . 'TemplateUtil.php');
+include_once($INCLUDE_PATH . 'DB/Attribute.php');
+include_once($INCLUDE_PATH . 'DB/Genre.php');
+include_once($INCLUDE_PATH . 'DB/Invitation.php');
+include_once($INCLUDE_PATH . 'DB/Message.php');
+include_once($INCLUDE_PATH . 'DB/Project.php');
+include_once($INCLUDE_PATH . 'DB/ProjectUserVisibility.php');
+include_once($INCLUDE_PATH . 'DB/Tool.php');
+include_once($INCLUDE_PATH . 'DB/User.php');
+include_once($INCLUDE_PATH . 'DB/UserAttribute.php');
+include_once($INCLUDE_PATH . 'DB/UserGenre.php');
+include_once($INCLUDE_PATH . 'DB/UserTool.php');
+include_once($INCLUDE_PATH . 'Mailer/MailUtil.php');
 
 $MAX_UPLOAD_FILESIZE = 3145728; // 3MB
 
@@ -96,9 +96,11 @@ if (get_param('action') == 'save') {
             $email_sent = sendEmail(
                     $user->email_address, 
                     'Please activate your oneloudr.com account',
-                    'Please click the link below to confirm your oneloudr.com account creation:' . "\n\n" .
+                    'Please click the link below to activate your oneloudr.com account:' . "\n" .
+                    ($user->username && $user->username != $user->email_address ? 'Username: ' . $user->username . "\n" : '') .
+                    'Email: ' . $user->email_address . "\n\n" .
                     $GLOBALS['BASE_URL'] . 'Site/accountCreationConfirmed.php' .
-                    '?x=' . $user->id . '&c=' . md5('TheSparrowsAreFlyingAgain!' . $user->id)
+                    '?x=' . $user->id . '&c=' . md5('TheSparrowsAreFlyingAgain!' . $user->id) . "\n\n"
             );
 
             if (!$email_sent) {
@@ -106,7 +108,7 @@ if (get_param('action') == 'save') {
                 $problemOccured = true;
 
             } else {
-                header('Location: accountCreated.php');
+                header('Location: accountCreated.php?email=' . urlencode($user->email_address));
                 exit;
             }
         }

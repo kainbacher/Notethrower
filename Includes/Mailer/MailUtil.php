@@ -1,7 +1,7 @@
 <?php
 
-include_once('../../Config.php');
-include_once('lib/swift_required.php');
+include_once($INCLUDE_PATH . 'Config.php');
+include_once($INCLUDE_PATH . 'Mailer/lib/swift_required.php');
 
 function sendEmail($email, $subject, $textContent, $htmlContent = null, $forceEmailDelivery = false) {
     return sendEmailToRecipients(array($email), $subject, $textContent, $htmlContent, $forceEmailDelivery);
@@ -39,9 +39,6 @@ function sendEmailWithFromAndReplyToAddressToRecipients($emails, $subject, $text
         $mailFromAddress, $mailReplyToAddress, $forceEmailDelivery = false) {
 
     global $logger;
-
-    if (isset($GLOBALS['STAGING']) && $GLOBALS['STAGING'] == 'test') $subject = 'TESTSYSTEM: ' . $subject;
-    if (isset($GLOBALS['STAGING']) && $GLOBALS['STAGING'] == 'dev')  $subject = 'DEVSYSTEM: '  . $subject;
 
     $logger->debug('mail to: ' . join(', ', $emails));
     $logger->debug('mail from: ' . $mailFromName . ' <' . $mailFromAddress . '>');

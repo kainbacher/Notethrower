@@ -16,43 +16,47 @@ $visitorUserId = -1;
 $user = handleAuthentication();
 
 if ($user) {
+    // at the moment there's nothing more than sign-up instructions on the start page, so we redirect logged-in users to the dashboard
+    redirectTo($GLOBALS['BASE_URL'] . 'Site/dashboard.php');
+    
     $visitorUserId = $user->id;
     $logger->info('visitor user id: ' . $visitorUserId);
 }
 
-$latestTracksList = '';
-$latestTracks = Project::fetch_newest_from_to(0, 5, false, false, $visitorUserId);
+// currently not show, so no need to fetch the data
+// $latestTracksList = '';
+// $latestTracks = Project::fetch_newest_from_to(0, 5, false, false, $visitorUserId);
 
-foreach ($latestTracks as $track) {
-    $latestTracksList .= processTpl('Index/trackListItem.html', array(
-        '${artistImgUrl}' => getUserImageUri($track->user_img_filename, 'tiny'),
-        '${artistName}'   => escape($track->user_name),
-        '${trackId}'      => $track->id,
-        '${trackTitle}'   => escape($track->title),
-    ));
-}
+// foreach ($latestTracks as $track) {
+    // $latestTracksList .= processTpl('Index/trackListItem.html', array(
+        // '${artistImgUrl}' => getUserImageUri($track->user_img_filename, 'tiny'),
+        // '${artistName}'   => escape($track->user_name),
+        // '${trackId}'      => $track->id,
+        // '${trackTitle}'   => escape($track->title),
+    // ));
+// }
 
-if (!$latestTracksList) $latestTracksList = 'No tracks found.';
+// if (!$latestTracksList) $latestTracksList = 'No tracks found.';
 
-$topTracksList = '';
-$topTracks = Project::fetch_most_downloaded_from_to(0, 5, false, false, $visitorUserId);
+// $topTracksList = '';
+// $topTracks = Project::fetch_most_downloaded_from_to(0, 5, false, false, $visitorUserId);
 
-foreach ($topTracks as $track) {
-    $topTracksList .= processTpl('Index/trackListItem.html', array(
-        '${artistImgUrl}' => getUserImageUri($track->user_img_filename, 'tiny'),
-        '${artistName}'   => escape($track->user_name),
-        '${trackId}'      => $track->id,
-        '${trackTitle}'   => escape($track->title),
-    ));
-}
+// foreach ($topTracks as $track) {
+    // $topTracksList .= processTpl('Index/trackListItem.html', array(
+        // '${artistImgUrl}' => getUserImageUri($track->user_img_filename, 'tiny'),
+        // '${artistName}'   => escape($track->user_name),
+        // '${trackId}'      => $track->id,
+        // '${trackTitle}'   => escape($track->title),
+    // ));
+// }
 
-if (!$topTracksList) $topTracksList = 'No tracks found.';
+// if (!$topTracksList) $topTracksList = 'No tracks found.';
 
 processAndPrintTpl('Index/index.html', array(
     '${Common/pageHeader}'                     => buildPageHeader('Start', 'circlesmall', false),
     '${Common/bodyHeader}'                     => buildBodyHeader($user),
-    '${Index/trackListItem_latestTracks_list}' => $latestTracksList,
-    '${Index/trackListItem_topTracks_list}'    => $topTracksList,
+    //'${Index/trackListItem_latestTracks_list}' => $latestTracksList,
+    //'${Index/trackListItem_topTracks_list}'    => $topTracksList,
     '${Common/bodyFooter}'                     => buildBodyFooter(),
     '${Common/pageFooter}'                     => buildPageFooter()
 ));

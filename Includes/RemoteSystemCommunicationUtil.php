@@ -10,7 +10,7 @@ function sendGetRequest($url, $timeoutSeconds = 30, $followRedirects = true) {
         return doSendGetRequest(
             $u['scheme'] . '://',
             $u['host'],
-            isset($u['port']) ? $u['port'] : 80,
+            isset($u['port']) ? $u['port'] : null,
             $u['path'] . ($u['query'] ? '?' . $u['query'] : ''),
             $timeoutSeconds,
             $followRedirects

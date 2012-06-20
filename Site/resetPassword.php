@@ -129,7 +129,7 @@ if ($errorMsg) {
 }
 
 $instructionsWereSentBlock    = '';
-$newPasswordWasGeneratedBlock = '';
+$enterNewPasswordFormBlock    = '';
 $passwordWasSetBlock          = '';
 $resetPasswordFormBlock       = '';
 if ($instructionsSent) {

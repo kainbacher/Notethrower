@@ -213,6 +213,7 @@ function getFormFieldForParams($params) {
         eval('if ($obj) $val = $obj->' . $propName . ';');
         eval('if ($unpersistedObj) $unpersistedVal = $unpersistedObj->' . $propName . ';');
         $text = $workWithUnpersistedObj ? $unpersistedVal : $val;
+        if ($objValueOverride) $text = $objValueOverride;
 
         $inputField = processTpl('Common/formElementInputField_textArea.html', array(
             '${id}'                        => $propName,
@@ -300,6 +301,7 @@ function getFormFieldForParams($params) {
         eval('if ($obj) $val = $obj->' . $propName . ';');
         eval('if ($unpersistedObj) $unpersistedVal = $unpersistedObj->' . $propName . ';');
         $value = $workWithUnpersistedObj ? $unpersistedVal : $val;
+        if ($objValueOverride) $value = $objValueOverride;
 
         $inputField = processTpl('Common/formElementInputField_textField.html', array(
             '${id}'                        => $propName,

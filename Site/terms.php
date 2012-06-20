@@ -6,7 +6,7 @@ include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 
 processAndPrintTpl('TermsAndConditions/index.html', array(
-    '${Common/pageHeader}'                     => buildPageHeader('Terms and conditions'),
+    '${Common/pageHeader}'                     => buildPageHeader('Terms of use'),
     '${Common/bodyHeader}'                     => buildBodyHeader(null),
     '${Common/bodyFooter}'                     => buildBodyFooter(),
     '${Common/pageFooter}'                     => buildPageFooter()

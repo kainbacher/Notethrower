@@ -43,44 +43,6 @@ function getFileExtension($fileName) {
     return $extension;
 }
 
-function deleteOldTempFiles($extension) {
-    global $logger;
-
-    $expiryDays = 3;
-
-    // safenet - if config value is missing or doesn't have a meaningful value
-    if (
-        !isset($GLOBALS['TEMP_FILES_BASE_PATH']) ||
-        $GLOBALS['TEMP_FILES_BASE_PATH'] === ''  ||
-        $GLOBALS['TEMP_FILES_BASE_PATH'] == './' ||
-        $GLOBALS['TEMP_FILES_BASE_PATH'] == '.\\'
-    ) {
-        show_fatal_error_and_exit('suspicious temp file base path: ' . $GLOBALS['TEMP_FILES_BASE_PATH']);
-    }
-
-    $files = glob($GLOBALS['TEMP_FILES_BASE_PATH'] . '*.' . $extension);
-
-    $logger->info('found ' . count($files) . ' old temp files with extension: ' . $extension);
-
-    $deleteCount = 0;
-
-    foreach ($files as $file) {
-        // calculate file age in seconds
-        $fileAge = time() - filemtime($file); // age = now - last modification time
-
-        $logger->debug('age of file ' . $file . ' is: ' . ($fileAge / 60 / 60 / 24) . ' days');
-
-        // is the file older than the given time span?
-        if ($fileAge > ($expiryDays * 60 * 60 * 24)) {
-            $logger->info('deleting file: ' . $file);
-            unlink($file);
-            $deleteCount++;
-        }
-    }
-
-    $logger->info('deleted ' . $deleteCount . ' old temp files');
-}
-
 // takes the given project file IDs, takes the corresponding files and creates a zip file in the Tmp folder.
 // returns the full path to the zip file or false if something went wrong.
 function putProjectFilesIntoZip($projectFileIds) {
@@ -235,7 +197,7 @@ function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagin
     ), $useMobileVersion);
 }
 
-function buildBodyHeader($loggedInUser, $useMobileVersion = false) {
+function buildBodyHeader($loggedInUser, $useMobileVersion = false, $loginErrorMsgKey = null) {
     $logoLinkUrl = $GLOBALS['BASE_URL'] . 'Site/dashboard.php';
     $loginBlock = '';
     $loggedInUserInfoBlockFirstRow = '';
@@ -247,9 +209,24 @@ function buildBodyHeader($loggedInUser, $useMobileVersion = false) {
         $fbLoginUrl = $GLOBALS['BASE_URL'] . 'Site/' . ($GLOBALS['STAGING_ENV'] == 'dev' ? 'fbDummy.php' : 'fb.php');
         $fbLoginUrl .= '?destUrl=' . urlencode($_SERVER['PHP_SELF']);
 
+        $loginErrorMsg = '';
+        if ($loginErrorMsgKey) switch($loginErrorMsgKey) {
+            case 'missingUsernameOrPassword': 
+                $loginErrorMsg = 'Please enter your username and password.';
+                break;
+                
+            case 'loginFailed':
+                $loginErrorMsg = 'Invalid username or password.';
+                break;
+                
+            default: 
+                $loginErrorMsg = 'Sign in failed. Please try again.';
+        }
+        
         $loginBlock = processTpl('Common/signUpAndLoginMenuItems.html', array(
-            '${baseUrl}'          => $GLOBALS['BASE_URL'],
-            '${facebookLoginUrl}' => $fbLoginUrl
+            '${loginErrorMsg_optional}' => $loginErrorMsg,
+            '${baseUrl}'                => $GLOBALS['BASE_URL'],
+            '${facebookLoginUrl}'       => $fbLoginUrl
         ), $useMobileVersion);
 
     } else {
@@ -1080,6 +1057,44 @@ function formatMysqlDatetime($timestamp = false){
     $result = date('Y-m-d H:i:s', $timestamp);
     
     return $result;
+}
+
+function deleteOldFilesMatchingPatternInDirectory($pattern, $path, $expiryDays) {
+    global $logger;
+
+    if (!$path || $path == '.' || $path == './' || $path == '.\\') {
+        $logger->warn('deleteOldFilesMatchingPatternInDirectory() was called with empty path or ./, probably better to do nothing in this case, right?');
+        return;
+    }
+    
+    $logger->info('searching for files matching pattern "' . $pattern . '" ' . ($expiryDays > 0 ? 'older than ' . $expiryDays . ' days ' : '') . 'in ' . $path);
+    $files = glob($path . $pattern);
+    
+    $deleteCount = 0;
+    
+    foreach ($files as $file) {
+        if (substr($file, 0, 1) != '.') { // ignore dot files like ., .., .htaccess, etc.
+            // calculate file age in seconds
+            $lastModTime = filemtime($file);
+            if ($lastModTime) {
+                $fileAge = time() - $lastModTime; // age = now - last modification time
+            
+                $logger->debug('age of file ' . $file . ' is: ' . ($fileAge / 60 / 60 / 24) . ' days');
+            
+                // is the file older than the given time span?
+                if ($fileAge > ($expiryDays * 60 * 60 * 24)) {
+                    $logger->info('deleting file: ' . $file);
+                    unlink($file);
+                    $deleteCount++;
+                }
+            
+            } else {
+                $logger->error('failed to execute filemtime() on file: ' . $file);
+            }
+        }
+    }
+    
+    $logger->info('deleted ' . $deleteCount . ' files in ' . $path);
 }
 
 ?>

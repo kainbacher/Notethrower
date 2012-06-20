@@ -241,7 +241,7 @@ if (get_param('action') == 'create') {
     //   + if the project is private:
     //     + both the project owner and collaboration artists for this project
 
-    deleteOldTempFiles('zip'); // cleanup old temp zip files first
+    deleteOldFilesMatchingPatternInDirectory('*.zip', $GLOBALS['TEMP_FILES_BASE_PATH'], 3); // cleanup old temp zip files first
 
     $idListStr = get_param('fileIds');
     if ($idListStr) {

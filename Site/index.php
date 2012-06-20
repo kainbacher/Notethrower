@@ -2,6 +2,7 @@
 
 include_once('../Includes/Init.php'); // must be included first
 
+include_once('../Includes/Config.php');
 include_once('../Includes/RemoteSystemCommunicationUtil.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
@@ -12,8 +13,10 @@ include_once('../Includes/DB/User.php');
 
 //$logger->set_debug_level();
 
+deleteOldFilesMatchingPatternInDirectory('*.log', $GLOBALS['LOGFILE_BASE_PATH'], $GLOBALS['LOGFILE_TTL_DAYS']); // cleanup old logfiles
+
 $visitorUserId = -1;
-$user = handleAuthentication();
+list($user, $loginErrorMsgKey) = handleAuthentication();
 
 if ($user) {
     // at the moment there's nothing more than sign-up instructions on the start page, so we redirect logged-in users to the dashboard
@@ -54,7 +57,7 @@ if ($user) {
 
 processAndPrintTpl('Index/index.html', array(
     '${Common/pageHeader}'                     => buildPageHeader('Start', 'circlesmall', false),
-    '${Common/bodyHeader}'                     => buildBodyHeader($user),
+    '${Common/bodyHeader}'                     => buildBodyHeader($user, false, $loginErrorMsgKey),
     //'${Index/trackListItem_latestTracks_list}' => $latestTracksList,
     //'${Index/trackListItem_topTracks_list}'    => $topTracksList,
     '${Common/bodyFooter}'                     => buildBodyFooter(),
@@ -71,7 +74,7 @@ function handleAuthentication() {
     $user = User::new_from_cookie();
     if ($user) {
         $logger->info('user cookie found');
-        return $user; // nothing more to do here, the user is logged in.
+        return array($user, null); // nothing more to do here, the user is logged in.
     }
 
     // check if user is about to login (the regular way)
@@ -95,13 +98,13 @@ function handleAuthentication() {
 
                 } else {
                     $logger->info('login via username failed, too');
-                    return null;
+                    return array(null, 'loginFailed');
                 }
             }
 
         } else {
             $logger->info('username and/or password missing');
-            return null;
+            return array(null, 'missingUsernameOrPassword');
         }
     }
 
@@ -136,7 +139,7 @@ function handleAuthentication() {
         }
     }
 
-    return null;
+    return array(null, null);
 }
 
 ?>        	

@@ -24,6 +24,8 @@ $EMAIL_DELIVERY_MODE          = null;
 $EMAIL_DELIVERY_OVERRIDE_ADDR = null;
 $MAIL_FROM                    = null;
 
+$LOGFILE_TTL_DAYS = 90; // ~ 3 months
+
 /* include local Settings */
 include 'Config_local.php';
 

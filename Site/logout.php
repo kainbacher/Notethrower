@@ -12,7 +12,7 @@ if ($user) {
 if (get_param('dest')) {
     redirectTo(get_param('dest'));
 } else {
-    redirectTo('index.php');
+    redirectTo('/');
 }
 
 ?>

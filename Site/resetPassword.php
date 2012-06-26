@@ -47,7 +47,7 @@ if ($action == 'sendInstructions') {
     if (!$problemOccured) {
         $logger->info('sending pwd reset instructions to user with email "' . $user->email_address . '"');
 
-        $resetPasswordUrl = $GLOBALS['BASE_URL'] . 'Site/resetPassword.php' .
+        $resetPasswordUrl = $GLOBALS['BASE_URL'] . 'resetPassword' .
                             '?action=enterPwd' .
                             '&email=' . urlencode($user->email_address) .
                             '&cs=' . md5('HurziHurziBrrrigidigibab!' . $user->email_address);

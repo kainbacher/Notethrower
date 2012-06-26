@@ -39,7 +39,7 @@ writePageDoctype();
  		<script type="text/javascript">
 
  		    function share(tid, aid) {
- 		        var href = 'http://www.notethrower.com/NT/Site/index.php?tid=' + tid + '&taid=' + aid;
+ 		        var href = 'http://www.notethrower.com/NT/index?tid=' + tid + '&taid=' + aid;
  		        callPublish('',{'name':'I uploaded a new Song','href':href,'description':'I just uploaded a new Song to NoteThrower.  Listen for free, or collaborate with me on new tracks and even license our music together!','media':[{'type':'image','src':'http://profile.ak.fbcdn.net/object2/1043/112/q170458041694_1270.jpg','href':href}]},[{'text':'play the song','href':href}])
  		    }
 

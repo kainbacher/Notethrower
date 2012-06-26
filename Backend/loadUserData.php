@@ -35,7 +35,7 @@ $xml .= '<id>' . $user->id . '</id>';
 $xml .= '<name>' . xmlentities($user->name) . '</name>';
 $xml .= '<imageFile>' . xmlentities($user->image_filename) . '</imageFile>';
 //$xml .= '<webpageUrl>' . xmlentities($user->webpage_url) . '</webpageUrl>';
-$xml .= '<webpageUrl>' . xmlentities($GLOBALS['BASE_URL'] . 'Site/artist.php?aid=' . $user->id) . '</webpageUrl>';
+$xml .= '<webpageUrl>' . xmlentities($GLOBALS['BASE_URL'] . 'artist?aid=' . $user->id) . '</webpageUrl>';
 $xml .= '<tracks>';
 
 // load originals

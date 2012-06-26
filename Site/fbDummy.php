@@ -18,7 +18,7 @@ if ($GLOBALS['STAGING_ENV'] == 'dev') {
         if ($destUrl) {
             redirectTo($destUrl);
         } else {
-            redirectTo($GLOBALS['BASE_URL'] . 'Site/dashboard.php');
+            redirectTo($GLOBALS['BASE_URL'] . 'dashboard');
         }
 
     } else {
@@ -32,7 +32,7 @@ if ($GLOBALS['STAGING_ENV'] == 'dev') {
     }
 
 } else { // for non-dev environments redirect to the real fb.php script
-    redirectTo($GLOBALS['BASE_URL'] . 'Site/fb.php');
+    redirectTo($GLOBALS['BASE_URL'] . 'fb');
 }
 
 ?>

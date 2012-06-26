@@ -4,7 +4,7 @@ include_once('../Includes/Init.php');
 include_once('../Includes/Config.php');
 include_once('../Includes/Snippets.php');
 
-$myUrl = $GLOBALS['BASE_URL'] . 'Site/fb.php';
+$myUrl = $GLOBALS['BASE_URL'] . 'fb';
 
 $code    = get_param('code');
 $destUrl = get_param('destUrl');
@@ -29,7 +29,7 @@ if (!$code) {
         redirectTo($destUrl . $concatChar . $accessToken);
 
     } else {
-        redirectTo($GLOBALS['BASE_URL'] . 'Site/index.php?' . $accessToken);
+        redirectTo($GLOBALS['BASE_URL'] . 'index?' . $accessToken);
     }
 }
 

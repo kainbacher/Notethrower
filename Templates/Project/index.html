@@ -206,7 +206,7 @@ function checkDeleteResponseAndRefreshFileList(deleteWasOk, data) {
 }
 
 function refreshProjectFilesSection(projectId) {
-    document.location.href = '${baseUrl}Site/project.php?action=edit&pid=' + projectId + '&tab=upload';
+    document.location.href = '${baseUrl}project?action=edit&pid=' + projectId + '&tab=upload';
 
     // FIXME - this doesn't work properly. the chosen select fields are broken after a refresh of the project files div
     //$.ajax({

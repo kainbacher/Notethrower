@@ -63,7 +63,7 @@ if (get_param('action') == 'save') {
 
             $email_sent = send_email($user->email_address, 'Please activate your notethrower.com account',
                     'Please click the link below to confirm your notethrower.com account creation:' . "\n\n" .
-                    $GLOBALS['BASE_URL'] . 'Site/accountCreationConfirmed.php' .
+                    $GLOBALS['BASE_URL'] . 'accountCreationConfirmed' .
                     '?x=' . $user->id . '&c=' . md5('TheSparrowsAreFlyingAgain!' . $user->id));
 
             if (!$email_sent) {

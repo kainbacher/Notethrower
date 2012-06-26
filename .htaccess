@@ -1,4 +1,3 @@
-
 <FilesMatch "README$">
 deny from all
 </FilesMatch>
@@ -7,3 +6,8 @@ deny from all
 deny from all
 </FilesMatch>
 
+RewriteEngine On
+RewriteRule ^$ Site/index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ Site/$1

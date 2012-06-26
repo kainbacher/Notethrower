@@ -1137,7 +1137,7 @@ function processParams(&$project, &$loggedInUser) {
 //                    'Hey ' . $originator->name . ',' . "\n\n" .
 //                    $loggedInUser->name . ' has just started creating a new remix using one of your tracks.' . "\n\n" .
 //                    'You may want to check out the "Remixed by others" section in your oneloudr Widget or on your public user page: ' .
-//                    $GLOBALS['BASE_URL'] . 'Site/artist.php?aid=' . $project->originating_user_id . "\n\n" .
+//                    $GLOBALS['BASE_URL'] . 'artist?aid=' . $project->originating_user_id . "\n\n" .
 //                    'Please note that you might not see the new track until the remixer puts it online.');
 //
 //            if (!$email_sent) {

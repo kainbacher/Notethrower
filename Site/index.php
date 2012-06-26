@@ -20,7 +20,7 @@ list($user, $loginErrorMsgKey) = handleAuthentication();
 
 if ($user) {
     // at the moment there's nothing more than sign-up instructions on the start page, so we redirect logged-in users to the dashboard
-    redirectTo($GLOBALS['BASE_URL'] . 'Site/dashboard.php');
+    redirectTo($GLOBALS['BASE_URL'] . 'dashboard');
     
     $visitorUserId = $user->id;
     $logger->info('visitor user id: ' . $visitorUserId);
@@ -85,7 +85,7 @@ function handleAuthentication() {
             if ($user && $user->status == 'active') {
                 $user->doLogin();
                 $logger->info('login via email successful, reloading page to set cookie');
-                redirectTo($GLOBALS['BASE_URL'] . 'Site/dashboard.php');
+                redirectTo($GLOBALS['BASE_URL'] . 'dashboard');
 
             } else {
                 $logger->info('login via email failed, trying via username');
@@ -94,7 +94,7 @@ function handleAuthentication() {
                 if ($user && $user->status == 'active') {
                     $user->doLogin();
                     $logger->info('login via username successful, reloading page to set cookie');
-                    redirectTo($GLOBALS['BASE_URL'] . 'Site/dashboard.php');
+                    redirectTo($GLOBALS['BASE_URL'] . 'dashboard');
 
                 } else {
                     $logger->info('login via username failed, too');
@@ -121,12 +121,12 @@ function handleAuthentication() {
             if ($user && $user->status == 'active') {
                 $user->doLogin();
                 $logger->info('facebook login successful, reloading page to set cookie');
-                redirectTo($GLOBALS['BASE_URL'] . 'Site/dashboard.php');
+                redirectTo($GLOBALS['BASE_URL'] . 'dashboard');
 
             } else { // user not found -> this either means the user doesn't exist here yet or he was not found with the facebook email address
                 // the only thing we can do here is redirect the user to the signup page
                 // FIXME - which page mode? fan or artist or shall we redirect to the selection page (as soon as we have one)?
-                redirectTo($GLOBALS['BASE_URL'] . 'Site/account.php' .
+                redirectTo($GLOBALS['BASE_URL'] . 'account' .
                         '?email_address=' . urlencode($fbUserData->email) .
                         '&facebook_id='   . urlencode($fbUserData->id) .
                         '&facebook_url='  . urlencode($fbUserData->link) .

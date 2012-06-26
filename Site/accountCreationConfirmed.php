@@ -31,6 +31,8 @@ if (isset($_GET['x']) && isset($_GET['c']) && md5('TheSparrowsAreFlyingAgain!' .
 
 $user = User::new_from_cookie();
 
+header("Location: /dashboard");
+
 processAndPrintTpl('AccountCreationConfirmed/index.html', array(
     '${Common/pageHeader}' => buildPageHeader('Account creation confirmed'),
     '${Common/bodyHeader}' => buildBodyHeader($user),

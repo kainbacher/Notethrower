@@ -17,7 +17,7 @@ function getUrlForInvitationToProject($senderUserId, $recipientEmailAddr, $proje
     $i->save();
 
     // generate url with invitation table id and checksum
-    $url = $GLOBALS['BASE_URL'] . 'Site/acceptInvitation.php' .
+    $url = $GLOBALS['BASE_URL'] . 'acceptInvitation' .
            '?iid=' . $i->id .
            '&cs=' . md5('R.I.P.SuperSic!' . $i->id);
 

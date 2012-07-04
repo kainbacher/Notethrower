@@ -264,12 +264,12 @@ $(document).ready(function(){
                  
           	     <div id="startpageRightColumn">
           	          <div id="startpageImage">
-          	          <a href="http://www.notethrower.com/NT/Site/userInfo.php?aid=120">      
+          	          <a href="http://www.notethrower.com/NT/userInfo?aid=120">      
     	               <img src="../Images/The_Artistry.png" alt="The_Artistry" width="350" height="350" /></a>
     	                <br/>
                         <h3 style="color:#444444;text-align:left;">Remix Our Featured Artists!</h3>
       		            <br/>
-      		            <a href="http://www.notethrower.com/NT/Site/userInfo.php?aid=120" class="button blue">Collaborate with "The Artistry"</a>
+      		            <a href="http://www.notethrower.com/NT/userInfo?aid=120" class="button blue">Collaborate with "The Artistry"</a>
       		        
       		          </div>
       		     </div> <!-- startpageRightColumn -->

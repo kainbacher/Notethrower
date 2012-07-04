@@ -13,7 +13,7 @@ ${Common/pageHeader}
       	        var newsPageCount = Math.ceil(newsCount / ${newsPerPage});
       	        var newsLinks = {pages: [], selectedpage: 0};
        	        for (var i=0; i < newsPageCount; i++) {
-       	        	newsLinks.pages[i] = 'newsSnippet.php?page=' + (i+1);
+       	        	newsLinks.pages[i] = '${baseUrl}newsSnippet?page=' + (i+1);
        	        }
         		var newsPagingInstance=new ajaxpageclass.createBook(newsLinks, "newsContainer", ["newsPagination"]);
         </script>

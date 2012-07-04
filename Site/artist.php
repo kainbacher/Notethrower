@@ -139,7 +139,7 @@ if ($user->latitude && $user->longitude) {
 //        for ($i = 0; $i < 5; $i++) {
 //            echo '<td>';
 //            if (isset($collaborators[$i])) {
-//                echo '<a href="' . $GLOBALS['BASE_URL'] . 'Site/artist.php?aid=' . $collaborators[$i]->collaborating_user_id . '" target="_blank">';
+//                echo '<a href="' . $GLOBALS['BASE_URL'] . 'artist?aid=' . $collaborators[$i]->collaborating_user_id . '" target="_blank">';
 //                echo getUserImageHtml($collaborators[$i]->user_image_filename, $collaborators[$i]->user_name, 'tiny');
 //                echo '</a>';
 //
@@ -155,7 +155,7 @@ if ($user->latitude && $user->longitude) {
 //        for ($i = 5; $i < 10; $i++) {
 //            echo '<td>';
 //            if (isset($collaborators[$i])) {
-//                echo '<a href="' . $GLOBALS['BASE_URL'] . 'Site/artist.php?aid=' . $collaborators[$i]->collaborating_user_id . '" target="_blank">';
+//                echo '<a href="' . $GLOBALS['BASE_URL'] . 'artist?aid=' . $collaborators[$i]->collaborating_user_id . '" target="_blank">';
 //                echo getUserImageHtml($collaborators[$i]->user_image_filename, $collaborators[$i]->user_name, 'tiny');
 //                echo '</a>';
 //
@@ -237,7 +237,7 @@ foreach ($releasedTracks as $releasedTrack) {
     $fileDownloadUrl = $GLOBALS['BASE_URL'] . 'Backend/downloadFile.php?mode=download&project_id=' . $releasedTrack->project_id . '&atfid=' . $releasedTrack->id;
     
     $releasePageUrl = $fileDownloadUrl;
-    // FIXME - activate as soon as this page is ready: $releasePageUrl = $GLOBALS['BASE_URL'] . 'Site/release.php?pfid=' . $releasedTrack->id;
+    // FIXME - activate as soon as this page is ready: $releasePageUrl = $GLOBALS['BASE_URL'] . 'release?pfid=' . $releasedTrack->id;
 
     $prelistenUrl = $fileDownloadUrl;
     if ($autocreatedSibling) {

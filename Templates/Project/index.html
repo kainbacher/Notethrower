@@ -3,7 +3,7 @@ ${Common/pageHeader}
 <script type="text/javascript">
 
 function showSelectFriendsPopup() {
-    window.open('selectFriends.php?tid=${projectId}', 'NT_SELECT_FRIENDS', 'scrollbars=yes,resizable=yes,status=0,width=400,height=600');
+    window.open('${baseUrl}selectFriends?tid=${projectId}', 'NT_SELECT_FRIENDS', 'scrollbars=yes,resizable=yes,status=0,width=400,height=600');
 }
 
 $(document).ready(function () {
@@ -13,7 +13,7 @@ $(document).ready(function () {
         var parent = $(this).parents('.trackListItem');     
         var artistId = $(this).attr("id");
         
-        $.post('projectInvite.php',{ action:'inviteInternal',userid:artistId,projectId:${projectId} } , function(data) {
+        $.post('${baseUrl}projectInvite',{ action:'inviteInternal',userid:artistId,projectId:${projectId} } , function(data) {
             if(data.type == 'userAlreadyInvited'){
                 alert('This Artist has already been invited to the Project.');
                 parent.fadeOut(400);
@@ -27,7 +27,7 @@ $(document).ready(function () {
     $("input[rel=invite_friend]").click(function(e){
         e.preventDefault();    
         if(isValidEmailAddress($('#search_friend').val())) {
-            $.post('projectInvite.php',{ action:'inviteExternal',email:$('#search_friend').val(),projectId:${projectId} } , function(data) {
+            $.post('${baseUrl}projectInvite',{ action:'inviteExternal',email:$('#search_friend').val(),projectId:${projectId} } , function(data) {
                 if(data.type == 'userExists'){
                     alert('There is already a user with this email address: '+data.username);
                     updateRecommendedartistList('search',data.username);
@@ -95,7 +95,7 @@ ${Common/bodyHeader}
                         <span class="titleText">Owner:</span>
                     </div>
                     <div class="span-10">
-                        <a href="artist.php?aid=${projectOwnerUserId}">${projectOwner}</a>
+                        <a href="${baseUrl}artist?aid=${projectOwnerUserId}">${projectOwner}</a>
                     </div>
                 </div>
 
@@ -177,7 +177,7 @@ ${Common/bodyFooter}
 
 function updateRecommendedartistList(method, data){
     if ( method == 'update' ) {
-        $.post('projectInvite.php',{ action:'updateRecommendations',projectId:${projectId},attributes:data } , function(data) {
+        $.post('${baseUrl}projectInvite',{ action:'updateRecommendations',projectId:${projectId},attributes:data } , function(data) {
             if(data){
                 $('.recommendedList').children().fadeOut(500, function(){
                     $('.recommendedList').empty();
@@ -186,7 +186,7 @@ function updateRecommendedartistList(method, data){
             }
         });
     } else if ( method == 'search'){
-        $.post('projectInvite.php',{ action:'searchRecommendation',searchTerm:data } , function(data) {
+        $.post('${baseUrl}projectInvite',{ action:'searchRecommendation',searchTerm:data } , function(data) {
             if(data){
                 $('.recommendedList').children().fadeOut(500, function(){
                     $('.recommendedList').empty();
@@ -206,12 +206,12 @@ function checkDeleteResponseAndRefreshFileList(deleteWasOk, data) {
 }
 
 function refreshProjectFilesSection(projectId) {
-    document.location.href = '${baseUrl}Site/project.php?action=edit&pid=' + projectId + '&tab=upload';
+    document.location.href = '${baseUrl}project?action=edit&pid=' + projectId + '&tab=upload';
 
     // FIXME - this doesn't work properly. the chosen select fields are broken after a refresh of the project files div
     //$.ajax({
     //    type: 'GET',
-    //    url: 'project.php',
+    //    url: '${baseUrl}project',
     //    data: 'action=getProjectFilesHtml' +
     //          '&pid=' + projectId,
     //    dataType: 'html',
@@ -229,7 +229,7 @@ function refreshProjectFilesSection(projectId) {
 
 function openUploaderPopup(isMixFile) {
     window.open(
-            '../Uploader/uploader.php?sf=0&pid=${projectId}&isMix=' + (isMixFile ? 1 : 0) + '&originatorUserId=${originatorUserId}&cs=${uploaderChecksum}',
+            '${baseUrl}Uploader/uploader.php?sf=0&pid=${projectId}&isMix=' + (isMixFile ? 1 : 0) + '&originatorUserId=${originatorUserId}&cs=${uploaderChecksum}',
             'ONELOUDR_UPLOADER',
             'scrollbars=0,status=0,width=640,height=350'
     );
@@ -266,7 +266,7 @@ function downloadSelectedStems() {
             idList.push($(this).val());
         });
 
-        openInNewWindow('project.php?action=downloadProjectFiles&pid=${projectId}&fileIds=' + idList);
+        openInNewWindow('${baseUrl}project?action=downloadProjectFiles&pid=${projectId}&fileIds=' + idList);
     }
 }
 

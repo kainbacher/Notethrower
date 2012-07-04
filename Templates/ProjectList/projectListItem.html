@@ -1,14 +1,14 @@
 <div class="span-16 last trackListItem">
     <div class="span-14">
-        <a href="project.php?action=edit&pid=${projectId}">${projectTitle}</a>${ProjectList/projectOwnerAddon_optional}
+        <a href="${baseUrl}project?action=edit&pid=${projectId}">${projectTitle}</a>${ProjectList/projectOwnerAddon_optional}
     </div>
     <div class="span-1">
-        <a href="project.php?action=edit&pid=${projectId}">
+        <a href="${baseUrl}project?action=edit&pid=${projectId}">
             <img src="../Images/icons/pencil.png" alt="edit" width="16" height="16" />
         </a>
     </div>
     <div class="span-1 last">
-        <a href="javascript:askForConfirmationAndRedirect('Do you really want to delete this project?', '${projectTitleEscaped}', 'project.php?action=delete&pid=${projectId}');">
+        <a href="javascript:askForConfirmationAndRedirect('Do you really want to delete this project?', '${projectTitleEscaped}', '${baseUrl}project?action=delete&pid=${projectId}');">
             <img src="../Images/icons/cross-script.png" alt="delete" width="16" height="16" />
         </a>
     </div>

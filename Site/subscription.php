@@ -2,6 +2,7 @@
 
 include_once('../Includes/Init.php'); // must be included first
 
+include_once('../Includes/Config.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/Subscription.php');
@@ -71,7 +72,7 @@ if(get_param('username')){
             
             
             //prevent reload
-            header('Location: /invite/'.$subscription->rand_str.'/success');
+            header('Location: ' . $GLOBALS['BASE_URL'] . 'invite/'.$subscription->rand_str.'/success');
             //header('Location: subscription.php?action=success&code='.$subscription->rand_str);
             exit;
           

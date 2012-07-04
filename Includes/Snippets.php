@@ -17,7 +17,7 @@ function getReleaseUrl($pfid, $releaseTitle) {
         // this works only for the live system - see rewrite rules there
         return $GLOBALS['BASE_URL'] . 'release/' . $pfid . '/' . preg_replace('/[^a-zA-Z0-9_,.()$-]/', '', substr($releaseTitle, 0, 20)); // FIXME - is the 20 char limit ok?
     } else {
-        return $GLOBALS['BASE_URL'] . 'Site/release.php?pfid=' . $pfid;
+        return $GLOBALS['BASE_URL'] . 'release?pfid=' . $pfid;
     }
 }
 
@@ -198,15 +198,15 @@ function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagin
 }
 
 function buildBodyHeader($loggedInUser, $useMobileVersion = false, $loginErrorMsgKey = null) {
-    $logoLinkUrl = $GLOBALS['BASE_URL'] . 'Site/dashboard.php';
+    $logoLinkUrl = $GLOBALS['BASE_URL'] . 'dashboard';
     $loginBlock = '';
     $loggedInUserInfoBlockFirstRow = '';
     $loggedInUserInfoBlockSecondRow = '';
 
     if (!$loggedInUser) {
-        $logoLinkUrl = $GLOBALS['BASE_URL'] . 'Site/index.php';
+        $logoLinkUrl = $GLOBALS['BASE_URL'] . 'index';
 
-        $fbLoginUrl = $GLOBALS['BASE_URL'] . 'Site/' . ($GLOBALS['STAGING_ENV'] == 'dev' ? 'fbDummy.php' : 'fb.php');
+        $fbLoginUrl = $GLOBALS['BASE_URL'] . ($GLOBALS['STAGING_ENV'] == 'dev' ? 'fbDummy' : 'fb');
         $fbLoginUrl .= '?destUrl=' . urlencode($_SERVER['PHP_SELF']);
 
         $loginErrorMsg = '';
@@ -286,7 +286,7 @@ function writePageMetaTags() {
 }
 
 function show_header_logo() {
-    echo '<div id="logo" onClick="javascript:document.location.href=\'' . $GLOBALS['BASE_URL'] . 'Site/index.php' . '\';"></div>';
+    echo '<div id="logo" onClick="javascript:document.location.href=\'' . $GLOBALS['BASE_URL'] . 'index' . '\';"></div>';
 }
 
 function writeGoogleAnalyticsStuff() {

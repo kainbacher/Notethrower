@@ -375,7 +375,7 @@ function processParams(&$track, &$user, $uploaderParams) {
                     'Hey ' . $originator->name . ',' . "\n\n" .
                     $user->name . ' has just created a new remix using one of your tracks.' . "\n\n" .
                     'You may want to check out the "Remixed by others" section in your Notethrower Widget or on your public user page: ' .
-                    $GLOBALS['BASE_URL'] . 'Site/userInfo.php?aid=' . $track->originating_user_id . "\n\n" .
+                    $GLOBALS['BASE_URL'] . 'userInfo?aid=' . $track->originating_user_id . "\n\n" .
                     'Please note that you might not see the new track until the remixer puts it online.');
 
             if (!$email_sent) {

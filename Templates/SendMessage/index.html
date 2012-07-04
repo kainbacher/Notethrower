@@ -5,7 +5,7 @@ $(document).ready(function(){
         e.preventDefault();
         var formData = $('form').serialize();
         $.ajax({
-            url: 'sendMessage.php',
+            url: '${baseUrl}sendMessage',
             context: document.body,
             data: formData,
             success: function(msg){

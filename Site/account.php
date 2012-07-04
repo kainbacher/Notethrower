@@ -78,7 +78,7 @@ if (get_param('action') == 'save') {
             if ($oldPasswordMd5 != $newPasswordMd5) {
                 $user->doLogin();
                 $logger->info('password change was successful, reloading page to set cookie');
-                header('Location: ' . $_SERVER['PHP_SELF'] . '?msg=' . urlencode($message));
+                header('Location: ' . $_SERVER['QUERY_STRING'] . '?msg=' . urlencode($message));
                 exit;
             }
 
@@ -99,7 +99,7 @@ if (get_param('action') == 'save') {
                     'Please click the link below to activate your oneloudr.com account:' . "\n" .
                     ($user->username && $user->username != $user->email_address ? 'Username: ' . $user->username . "\n" : '') .
                     'Email: ' . $user->email_address . "\n\n" .
-                    $GLOBALS['BASE_URL'] . 'Site/accountCreationConfirmed.php' .
+                    $GLOBALS['BASE_URL'] . 'accountCreationConfirmed' .
                     '?x=' . $user->id . '&c=' . md5('TheSparrowsAreFlyingAgain!' . $user->id) . "\n\n"
             );
 
@@ -108,7 +108,7 @@ if (get_param('action') == 'save') {
                 $problemOccured = true;
 
             } else {
-                header('Location: accountCreated.php?email=' . urlencode($user->email_address));
+                header('Location: ' . $GLOBALS['BASE_URL'] . 'accountCreated?email=' . urlencode($user->email_address));
                 exit;
             }
         }
@@ -633,7 +633,7 @@ processAndPrintTpl('Account/index.html', array(
     '${Common/bodyHeader}'                    => buildBodyHeader($userIsLoggedIn ? $user : null),
     '${headline}'                             => $headline,
     '${Common/message_choice_list}'           => $messageList,
-    '${formAction}'                           => $_SERVER['PHP_SELF'],
+    '${formAction}'                           => '',
     '${invitedToProject}'                     => get_numeric_param('invitedToProject'),
     '${signupAs}'                             => get_param('signupAs'),
     '${facebookId}'                           => get_param('facebook_id'),

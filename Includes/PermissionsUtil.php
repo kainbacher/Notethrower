@@ -1,14 +1,14 @@
 <?php
 
+include_once('../Includes/Config.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectUserVisibility.php');
 
 function ensureUserIsLoggedIn(&$user) {
     global $logger;
-
     if (!userIsLoggedIn($user)) {
-        header('Location: ../Site/pleaseLogin.php');
+        header('Location: ' . $GLOBALS['BASE_URL'] . 'pleaseLogin');
         exit;
     }
 }

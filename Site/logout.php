@@ -1,6 +1,8 @@
 <?php
 
 include_once('../Includes/Init.php');
+
+include_once('../Includes/Config.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/User.php');
 
@@ -12,7 +14,7 @@ if ($user) {
 if (get_param('dest')) {
     redirectTo(get_param('dest'));
 } else {
-    redirectTo('index.php');
+    redirectTo($GLOBALS['BASE_URL']);
 }
 
 ?>

@@ -6,9 +6,8 @@ include_once('../Includes/DB/ProjectUserVisibility.php');
 
 function ensureUserIsLoggedIn(&$user) {
     global $logger;
-
     if (!userIsLoggedIn($user)) {
-        header('Location: ../Site/pleaseLogin.php');
+        header('Location: /pleaseLogin');
         exit;
     }
 }

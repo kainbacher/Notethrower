@@ -50,7 +50,7 @@ if ($action == 'send') {
 
         // append some footer text in the sent mail - you dont want this in the database or to show up at the dashboard
         $email_text = $text;
-        $email_text .= "\n\nSee ".$senderUser->name."'s profile page on Oneloudr.com (". $GLOBALS['BASE_URL'] ."Site/artist.php?aid=".$senderUser->id.")\n--\nOneloudr - Social Music Making";
+        $email_text .= "\n\nSee ".$senderUser->name."'s profile page on Oneloudr.com (". $GLOBALS['BASE_URL'] ."artist?aid=".$senderUser->id.")\n--\nOneloudr - Social Music Making";
         $email_text .= "\n\nYou can directly reply to this email to contact the sender";
     
         $email_sent = sendEmailWithFromAndReplyToAddress(

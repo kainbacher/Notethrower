@@ -204,7 +204,14 @@ foreach ($unfinishedProjects as $unfinishedProject) {
 }
 
 if (count($unfinishedProjects) == 0) {
-    $projectsList = 'No open projects found.';
+    $callToActionLink = '';
+    if ($visitorUser && $visitorUser->id == $user->id) { // if user is logged in and visits his own artist page
+        $callToActionLink = processTpl('Common/createProjectLink.html');
+    }
+        
+    $projectsList = processTpl('Common/noProjectsFound.html', array(
+        '${Common/createProjectLink_optional}' => $callToActionLink
+    ));
 }
 
 $projectsSection = processTpl('Artist/projectsSection.html', array(
@@ -258,7 +265,13 @@ foreach ($releasedTracks as $releasedTrack) {
 }
 
 if (count($releasedTracks) == 0) {
-    $releasedTracksList = 'No released tracks found.';
+    $callToActionLink = '';
+    if ($visitorUser && $visitorUser->id == $user->id) { // if user is logged in and visits his own artist page
+        $callToActionLink = processTpl('Common/projectListLink.html');
+    }
+    $releasedTracksList = processTpl('Common/noReleasesFound.html', array(
+        '${Common/projectListLink_optional}' => $callToActionLink
+    ));
 }
 
 $releasesSection = processTpl('Artist/releasesSection.html', array(

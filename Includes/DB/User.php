@@ -26,7 +26,11 @@ class User {
     var $paypal_account;
     var $activity_points;
     var $is_artist; // if true, the user is both a fan and an artist, if false the user is only a fan
-    var $is_pro; // a pro user pays for some extra services and has more features available than a regular user
+    var $is_pro; // a pro user pays for some extra services and has more features available than a free user
+    var $is_proudloudr; // a proudloudr user has additional rights compared to a regular pro user
+    var $is_editor; // editors can change certain texts on the page
+    var $is_admin; // admins can change certain parameters, block/delete users, etc.
+    var $wants_newsletter; // if true, the user wants to receive oneloudr newsletters
     var $status; // active, inactive (account created but not confirmed), banned
     var $entry_date;
 
@@ -491,6 +495,10 @@ class User {
         $a->activity_points  = $row['activity_points'];
         $a->is_artist        = $row['is_artist'];
         $a->is_pro           = $row['is_pro'];
+        $a->is_proudloudr    = $row['is_proudloudr'];
+        $a->is_editor        = $row['is_editor'];
+        $a->is_admin         = $row['is_admin'];
+        $a->wants_newsletter = $row['wants_newsletter'];
         $a->status           = $row['status'];
         $a->entry_date       = reformat_sql_date($row['entry_date']);
 
@@ -522,6 +530,10 @@ class User {
             'activity_points  int(10), ' .
             'is_artist        tinyint(1)   not null, ' .
             'is_pro           tinyint(1)   not null, ' .
+            'is_proudloudr    tinyint(1)   not null default 0, ' .
+            'is_editor        tinyint(1)   not null default 0, ' .
+            'is_admin         tinyint(1)   not null default 0, ' .
+            'wants_newsletter tinyint(1)   not null default 0, ' .
             'status           varchar(20)  not null, ' .
             'entry_date       datetime     not null default "1970-01-01 00:00:00", ' .
             'primary key (id), ' .
@@ -542,9 +554,9 @@ class User {
                     'insert into pp_user (id, username, password_md5, email_address, name, artist_info, ' .
                     'latitude, longitude, additional_info, video_url, influences,' .
                     'image_filename, webpage_url, facebook_url, twitter_username, paypal_account, activity_points, ' .
-                    'is_artist, is_pro, status, entry_date) ' .
+                    'is_artist, is_pro, is_proudloudr, is_editor, is_admin, wants_newsletter, status, entry_date) ' .
                     'values (-1, "_unknown_artist", "' . md5('dummyPwd') . '", "", "Unknown Artist", "", null, null, ' .
-                    '"", "", "", "", "", "", "", "", 0, 1, 0, "inactive", now())'
+                    '"", "", "", "", "", "", "", "", 0, 1, 0, 0, 0, 0, 0, "inactive", now())'
                 );
             }
         }
@@ -634,7 +646,7 @@ class User {
             'insert into pp_user ' .
             '(username, password_md5, email_address, name, artist_info, latitude, longitude, additional_info, ' .
             'video_url, influences, image_filename, webpage_url, facebook_url, twitter_username, paypal_account, ' .
-            'activity_points, is_artist, is_pro, status, entry_date) ' .
+            'activity_points, is_artist, is_pro, is_proudloudr, is_editor, is_admin, wants_newsletter, status, entry_date) ' .
             'values (' .
             qq($this->username)         . ', ' .
             qq($this->password_md5)     . ', ' .
@@ -654,6 +666,10 @@ class User {
             n($this->activity_points)   . ', ' .
             b($this->is_artist)         . ', ' .
             b($this->is_pro)            . ', ' .
+            b($this->is_proudloudr)     . ', ' .
+            b($this->is_editor)         . ', ' .
+            b($this->is_admin)          . ', ' .
+            b($this->wants_newsletter)  . ', ' .
             qq($this->status)           . ', ' .
             qq(formatMysqlDatetime())   .
             ')'
@@ -689,6 +705,10 @@ class User {
             'activity_points = '   . n($this->activity_points)   . ', ' .
             'is_artist = '         . b($this->is_artist)         . ', ' .
             'is_pro = '            . b($this->is_pro)            . ', ' .
+            'is_proudloudr = '     . b($this->is_proudloudr)     . ', ' .
+            'is_editor = '         . b($this->is_editor)         . ', ' .
+            'is_admin = '          . b($this->is_admin)          . ', ' .
+            'wants_newsletter = '  . b($this->wants_newsletter)  . ', ' .
             'status = '            . qq($this->status)           . ' ' .
             // entry_date intentionally not set here
             'where id = '          . n($this->id)

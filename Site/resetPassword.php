@@ -52,11 +52,9 @@ if ($action == 'sendInstructions') {
                             '&email=' . urlencode($user->email_address) .
                             '&cs=' . md5('HurziHurziBrrrigidigibab!' . $user->email_address);
 
-        $text = 'Please do not reply to this email. This is an automatically generated response.' . "\n";
-        $text .= 'You received this email because you (or someone else) requested a reset of your account password for oneloudr.com' . "\n";
-        $text .= 'To set your new password please click the URL below.' . "\n\n";
-        $text .= $resetPasswordUrl  . "\n\n";
-        $text .= 'The oneloudr team';
+        $text = processTpl('ResetPassword/instructionsEmail.txt', array(
+            '${resetPasswordUrl}' => $resetPasswordUrl
+        ));
 
         $emailSent = sendEmail($user->email_address, 'Password reset instructions', $text);
 

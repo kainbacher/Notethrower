@@ -1,0 +1,10 @@
+Please do not reply to this email. This is an automatically generated response.
+You received this email because you (or someone else) requested a reset of your account password for oneloudr.com.
+To set your new password please click the URL below:
+
+${resetPasswordUrl}
+
+If the link is not working, please try copying it to your browser's address bar after removing any line breaks.
+
+Thank you,
+your oneloudr team

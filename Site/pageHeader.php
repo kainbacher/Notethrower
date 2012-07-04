@@ -109,7 +109,7 @@ echo '</div>' . "\n";
     echo '<div class="topMenuItem">' . "\n";
     echo '<a href="javascript:showLogin();">Log in</a>' . "\n";
     echo '<div class="topMenuSub topMenuSubLogin">' . "\n";
-    echo '<form name="loginForm" action="index.php" method="POST">' . "\n"; // this was $_SERVER['PHP_SELF'] instead of index.php before, but it turned out that this behaves oddly on the pleaseLogin.php page
+    echo '<form name="loginForm" action="index" method="POST">' . "\n"; // this was $_SERVER['PHP_SELF'] instead of index.php before, but it turned out that this behaves oddly on the pleaseLogin.php page
 
 
     echo '<input type="hidden" name="action" value="login">' . "\n";

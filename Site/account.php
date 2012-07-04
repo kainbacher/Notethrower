@@ -71,18 +71,20 @@ if (get_param('action') == 'save') {
 
         $newPasswordMd5 = $user->password_md5;
 
-        $message = 'Successfully created user account!';
+        $message = '';
         if ($userIsLoggedIn) {
             $message = 'Successfully updated user account!';
 
             if ($oldPasswordMd5 != $newPasswordMd5) {
                 $user->doLogin();
                 $logger->info('password change was successful, reloading page to set cookie');
-                header('Location: ' . $_SERVER['QUERY_STRING'] . '?msg=' . urlencode($message));
+                header('Location: ' . basename($_SERVER['PHP_SELF'], '.php') . '?msg=' . urlencode($message));
                 exit;
             }
 
         } else {
+            $message = 'Successfully created user account!';
+            
             $logger->info('created user record with id: ' . $user->id);
 
             if (get_numeric_param('invitedToProject')) {

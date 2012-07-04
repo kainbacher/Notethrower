@@ -707,7 +707,7 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
     $tabContentBasicHtml   = processTpl('Project/tabContentBasic.html', array(
         '${tabcontentAct_basics}'       => $activeTab == 'basics' ? ' tabcontentAct' : '',
         '${Common/message_choice_list}' => $generalMessageList,
-        '${formAction}'                 => $_SERVER['PHP_SELF'],
+        '${formAction}'                 => '', // self
         '${projectId}'                  => $project->id,
         '${Common/formElement_list}'    => $basicsFormElementsList,
         '${submitButtonValue}'          => 'Save'
@@ -752,7 +752,7 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
             //'${released}'                                 => reformat_sql_date($projectFile->release_date ? $projectFile->release_date : date('Y-m-d H:i:s'), true),
             '${released}'                                 => $releasedTimeStr,
             '${Common/message_choice_list}'               => $publishMessageList,
-            '${formAction}'                               => $_SERVER['PHP_SELF'],
+            '${formAction}'                               => '', // self,
             '${projectId}'                                => $project->id,
             '${projectFileId}'                            => $projectFile->id,
             '${Common/formElement_list}'                  => $publishFormElementsList,
@@ -935,7 +935,7 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
                 }
     
                 $metadataForm = processTpl('Project/projectFileMetadataForm.html', array(
-                    '${formAction}'              => $_SERVER['PHP_SELF'],
+                    '${formAction}'              => '', // self
                     '${projectId}'               => $project->id,
                     '${projectFileId}'           => $file->id,
                     '${commentText_optional}'    => escape($file->comment),
@@ -998,7 +998,7 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
         }
 
         $snippet = processTpl('Project/projectFileElement.html', array(
-            '${formAction}'                               => $_SERVER['PHP_SELF'],
+            '${formAction}'                               => '', // self
             '${projectFileId}'                            => $file->id,
             '${projectFileElementCheckbox_optional}'      => $checkbox,
             '${fileIcon_choice}'                          => $fileIcon,

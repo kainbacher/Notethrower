@@ -46,9 +46,9 @@ processAndPrintTpl('Startpage/index.html', array(
     '${Common/message_choice_list}'           => $messages,
     '${Startpage/player_left}'                => buildLeftPlayer($leftTrack),
     '${Startpage/player_right}'               => buildRightPlayer($rightTrack),
-    '${voteForLeftSongUrl}'                   => $_SERVER['PHP_SELF'] . '?vt=' . $leftTrackId  . '&lt=' . $leftTrackId . '&rt=' . $rightTrackId . '&n=' . escape($nonce) . '&t=' . $timestamp,
-    '${bothSongsAreAwfulUrl}'                 => $_SERVER['PHP_SELF'],
-    '${voteForRightSongUrl}'                  => $_SERVER['PHP_SELF'] . '?vt=' . $rightTrackId . '&lt=' . $leftTrackId . '&rt=' . $rightTrackId . '&n=' . escape($nonce) . '&t=' . $timestamp,
+    '${voteForLeftSongUrl}'                   => basename($_SERVER['PHP_SELF'], '.php') . '?vt=' . $leftTrackId  . '&lt=' . $leftTrackId . '&rt=' . $rightTrackId . '&n=' . escape($nonce) . '&t=' . $timestamp,
+    '${bothSongsAreAwfulUrl}'                 => basename($_SERVER['PHP_SELF'], '.php'),
+    '${voteForRightSongUrl}'                  => basename($_SERVER['PHP_SELF'], '.php') . '?vt=' . $rightTrackId . '&lt=' . $leftTrackId . '&rt=' . $rightTrackId . '&n=' . escape($nonce) . '&t=' . $timestamp,
     '${Common/bodyFooter}'                    => buildBodyFooter(),
     '${Common/pageFooter}'                    => buildPageFooter()
 ));

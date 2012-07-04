@@ -224,7 +224,7 @@ if(get_param('username') && get_param('email') && email_syntax_ok(get_param('ema
         '${Common/pageHeader}'                     => buildPageHeader('Subscription Title - Step 2'),
         '${Optional/referrerId}'                   => get_param('referrerid'),
         '${Optional/error}'                        => $error,
-        '${phpSelf}'                               => $_SERVER['PHP_SELF'],
+        '${phpSelf}'                               => basename($_SERVER['PHP_SELF'], '.php'),
         '${userName}'                              => get_param('username'),
         '${Common/pageFooter}'                     => buildPageFooter()
     ));

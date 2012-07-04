@@ -27,7 +27,7 @@ if (isset($_GET['x']) && isset($_GET['c']) && md5('TheSparrowsAreFlyingAgain!' .
     
     $user->doLogin();
     $logger->info('user will be automatically logged in, reloading page to set cookie');
-    redirectTo($_SERVER['PHP_SELF'] . '?ok=1');   
+    redirectTo(basename($_SERVER['PHP_SELF'], '.php') . '?ok=1');   
 
 } else if (get_param('ok') == 1) {
     // second step after confirmation and login

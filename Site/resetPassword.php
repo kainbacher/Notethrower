@@ -135,7 +135,7 @@ if ($instructionsSent) {
 
 } else if ($passwordWillBeEntered) {
     $enterNewPasswordFormBlock = processTpl('ResetPassword/enterNewPasswordForm.html', array(
-        '${formAction}' => $_SERVER['PHP_SELF'],
+        '${formAction}' => '', // self
         '${email}'      => $email,
         '${checksum}'   => $checksum
     ));
@@ -145,7 +145,7 @@ if ($instructionsSent) {
 
 } else {
     $resetPasswordFormBlock = processTpl('ResetPassword/resetPasswordForm.html', array(
-        '${formAction}' => $_SERVER['PHP_SELF']
+        '${formAction}' => '' // self
     ));
 }
 

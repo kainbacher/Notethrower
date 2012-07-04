@@ -31,7 +31,7 @@ if ($user) {
             if ($user && $user->status == 'active') {
                 $user->doLogin();
                 $logger->info('login successful, reloading page to set cookie');
-                header('Location: ' . $_SERVER['PHP_SELF']);
+                header('Location: ' . basename($_SERVER['PHP_SELF'], '.php'));
                 exit;
 
             } else {

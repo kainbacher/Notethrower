@@ -113,7 +113,7 @@ if (!$offerSent) {
             <div id="trackFormDiv">
                 <div id="container">
 
-                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
+                <form action="" method="POST" enctype="multipart/form-data">
                    <input type="hidden" name="action" value="checkout">
                    <input type="hidden" name="tid" value="<?php echo $track->id; ?>">
 
@@ -257,7 +257,7 @@ if (!$offerSent) {
         <div id="trackFormDiv">
             <div id="container">
 
-                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
+                <form action="" method="POST" enctype="multipart/form-data">
                    <input type="hidden" name="action" value="send">
                    <input type="hidden" name="tid" value="<?php echo $track->id; ?>">
 

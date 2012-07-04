@@ -73,7 +73,7 @@ if (get_param('email') && email_syntax_ok(get_param('email'))) {
 
 processAndPrintTpl('EarlyAccess/index.html', array(
     '${Common/pageHeader}' => buildPageHeader('Early Access'),
-    '${phpSelf}'           => $_SERVER['PHP_SELF'],
+    '${phpSelf}'           => basename($_SERVER['PHP_SELF'], '.php'),
     '${message}'           => $message,
     '${username}'          => escape(get_param('username')),
     '${email}'             => escape(get_param('email')),

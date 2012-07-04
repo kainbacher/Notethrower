@@ -68,7 +68,7 @@ processAndPrintTpl('Contact/index.html', array(
     '${Common/pageHeader}'          => buildPageHeader('Contact'),
     '${Common/bodyHeader}'          => buildBodyHeader($user),
     '${msgsAndErrorsList_optional}' => $msgsAndErrorsList,
-    '${formAction}'                 => $_SERVER['PHP_SELF'],
+    '${formAction}'                 => basename($_SERVER['PHP_SELF'], '.php'),
     '${email_optional}'             => $user ? escape($user->email_address) : '',
     '${Common/bodyFooter}'          => buildBodyFooter(),
     '${Common/pageFooter}'          => buildPageFooter()

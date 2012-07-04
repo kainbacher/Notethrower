@@ -201,7 +201,7 @@ if (!$statusMessage || $errorMessage) {
 } // end of if (!$statusMessage) {
 
 ?>
-            <form name="sendMessageForm" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+            <form name="sendMessageForm" action="" method="POST">
                 <input type="hidden" name="action" value="send">
                 <input type="hidden" name="raid" value="<?php echo $recipientUser->id; ?>">
                 <table>

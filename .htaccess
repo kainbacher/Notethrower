@@ -2,7 +2,7 @@
 deny from all
 </FilesMatch>
 
-<FilesMatch "\.(txt|doc|docx|xls|xlsx|git|gitignore)$">
+<FilesMatch "\.(txt|doc|docx|xls|xlsx|git|gitignore|sql)$">
 deny from all
 </FilesMatch>
 

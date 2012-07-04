@@ -679,7 +679,7 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
         $recommendedArtistAttributes = implode(',', $projectRecommendedArtist->offersAttributeNamesList);
 
         //userimagepath
-        $recommendedArtistImage = (!empty($projectRecommendedArtist->image_filename) ? '../Content/UserImages/'.$projectRecommendedArtist->image_filename : '../Images/testimages/profile-testimg-75x75.png' );
+        $recommendedArtistImage = (!empty($projectRecommendedArtist->image_filename) ? $GLOBALS['BASE_URL'] . 'Content/UserImages/'.$projectRecommendedArtist->image_filename : $GLOBALS['BASE_URL'] . 'Images/testimages/profile-testimg-75x75.png' );
         $projectRecommendedArtistsList .= processTpl('Project/recommendedArtistElement.html', array(
             '${recommendedArtistId}'             => $projectRecommendedArtist->id,
             '${recommendedArtistName}'           => $projectRecommendedArtist->name,
@@ -975,7 +975,7 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
             ));
         }
 
-        $fileDownloadUrl = '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $file->id;
+        $fileDownloadUrl = $GLOBALS['BASE_URL'] . 'Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $file->id;
 
         $playerHtml = '';
         if (
@@ -983,7 +983,7 @@ function getUploadedFilesSection(&$project, $messageList, &$loggedInUser) {
             $autocreatedSibling
         ) {
             $prelisteningUrl = $fileDownloadUrl;
-            if ($autocreatedSibling) $prelisteningUrl = '../Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $autocreatedSibling->id;
+            if ($autocreatedSibling) $prelisteningUrl = $GLOBALS['BASE_URL'] . 'Backend/downloadFile.php?mode=download&project_id=' . $project->id . '&atfid=' . $autocreatedSibling->id;
 
             $playerHtml = processTpl('Common/player.html', array(
                 '${projectFileId}'   => $file->id,

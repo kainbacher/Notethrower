@@ -109,7 +109,7 @@ if (get_param('action') == 'updateRecommendations') {
         $recommendedArtistAttributes = implode(',', $projectRecommendedArtist -> offersAttributeNamesList);
 
         //userimagepath
-        $recommendedArtistImage = (!empty($projectRecommendedArtist -> image_filename) ? '../Content/UserImages/' . $projectRecommendedArtist -> image_filename : '../Images/testimages/profile-testimg-75x75.png');
+        $recommendedArtistImage = (!empty($projectRecommendedArtist -> image_filename) ? $GLOBALS['BASE_URL'] . 'Content/UserImages/' . $projectRecommendedArtist -> image_filename : $GLOBALS['BASE_URL'] . 'Images/testimages/profile-testimg-75x75.png');
         $projectRecommendedArtistsList .= processTpl('Project/recommendedArtistElement.html', array('${recommendedArtistId}' => $projectRecommendedArtist -> id, '${recommendedArtistName}' => $projectRecommendedArtist -> name, '${recommendedArtistAttributes}' => $recommendedArtistAttributes, '${recommendedArtistProfileImage}' => $recommendedArtistImage));
     }
     echo $projectRecommendedArtistsList;
@@ -126,7 +126,7 @@ if (get_param('action') == 'searchRecommendation') {
             //$recommendedArtistAttributes = implode(',', $projectRecommendedArtist -> offersAttributeNamesList);
             $recommendedArtistAttributes = null;
             //userimagepath
-            $recommendedArtistImage = (!empty($projectRecommendedArtist -> image_filename) ? '../Content/UserImages/' . $projectRecommendedArtist -> image_filename : '../Images/testimages/profile-testimg-75x75.png');
+            $recommendedArtistImage = (!empty($projectRecommendedArtist -> image_filename) ? $GLOBALS['BASE_URL'] . 'Content/UserImages/' . $projectRecommendedArtist -> image_filename : $GLOBALS['BASE_URL'] . 'Images/testimages/profile-testimg-75x75.png');
             $projectRecommendedArtistsList .= processTpl('Project/recommendedArtistElement.html', array('${recommendedArtistId}' => $projectRecommendedArtist -> id, '${recommendedArtistName}' => $projectRecommendedArtist -> name, '${recommendedArtistAttributes}' => $recommendedArtistAttributes, '${recommendedArtistProfileImage}' => $recommendedArtistImage));
         }
         echo $projectRecommendedArtistsList;

@@ -8,7 +8,7 @@
  */
 
 $this->settings = array(
-  'baseurl'                 => '../Uploader/',                                    // a base URL for uploader.swf
+  'baseurl'                 => $GLOBALS['BASE_URL'] . 'Uploader/',                                    // a base URL for uploader.swf
 
   'width'                   => '360',                                   // default width of the control; in pixels or %
 

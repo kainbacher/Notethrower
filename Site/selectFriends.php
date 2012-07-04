@@ -27,11 +27,11 @@ writePageDoctype();
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <?php writePageMetaTags(); ?>
     <title><?php writePageTitle(); ?></title>
-    <link rel="stylesheet" href="../Styles/main.css" type="text/css">
+    <link rel="stylesheet" href="<?= $GLOBALS['BASE_URL'] ?>Styles/main.css" type="text/css">
  	<style type="text/css">
 
 body {
-    background: #FFFFFF url(../Images/background_04.jpg) no-repeat;
+    background: #FFFFFF url(<?= $GLOBALS['BASE_URL'] ?>Images/background_04.jpg) no-repeat;
 }
 
 #userList {
@@ -145,7 +145,7 @@ function searchForUser() {
                 return;
             }
             oldQueryString = queryString;
-            var url = '../Backend/searchUser.php';
+            var url = '<?= $GLOBALS['BASE_URL'] ?>Backend/searchUser.php';
             url = url + '?q=' + queryString;
             // for not being cached somewhere
             url = url + '&sid=' + Math.random();
@@ -182,7 +182,7 @@ function getSelectedUserList() {
         // ajax not supported
         return;
     }
-    var url = '../Backend/getFriendsList.php';
+    var url = '<?= $GLOBALS['BASE_URL'] ?>Backend/getFriendsList.php';
     url = url + '?aid=<?php echo $user->id; ?>';
     url = url + '&tid=<?php echo $trackId; ?>';
     // for not being cached somewhere
@@ -205,7 +205,7 @@ function addUser() {
         // ajax not supported
         return;
     }
-    var url = '../Backend/addUserAsFriend.php';
+    var url = '<?= $GLOBALS['BASE_URL'] ?>Backend/addUserAsFriend.php';
     url = url + '?aid=' + userId;
     url = url + '&tid=<?php echo $trackId; ?>';
     // for not being cached somewhere
@@ -250,7 +250,7 @@ function removeUsers() {
         // ajax not supported
         return;
     }
-    var url = '../Backend/removeUsersAsFriends.php';
+    var url = '<?= $GLOBALS['BASE_URL'] ?>Backend/removeUsersAsFriends.php';
     url = url + '?aids=' + ids;
     url = url + '&tid=<?php echo $trackId; ?>';
     // for not being cached somewhere

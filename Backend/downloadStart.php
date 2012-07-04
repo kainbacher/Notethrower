@@ -184,7 +184,7 @@ function show_file_selection($isFreeDownload) {
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <?php writePageMetaTags(); ?>
     <title><?php writePageTitle(); ?></title>
-    <link rel="stylesheet" href="../Styles/main.css" type="text/css">
+    <link rel="stylesheet" href="<?= $GLOBALS['BASE_URL'] ?>Styles/main.css" type="text/css">
     <script type="text/javascript">
 
 var fileSelected = false;

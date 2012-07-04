@@ -64,11 +64,11 @@ foreach ($tracks as $track) {
         if (file_exists($userImg)) {
             echo '<div class="tlUserImg"><img src="' . $userImgUrl . '"></div>';
         } else {
-            echo '<div class="tlUserImg"><img src="../Images/no_artist_image.png"></div>';
+            echo '<div class="tlUserImg"><img src="<?= $GLOBALS['BASE_URL'] ?>Images/no_artist_image.png"></div>';
         }
 
     } else {
-        echo '<div class="tlUserImg"><img src="../Images/no_artist_image.png"></div>';
+        echo '<div class="tlUserImg"><img src="<?= $GLOBALS['BASE_URL'] ?>Images/no_artist_image.png"></div>';
     }
 
     echo '<div class="tlOverlayText">' . "\n";

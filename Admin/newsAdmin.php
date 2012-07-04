@@ -1,6 +1,8 @@
 <?php
 
 include_once('../Includes/Init.php');
+
+include_once('../Includes/Config.php');
 include_once('../Includes/Paginator.php');
 include_once('../Includes/Snippets.php');
 
@@ -12,19 +14,19 @@ writePageDoctype();
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <?php writePageMetaTags(); ?>
     <title><?php writePageTitle(); ?></title>
-    <link rel="stylesheet" href="../Styles/main.css" type="text/css">
+    <link rel="stylesheet" href="<?= $GLOBALS['BASE_URL'] ?>Styles/main.css" type="text/css">
 
     <style>
-    	.add-news { background-image: url(../Javascripts/ext/resources/images/default/dd/drop-add.gif) !important; }
-    	.del-news { background-image: url(../Javascripts/ext/resources/images/default/dd/drop-no.gif) !important; }
+    	.add-news { background-image: url(<?= $GLOBALS['BASE_URL'] ?>Javascripts/ext/resources/images/default/dd/drop-add.gif) !important; }
+    	.del-news { background-image: url(<?= $GLOBALS['BASE_URL'] ?>Javascripts/ext/resources/images/default/dd/drop-no.gif) !important; }
     </style>
 
     <!-- ext stylesheet -->
-    <link rel="stylesheet" type="text/css" href="../Javascripts/ext/resources/css/ext-all.css" />
+    <link rel="stylesheet" type="text/css" href="<?= $GLOBALS['BASE_URL'] ?>Javascripts/ext/resources/css/ext-all.css" />
 
     <!-- ext libraries -->
-		<script type="text/javascript" src="../Javascripts/ext/adapter/ext/ext-base.js"></script>
-		<script type="text/javascript" src="../Javascripts/ext/ext-all.js"></script>
+		<script type="text/javascript" src="<?= $GLOBALS['BASE_URL'] ?>Javascripts/ext/adapter/ext/ext-base.js"></script>
+		<script type="text/javascript" src="<?= $GLOBALS['BASE_URL'] ?>Javascripts/ext/ext-all.js"></script>
 
     <script type="text/javascript">
 
@@ -37,7 +39,7 @@ Ext.onReady(function() {
 		Ext.MessageBox.confirm('Delete News', 'Are you sure that you want to delete the News <b>"' + headline + '"</b>?', function(btn){
 			if (btn == 'yes') {
 				Ext.Ajax.request({
-					url: '../Backend/deleteNews.php',
+					url: '<?= $GLOBALS['BASE_URL'] ?>Backend/deleteNews.php',
 					failure: function() {
 						Ext.Msg.alert('Failure', 'Unable to remove News');
 					},
@@ -135,7 +137,7 @@ Ext.onReady(function() {
           }
         }],
       loader: new Ext.tree.TreeLoader({
-      	url: '../Backend/loadNews.php?asExtTreeNode=true',
+      	url: '<?= $GLOBALS['BASE_URL'] ?>Backend/loadNews.php?asExtTreeNode=true',
       	clearOnLoad: true
       }),
     	root: {
@@ -152,7 +154,7 @@ Ext.onReady(function() {
     			emptyTab.hide();
     			Ext.getCmp('delNews').enable();
     			newsAdminFormPanel.show();
-    			newsAdminFormPanel.getForm().load({url:'../Backend/loadNews.php?id=' + n.attributes.id, waitMsg:'Loading...'});
+    			newsAdminFormPanel.getForm().load({url:'<?= $GLOBALS['BASE_URL'] ?>Backend/loadNews.php?id=' + n.attributes.id, waitMsg:'Loading...'});
     		}
       }
     });
@@ -199,11 +201,11 @@ Ext.onReady(function() {
         text: 'Save',
         handler: function(){
             newsAdminFormPanel.getForm().submit(
-               {url:'../Backend/saveNews.php',
+               {url:'<?= $GLOBALS['BASE_URL'] ?>Backend/saveNews.php',
                	waitMsg:'Saving Data...',
                 success: function(form, action) {
                 	newsAdminNewsList.getLoader().load(newsAdminNewsList.getRootNode(), null, null);
-                	newsAdminFormPanel.getForm().load({url:'../Backend/loadNews.php?id=' + action.result.newId, waitMsg:'Saving Data...'});
+                	newsAdminFormPanel.getForm().load({url:'<?= $GLOBALS['BASE_URL'] ?>Backend/loadNews.php?id=' + action.result.newId, waitMsg:'Saving Data...'});
                 },
                 failure: function(form, action) {
                 	switch (action.failureType) {

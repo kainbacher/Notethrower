@@ -219,7 +219,7 @@ if (!$offerSent) {
                             <p>Secure chekout</p>
                         </div>
                         <div class="makeAnOfferRight">
-                            <img src="../Images/paypal_logo.gif" alt="paypal_logo" width="114" height="31" />
+                            <img src="<?= $GLOBALS['BASE_URL'] ?>Images/paypal_logo.gif" alt="paypal_logo" width="114" height="31" />
                         </div>
                         <div class="clear"></div>
                     </div>

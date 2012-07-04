@@ -43,10 +43,10 @@ foreach ($tracks as $track) {
         if (file_exists($userImg)) {
             $track->user_img_filename =  $userImgUrl;
         } else {
-            $track->user_img_filename = '../Images/no_artist_image.png';
+            $track->user_img_filename = $GLOBALS['BASE_URL'] . 'Images/no_artist_image.png';
         }
     } else {
-        $track->user_img_filename = '../Images/no_artist_image.png';
+        $track->user_img_filename = $GLOBALS['BASE_URL'] . 'Images/no_artist_image.png';
     }
 
     $trackData->aaData[$i] = array($track->user_img_filename, $track->user_name, $track->title, $track->id, $track->user_id);

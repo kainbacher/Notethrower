@@ -266,7 +266,7 @@ function getFormFieldForParams($params) {
 //
 //        //done $html .= ($inputFieldSuffix ? '&nbsp;' . $inputFieldSuffix : '');
 //
-//        $html .= '&nbsp;<img class="cursorHand" id="' . $uniqueId . '_btn" src="../Images/Buttons/calendar_icon_20x20.png" style="vertical-align:bottom">';
+//        $html .= '&nbsp;<img class="cursorHand" id="' . $uniqueId . '_btn" src="' . $GLOBALS['BASE_URL'] . 'Images/Buttons/calendar_icon_20x20.png" style="vertical-align:bottom">';
 //
 //        $html .= '<div id="' . $uniqueId . '_div" type="text" style="display:none"></div>';
 //

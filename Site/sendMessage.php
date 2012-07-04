@@ -185,7 +185,7 @@ if ($statusMessage && !$errorMessage) {
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <?php writePageMetaTags(); ?>
         <title><?php writePageTitle(); ?></title>
-        <link rel="stylesheet" href="../Styles/main.css" type="text/css">
+        <link rel="stylesheet" href="<?= $GLOBALS['BASE_URL'] ?>Styles/main.css" type="text/css">
     </head>
     <body>
         <div id="sendMessageInner">
@@ -194,7 +194,7 @@ if ($statusMessage && !$errorMessage) {
 if (!$statusMessage || $errorMessage) {
 
 ?>
-            <h1><img border="0" src="../Images/Mail_Icon_big.png">&nbsp;Message to <?php echo escape($recipientUser->name); ?>:</h1>
+            <h1><img border="0" src="<?= $GLOBALS['BASE_URL'] ?>Images/Mail_Icon_big.png">&nbsp;Message to <?php echo escape($recipientUser->name); ?>:</h1>
             <br/>
 <?php
 

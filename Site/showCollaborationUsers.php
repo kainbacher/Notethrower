@@ -23,12 +23,12 @@ writePageDoctype();
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <?php writePageMetaTags(); ?>
     <title><?php writePageTitle(); ?></title>
-    <link rel="stylesheet" href="../Styles/main.css" type="text/css">
+    <link rel="stylesheet" href="<?= $GLOBALS['BASE_URL'] ?>Styles/main.css" type="text/css">
  	<style type="text/css">
 
 body {
     margin: 10px;
-    background: #FFFFFF url(../Images/background_04.jpg) no-repeat;
+    background: #FFFFFF url(<?= $GLOBALS['BASE_URL'] ?>Images/background_04.jpg) no-repeat;
     text-align: left;
 }
 

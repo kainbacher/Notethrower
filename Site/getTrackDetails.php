@@ -34,7 +34,7 @@ writePageDoctype();
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <?php writePageMetaTags(); ?>
     <title><?php writePageTitle(); ?></title>
-    <link rel="stylesheet" href="../Styles/main.css" type="text/css">
+    <link rel="stylesheet" href="<?= $GLOBALS['BASE_URL'] ?>Styles/main.css" type="text/css">
   </head>
   <body>
 <?php
@@ -80,7 +80,7 @@ if ($track) { // could be empty if wrong id or not visible for logged in user
 
     if ($ownerUser->id != $user->id) {
         echo '<br><br>' . "\n";
-        echo '<a href="javascript:showSendMessagePopup(' . $ownerUser->id . ');"><img border="0" src="../Images/Mail_Icon.png">&nbsp;Send message to ' . escape($ownerUser->name) . '&nbsp;(need to be logged in)</a>' . "\n";
+        echo '<a href="javascript:showSendMessagePopup(' . $ownerUser->id . ');"><img border="0" src="' . $GLOBALS['BASE_URL'] . 'Images/Mail_Icon.png">&nbsp;Send message to ' . escape($ownerUser->name) . '&nbsp;(need to be logged in)</a>' . "\n";
     }
 
     // collaborators

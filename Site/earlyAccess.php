@@ -10,7 +10,7 @@ include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/DB/User.php');
 
-$listFile = '../Content/earlyAccessEmailList.txt';
+$listFile = $GLOBALS['BASE_URL'] . 'Content/earlyAccessEmailList.txt';
 
 $message = '';
 if (get_param('email') && email_syntax_ok(get_param('email'))) {

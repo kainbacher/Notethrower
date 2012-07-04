@@ -136,14 +136,14 @@ writePageDoctype();
     <?php writePageMetaTags(); ?>
     <title><?php writePageTitle(); ?></title>
 
-    <link rel="stylesheet" href="../Styles/buttons.css" type="text/css">
-    <link rel="stylesheet" href="../Styles/main.css" type="text/css">
-    <link rel="stylesheet" href="../Styles/datatables.css" type="text/css">
+    <link rel="stylesheet" href="<?= $GLOBALS['BASE_URL'] ?>Styles/buttons.css" type="text/css">
+    <link rel="stylesheet" href="<?= $GLOBALS['BASE_URL'] ?>Styles/main.css" type="text/css">
+    <link rel="stylesheet" href="<?= $GLOBALS['BASE_URL'] ?>Styles/datatables.css" type="text/css">
 
 
-    <script type="text/javascript" src="../Javascripts/jquery-1.6.1.min.js"></script>
-    <script type="text/javascript" src="../Javascripts/jquery.main.js"></script>
-    <script type="text/javascript" src="../Javascripts/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="<?= $GLOBALS['BASE_URL'] ?>Javascripts/jquery-1.6.1.min.js"></script>
+    <script type="text/javascript" src="<?= $GLOBALS['BASE_URL'] ?>Javascripts/jquery.main.js"></script>
+    <script type="text/javascript" src="<?= $GLOBALS['BASE_URL'] ?>Javascripts/jquery.dataTables.js"></script>
 
     <script type="text/javascript">
 
@@ -178,7 +178,7 @@ $(document).ready(function() {
             {"bVisible": false},
             null
         ],
-		"sAjaxSource": "../Backend/searchTracks.php",
+		"sAjaxSource": "<?= $GLOBALS['BASE_URL'] ?>Backend/searchTracks.php",
 		"fnServerData": function ( sSource, aoData, fnCallback ) {
 			aoData.push( { "name": "userOrTitle", "value": userOrTitle },
 			             { "name": "needsAttributIds", "value": searchNeedsAttributIds },
@@ -429,12 +429,12 @@ if ($userIsLoggedIn) {
 	      <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="300" height="400" id="NTWidget" align="middle">
 	        <param name="allowScriptAccess" value="always" />
 	        <param name="allowFullScreen" value="false" />
-	        <param name="movie" value="../Widget/PpWidget.swf?aid=<?php echo $aidForWidget; ?>" />
+	        <param name="movie" value="<?= $GLOBALS['BASE_URL'] ?>Widget/PpWidget.swf?aid=<?php echo $aidForWidget; ?>" />
 	        <param name="loop" value="false" />
 	        <param name="quality" value="high" />
 	        <param name="wmode" value="transparent" />
 	        <param name="bgcolor" value="#ffffff" />
-	        <embed src="../Widget/PpWidget.swf?aid=<?php echo $aidForWidget; ?>" loop="false" quality="high" wmode="transparent" bgcolor="#ffffff" width="300" height="400" name="NTWidget" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+	        <embed src="<?= $GLOBALS['BASE_URL'] ?>Widget/PpWidget.swf?aid=<?php echo $aidForWidget; ?>" loop="false" quality="high" wmode="transparent" bgcolor="#ffffff" width="300" height="400" name="NTWidget" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
 	      </object>
 
       </div> <!-- searchWidget -->

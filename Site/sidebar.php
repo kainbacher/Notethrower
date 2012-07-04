@@ -6,7 +6,7 @@
   			<table>
     			<tr>
     				<td>
-      					<a href="http://twitter.com/notethrower" target="_blank"><img border="0" src="../Images/Twitter_2.png" alt="Follow us on Twitter!" title="Follow us on Twitter!">
+      					<a href="http://twitter.com/notethrower" target="_blank"><img border="0" src="<?= $GLOBALS['BASE_URL'] ?>Images/Twitter_2.png" alt="Follow us on Twitter!" title="Follow us on Twitter!">
       					</a>
     				</td>
     				<td style="font-weight:bold;">
@@ -35,17 +35,17 @@
             <br/>
   		    <div class="sidebarIcons">
   		        <a href="http://twitter.com/notethrower" target="_blank">
-  			   <img src="../Images/icons/icon_facebook.png" alt="icon_facebook" width="150" height="32"/>
+  			   <img src="<?= $GLOBALS['BASE_URL'] ?>Images/icons/icon_facebook.png" alt="icon_facebook" width="150" height="32"/>
   			   </a>
   			</div>
   			<div class="sidebarIcons">
   			   <a href="http://twitter.com/notethrower" target="_blank">
-  			   <img src="../Images/icons/icon_myspace.png" alt="icon_myspace" width="150" height="40"/>
+  			   <img src="<?= $GLOBALS['BASE_URL'] ?>Images/icons/icon_myspace.png" alt="icon_myspace" width="150" height="40"/>
   			   </a>
   			</div>
   			<div class="sidebarIcons">
   			   <a href="http://twitter.com/notethrower" target="_blank">
-  			   <img src="../Images/icons/icon_twitter.png" alt="icon_twitter" width="150" height="32"/>
+  			   <img src="<?= $GLOBALS['BASE_URL'] ?>Images/icons/icon_twitter.png" alt="icon_twitter" width="150" height="32"/>
   			   </a>
   			</div>
   			<br/>

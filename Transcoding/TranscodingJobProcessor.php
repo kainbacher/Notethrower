@@ -3,8 +3,8 @@
 set_time_limit(120); // 2 minutes hard limit
 
 include_once('../Includes/Init.php');
-include_once('../Includes/Config.php');
 
+include_once('../Includes/Config.php');
 include_once('../Includes/DbConnect.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectFile.php');
@@ -15,7 +15,7 @@ $startTime = time();
 //$logger->set_debug_level();
 
 // check if this script is currently running
-$processingFile = '../Tmp/processing';
+$processingFile = $GLOBALS['BASE_URL'] . 'Tmp/processing';
 
 exitIfValidProcessingFileFound($processingFile);
 

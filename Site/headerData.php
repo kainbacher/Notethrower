@@ -5,24 +5,24 @@
 
 
 
-<link rel="stylesheet" href="../Styles/bp-print.css" type="text/css" media="print" />
-<link rel="stylesheet" href="../Styles/bp-screen.css" type="text/css" media="screen, projection" />
+<link rel="stylesheet" href="<?= $GLOBALS['BASE_URL'] ?>Styles/bp-print.css" type="text/css" media="print" />
+<link rel="stylesheet" href="<?= $GLOBALS['BASE_URL'] ?>Styles/bp-screen.css" type="text/css" media="screen, projection" />
 <!--[if lt IE 8]>
-<link rel="stylesheet" href="../Styles/bp-ie.css" type="text/css" media="screen, projection" />
+<link rel="stylesheet" href="<?= $GLOBALS['BASE_URL'] ?>Styles/bp-ie.css" type="text/css" media="screen, projection" />
 <![endif]-->
 
-<link rel="stylesheet" href="../Styles/buttons.css" type="text/css" />
-<link rel="stylesheet" href="../Styles/main.css" type="text/css" />
-<link rel="stylesheet" href="../Styles/ajaxpagination.css" type="text/css" />
+<link rel="stylesheet" href="<?= $GLOBALS['BASE_URL'] ?>Styles/buttons.css" type="text/css" />
+<link rel="stylesheet" href="<?= $GLOBALS['BASE_URL'] ?>Styles/main.css" type="text/css" />
+<link rel="stylesheet" href="<?= $GLOBALS['BASE_URL'] ?>Styles/ajaxpagination.css" type="text/css" />
 
 
-<script type="text/javascript" src="../Javascripts/jquery-1.6.1.min.js"></script>
-<script type="text/javascript" src="../Javascripts/jquery.main.js"></script>
+<script type="text/javascript" src="<?= $GLOBALS['BASE_URL'] ?>Javascripts/jquery-1.6.1.min.js"></script>
+<script type="text/javascript" src="<?= $GLOBALS['BASE_URL'] ?>Javascripts/jquery.main.js"></script>
 
 
-<script type="text/javascript" src="../Javascripts/Snippets.js"></script>
+<script type="text/javascript" src="<?= $GLOBALS['BASE_URL'] ?>Javascripts/Snippets.js"></script>
 
-<script src="../Javascripts/ajaxpagination.js" type="text/javascript">
+<script src="<?= $GLOBALS['BASE_URL'] ?>Javascripts/ajaxpagination.js" type="text/javascript">
 
     /***********************************************
     * Ajax Pagination script- (c) Dynamic Drive DHTML code library (www.dynamicdrive.com)

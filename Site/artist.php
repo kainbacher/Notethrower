@@ -279,8 +279,28 @@ $releasesSection = processTpl('Artist/releasesSection.html', array(
 ), $showMobileVersion);
 
 $skills = implode(', ', UserAttribute::getAttributeNamesForUserIdAndState($user->id, 'offers'));
+$skillsElement = '';
+if ($skills) {
+    $skillsElement = processTpl('Common/sidebarSkillsElement.html', array(
+        '${skills}' => $skills
+    ));
+}
+
 $genres = implode(', ', UserGenre::getGenreNamesForUserId($user->id));
+$genresElement = '';
+if ($genres) {
+    $genresElement = processTpl('Common/sidebarGenresElement.html', array(
+        '${genres}' => $genres
+    ));
+}
+
 $tools  = implode(', ', UserTool::getToolNamesForUserId($user->id));
+$toolsElement = '';
+if ($tools) {
+    $toolsElement = processTpl('Common/sidebarToolsElement.html', array(
+        '${tools}' => $tools
+    ));
+}
 
 processAndPrintTpl('Artist/index.html', array(
     '${Common/pageHeader}'                                 => buildPageHeader('Artist', true, false, false, true, $showMobileVersion),
@@ -298,9 +318,9 @@ processAndPrintTpl('Artist/index.html', array(
     '${Artist/releasesSection_optional}'                   => $releasesSection,
     '${Artist/projectsSection_optional}'                   => $projectsSection,
     '${Artist/editProfileLink_optional}'                   => $editProfileLink,
-    '${skills}'                                            => $skills,
-    '${genres}'                                            => $genres,
-    '${tools}'                                             => $tools,
+    '${Common/sidebarSkillsElement_optional}'              => $skillsElement,
+    '${Common/sidebarGenresElement_optional}'              => $genresElement,
+    '${Common/sidebarToolsElement_optional}'               => $toolsElement,
     '${Common/bodyFooter}'                                 => buildBodyFooter($showMobileVersion),
     '${Common/pageFooter}'                                 => buildPageFooter()
 ), $showMobileVersion);

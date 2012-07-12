@@ -204,30 +204,35 @@ function buildBodyHeader($loggedInUser, $useMobileVersion = false, $loginErrorMs
     $loggedInUserInfoBlockSecondRow = '';
 
     if (!$loggedInUser) {
-        $logoLinkUrl = $GLOBALS['BASE_URL'] . 'index';
+        if (strpos(basename($_SERVER['PHP_SELF']), 'artistAgreement.php') === false) { // always do this, except for the artistAgreement page
+            $logoLinkUrl = $GLOBALS['BASE_URL'] . 'index';
 
-        $fbLoginUrl = $GLOBALS['BASE_URL'] . ($GLOBALS['STAGING_ENV'] == 'dev' ? 'fbDummy' : 'fb');
-        $fbLoginUrl .= '?destUrl=' . urlencode($_SERVER['PHP_SELF']);
+            $fbLoginUrl = $GLOBALS['BASE_URL'] . ($GLOBALS['STAGING_ENV'] == 'dev' ? 'fbDummy' : 'fb');
+            $fbLoginUrl .= '?destUrl=' . urlencode($_SERVER['PHP_SELF']);
 
-        $loginErrorMsg = '';
-        if ($loginErrorMsgKey) switch($loginErrorMsgKey) {
-            case 'missingUsernameOrPassword': 
-                $loginErrorMsg = 'Please enter your username and password.';
-                break;
-                
-            case 'loginFailed':
-                $loginErrorMsg = 'Invalid username or password.';
-                break;
-                
-            default: 
-                $loginErrorMsg = 'Sign in failed. Please try again.';
+            $loginErrorMsg = '';
+            if ($loginErrorMsgKey) switch($loginErrorMsgKey) {
+                case 'missingUsernameOrPassword': 
+                    $loginErrorMsg = 'Please enter your username and password.';
+                    break;
+                    
+                case 'loginFailed':
+                    $loginErrorMsg = 'Invalid username or password.';
+                    break;
+                    
+                default: 
+                    $loginErrorMsg = 'Sign in failed. Please try again.';
+            }
+            
+            $loginBlock = processTpl('Common/signUpAndLoginMenuItems.html', array(
+                '${loginErrorMsg_optional}' => $loginErrorMsg,
+                '${baseUrl}'                => $GLOBALS['BASE_URL'],
+                '${facebookLoginUrl}'       => $fbLoginUrl
+            ), $useMobileVersion);
+            
+        } else {
+            $logoLinkUrl = '#';
         }
-        
-        $loginBlock = processTpl('Common/signUpAndLoginMenuItems.html', array(
-            '${loginErrorMsg_optional}' => $loginErrorMsg,
-            '${baseUrl}'                => $GLOBALS['BASE_URL'],
-            '${facebookLoginUrl}'       => $fbLoginUrl
-        ), $useMobileVersion);
 
     } else {
         $loggedInUserInfoBlockFirstRow = processTpl('Common/loggedInUserFirstRowMenuItems.html', array(

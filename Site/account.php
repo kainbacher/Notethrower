@@ -612,8 +612,28 @@ if ($userIsLoggedIn) {
     //}
 
     $skills = implode(', ', UserAttribute::getAttributeNamesForUserIdAndState($user->id, 'offers'));
+    $skillsElement = '';
+    if ($skills) {
+        $skillsElement = processTpl('Common/sidebarSkillsElement.html', array(
+            '${skills}' => $skills
+        ));
+    }
+
     $genres = implode(', ', UserGenre::getGenreNamesForUserId($user->id));
+    $genresElement = '';
+    if ($genres) {
+        $genresElement = processTpl('Common/sidebarGenresElement.html', array(
+            '${genres}' => $genres
+        ));
+    }
+    
     $tools  = implode(', ', UserTool::getToolNamesForUserId($user->id));
+    $toolsElement = '';
+    if ($tools) {
+        $toolsElement = processTpl('Common/sidebarToolsElement.html', array(
+            '${tools}' => $tools
+        ));
+    }
 
     $sidebarHtml = processTpl('Account/sidebar.html', array(
         '${userName}'                             => escape($user->name),
@@ -624,9 +644,9 @@ if ($userIsLoggedIn) {
         //'${Account/additionalInfo_optional}'      => $additionalInfo, // currently hidden
         '${Common/video_optional}'                => $video,
         '${Common/locationMap_optional}'          => $locationMap,
-        '${skills}'                               => $skills,
-        '${genres}'                               => $genres,
-        '${tools}'                                => $tools
+        '${Common/sidebarSkillsElement_optional}' => $skillsElement,
+        '${Common/sidebarGenresElement_optional}' => $genresElement,
+        '${Common/sidebarToolsElement_optional}'  => $toolsElement
     ));
 }
 

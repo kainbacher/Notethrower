@@ -6,6 +6,7 @@ include_once('../Includes/Init.php');
 
 include_once('../Includes/DbConnect.php');
 include_once('../Includes/DB/Attribute.php');
+include_once('../Includes/DB/EditorInfo.php');
 include_once('../Includes/DB/Genre.php');
 include_once('../Includes/DB/Invitation.php');
 include_once('../Includes/DB/Message.php');
@@ -33,6 +34,7 @@ include_once('../Includes/DB/UserTool.php');
 header('Content-type: text/plain');
 
 Attribute::createTable();
+EditorInfo::createTable();
 Genre::createTable();
 Invitation::createTable();
 Message::create_table();

@@ -7,6 +7,8 @@ include_once('../Includes/Services_JSON.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/DB/News.php');
 
+// FIXME - add permission check
+
 $id = get_numeric_param('id');
 $html = get_param('html');
 $headline = get_param('headline');

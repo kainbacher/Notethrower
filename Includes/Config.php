@@ -72,4 +72,10 @@ $TRANSCODER_OPTIONS = array('raw'=>'-S -b 160', 'mix'=>'-S -b 320');
 // the email address which shall get the feedback via the contact form
 $CONTACT_FORM_RECIPIENT_EMAIL = 'go@oneloudr.com';
 
+$EDITOR_INFO_ID_LIST = array(
+    'termsOfService' => 'Terms of service text', // FIXME - this is just a dummy value
+    'contactText1'   => 'Contact form text, part 1', // FIXME - this is just a dummy value
+    'contactText2'   => 'Contact form text, part 2' // FIXME - this is just a dummy value
+);
+
 ?>

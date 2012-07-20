@@ -67,7 +67,7 @@ if ($message) {
 processAndPrintTpl('Contact/index.html', array(
     '${Common/pageHeader}'          => buildPageHeader('Contact'),
     '${Common/bodyHeader}'          => buildBodyHeader($user),
-    '${msgsAndErrorsList_optional}' => $msgsAndErrorsList,
+    '${Common/message_choice_list}' => $msgsAndErrorsList,
     '${formAction}'                 => basename($_SERVER['PHP_SELF'], '.php'),
     '${email_optional}'             => $user ? escape($user->email_address) : '',
     '${Common/bodyFooter}'          => buildBodyFooter(),

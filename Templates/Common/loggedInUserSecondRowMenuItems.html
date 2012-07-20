@@ -3,7 +3,7 @@
     <div id="mainMenu">
         <nav>
     	<ul>
-    		<li class="mainMenuItem${dashboardActiveMenuItemClass}">
+    		<li class="mainMenuItem${dashboardActiveMenuItemClass_optional}">
                 <a href="${baseUrl}dashboard">
                     <span class="mainMenuIcon">
                         <img src="${baseUrl}Images/icons/mail.png" alt="messages" width="24" height="24" />
@@ -11,7 +11,7 @@
                     <span class="mainMenuLink">Messages</span>
                 </a>
             </li>
-    		<li class="mainMenuItem${projectListActiveMenuItemClass}">
+    		<li class="mainMenuItem${projectListActiveMenuItemClass_optional}">
                 <a href="${baseUrl}projectList">
                     <span class="mainMenuIcon">
                         <img src="${baseUrl}Images/icons/inbox-document-music.png" alt="project" width="24" height="24" />
@@ -19,7 +19,7 @@
                     <span class="mainMenuLink">Projects</span>
                 </a>
             </li>
-    		<li class="mainMenuItem${artistListActiveMenuItemClass}">
+    		<li class="mainMenuItem${artistListActiveMenuItemClass_optional}">
                 <a href="${baseUrl}artistList">
                     <span class="mainMenuIcon">
                         <img src="${baseUrl}Images/icons/megaphone.png" alt="megaphone" width="24" height="24" />
@@ -28,7 +28,7 @@
                 </a>
             </li>
 
-    		<li class="mainMenuItem${artistActiveMenuItemClass}">
+    		<li class="mainMenuItem${artistActiveMenuItemClass_optional}">
                 <a href="${baseUrl}artist?aid=${userId}">
                     <span class="mainMenuIcon">
                         <img src="${baseUrl}Images/icons/profile.png" alt="profile" width="24" height="24" />
@@ -37,6 +37,8 @@
                 </a>
             </li>
 
+            ${Common/loggedInUserAdditionalSecondRowMenuItemsForEditors_optional}
+            
     	</ul>
     	</nav>
     </div>

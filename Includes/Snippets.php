@@ -126,25 +126,27 @@ function setGenreCookie($genre) {
 }
 
 function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagination = false, $includeChosenStuff = false, $includeGooglemapStuff = false, 
-        $useMobileVersion = false, $ogTags = false) {
+        $useMobileVersion = false, $ogTags = false, $includeTinyMCE = false) {
+        
+    global $BASE_URL;    
         
     $jplayerStylesheet = '';
     $jplayerScript     = '';
     if ($includeJPlayerStuff) {
         if ($includeJPlayerStuff === 'circlesmall') {
             $jplayerStylesheet = processTpl('Common/jPlayerStylesheetCS.html', array(
-                '${baseUrl}' => $GLOBALS['BASE_URL']
+                '${baseUrl}' => $BASE_URL
             ), $useMobileVersion);
             $jplayerScript     = processTpl('Common/jPlayerScriptCS.html', array(
-                '${baseUrl}' => $GLOBALS['BASE_URL']
+                '${baseUrl}' => $BASE_URL
             ), $useMobileVersion);
         }
         else {
             $jplayerStylesheet = processTpl('Common/jPlayerStylesheet.html', array(
-                '${baseUrl}' => $GLOBALS['BASE_URL']
+                '${baseUrl}' => $BASE_URL
             ), $useMobileVersion);
             $jplayerScript     = processTpl('Common/jPlayerScript.html', array(
-                '${baseUrl}' => $GLOBALS['BASE_URL']
+                '${baseUrl}' => $BASE_URL
             ), $useMobileVersion);
         }
     }
@@ -153,10 +155,10 @@ function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagin
     $ajaxPaginationScript     = '';
     if ($includeAjaxPagination) {
         $ajaxPaginationStylesheet = processTpl('Common/ajaxPaginationStylesheet.html', array(
-            '${baseUrl}' => $GLOBALS['BASE_URL']
+            '${baseUrl}' => $BASE_URL
         ), $useMobileVersion);
         $ajaxPaginationScript     = processTpl('Common/ajaxPaginationScript.html', array(
-            '${baseUrl}' => $GLOBALS['BASE_URL']
+            '${baseUrl}' => $BASE_URL
         ), $useMobileVersion);
     }
 
@@ -164,10 +166,10 @@ function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagin
     $chosenScript     = '';
     if ($includeChosenStuff) {
         $chosenStylesheet = processTpl('Common/chosenStylesheet.html', array(
-            '${baseUrl}' => $GLOBALS['BASE_URL']
+            '${baseUrl}' => $BASE_URL
         ), $useMobileVersion);
         $chosenScript     = processTpl('Common/chosenScript.html', array(
-            '${baseUrl}' => $GLOBALS['BASE_URL']
+            '${baseUrl}' => $BASE_URL
         ), $useMobileVersion);
     }
     
@@ -175,15 +177,15 @@ function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagin
     $googlemapScript     = '';
     if ($includeGooglemapStuff) {
         $googlemapStylesheet = processTpl('Common/googlemapStylesheet.html', array(
-            '${baseUrl}' => $GLOBALS['BASE_URL']
+            '${baseUrl}' => $BASE_URL
         ), $useMobileVersion);
         $googlemapScript     = processTpl('Common/googlemapScript.html', array(
-            '${baseUrl}' => $GLOBALS['BASE_URL']
+            '${baseUrl}' => $BASE_URL
         ), $useMobileVersion);        
     }
 
     return processTpl('Common/pageHeader.html', array(
-        '${baseUrl}'                                  => $GLOBALS['BASE_URL'],                                 
+        '${baseUrl}'                                  => $BASE_URL,                                 
         '${pageTitle}'                                => escape($title),
         '${Common/jPlayerStylesheet_optional}'        => $jplayerStylesheet,
         '${Common/jPlayerScript_optional}'            => $jplayerScript,
@@ -193,6 +195,7 @@ function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagin
         '${Common/chosenScript_optional}'             => $chosenScript,
         '${Common/googlemapStylesheet_optional}'      => $googlemapStylesheet,
         '${Common/googlemapScript_optional}'          => $googlemapScript,
+        '${tinyMCEJsInclude_optional}'                => $includeTinyMCE ? '<script type="text/javascript" src="' . $BASE_URL . 'Javascripts/tiny_mce/tiny_mce.js"></script>' : '',
         '${Common/ogTags_optional}'                   => $ogTags
     ), $useMobileVersion);
 }
@@ -240,15 +243,21 @@ function buildBodyHeader($loggedInUser, $useMobileVersion = false, $loginErrorMs
             '${userId}'  => $loggedInUser->id
         ), $useMobileVersion);
 
+        $editorMenuItems = '';
+        if ($loggedInUser->is_editor) {
+            $editorMenuItems = processTpl('Common/loggedInUserAdditionalSecondRowMenuItemsForEditors.html');
+        }
+        
         $loggedInUserInfoBlockSecondRow = processTpl('Common/loggedInUserSecondRowMenuItems.html', array(
-            '${baseUrl}'                        => $GLOBALS['BASE_URL'],
-            '${userId}'                         => $loggedInUser->id,
-            '${dashboardActiveMenuItemClass}'   => strpos($_SERVER['PHP_SELF'], 'dashboard.php')     !== false ? ' mainMenuItemAct' : '',
-            '${artistActiveMenuItemClass}'      => strpos($_SERVER['PHP_SELF'], 'artist.php')        !== false ? ' mainMenuItemAct' : '',
-            '${artistListActiveMenuItemClass}'  => strpos($_SERVER['PHP_SELF'], 'artistList.php')    !== false ? ' mainMenuItemAct' : '',
-            '${projectListActiveMenuItemClass}' => strpos(basename($_SERVER['PHP_SELF']), 'project') === 0     ? ' mainMenuItemAct' : '', // covers project.php and projectList.php
-            '${projectActiveMenuItemClass}'     => strpos($_SERVER['PHP_SELF'], 'project.php')       !== false ? ' mainMenuItemAct' : '',
-            '${accountActiveMenuItemClass}'     => strpos($_SERVER['PHP_SELF'], 'account.php')       !== false ? ' mainMenuItemAct' : ''
+            '${baseUrl}'                                                            => $GLOBALS['BASE_URL'],
+            '${userId}'                                                             => $loggedInUser->id,
+            '${dashboardActiveMenuItemClass_optional}'                              => strpos($_SERVER['PHP_SELF'], 'dashboard.php')     !== false ? ' mainMenuItemAct' : '',
+            '${artistActiveMenuItemClass_optional}'                                 => strpos($_SERVER['PHP_SELF'], 'artist.php')        !== false ? ' mainMenuItemAct' : '',
+            '${artistListActiveMenuItemClass_optional}'                             => strpos($_SERVER['PHP_SELF'], 'artistList.php')    !== false ? ' mainMenuItemAct' : '',
+            '${projectListActiveMenuItemClass_optional}'                            => strpos(basename($_SERVER['PHP_SELF']), 'project') === 0     ? ' mainMenuItemAct' : '', // covers project.php and projectList.php
+            '${projectActiveMenuItemClass_optional}'                                => strpos($_SERVER['PHP_SELF'], 'project.php')       !== false ? ' mainMenuItemAct' : '',
+            '${accountActiveMenuItemClass_optional}'                                => strpos($_SERVER['PHP_SELF'], 'account.php')       !== false ? ' mainMenuItemAct' : '',
+            '${Common/loggedInUserAdditionalSecondRowMenuItemsForEditors_optional}' => $editorMenuItems
         ), $useMobileVersion);
     }
 
@@ -785,10 +794,11 @@ function xmlentities($str){
     }
 }*/
 
-function email_syntax_ok($addr) {
-	//surpress "eregi is deprecated" Error
-	error_reporting(E_ALL & ~E_DEPRECATED);
-    return eregi('([_\.0-9a-z-]+@)([0-9a-z][0-9a-z-]+\.)+([a-z]{2,3})', $addr);
+function email_syntax_ok($addr) { // according to http://en.wikipedia.org/wiki/E-mail_address#Syntax, but not all allowed forms are implemented here!
+    if (strpos($addr, '..') !== false) return false; // no consecutive dots!
+    if (strpos($addr, '.') === 0) return false; // must not start with a dot
+    if (strpos($addr, '.@') !== false) return false; // local part must not end with a dot
+    return preg_match("/^[0-9a-zA-Z!#$%&'*+\\/=?^_`{|}~.-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+([a-zA-Z]{2,})$/", $addr);
 }
 
 function normalize_newlines($text) {

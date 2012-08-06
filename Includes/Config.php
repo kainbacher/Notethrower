@@ -86,6 +86,6 @@ $EDITOR_INFO_ID_LIST = array(
     $EDITOR_INFO_ID_PROUDLOUDR_INFO      => 'ProudLoudr info text'
 );
 
-$MISSING_EDITOR_INFO_TEXT = '[No editor info available]';
+$MISSING_EDITOR_INFO_TEXT = '[No editor info text available]';
 
 ?>

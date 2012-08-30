@@ -14,13 +14,21 @@ for($i = 128; $i < 256; $i++){
 
 // functions
 function userAlreadyVotedForProjectFile($userid, $pfid) {
+    global $logger;
+    
     if ($userid) {
         $voteCount = Vote::countAllForUserIdAndPfid($userid, $pfid);
         return $voteCount > 0;
         
     } else { // user is unknown or not logged in
-        // FIXME - implement cookie-based check
+        if (isset($_COOKIE['ONELOUDR_VOTES'])) { // TODO - put cookie name into config
+            $pfidliststr = $_COOKIE['ONELOUDR_VOTES'];
+            $pfidlist = explode(',', $pfidliststr);
+            return in_array($pfid, $pfidlist);
+        }
     }
+    
+    return false;
 }
 
 function getReleaseUrl($pfid, $releaseTitle) {

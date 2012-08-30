@@ -12,8 +12,12 @@ class ProjectFile {
     var $orig_filename;
     var $type; // raw, mix, release
     var $status; // inactive or active
-    var $hot_count; // for hot (+1) or not (-1) votings
-    var $not_count; // for hot (+1) or not (-1) votings
+    var $hot_count; // for hot (+1) votings of logged-in users
+    var $not_count; // for not (-1) votings of logged-in users
+    var $hot_count_anon; // for hot (+1) votings of anonymous users
+    var $not_count_anon; // for not (-1) votings of anonymous users
+    var $hot_count_pro; // for hot (+1) votings of pro users
+    var $not_count_pro; // for not (-1) votings of pro users
     var $comment;
     var $release_title;
     var $release_date;
@@ -118,15 +122,16 @@ class ProjectFile {
 
         $result = _mysql_query(
             //'select * from (' .
-                'select pf.*, pf.hot_count + pf.not_count as total_votes, pf.hot_count - pf.not_count as rating ' .
+                'select pf.*, pf.hot_count + pf.not_count as total_votes, pf.hot_count_anon + pf.not_count_anon as total_votes_anon, pf.hot_count_pro + pf.not_count_pro as total_votes_pro, ' .
+                'pf.hot_count + pf.hot_count_anon * 0.5 + pf.hot_count_pro * 2 - pf.not_count - pf.not_count_anon * 0.5 - pf.not_count_pro * 2 as rating ' .
                 'from pp_project_file pf, pp_project p ' .
                 'where pf.project_id = p.id ' .
                 'and p.status = "active" ' .
                 'and pf.status = "active" ' .
                 'and pf.type = "release" ' .
-                'order by rating desc' 
+                'order by rating desc, hot_count desc, not_count asc' 
             //') as tmp_table ' .
-            //'where hot_count / total_votes >= 0.5' // only list released tracks with at least 50% hot votes            // FIXME - activate this for proudloudr charts
+            //'where hot_count / total_votes >= 0.5' // only list released tracks with at least 50% hot votes            // FIXME - do something like this for proudloudr charts
         );
 
         $ind = 0;
@@ -173,6 +178,10 @@ class ProjectFile {
         $f->status                = $row['status'];
         $f->hot_count             = $row['hot_count'];
         $f->not_count             = $row['not_count'];
+        $f->hot_count_anon        = $row['hot_count_anon'];
+        $f->not_count_anon        = $row['not_count_anon'];
+        $f->hot_count_pro         = $row['hot_count_pro'];
+        $f->not_count_pro         = $row['not_count_pro'];
         $f->comment               = $row['comment'];
         $f->release_title         = $row['release_title'];
         $f->release_date          = $row['release_date'];
@@ -200,6 +209,10 @@ class ProjectFile {
             'status                varchar(20)  not null, ' .
             'hot_count             int(10)      not null default 0, ' .
             'not_count             int(10)      not null default 0, ' .
+            'hot_count_anon        int(10)      not null default 0, ' .
+            'not_count_anon        int(10)      not null default 0, ' .
+            'hot_count_pro         int(10)      not null default 0, ' .
+            'not_count_pro         int(10)      not null default 0, ' .
             'comment               text, ' .
             'release_title         varchar(255), ' .
             'release_date          datetime, ' .
@@ -378,7 +391,7 @@ class ProjectFile {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_project_file ' .
-            '(project_id, originator_user_id, filename, orig_filename, type, status, hot_count, not_count, comment, release_title, ' .
+            '(project_id, originator_user_id, filename, orig_filename, type, status, hot_count, not_count, hot_count_anon, not_count_anon, hot_count_pro, not_count_pro, comment, release_title, ' .
             'release_date, entry_date, autocreated_from) ' .
             'values (' .
             n($this->project_id)             . ', ' .
@@ -389,6 +402,10 @@ class ProjectFile {
             qq($this->status)                . ', ' .
             n($this->hot_count)              . ', ' .
             n($this->not_count)              . ', ' .
+            n($this->hot_count_anon)         . ', ' .
+            n($this->not_count_anon)         . ', ' .
+            n($this->hot_count_pro)          . ', ' .
+            n($this->not_count_pro)          . ', ' .
             qq($this->comment)               . ', ' .
             qq($this->release_title)         . ', ' .
             qq($this->release_date)          . ', ' .
@@ -417,6 +434,10 @@ class ProjectFile {
             'status = '             . qq($this->status)            . ', ' .
             'hot_count = '          . n($this->hot_count)          . ', ' .
             'not_count = '          . n($this->not_count)          . ', ' .
+            'hot_count_anon = '     . n($this->hot_count_anon)     . ', ' .
+            'not_count_anon = '     . n($this->not_count_anon)     . ', ' .
+            'hot_count_pro = '      . n($this->hot_count_pro)      . ', ' .
+            'not_count_pro = '      . n($this->not_count_pro)      . ', ' .
             'comment = '            . qq($this->comment)           . ', ' .
             'release_title = '      . qq($this->release_title)     . ', ' .
             'release_date = '       . qq($this->release_date)      . ', ' .

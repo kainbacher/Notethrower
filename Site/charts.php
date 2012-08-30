@@ -51,22 +51,42 @@ foreach ($releasedTracks as $releasedTrack) {
         ));
     }
     
+    // show voting links if not already voted
+    $votingLinksHtml = '';
+    if (!userAlreadyVotedForProjectFile($user ? $user->id : null, $releasedTrack->id)) {
+        $votingLinksHtml = processTpl('Common/hotNotVotingLinks.html', array(
+            '${pfid}' => $releasedTrack->id
+        ));
+    }
+    
     $project = Project::fetch_for_id($releasedTrack->project_id);
     
     $totalHotNotCount = $releasedTrack->hot_count + $releasedTrack->not_count;
+    $totalHotNotCountAnon = $releasedTrack->hot_count_anon + $releasedTrack->not_count_anon;
+    $totalHotNotCountPro = $releasedTrack->hot_count_pro + $releasedTrack->not_count_pro;
+    
+    $hotPercentage = ($totalHotNotCount + $totalHotNotCountAnon * 0.5 + $totalHotNotCountPro * 2) > 0 ? 
+            ($releasedTrack->hot_count + $releasedTrack->hot_count_anon * 0.5 + $releasedTrack->hot_count_pro * 2) / ($totalHotNotCount + $totalHotNotCountAnon * 0.5 + $totalHotNotCountPro * 2)
+            : 
+            0;
+    $notPercentage = ($totalHotNotCount + $totalHotNotCountAnon * 0.5 + $totalHotNotCountPro * 2) > 0 ? 
+            ($releasedTrack->not_count + $releasedTrack->not_count_anon * 0.5 + $releasedTrack->not_count_pro * 2) / ($totalHotNotCount + $totalHotNotCountAnon * 0.5 + $totalHotNotCountPro * 2)
+            : 
+            0;
     
     $songListHtml .= processTpl('Charts/songListItem.html', array(
-        '${chartRank}'              => $chartRank,
-        '${pfid}'                   => $releasedTrack->id,
-        '${hotPercentage}'          => $totalHotNotCount > 0 ? number_format(100 * $releasedTrack->hot_count / $totalHotNotCount, 1, '.', '') : 0,
-        '${notPercentage}'          => $totalHotNotCount > 0 ? number_format(100 * $releasedTrack->not_count / $totalHotNotCount, 1, '.', '') : 0,
-        '${Common/player_optional}' => $playerHtml,
-        '${fileDownloadUrl}'        => $fileDownloadUrl,
-        '${filename}'               => escape($releasedTrack->orig_filename),
-        '${releasePageUrl}'         => $releasePageUrl,
-        '${title}'                  => escape($releasedTrack->release_title),
-        '${userId}'                 => $project->user_id,
-        '${userName}'               => escape($project->user_name),
+        '${chartRank}'                         => $chartRank,
+        '${pfid}'                              => $releasedTrack->id,
+        '${hotPercentage}'                     => number_format(100 * $hotPercentage, 1, '.', ''),
+        '${notPercentage}'                     => number_format(100 * $notPercentage, 1, '.', ''),
+        '${Common/player_optional}'            => $playerHtml,
+        '${fileDownloadUrl}'                   => $fileDownloadUrl,
+        '${filename}'                          => escape($releasedTrack->orig_filename),
+        '${releasePageUrl}'                    => $releasePageUrl,
+        '${title}'                             => escape($releasedTrack->release_title),
+        '${userId}'                            => $project->user_id,
+        '${userName}'                          => escape($project->user_name),
+        '${Common/hotNotVotingLinks_optional}' => $votingLinksHtml
     ));
     
     $chartRank++;

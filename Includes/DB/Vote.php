@@ -62,7 +62,7 @@ class Vote {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_vote ' .
-            '(userid, pfid) ' .
+            '(userid, pfid, entry_date) ' .
             'values (' .
             n($this->userid) . ', ' .
             n($this->pfid)   . ' , ' .

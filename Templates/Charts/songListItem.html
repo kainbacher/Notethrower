@@ -1,9 +1,20 @@
-<div class="span-7 trackListItem">
-    <div class="span-1">
-        <a href="${baseUrl}artist?aid=${userId}"><img src="${userImgUrl}" height="25" alt="${userName}" title="${userName}" /></a>
+<div class="span-24 trackListItem">
+    <div class="span-15">
+        <span style="font-size:20px;">${chartRank}:&nbsp;<a href="${releasePageUrl}">${title}</a></span><br />
+        by <a href="${baseUrl}artist?aid=${userId}">${userName}</a><br />
+        <span style="font-size:16px;color:#00AA00;font-weight:bold">${hotPercentage}% Hot</span>&nbsp;&nbsp;&nbsp;<span style="font-size:16px;color:#AA0000;font-weight:bold">${notPercentage}% Not</span>
     </div>
-    <div class="span-6 last">
-        <a href="${baseUrl}artist?aid=${userId}">${userName}</a><br />
-        <a href="${baseUrl}project?pid=${projectId}">${projectTitle}</a>
+    <div class="span-9 last">
+        
+        ${Common/player_optional}
+        
+        <div class="span-9 last">
+            <div class="span-3">
+                <span class="titleText">Download:</span>
+            </div>
+            <div class="span-6 last">
+                <a href="${fileDownloadUrl}" target="_blank">${filename}</a>
+            </div>
+        </div>
     </div>
 </div>

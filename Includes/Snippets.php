@@ -256,6 +256,7 @@ function buildBodyHeader($loggedInUser, $useMobileVersion = false, $loginErrorMs
             '${artistListActiveMenuItemClass_optional}'                             => strpos($_SERVER['PHP_SELF'], 'artistList.php')    !== false ? ' mainMenuItemAct' : '',
             '${projectListActiveMenuItemClass_optional}'                            => strpos(basename($_SERVER['PHP_SELF']), 'project') === 0     ? ' mainMenuItemAct' : '', // covers project.php and projectList.php
             '${projectActiveMenuItemClass_optional}'                                => strpos($_SERVER['PHP_SELF'], 'project.php')       !== false ? ' mainMenuItemAct' : '',
+            '${chartsActiveMenuItemClass_optional}'                                 => strpos($_SERVER['PHP_SELF'], 'charts.php')        !== false ? ' mainMenuItemAct' : '',
             '${accountActiveMenuItemClass_optional}'                                => strpos($_SERVER['PHP_SELF'], 'account.php')       !== false ? ' mainMenuItemAct' : '',
             '${Common/loggedInUserAdditionalSecondRowMenuItemsForEditors_optional}' => $editorMenuItems
         ), $useMobileVersion);

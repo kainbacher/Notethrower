@@ -17,30 +17,69 @@ $user = User::new_from_cookie();
 
 // find projects where the user could collaborate
 $songListHtml = '';
-$releases = ProjectFile::fetch_all_for_type('release', 'pf.competition_points desc'); // FIXME - add a limit
-foreach ($releases as $projectFile) {
-    //$projectUserImgUrl = getUserImageUri($song->user_img_filename, 'tiny');
+$releasedTracks = ProjectFile::fetch_all_releases_ordered_by_rating(); // FIXME - add a limit
+$releasedTracksCopy = $releasedTracks;
 
-    $project = Project::fetch_for_id($projectFile->project_id); // FIXME - find a more performant way to get the project info
+$chartRank = 1;
+foreach ($releasedTracks as $releasedTrack) {
+    $autocreatedSibling = null;
+    foreach ($releasedTracksCopy as $tmpPf) {
+        if ($tmpPf->autocreated_from == $releasedTrack->id) {
+            $autocreatedSibling = $tmpPf;
+            break;
+        }
+    }
     
-    $projectListHtml .= processTpl('Charts/songListItem.html', array(
-        '${userId}'       => $project->user_id,
-        '${userName}'     => escape($project->user_name),
-        '${userImgUrl}'   => $projectUserImgUrl,
-        '${projectId}'    => $project->id,
-        '${projectTitle}' => escape($project->title)
+    $fileDownloadUrl = $GLOBALS['BASE_URL'] . 'Backend/downloadFile.php?mode=download&project_id=' . $releasedTrack->project_id . '&atfid=' . $releasedTrack->id;
+    
+    $releasePageUrl = $fileDownloadUrl;
+    // FIXME - activate as soon as this page is ready: $releasePageUrl = $GLOBALS['BASE_URL'] . 'release?pfid=' . $releasedTrack->id;
+
+    $prelistenUrl = $fileDownloadUrl;
+    if ($autocreatedSibling) {
+        $prelistenUrl = $GLOBALS['BASE_URL'] . 'Backend/downloadFile.php?mode=download&project_id=' . $releasedTrack->project_id . '&atfid=' . $autocreatedSibling->id;
+    }
+    
+    $playerHtml = '<i>(no mp3 file available)</i>';
+    if (
+        getFileExtension($releasedTrack->filename) == 'mp3' ||
+        $autocreatedSibling
+    ) {
+        $playerHtml = processTpl('Common/player.html', array(
+            '${projectFileId}'   => $releasedTrack->id,
+            '${prelisteningUrl}' => $prelistenUrl
+        ));
+    }
+    
+    $project = Project::fetch_for_id($releasedTrack->project_id);
+    
+    $totalHotNotCount = $releasedTrack->hot_count + $releasedTrack->not_count;
+    
+    $songListHtml .= processTpl('Charts/songListItem.html', array(
+        '${chartRank}'              => $chartRank,
+        '${hotPercentage}'          => $totalHotNotCount > 0 ? number_format(100 * $releasedTrack->hot_count / $totalHotNotCount, 1, '.', '') : 0,
+        '${notPercentage}'          => $totalHotNotCount > 0 ? number_format(100 * $releasedTrack->not_count / $totalHotNotCount, 1, '.', '') : 0,
+        '${Common/player_optional}' => $playerHtml,
+        '${fileDownloadUrl}'        => $fileDownloadUrl,
+        '${filename}'               => escape($releasedTrack->orig_filename),
+        '${releasePageUrl}'         => $releasePageUrl,
+        '${title}'                  => escape($releasedTrack->release_title),
+        '${userId}'                 => $project->user_id,
+        '${userName}'               => escape($project->user_name),
     ));
+    
+    $chartRank++;
 }
 
-if (count($projects) == 0) {
-    $projectListHtml = 'No released songs found.';
+if (count($releasedTracks) == 0) {
+    $songListHtml = 'No released songs found.';
 }
 
 processAndPrintTpl('Charts/index.html', array(
-    '${Common/pageHeader}'                     => buildPageHeader('Charts', false, false),
+    '${Common/pageHeader}'                     => buildPageHeader('Charts', true, false, false, true),
     '${Common/bodyHeader}'                     => buildBodyHeader($user),
     '${userId}'                                => $user->id,
-    '${Charts/songListItem_list}'              => $projectListHtml,
+    '${Charts/songListItem_list}'              => $songListHtml,
     '${Common/bodyFooter}'                     => buildBodyFooter(),
     '${Common/pageFooter}'                     => buildPageFooter()
 ));

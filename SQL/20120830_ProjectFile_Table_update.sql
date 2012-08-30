@@ -1,0 +1,1 @@
+alter table pp_project_file add competition_points int(10) not null default 0 after status;

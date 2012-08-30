@@ -12,6 +12,7 @@ class ProjectFile {
     var $orig_filename;
     var $type; // raw, mix, release
     var $status; // inactive or active
+    var $competition_points; // for hot (+1) or not (-1) votings
     var $comment;
     var $release_title;
     var $release_date;
@@ -111,6 +112,34 @@ class ProjectFile {
         return $objs;
     }
 
+    function fetch_all_for_type($type, $orderBy) {
+        $objs = array();
+
+        $result = _mysql_query(
+            'select pf.* ' .
+            'from pp_project_file pf, pp_project p ' .
+            'where pf.project_id = p.id ' .
+            'and p.status = "active" ' .
+            'and pf.status = "active" ' .
+            'and pf.type = ' . qq($type) . ' ' .
+            'order by ' . $orderBy
+        );
+
+        $ind = 0;
+
+        while ($row = mysql_fetch_array($result)) {
+            $f = new ProjectFile();
+            $f = ProjectFile::_read_row($f, $row);
+
+            $objs[$ind] = $f;
+            $ind++;
+        }
+
+        mysql_free_result($result);
+
+        return $objs;
+    }
+
     function fetch_for_id($id) {
         $result = _mysql_query(
             'select pf.*, u.name as originator_user_name ' .
@@ -138,6 +167,7 @@ class ProjectFile {
         $f->orig_filename         = $row['orig_filename'];
         $f->type                  = $row['type'];
         $f->status                = $row['status'];
+        $f->competition_points    = $row['competition_points'];
         $f->comment               = $row['comment'];
         $f->release_title         = $row['release_title'];
         $f->release_date          = $row['release_date'];
@@ -163,6 +193,7 @@ class ProjectFile {
             'orig_filename         varchar(255) not null, ' .
             'type                  varchar(10)  not null, ' .
             'status                varchar(20)  not null, ' .
+            'competition_points    int(10)      not null default 0, ' .
             'comment               text, ' .
             'release_title         varchar(255), ' .
             'release_date          datetime, ' .
@@ -341,7 +372,7 @@ class ProjectFile {
     function insert() {
         $ok = _mysql_query(
             'insert into pp_project_file ' .
-            '(project_id, originator_user_id, filename, orig_filename, type, status, comment, release_title, ' .
+            '(project_id, originator_user_id, filename, orig_filename, type, status, competition_points, comment, release_title, ' .
             'release_date, entry_date, autocreated_from) ' .
             'values (' .
             n($this->project_id)             . ', ' .
@@ -350,6 +381,7 @@ class ProjectFile {
             qq($this->orig_filename)         . ', ' .
             qq($this->type)                  . ', ' .
             qq($this->status)                . ', ' .
+            n($this->competition_points)     . ', ' .
             qq($this->comment)               . ', ' .
             qq($this->release_title)         . ', ' .
             qq($this->release_date)          . ', ' .

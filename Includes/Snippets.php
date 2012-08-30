@@ -4,6 +4,7 @@ error_reporting (E_ALL ^ E_NOTICE);
 
 include_once('../Includes/Config.php');
 include_once('../Includes/DB/ProjectFile.php');
+include_once('../Includes/DB/Vote.php');
 
 // constants
 $ASC2UNI = Array();
@@ -12,6 +13,16 @@ for($i = 128; $i < 256; $i++){
 }
 
 // functions
+function userAlreadyVotedForProjectFile($userid, $pfid) {
+    if ($userid) {
+        $voteCount = Vote::countAllForUserIdAndPfid($userid, $pfid);
+        return $voteCount > 0;
+        
+    } else { // user is unknown or not logged in
+        // FIXME - implement cookie-based check
+    }
+}
+
 function getReleaseUrl($pfid, $releaseTitle) {
     if ($GLOBALS['STAGING_ENV'] == 'live') {
         // this works only for the live system - see rewrite rules there

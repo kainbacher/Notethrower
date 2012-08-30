@@ -57,6 +57,7 @@ foreach ($releasedTracks as $releasedTrack) {
     
     $songListHtml .= processTpl('Charts/songListItem.html', array(
         '${chartRank}'              => $chartRank,
+        '${pfid}'                   => $releasedTrack->id,
         '${hotPercentage}'          => $totalHotNotCount > 0 ? number_format(100 * $releasedTrack->hot_count / $totalHotNotCount, 1, '.', '') : 0,
         '${notPercentage}'          => $totalHotNotCount > 0 ? number_format(100 * $releasedTrack->not_count / $totalHotNotCount, 1, '.', '') : 0,
         '${Common/player_optional}' => $playerHtml,

@@ -30,6 +30,7 @@ include_once('../Includes/DB/User.php');
 include_once('../Includes/DB/UserAttribute.php');
 include_once('../Includes/DB/UserGenre.php');
 include_once('../Includes/DB/UserTool.php');
+include_once('../Includes/DB/Vote.php');
 
 header('Content-type: text/plain');
 
@@ -58,6 +59,7 @@ UserAttribute::createTable();
 UserGenre::createTable();
 UserTool::createTable();
 Subscription::create_table();
+Vote::createTable();
 
 echo 'creation done.' . "\n";
 

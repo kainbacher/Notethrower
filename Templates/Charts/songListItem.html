@@ -3,6 +3,8 @@
         <span style="font-size:20px;">${chartRank}:&nbsp;<a href="${releasePageUrl}">${title}</a></span><br />
         by <a href="${baseUrl}artist?aid=${userId}">${userName}</a><br />
         <span style="font-size:16px;color:#00AA00;font-weight:bold">${hotPercentage}% Hot</span>&nbsp;&nbsp;&nbsp;<span style="font-size:16px;color:#AA0000;font-weight:bold">${notPercentage}% Not</span>
+        &nbsp;&nbsp;&nbsp;
+        My vote: <a href="${baseUrl}vote?pfid=${pfid}&vote=h&next=charts"><span style="color:#00AA00;"><b>Hot</b></span></a>&nbsp;<a href="${baseUrl}vote?pfid=${pfid}&vote=n&next=charts"><span style="color:#AA0000;"><b>Not</b></span></a>
     </div>
     <div class="span-9 last">
         

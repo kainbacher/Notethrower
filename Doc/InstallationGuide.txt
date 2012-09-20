@@ -1,0 +1,33 @@
+oneloudr.com installation and usage guide
+-----------------------------------------
+
++ code/filesystem setup:
+	- copy the code to the desired location in the webserver
+	- create the Includes/Config_local.php file by modifying the Config_local_template.php file and saving it as Config_local.php. this file should not be checked into the source code repository as it is specific for an installation.
+	- make sure these directories exist and have 0777 permissions (all paths relative to the base directory of the installation):
+		- Content/
+		- Content/Tracks/
+		- Content/UserImages/
+		- Log/
+
++ DB setup:
+    the DB can be created from scratch by executing these steps:
+    	- create a MySQL database with utf8 encoding and utf8_unicode_ci collation
+    	- configure the DB connection settings in Config_local.php
+    	- execute the Install/dbsetup.php script
+    	
+    alternatively a DB dump from the live system can be imported, but it's important to also copy the complete contents of the Content/ folder to the new installation to have consistency between DB entries and files.
+
++ facebook login dummy:
+	on development systems there is a facebook login dummy available: Site/fbDummy.php
+	it shows a list of all available users and one can choose the user with which the login should be simulated.
+	
++ the current test and live systems are running on dreamhost.
+	test: http://oneloudr.com/OLTest/
+	live: http://oneloudr.com/OL/
+	
++ crontab setup:
+	see Doc/crontab.txt for information about how to setup the crontab on test and live for automatic transcoding from wav to mp3 files.
+	
++ documentation:
+	some more documentation can be found in the Doc/ folder.

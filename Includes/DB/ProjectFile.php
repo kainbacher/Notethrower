@@ -127,6 +127,7 @@ class ProjectFile {
                 'from pp_project_file pf, pp_project p ' .
                 'where pf.project_id = p.id ' .
                 'and p.status = "active" ' .
+				'and p.visibility = "public" ' .
                 'and pf.status = "active" ' .
                 'and pf.type = "release" ' .
                 'order by rating desc, hot_count desc, not_count asc' 

@@ -73,7 +73,7 @@ foreach ($releasedTracks as $releasedTrack) {
             ($releasedTrack->not_count + $releasedTrack->not_count_anon * 0.5 + $releasedTrack->not_count_pro * 2) / ($totalHotNotCount + $totalHotNotCountAnon * 0.5 + $totalHotNotCountPro * 2)
             : 
             0;
-    
+			    
     $songListHtml .= processTpl('Charts/songListItem.html', array(
         '${chartRank}'                         => $chartRank,
         '${pfid}'                              => $releasedTrack->id,
@@ -84,6 +84,7 @@ foreach ($releasedTracks as $releasedTrack) {
         '${filename}'                          => escape($releasedTrack->orig_filename),
         '${releasePageUrl}'                    => $releasePageUrl,
         '${title}'                             => escape($releasedTrack->release_title),
+		'${baseUrlEncoded}'                    => urlencode($GLOBALS['BASE_URL']),
         '${userId}'                            => $project->user_id,
         '${userName}'                          => escape($project->user_name),
         '${Common/hotNotVotingLinks_optional}' => $votingLinksHtml

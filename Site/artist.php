@@ -307,6 +307,7 @@ processAndPrintTpl('Artist/index.html', array(
     '${Common/bodyHeader}'                                 => buildBodyHeader($visitorUser, $showMobileVersion),
     '${userId}'                                            => $user->id,
     '${userName}'                                          => escape($user->name),
+    '${baseUrlEncoded}'                                    => urlencode($GLOBALS['BASE_URL']),
     '${userImgUrl}'                                        => $userImgUrl,
     '${Common/externalWebLink_list}'                       => $webpageLink . $facebookLink . $twitterLink,
     '${Common/sendMessage_optional}'                       => $sendMessageBlock,

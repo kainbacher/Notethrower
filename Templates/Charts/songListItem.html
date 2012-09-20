@@ -2,6 +2,7 @@
     <div class="span-15">
         <span style="font-size:20px;">${chartRank}:&nbsp;<a href="${releasePageUrl}">${title}</a></span><br />
         by <a href="${baseUrl}artist?aid=${userId}">${userName}</a><br />
+		<iframe src="http://www.facebook.com/plugins/like.php?href=${baseUrlEncoded}artist%3Faid=${userId}&amp;layout=standard&amp;layout=button_count&amp;show_faces=false&amp;width=150&amp;action=like&amp;font&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:400px; height:35px;" allowTransparency="true"></iframe><br />
         <span style="font-size:16px;color:#00AA00;font-weight:bold">${hotPercentage}% Hot</span>&nbsp;&nbsp;&nbsp;<span style="font-size:16px;color:#AA0000;font-weight:bold">${notPercentage}% Not</span>
         &nbsp;&nbsp;&nbsp;
         ${Common/hotNotVotingLinks_optional}

@@ -4,6 +4,7 @@ include_once('../Includes/Init.php'); // must be included first
 
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
+include_once('../Includes/DB/EditorInfo.php');
 include_once('../Includes/DB/User.php');
 
 $visitorUserId = -1;
@@ -21,9 +22,14 @@ if ($user) {
     $logger->info('user is NOT logged in');
 }
 
-processAndPrintTpl('Licensing/index.html', array( // ################## hier ordner anpassen!
-    '${Common/pageHeader}'                     => buildPageHeader('FIXME', false, false), // ######### hier page title und include flags anpassen
+$editorInfo = EditorInfo::fetchForId($EDITOR_INFO_ID_LICENSING);
+if (!$editorInfo) $htmlContent = $MISSING_EDITOR_INFO_TEXT;
+else              $htmlContent = $editorInfo->html;
+
+processAndPrintTpl('Licensing/index.html', array(
+    '${Common/pageHeader}'                     => buildPageHeader('Licensing'),
     '${Common/bodyHeader}'                     => buildBodyHeader($user),
+    '${htmlContent}'                           => $htmlContent,
     '${Common/bodyFooter}'                     => buildBodyFooter(),
     '${Common/pageFooter}'                     => buildPageFooter()
 ));

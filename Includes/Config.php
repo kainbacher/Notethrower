@@ -77,13 +77,17 @@ $EDITOR_INFO_ID_ABOUT_TEXT_4_LABELS  = 'aboutText4Labels';
 $EDITOR_INFO_ID_TERMS_OF_USE         = 'termsOfUse';
 $EDITOR_INFO_ID_FAQ                  = 'faq';
 $EDITOR_INFO_ID_PROUDLOUDR_INFO      = 'proudLoudrInfo';
+$EDITOR_INFO_ID_SHOP                 = 'shop';
+$EDITOR_INFO_ID_LICENSING            = 'licensing';
 
 $EDITOR_INFO_ID_LIST = array(
     $EDITOR_INFO_ID_ABOUT_TEXT_4_ARTISTS => 'Oneloudr for artists page text',
     $EDITOR_INFO_ID_ABOUT_TEXT_4_LABELS  => 'Oneloudr for labels page text',
     $EDITOR_INFO_ID_TERMS_OF_USE         => 'Terms of use text',
     $EDITOR_INFO_ID_FAQ                  => 'FAQ text',
-    $EDITOR_INFO_ID_PROUDLOUDR_INFO      => 'ProudLoudr info text'
+    $EDITOR_INFO_ID_PROUDLOUDR_INFO      => 'ProudLoudr info text',
+	$EDITOR_INFO_ID_SHOP                 => 'Shop site text',
+    $EDITOR_INFO_ID_LICENSING            => 'Licensing site text'
 );
 
 $MISSING_EDITOR_INFO_TEXT = '[No editor info text available]';

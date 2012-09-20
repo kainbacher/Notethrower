@@ -69,7 +69,7 @@ $(document).ready(function(){
     $('.topMenuSub').hover(function(){
     	$(this).show();
     },function(){
-        //fix for immediate hiding of login menu when chosing email addres from autocomplete 
+        //fix for immediate hiding of login menu when chosing email addres from autocomplete
     	$(this).delay(2000).slideUp('fast');
     });
 
@@ -167,26 +167,6 @@ $(document).ready(function(){
 
 
 
-    /* ! galleria */
-    /* ---------------------------------------------------------------------- */
-    // Load the classic theme
-    Galleria.loadTheme('../Javascripts/themes/classic/galleria.classic.js');
-
-    // Initialize Galleria
-    $('#galleria, .galleria').galleria({
-        width:662,
-        height:250,
-        transition: "slide",
-        transitionSpeed: 800,
-        thumbCrop: true,
-        thumbnails: "empty",
-        showInfo: false,
-        clicknext: true,
-        showCounter: false,
-        autoplay: true
-    });
-
-
     /* !  */
     /* ---------------------------------------------------------------------- */
     $('.trackListItem').hover(function() {
@@ -274,7 +254,7 @@ $(document).ready(function(){
     $('.messageItemShortTextMore a').bind('click', function(){
         $(this).hide();
         $(this).parent().prev().prev().fadeOut(function(){
-            $(this).next().slideDown(); 
+            $(this).next().slideDown();
         });
         return false;
     });

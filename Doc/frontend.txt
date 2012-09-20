@@ -1,0 +1,48 @@
+Frontend
+--------------------------------------------------
+
+
+HTML
+--------------------------------------------------
+
+#thisIsAId
+.thisIsAId
+
+
+
+CSS
+--------------------------------------------------
+Blueprint CSS Framework
+    - use for Grid based Layout
+    - http://www.blueprintcss.org/
+    - https://github.com/joshuaclayton/blueprint-css/wiki
+    - https://github.com/joshuaclayton/blueprint-css
+
+
+Javascript
+--------------------------------------------------
+
+JPlayer
+    - http://www.jplayer.org/
+    - is a html5 audio and video player
+    - the player is customized
+
+jQuery
+    - http://jquery.com/
+
+Fancybox
+    - http://fancybox.net/
+    - just a simple lightbox
+
+
+
+Feedback
+--------------------------------------------------
+for feedback we use the uservoice.com widget
+    - http://www.uservoice.com/
+
+
+
+
+
+

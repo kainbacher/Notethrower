@@ -15,7 +15,7 @@ $DATABASE_PASSWORD = 'xxxxx';
 $DATABASE_NAME = 'podperfect';
 
 $EMAIL_DELIVERY_MODE                        = 'inactive'; // 'active', 'inactive' or 'override' (send all mails to override address)
-$EMAIL_DELIVERY_OVERRIDE_ADDR               = 'hanno@rastaduck.org';
+$EMAIL_DELIVERY_OVERRIDE_ADDR               = 'someone@mail.org';
 $EMAIL_DELIVERY_OVERRIDE_ALLOWED_RECIPIENTS = array();
 
 //$MAIL_FROM             = '"ntdev.com" <postmaster@ntdev.com>'; // only used by Snippets.php:send_email()

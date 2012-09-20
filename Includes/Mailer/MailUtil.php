@@ -79,11 +79,6 @@ function sendEmailWithFromAndReplyToAddressToRecipients($emails, $subject, $text
 	$logger->info('sending mail to: ' . join(', ', $emails) . ($GLOBALS['MAIL_BCC_ADDRESS'] ? ' (BCC to: ' . $GLOBALS['MAIL_BCC_ADDRESS'] . ')' : ''));
 
     $from = array($mailFromAddress => $mailFromName);
-    // this is how the recipients array originally looked, but it works without the names, too.
-    // $emails = array(
-      // 'hjonas@gmx.at'=>'Hanno Jonas',
-      // 'hanno.jonas@vol.at'=>'Hanno Jonas'
-    // );
      
     // Setup Swift mailer parameters
     $transport = Swift_SmtpTransport::newInstance($GLOBALS['MAIL_SERVER_HOST'], $GLOBALS['MAIL_SERVER_PORT']);

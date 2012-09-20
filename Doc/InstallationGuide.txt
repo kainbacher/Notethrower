@@ -3,7 +3,7 @@ oneloudr.com installation and usage guide
 
 + code/filesystem setup:
 	- copy the code to the desired location in the webserver
-	- create the Includes/Config_local.php file by modifying the Config_local_template.php file and saving it as Config_local.php. this file should not be checked into the source code repository as it is specific for an installation.
+	- create the Includes/Config_local.php file by modifying the Config_local_default.php file and saving it as Config_local.php. this file should not be checked into the source code repository as it is specific for an installation.
 	- make sure these directories exist and have 0777 permissions (all paths relative to the base directory of the installation):
 		- Content/
 		- Content/Tracks/
@@ -27,7 +27,7 @@ oneloudr.com installation and usage guide
 	live: http://oneloudr.com/OL/
 	
 + crontab setup:
-	see Doc/crontab.txt for information about how to setup the crontab on test and live for automatic transcoding from wav to mp3 files.
+	see Doc/crontab.txt for information about how to setup the crontab on test and live for automatic transcoding of wav files to mp3 files.
 	
 + documentation:
 	some more documentation can be found in the Doc/ folder.

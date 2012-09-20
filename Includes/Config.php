@@ -45,7 +45,7 @@ $RETURN_URL = $BASE_URL . 'Backend/downloadStart.php';
 
 $SELLER_EMAIL = 'joebenso@gmail.com';
 if ($SANDBOX_MODE) {
-    $SELLER_EMAIL = 'hanno__1207670272_biz@rastaduck.org';
+    $SELLER_EMAIL = 'xxx__1207670272_biz@domain.org';
 }
 
 $parts = explode('@', $SELLER_EMAIL);

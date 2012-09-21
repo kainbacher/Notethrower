@@ -161,7 +161,7 @@ $(document).ready(function(){
 <?php	
 	} else { // no mp3 file for prelistening available, show file download link
 ?>
-<a href="<?= $fileDownloadUrl ?>"><?= $r->release_title ?></a>
+<a href="<?= $fileDownloadUrl ?>">Download song</a>
 <?php
 	}
 }

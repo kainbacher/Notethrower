@@ -52,6 +52,8 @@ if (getFileExtension($projectFile->filename) != 'mp3') $prelistenUrl = null; // 
 
 buildPage($projectFile, $project, $prelistenUrl, $fileDownloadUrl);
 
+$logger->info('done');
+
 // END
 
 // functions

@@ -23,7 +23,7 @@ if ($user) {
 }
 
 $editorInfo = EditorInfo::fetchForId($EDITOR_INFO_ID_LICENSING);
-if (!$editorInfo) $htmlContent = $MISSING_EDITOR_INFO_TEXT;
+if (!$editorInfo) $htmlContent = $MISSING_EDITOR_INFO_TEXT . ($user && $user->is_editor ? ' <a href="' . $GLOBALS['BASE_URL'] . 'Backend/editInfo.php">Enter the text for this site now!</a>' : '');
 else              $htmlContent = $editorInfo->html;
 
 processAndPrintTpl('Licensing/index.html', array(

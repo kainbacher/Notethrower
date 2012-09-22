@@ -3,6 +3,7 @@
 include_once('../Includes/Init.php'); // must be included first
 
 include_once('../Includes/Config.php');
+require_once('../Includes/mobile_device_detect.php');
 include_once('../Includes/RemoteSystemCommunicationUtil.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
@@ -12,6 +13,12 @@ include_once('../Includes/DB/User.php');
 // FIXME - voting system, players, etc. need to be made dynamic. try not to reload the entire page when voting happens. player code is in startpage.php.
 
 //$logger->set_debug_level();
+
+// find out if the user browses with a mobile device and redirect to mobile version
+$isMobileDevice = mobile_device_detect(true,false,true,true,true,true,true,false,false);
+if ($isMobileDevice || get_param('_forceMobile')) {
+    redirectTo($GLOBALS['BASE_URL'] . 'MobileVersion/artist-list.php');
+}
 
 deleteOldFilesMatchingPatternInDirectory('*.log', $GLOBALS['LOGFILE_BASE_PATH'], $GLOBALS['LOGFILE_TTL_DAYS']); // cleanup old logfiles
 

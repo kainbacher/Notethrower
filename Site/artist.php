@@ -15,7 +15,8 @@ include_once('../Includes/DB/UserTool.php');
 $showMobileVersion = false;
 $isMobileDevice = mobile_device_detect(true,false,true,true,true,true,true,false,false);
 if ($isMobileDevice || get_param('_forceMobile')) {
-    $showMobileVersion = true;
+    //$showMobileVersion = true;
+    redirectTo($GLOBALS['BASE_URL'] . 'MobileVersion/artist-list.php');
 }
 
 // let's see if the visiting user is a logged in user

@@ -91,7 +91,7 @@ function buildPage(&$r, &$project, $prelistenUrl, $fileDownloadUrl) {
 
 			<div data-role="content" data-theme="a">
                 <?= buildPlayer($r, $prelistenUrl, $fileDownloadUrl) ?>
-				
+
     			<h2><?= escape($r->release_title) ?><br />
     			by <a href="artist-single.php?aid=<?= $project->user_id ?>"><?= escape($project->user_name) ?></a></h2>
 
@@ -127,6 +127,11 @@ $(document).ready(function(){
 </script>
 <div id="jquery_jplayer" class="jp-jplayer"></div>
 
+<br /><br />
+<audio src="<?= $prelistenUrl ?>">
+<br /><br />
+
+
 <div id="jp_container_<?= $r->id ?>" class="jp-audio">
     <div class="jp-type-single">
         <div class="jp-gui jp-interface">
@@ -160,7 +165,7 @@ $(document).ready(function(){
     </div>
 </div>
 <!--jplayer end-->
-<?php	
+<?php
 	} else { // no mp3 file for prelistening available, show file download link
 ?>
 <a href="<?= $fileDownloadUrl ?>">Download song</a>

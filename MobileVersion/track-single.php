@@ -105,27 +105,7 @@ function buildPage(&$r, &$project, $prelistenUrl, $fileDownloadUrl) {
 function buildPlayer(&$r, $prelistenUrl, $fileDownloadUrl) {
 	if ($prelistenUrl) {
 ?>
-<!--jplayer start-->
-<script type="text/javascript">
-//<![CDATA[
 
-$(document).ready(function(){
-
-    $("#jquery_jplayer_${projectFileId}").jPlayer({
-        ready: function () {
-            $(this).jPlayer("setMedia", {
-                mp3:"<?= $prelistenUrl ?>"
-            });
-        },
-        solution: "html",
-        supplied: "mp3",
-        wmode: "window",
-        cssSelectorAncestor: "#jp_container"
-    });
-});
-//]]>
-</script>
-<div id="jquery_jplayer" class="jp-jplayer"></div>
 
 <br /><br />
 <audio src="<?= $prelistenUrl ?>">

@@ -107,44 +107,11 @@ function buildPlayer(&$r, $prelistenUrl, $fileDownloadUrl) {
 ?>
 
 
+
 <br /><br />
 <audio src="<?= $prelistenUrl ?>">
 <br /><br />
 
-
-<div id="jp_container_<?= $r->id ?>" class="jp-audio">
-    <div class="jp-type-single">
-        <div class="jp-gui jp-interface">
-            <ul class="jp-controls">
-                <li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
-                <li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
-        		<li><a href="javascript:;" class="jp-mute" tabindex="1">mute</a></li>
-        		<li><a href="javascript:;" class="jp-unmute" tabindex="1">unmute</a></li>
-
-            </ul>
-
-        	<div class="jp-progress-container">
-        		<div class="jp-progress">
-        			<div class="jp-seek-bar" style="width: 100%; ">
-        				<div class="jp-play-bar" style="width: 30.849901166487577%; "></div>
-        			</div>
-        		</div>
-        	</div>
-
-        	<div class="jp-volume-bar-container">
-        		<div class="jp-volume-bar">
-        			<div class="jp-volume-bar-value" style="width: 80%; "></div>
-        		</div>
-        	</div>
-
-        </div>
-        <div class="jp-no-solution">
-            <span>Update Required</span>
-            To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
-        </div>
-    </div>
-</div>
-<!--jplayer end-->
 <?php
 	} else { // no mp3 file for prelistening available, show file download link
 ?>

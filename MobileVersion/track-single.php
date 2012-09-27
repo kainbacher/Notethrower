@@ -109,7 +109,7 @@ function buildPlayer(&$r, $prelistenUrl, $fileDownloadUrl) {
 
 
 <br /><br />
-<audio src="<?= $prelistenUrl ?>">
+<audio src="<?= $prelistenUrl ?>&x=.mp3">
 <br /><br />
 
 <?php

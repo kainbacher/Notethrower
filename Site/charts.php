@@ -75,6 +75,7 @@ foreach ($releasedTracks as $releasedTrack) {
             0;
 			    
     $songListHtml .= processTpl('Charts/songListItem.html', array(
+	    '${artistImgUrl}'                      => getUserImageUri($project->user_img_filename, 'tiny'),
         '${chartRank}'                         => $chartRank,
         '${pfid}'                              => $releasedTrack->id,
         '${hotPercentage}'                     => number_format(100 * $hotPercentage, 1, '.', ''),

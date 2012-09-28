@@ -105,21 +105,18 @@ function buildPage(&$r, &$project, $prelistenUrl, $fileDownloadUrl) {
 function buildPlayer(&$r, $prelistenUrl, $fileDownloadUrl) {
 	if ($prelistenUrl) {
 ?>
-
-
-
 <br /><br />
 <audio controls="controls">
   <source src="<?= $prelistenUrl ?>" type="audio/mp3">
   Your browser does not support the HTML5 audio tag.
 </audio>
 <br /><br />
-
 <?php
-	} else { // no mp3 file for prelistening available, show file download link
+	}
+
+    // show file download link    
 ?>
 <a href="<?= $fileDownloadUrl ?>">Download song</a>
 <?php
-	}
 }
 ?>

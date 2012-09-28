@@ -1,0 +1,117 @@
+
+            <div id="trackFormDiv">
+                <div id="container">
+
+                <form action="" method="POST" enctype="multipart/form-data">
+                   <input type="hidden" name="action" value="checkout">
+                   <input type="hidden" name="tid" value="${trackId}">
+
+                    <br/>
+                    <h1>Artists Offer:</h1>
+
+                    <br/>
+                    <br/>
+
+                    <div class="makeAnOfferWrapper">
+                        <div class="makeAnOfferLeft">
+                            <p>Artist Name</p>
+                        </div>
+                        <div class="makeAnOfferRight">
+                            <p>${userName}</p>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="makeAnOfferWrapper">
+                        <div class="makeAnOfferLeft">
+                            <p>Track Name</p>
+                        </div>
+                        <div class="makeAnOfferRight">
+                            <p>${trackTitle}</p>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="makeAnOfferWrapper">
+                        <div class="makeAnOfferLeft">
+                            <p>Price</p>
+                        </div>
+                        <div class="makeAnOfferRight">
+                            <p>${trackPrice}</p>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+                   <div class="makeAnOfferWrapper">
+                        <div class="makeAnOfferLeft">
+                            <p>Your Email</p>
+                        </div>
+                        <div class="makeAnOfferRight">
+
+${emailArtistOffer}
+
+                        </div>
+                        <div class="makeAnOfferInfo">
+                            <p>Please specify your email address, so that we can contact you.</p>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+
+
+                    <div class="makeAnOfferWrapper">
+                        <div class="makeAnOfferLeft">
+                            <p>Song usage</p>
+                        </div>
+                        <div class="makeAnOfferRight">
+
+                        ${usageArtistOffer}
+
+                        </div>
+                        <div class="makeAnOfferInfo">
+                            <p>Please describe the use (the "Use") you wish to make of the song.
+                                Please choose one of the following options and then type a brief description of your plans,
+                                including a description of the work (the "Work").
+                                Please note that your choice and description of your Use and Work are important because we
+                                only license the song to you for a single Use in a particular Work.
+                                Additional Works require new licenses.
+                            </p>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+
+
+                    <div class="makeAnOfferWrapper">
+                        <div class="makeAnOfferLeft">
+                            <p>Secure chekout</p>
+                        </div>
+                        <div class="makeAnOfferRight">
+                            <img src="${baseUrl}Images/paypal_logo.gif" alt="paypal_logo" width="114" height="31" />
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+
+                    <div class="makeAnOfferWrapper">
+                        <div class="makeAnOfferLeft">
+                            &nbsp;
+                        </div>
+                        <div class="makeAnOfferRight">
+                            <br/>
+                            <input type="submit" class="button" value="Accept this Offer and pay now">
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <br/>
+
+
+
+
+                    </form>
+                </div> <!-- container -->
+            </div> <!-- trackFormDiv -->
+
+        <br/>
+

@@ -767,7 +767,11 @@ if ($loggedInUser && $project->user_id == $loggedInUser->id) { // logged-in user
 
 } else {
     $activeTab = 'upload';
-    $uploadBackNavigation = '<a href="' . $GLOBALS['BASE_URL'] . 'projectList">&larr; back to project list</a>';
+    if ($loggedInUser) {
+        $uploadBackNavigation = '<a href="' . $GLOBALS['BASE_URL'] . 'projectList">&larr; back to project list</a>';
+    } else {
+        $uploadBackNavigation = '';
+    }
 }
 
 // collaborator info

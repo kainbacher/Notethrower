@@ -109,7 +109,10 @@ function buildPlayer(&$r, $prelistenUrl, $fileDownloadUrl) {
 
 
 <br /><br />
-<audio src="<?= $prelistenUrl ?>&x=.mp3">
+<audio controls="controls">
+  <source src="<?= $prelistenUrl ?>" type="audio/mp3">
+  Your browser does not support the HTML5 audio tag.
+</audio>
 <br /><br />
 
 <?php

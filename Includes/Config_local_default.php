@@ -44,4 +44,8 @@ $FACEBOOK_APP_SECRET = 'xxxxxxxxxxxxxxxxxxxxxx';
 $TWITTER_CONSUMER_KEY    = 'xxxxxxxxxxxxxxxx';
 $TWITTER_CONSUMER_SECRET = 'xxxxxxxxxxxxxxxxxxxxxxx';
 
+// MailChimp API config
+$MC_API_KEY = 'lakjsdhflkajshfalkasjdfhaaskldfh-us4';
+$MC_LIST_ID = 'asdfadsf';
+
 ?>

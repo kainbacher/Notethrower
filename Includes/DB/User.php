@@ -604,6 +604,27 @@ class User {
         return $count;
     }
 
+    function getAllNewsletterRecipientEmails() {
+        $result = _mysql_query(
+            'select email_address ' .
+            'from pp_user ' .
+            'where status = "active" ' .
+            'and email_address is not null ' .
+            'and email_address != "" ' .
+            'and wants_newsletter = 1'
+        );
+
+        $emails = array();
+        
+        while ($row = mysql_fetch_array($result)) {
+            $emails[] = $row['email_address'];
+        }
+        
+        mysql_free_result($result);
+
+        return $emails;
+    }
+
     function delete_with_id($id) {
         if (!$id) return;
 

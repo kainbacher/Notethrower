@@ -45,32 +45,34 @@ function syncListMembers() {
     
     //echo '<br>oneloudr members:<br>'; print_r_pre($olMembers);
     
-    // delete MC members which are not on the oneloudr member list
-    $emailsToDelete = array_diff($mcMembers, $olMembers);
-    
-    if (count($emailsToDelete) > 0) {
-        //echo '<br>emails to delete:<br>'; print_r_pre($emailsToDelete);
-        
-        $logger->info('deleting MC members which are not in the oneloudr system');
-        $logger->info('members to delete: ' . implode(', ', $emailsToDelete));
-        
-        $response = $api->listBatchUnsubscribe($MC_LIST_ID, $emailsToDelete, true, false, false); // list_id, emails, delete_member, send_goodbye, send_notify
-        $logger->debug(print_r($response, true));
-        
-        if ($api->errorCode){
-            throw new MailChimpException('Failed to delete MC list members which are not in the oneloudr system! Code=' . $api->errorCode . ', Msg=' . $api->errorMessage, $api->errorCode);
-            
-        } else {
-            $logger->info('Success count: ' . $response['success_count']);
-            $logger->info('Error count  : ' . $response['error_count']);
-            foreach ($response['errors'] as $val) {
-                logError($val['email'] . ' failed! Code: ' . $val['code'] . 'Msg: ' . $val['message']);
-            }
-        }
-        
-    } else {
-        $logger->info('nothing to delete');
-    }
+    // ######## deactivated because we import external members to the MC list as well. so we must not delete the users which are not in the oneloudr system.
+    //// delete MC members which are not on the oneloudr member list
+    //$emailsToDelete = array_diff($mcMembers, $olMembers);
+    //
+    //if (count($emailsToDelete) > 0) {
+    //    //echo '<br>emails to delete:<br>'; print_r_pre($emailsToDelete);
+    //    
+    //    $logger->info('deleting MC members which are not in the oneloudr system');
+    //    $logger->info('members to delete: ' . implode(', ', $emailsToDelete));
+    //    
+    //    $response = $api->listBatchUnsubscribe($MC_LIST_ID, $emailsToDelete, true, false, false); // list_id, emails, delete_member, send_goodbye, send_notify
+    //    $logger->debug(print_r($response, true));
+    //    
+    //    if ($api->errorCode){
+    //        throw new MailChimpException('Failed to delete MC list members which are not in the oneloudr system! Code=' . $api->errorCode . ', Msg=' . $api->errorMessage, $api->errorCode);
+    //        
+    //    } else {
+    //        $logger->info('Success count: ' . $response['success_count']);
+    //        $logger->info('Error count  : ' . $response['error_count']);
+    //        foreach ($response['errors'] as $val) {
+    //            logError($val['email'] . ' failed! Code: ' . $val['code'] . 'Msg: ' . $val['message']);
+    //        }
+    //    }
+    //    
+    //} else {
+    //    $logger->info('nothing to delete');
+    //}
+    // ########################################
     
     // add members which are on the oneloudr list but not on the MC list
     $emailsToAdd = array_diff($olMembers, $mcMembers);

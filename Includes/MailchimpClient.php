@@ -90,7 +90,7 @@ function syncListMembers() {
         }
         
         $response = $api->listBatchSubscribe($MC_LIST_ID, $batch, false, false, true); // double_optin, update_existing, replace_interests
-        $logger->debug(print_r($response, true));
+        $logger->info(print_r($response, true));
         
         if ($api->errorCode){
             throw new MailChimpException('Failed to add members which are on the oneloudr list but not in the MC system! Code=' . $api->errorCode . ', Msg=' . $api->errorMessage, $api->errorCode);

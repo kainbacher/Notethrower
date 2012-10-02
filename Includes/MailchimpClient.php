@@ -23,7 +23,7 @@ function syncListMembers() {
     
     $logger->info('fetching MailChimp member list');
     
-    $response = $api->listMembers($MC_LIST_ID);
+    $response = $api->listMembers($MC_LIST_ID, 'subscribed', null, 0, 15000); // a maximum of 15000 addresses can be exported this way
     $logger->debug(print_r($response, true));
 
     if ($api->errorCode) {
@@ -65,7 +65,7 @@ function syncListMembers() {
     //        $logger->info('Success count: ' . $response['success_count']);
     //        $logger->info('Error count  : ' . $response['error_count']);
     //        foreach ($response['errors'] as $val) {
-    //            $logger->error($val['email'] . ' failed! Code: ' . $val['code'] . 'Msg: ' . $val['message']);
+    //            $logger->error($val['email'] . ' failed! Code: ' . $val['code'] . ' Msg: ' . $val['message']);
     //        }
     //    }
     //    
@@ -101,7 +101,7 @@ function syncListMembers() {
             $logger->info('Error count : ' . $response['error_count']);
             foreach ($response['errors'] as $val) {
                 $e = isset($val['email']) ? $val['email'] : $val['email_address']; // MC documentation is unclear about the field name
-                $logger->error($e . ' failed! Code: ' . $val['code'] . 'Msg: ' . $val['message']);
+                $logger->error($e . ' failed! Code: ' . $val['code'] . ' Msg: ' . $val['message']);
             }
         }
         

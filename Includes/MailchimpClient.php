@@ -65,7 +65,7 @@ function syncListMembers() {
     //        $logger->info('Success count: ' . $response['success_count']);
     //        $logger->info('Error count  : ' . $response['error_count']);
     //        foreach ($response['errors'] as $val) {
-    //            logError($val['email'] . ' failed! Code: ' . $val['code'] . 'Msg: ' . $val['message']);
+    //            $logger->error($val['email'] . ' failed! Code: ' . $val['code'] . 'Msg: ' . $val['message']);
     //        }
     //    }
     //    
@@ -101,7 +101,7 @@ function syncListMembers() {
             $logger->info('Error count : ' . $response['error_count']);
             foreach ($response['errors'] as $val) {
                 $e = isset($val['email']) ? $val['email'] : $val['email_address']; // MC documentation is unclear about the field name
-                logError($e . ' failed! Code: ' . $val['code'] . 'Msg: ' . $val['message']);
+                $logger->error($e . ' failed! Code: ' . $val['code'] . 'Msg: ' . $val['message']);
             }
         }
         
@@ -119,6 +119,7 @@ function getMailChimpErrorForExceptionCode($code) {
         case   0: return 'Parse exception';
         case 104: return 'Invalid API key';
         case 200: return 'Unknown list ID';
+        case 214: return 'Member already subscribed';
         case 311: return 'Invalid campaign content';
         case 315: return 'Invalid segment';
         case 502: return 'Invalid email';

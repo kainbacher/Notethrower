@@ -129,6 +129,7 @@ if (!$user) {
     $user = new User();
     $user->webpageUrl  = 'http://';
     $user->facebookUrl = 'http://';
+    $user->wants_newsletter = true;
     processParams($user, $userIsLoggedIn);
 }
 
@@ -475,6 +476,18 @@ if ($userIsLoggedIn) { // it's an update
             'workWithUnpersistedObj' => $problemOccured,
             'infoText'               => 'List the artists here which influenced you.'
         ));
+        
+        $formElementsSection2 .= getFormFieldForParams(array(
+            'inputType'                 => 'checkbox',
+            'propName'                  => 'wants_newsletter',
+            'label'                     => 'Newsletter',
+            'inputFieldGroupSuffixHtml' => 'I want to get oneloudr.com updates via email.',
+            'mandatory'                 => true,
+            'obj'                       => $user,
+            'unpersistedObj'            => $unpersistedUser,
+            'errorFields'               => $errorFields,
+            'workWithUnpersistedObj'    => $problemOccured
+        ));
     }
 
 } else { // it's an insert
@@ -507,6 +520,18 @@ if (!$userIsLoggedIn) {
             'workWithUnpersistedObj'    => $problemOccured,
             'objValueOverride'          => get_param('terms_accepted'), // since this field is not stored in the user obj, we need an override
             'infoText'                  => 'Please confirm that you\'ve read and agree to the oneloudr Artist Agreement.'
+        ));
+        
+        $formElementsSection2 .= getFormFieldForParams(array(
+            'inputType'                 => 'checkbox',
+            'propName'                  => 'wants_newsletter',
+            'label'                     => 'Newsletter',
+            'inputFieldGroupSuffixHtml' => 'I want to get oneloudr.com updates via email.',
+            'mandatory'                 => true,
+            'obj'                       => $user,
+            'unpersistedObj'            => $unpersistedUser,
+            'errorFields'               => $errorFields,
+            'workWithUnpersistedObj'    => $problemOccured
         ));
     }
 
@@ -928,6 +953,7 @@ function processParams(&$user, $userIsLoggedIn) {
         $user->video_url        = get_param('video_url');
         $user->influences       = get_param('influences');
         $user->paypal_account   = get_param('paypal_account');
+        if (isParamSet('wants_newsletter')) $user->wants_newsletter = get_numeric_param('wants_newsletter');
 
         if ($userIsLoggedIn) {
             // create attributes list and save new skills if entered

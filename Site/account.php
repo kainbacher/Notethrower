@@ -476,18 +476,6 @@ if ($userIsLoggedIn) { // it's an update
             'workWithUnpersistedObj' => $problemOccured,
             'infoText'               => 'List the artists here which influenced you.'
         ));
-        
-        $formElementsSection2 .= getFormFieldForParams(array(
-            'inputType'                 => 'checkbox',
-            'propName'                  => 'wants_newsletter',
-            'label'                     => 'Newsletter',
-            'inputFieldGroupSuffixHtml' => 'I want to get oneloudr.com updates via email.',
-            'mandatory'                 => true,
-            'obj'                       => $user,
-            'unpersistedObj'            => $unpersistedUser,
-            'errorFields'               => $errorFields,
-            'workWithUnpersistedObj'    => $problemOccured
-        ));
     }
 
 } else { // it's an insert

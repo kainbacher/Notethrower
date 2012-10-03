@@ -4,6 +4,7 @@ include_once('../Includes/Init.php');
 include_once('../Includes/PermissionsUtil.php');
 include_once('../Includes/TemplateUtil.php');
 include_once('../Includes/Snippets.php');
+include_once('../Includes/DB/EditorInfo.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/ProjectFile.php');
 include_once('../Includes/DB/User.php');
@@ -143,6 +144,21 @@ if (isset($errorFields['accepted'])) {
     $accepted .= '<p class="problemMessage">' .$errorFields['accepted'] . '</p>';
 }
 
+$usageInfoHtml = null;
+$editorInfo = EditorInfo::fetchForId($EDITOR_INFO_ID_MAKE_OFFER_USAGE_INFO);
+if (!$editorInfo) $usageInfoHtml = $MISSING_EDITOR_INFO_TEXT . ($user && $user->is_editor ? ' <a href="' . $GLOBALS['BASE_URL'] . 'Backend/editInfo.php">Enter the text for this section now!</a>' : '');
+else              $usageInfoHtml = $editorInfo->html;
+
+$aboutLicensingTermsHtml = null;
+$editorInfo = EditorInfo::fetchForId($EDITOR_INFO_ID_MAKE_OFFER_ABOUT_LICENSING_TERMS);
+if (!$editorInfo) $aboutLicensingTermsHtml = $MISSING_EDITOR_INFO_TEXT . ($user && $user->is_editor ? ' <a href="' . $GLOBALS['BASE_URL'] . 'Backend/editInfo.php">Enter the text for this section now!</a>' : '');
+else              $aboutLicensingTermsHtml = $editorInfo->html;
+
+$licensingTermsHtml = null;
+$editorInfo = EditorInfo::fetchForId($EDITOR_INFO_ID_MAKE_OFFER_LICENSING_TERMS);
+if (!$editorInfo) $licensingTermsHtml = $MISSING_EDITOR_INFO_TEXT . ($user && $user->is_editor ? ' <a href="' . $GLOBALS['BASE_URL'] . 'Backend/editInfo.php">Enter the text for this section now!</a>' : '');
+else              $licensingTermsHtml = $editorInfo->html;
+
 processAndPrintTpl('MakeAnOffer/index.html', array(
     '${Common/pageHeader}'                      => buildPageHeader('Make an offer'),
     '${Common/bodyHeader}'                      => buildBodyHeader($loggedInUser),
@@ -155,6 +171,9 @@ processAndPrintTpl('MakeAnOffer/index.html', array(
     '${price}'                                  => $price,
     '${accepted}'                               => $accepted,
     '${offerSent_optional}'                     => $offerSentMsg,
+    '${usageInfo}'                              => $usageInfoHtml,
+    '${aboutLicensingTerms}'                    => $aboutLicensingTermsHtml,
+    '${licensingTerms}'                         => $licensingTermsHtml,
     '${Common/bodyFooter}'                      => buildBodyFooter(),
     '${Common/pageFooter}'                      => buildPageFooter()
 ));

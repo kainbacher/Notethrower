@@ -72,22 +72,28 @@ $TRANSCODER_OPTIONS = array('raw'=>'-S -b 160', 'mix'=>'-S -b 320');
 // the email address which shall get the feedback via the contact form
 $CONTACT_FORM_RECIPIENT_EMAIL = 'go@oneloudr.com';
 
-$EDITOR_INFO_ID_ABOUT_TEXT_4_ARTISTS = 'aboutText4Artists';
-$EDITOR_INFO_ID_ABOUT_TEXT_4_LABELS  = 'aboutText4Labels';
-$EDITOR_INFO_ID_TERMS_OF_USE         = 'termsOfUse';
-$EDITOR_INFO_ID_FAQ                  = 'faq';
-$EDITOR_INFO_ID_PROUDLOUDR_INFO      = 'proudLoudrInfo';
-$EDITOR_INFO_ID_SHOP                 = 'shop';
-$EDITOR_INFO_ID_LICENSING            = 'licensing';
+$EDITOR_INFO_ID_ABOUT_TEXT_4_ARTISTS             = 'aboutText4Artists';
+$EDITOR_INFO_ID_ABOUT_TEXT_4_LABELS              = 'aboutText4Labels';
+$EDITOR_INFO_ID_TERMS_OF_USE                     = 'termsOfUse';
+$EDITOR_INFO_ID_FAQ                              = 'faq';
+$EDITOR_INFO_ID_PROUDLOUDR_INFO                  = 'proudLoudrInfo';
+$EDITOR_INFO_ID_SHOP                             = 'shop';
+$EDITOR_INFO_ID_LICENSING                        = 'licensing';
+$EDITOR_INFO_ID_MAKE_OFFER_USAGE_INFO            = 'makeAnOfferUsageInfo';
+$EDITOR_INFO_ID_MAKE_OFFER_ABOUT_LICENSING_TERMS = 'makeAnOfferAboutLicensingTerms';
+$EDITOR_INFO_ID_MAKE_OFFER_LICENSING_TERMS       = 'makeAnOfferLicensingTerms';
 
 $EDITOR_INFO_ID_LIST = array(
-    $EDITOR_INFO_ID_ABOUT_TEXT_4_ARTISTS => 'Oneloudr for artists page text',
-    $EDITOR_INFO_ID_ABOUT_TEXT_4_LABELS  => 'Oneloudr for labels page text',
-    $EDITOR_INFO_ID_TERMS_OF_USE         => 'Terms of use text',
-    $EDITOR_INFO_ID_FAQ                  => 'FAQ text',
-    $EDITOR_INFO_ID_PROUDLOUDR_INFO      => 'ProudLoudr info text',
-	$EDITOR_INFO_ID_SHOP                 => 'Shop site text',
-    $EDITOR_INFO_ID_LICENSING            => 'Licensing site text'
+    $EDITOR_INFO_ID_ABOUT_TEXT_4_ARTISTS             => 'Oneloudr for artists page text',
+    $EDITOR_INFO_ID_ABOUT_TEXT_4_LABELS              => 'Oneloudr for labels page text',
+    $EDITOR_INFO_ID_TERMS_OF_USE                     => 'Terms of use text',
+    $EDITOR_INFO_ID_FAQ                              => 'FAQ text',
+    $EDITOR_INFO_ID_PROUDLOUDR_INFO                  => 'ProudLoudr info text',
+	$EDITOR_INFO_ID_SHOP                             => 'Shop site text',
+    $EDITOR_INFO_ID_LICENSING                        => 'Licensing site text',
+    $EDITOR_INFO_ID_MAKE_OFFER_USAGE_INFO            => 'Make an offer page - usage info text',
+    $EDITOR_INFO_ID_MAKE_OFFER_ABOUT_LICENSING_TERMS => 'Make an offer page - about the licensing terms text',
+    $EDITOR_INFO_ID_MAKE_OFFER_LICENSING_TERMS       => 'Make an offer page - licensing terms',
 );
 
 $MISSING_EDITOR_INFO_TEXT = '[No editor info text available]';

@@ -84,7 +84,7 @@
 
 /* orange */
 .orange {
-    color: #fef4e9;
+    color: #fff !important;
     border: solid 1px #da7c0c;
     background: #f78d1d;
     background: -webkit-gradient(linear, left top, left bottom, from(#faa51a), to(#f47a20));

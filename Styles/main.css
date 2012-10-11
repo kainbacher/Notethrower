@@ -664,6 +664,40 @@ a.nohighlight:hover {
     text-decoration: none;
 }
 
+.box-start {
+    padding-top: 30px;
+}
+
+.box-start h1 {
+    font-size: 38px;
+    margin-bottom: 40px;
+}
+
+.box-start h2 {
+    font-size: 28px;
+    line-height: 32px;
+    margin-bottom: 20px;
+}
+
+.box-start li {
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 5px;
+}
+
+.startbutton {
+    font-size: 16px;
+}
+
+.startteaser h1 {
+    color:#8270A4;
+    font-size: 22px;
+}
+
+.startteaser p {
+    font-size: 16px;
+}
+
 /* !loginbox */
 /* ---------------------------------------------------------------------- */
 

@@ -10,6 +10,7 @@ include_once('../Includes/DB/User.php');
 
 $user = User::new_from_cookie();
 
+$htmlContent = '';
 $editorInfo = EditorInfo::fetchForId($EDITOR_INFO_ID_FAQ);
 if (!$editorInfo) $htmlContent = $MISSING_EDITOR_INFO_TEXT . ($user && $user->is_editor ? ' <a href="' . $GLOBALS['BASE_URL'] . 'Backend/editInfo.php">Enter the text for this site now!</a>' : '');
 else              $htmlContent = $editorInfo->html;

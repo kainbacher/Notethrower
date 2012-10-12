@@ -7,6 +7,7 @@ require_once('../Includes/mobile_device_detect.php');
 include_once('../Includes/RemoteSystemCommunicationUtil.php');
 include_once('../Includes/Snippets.php');
 include_once('../Includes/TemplateUtil.php');
+include_once('../Includes/DB/EditorInfo.php');
 include_once('../Includes/DB/Project.php');
 include_once('../Includes/DB/User.php');
 
@@ -62,11 +63,23 @@ if ($user) {
 
 // if (!$topTracksList) $topTracksList = 'No tracks found.';
 
+$introductionHtmlContent = '';
+$editorInfo = EditorInfo::fetchForId($EDITOR_INFO_ID_STARTPAGE_INTRODUCTION);
+if (!$editorInfo) $introductionHtmlContent = $MISSING_EDITOR_INFO_TEXT . ($user && $user->is_editor ? ' <a href="' . $GLOBALS['BASE_URL'] . 'Backend/editInfo.php">Enter the text for this section now!</a>' : '');
+else              $introductionHtmlContent = $editorInfo->html;
+
+$explanationHtmlContent = '';
+$editorInfo = EditorInfo::fetchForId($EDITOR_INFO_ID_STARTPAGE_EXPLANATION);
+if (!$editorInfo) $explanationHtmlContent = $MISSING_EDITOR_INFO_TEXT . ($user && $user->is_editor ? ' <a href="' . $GLOBALS['BASE_URL'] . 'Backend/editInfo.php">Enter the text for this section now!</a>' : '');
+else              $explanationHtmlContent = $editorInfo->html;
+
 processAndPrintTpl('Index/index.html', array(
     '${Common/pageHeader}'                     => buildPageHeader('Start', 'circlesmall', false),
     '${Common/bodyHeader}'                     => buildBodyHeader($user, false, $loginErrorMsgKey),
     //'${Index/trackListItem_latestTracks_list}' => $latestTracksList,
     //'${Index/trackListItem_topTracks_list}'    => $topTracksList,
+    '${introductionHtmlContent}'               => $introductionHtmlContent,
+    '${explanationHtmlContent}'                => $explanationHtmlContent,
     '${Common/bodyFooter}'                     => buildBodyFooter(),
     '${Common/pageFooter}'                     => buildPageFooter()
 ));

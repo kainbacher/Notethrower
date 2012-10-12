@@ -72,6 +72,8 @@ $TRANSCODER_OPTIONS = array('raw'=>'-S -b 160', 'mix'=>'-S -b 320');
 // the email address which shall get the feedback via the contact form
 $CONTACT_FORM_RECIPIENT_EMAIL = 'go@oneloudr.com';
 
+$EDITOR_INFO_ID_STARTPAGE_INTRODUCTION           = 'startpageIntroduction';
+$EDITOR_INFO_ID_STARTPAGE_EXPLANATION            = 'startpageExplanation';
 $EDITOR_INFO_ID_ABOUT_TEXT_4_ARTISTS             = 'aboutText4Artists';
 $EDITOR_INFO_ID_ABOUT_TEXT_4_LABELS              = 'aboutText4Labels';
 $EDITOR_INFO_ID_TERMS_OF_USE                     = 'termsOfUse';
@@ -84,6 +86,8 @@ $EDITOR_INFO_ID_MAKE_OFFER_ABOUT_LICENSING_TERMS = 'makeAnOfferAboutLicensingTer
 $EDITOR_INFO_ID_MAKE_OFFER_LICENSING_TERMS       = 'makeAnOfferLicensingTerms';
 
 $EDITOR_INFO_ID_LIST = array(
+    $EDITOR_INFO_ID_STARTPAGE_INTRODUCTION           => 'Startpage - Introduction text',
+    $EDITOR_INFO_ID_STARTPAGE_EXPLANATION            => 'Startpage - Explanation text',
     $EDITOR_INFO_ID_ABOUT_TEXT_4_ARTISTS             => 'Oneloudr for artists page text',
     $EDITOR_INFO_ID_ABOUT_TEXT_4_LABELS              => 'Oneloudr for labels page text',
     $EDITOR_INFO_ID_TERMS_OF_USE                     => 'Terms of use text',

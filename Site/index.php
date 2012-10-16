@@ -28,7 +28,7 @@ list($user, $loginErrorMsgKey) = handleAuthentication();
 
 if ($user) {
     // at the moment there's nothing more than sign-up instructions on the start page, so we redirect logged-in users to the dashboard
-    redirectTo($GLOBALS['BASE_URL'] . 'dashboard');
+    //redirectTo($GLOBALS['BASE_URL'] . 'dashboard');
     
     $visitorUserId = $user->id;
     $logger->info('visitor user id: ' . $visitorUserId);

@@ -220,7 +220,8 @@ function buildPageHeader($title, $includeJPlayerStuff = false, $includeAjaxPagin
 }
 
 function buildBodyHeader($loggedInUser, $useMobileVersion = false, $loginErrorMsgKey = null) {
-    $logoLinkUrl = $GLOBALS['BASE_URL'] . 'dashboard';
+    //$logoLinkUrl = $GLOBALS['BASE_URL'] . 'dashboard';
+    $logoLinkUrl = $GLOBALS['BASE_URL'] . 'index';
     $loginBlock = '';
     $loggedInUserInfoBlockFirstRow = '';
     $loggedInUserInfoBlockSecondRow = '';

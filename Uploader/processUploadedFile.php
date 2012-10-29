@@ -91,11 +91,17 @@ function handleNewFileUpload($projectId, $projectOwnerUserId, $filename, $origFi
     move_file($GLOBALS['TMP_UPLOAD_PATH'] . $filename, $target_dir . $upload_filename, false);
 
     $newProjectFile = new ProjectFile();
-    $newProjectFile->project_id    = $projectId;
-    $newProjectFile->filename      = $userSubdir . $upload_filename;
-    $newProjectFile->orig_filename = $origFilename;
-    $newProjectFile->type          = $isMix == 1 ? 'mix' : 'raw';
-    $newProjectFile->status        = 'active';
+    $newProjectFile->project_id     = $projectId;
+    $newProjectFile->filename       = $userSubdir . $upload_filename;
+    $newProjectFile->orig_filename  = $origFilename;
+    $newProjectFile->type           = $isMix == 1 ? 'mix' : 'raw';
+    $newProjectFile->hot_count      = 0;       
+    $newProjectFile->not_count      = 0;
+    $newProjectFile->hot_count_anon = 0;
+    $newProjectFile->not_count_anon = 0;
+    $newProjectFile->hot_count_pro  = 0;
+    $newProjectFile->not_count_pro  = 0;
+    $newProjectFile->status         = 'active';
 
     if ($originatorUserId) {
         $newProjectFile->originator_user_id = $originatorUserId;
